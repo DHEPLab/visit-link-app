@@ -6,7 +6,10 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler';
 
 export default function LinksScreen() {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
       <OptionButton
         icon="md-school"
         label="Read the Expo documentation"
@@ -16,7 +19,9 @@ export default function LinksScreen() {
       <OptionButton
         icon="md-compass"
         label="Read the React Navigation documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
+        onPress={() =>
+          WebBrowser.openBrowserAsync('https://reactnavigation.org')
+        }
       />
 
       <OptionButton
@@ -31,7 +36,10 @@ export default function LinksScreen() {
 
 function OptionButton({ icon, label, onPress, isLastOption }) {
   return (
-    <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
+    <RectButton
+      style={[styles.option, isLastOption && styles.lastOption]}
+      onPress={onPress}
+    >
       <View style={{ flexDirection: 'row' }}>
         <View style={styles.optionIconContainer}>
           <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
