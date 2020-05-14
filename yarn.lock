@@ -5725,6 +5725,11 @@ react-native-screens@~2.2.0:
   dependencies:
     debounce "^1.2.0"
 
+react-native-styled-px2dp@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/react-native-styled-px2dp/-/react-native-styled-px2dp-1.0.3.tgz#c373864a66a1e4244600f65feaad16e3758227f4"
+  integrity sha512-i8Ia0ObG84+tpraW+W2noMyPIJ35gdnmK/65zNheyZmm4gsV3Ax8kOPmhTbTHsl3wbIVIv833kxBCM7PfBZvEg==
+
 react-native-view-shot@3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/react-native-view-shot/-/react-native-view-shot-3.1.2.tgz#8c8e84c67a4bc8b603e697dbbd59dbc9b4f84825"

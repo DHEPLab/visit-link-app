@@ -1,9 +1,15 @@
 import React from 'react';
-import styled from 'styled-components/native';
+// import styled from 'styled-components/native';
+import getFlexibleStyled from 'react-native-styled-px2dp';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradientHeader from '../components/LinearGradientHeader';
+
+const { styled } = getFlexibleStyled({
+  designWidth: 400,
+  designHeight: 640,
+});
 
 export default function () {
   const navigation = useNavigation();
@@ -103,14 +109,14 @@ const VisitCard = styled.View`
 
 const StartButton = styled(LinearGradient)`
   width: 260px;
-  height: 28px;
+  padding: 7px;
+  background-color: #f2709c;
   border-radius: 270px;
   align-self: center;
   margin-top: -14px;
 `;
 
 const ButtonText = styled.Text`
-  line-height: 28px;
   font-size: 12px;
   text-align: center;
   color: #fff;
