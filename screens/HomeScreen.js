@@ -1,21 +1,19 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, View, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-
-// const { height, width } = Dimensions.get('window');
-// console.log(height, width);
+import { useNavigation } from '@react-navigation/native';
+import LinearGradientHeader from '../components/LinearGradientHeader';
 
 export default function () {
+  const navigation = useNavigation();
+  function handleStartSession() {
+    navigation.push('Session');
+  }
+
   return (
     <Container>
-      <HeaderLinearGradient
-        start={[0, 0]}
-        end={[1, 1]}
-        colors={['#FF9472', '#F2709C']}
-      >
-        <NextVisit>您的下一次家访：</NextVisit>
-      </HeaderLinearGradient>
+      <LinearGradientHeader>您的下一次家访：</LinearGradientHeader>
       <VisitCard>
         <Avatar />
         <Name>张三李四</Name>
@@ -32,7 +30,7 @@ export default function () {
           </Row>
         </InfoConainer>
       </VisitCard>
-      <View>
+      <TouchableOpacity style={{ elevation: 11 }} onPress={handleStartSession}>
         <StartButton
           start={[1, 0]}
           end={[0, 1]}
@@ -40,7 +38,7 @@ export default function () {
         >
           <ButtonText>开始课程</ButtonText>
         </StartButton>
-      </View>
+      </TouchableOpacity>
     </Container>
   );
 }
@@ -92,12 +90,6 @@ const Name = styled.Text`
   margin-top: 12px;
 `;
 
-const NextVisit = styled.Text`
-  font-size: 20px;
-  color: #fff;
-  font-weight: bold;
-`;
-
 const VisitCard = styled.View`
   align-self: center;
   width: 344px;
@@ -109,20 +101,12 @@ const VisitCard = styled.View`
   z-index: 1;
 `;
 
-const HeaderLinearGradient = styled(LinearGradient)`
-  width: 100%;
-  height: 180px;
-  padding-top: 58px;
-  padding-left: 28px;
-`;
-
 const StartButton = styled(LinearGradient)`
   width: 260px;
   height: 28px;
   border-radius: 270px;
   align-self: center;
   margin-top: -14px;
-  elevation: 11;
 `;
 
 const ButtonText = styled.Text`

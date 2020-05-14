@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import VisitScreen from '../screens/VisitScreen';
 import BabiesScreen from '../screens/BabiesScreen';
+import SessionScreen from '../screens/SessionScreen';
 import MeScreen from '../screens/MeScreen';
 
 const Tab = createBottomTabNavigator();
@@ -16,6 +17,7 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator mode="modal" headerMode="none">
       <HomeStack.Screen name="Home" component={HomeScreen} />
+      <HomeStack.Screen name="Session" component={SessionScreen} />
     </HomeStack.Navigator>
   );
 }
