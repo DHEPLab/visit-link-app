@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, View, TouchableOpacity } from 'react-native';
+import { Dimensions, View, Text } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 // const { height, width } = Dimensions.get('window');
 // console.log(height, width);
@@ -8,9 +9,13 @@ import { Dimensions, View, TouchableOpacity } from 'react-native';
 export default function () {
   return (
     <Container>
-      <Header>
+      <HeaderLinearGradient
+        start={[0, 0]}
+        end={[1, 1]}
+        colors={['#FF9472', '#F2709C']}
+      >
         <NextVisit>您的下一次家访：</NextVisit>
-      </Header>
+      </HeaderLinearGradient>
       <VisitCard>
         <Avatar />
         <Name>张三李四</Name>
@@ -28,9 +33,13 @@ export default function () {
         </InfoConainer>
       </VisitCard>
       <View>
-        {/* <TouchableOpacity> */}
-        <StartButton>开始课程</StartButton>
-        {/* </TouchableOpacity> */}
+        <StartButton
+          start={[1, 0]}
+          end={[0, 1]}
+          colors={['#F2709C', '#FF9472']}
+        >
+          <ButtonText>开始课程</ButtonText>
+        </StartButton>
       </View>
     </Container>
   );
@@ -100,25 +109,26 @@ const VisitCard = styled.View`
   z-index: 1;
 `;
 
-const Header = styled.View`
+const HeaderLinearGradient = styled(LinearGradient)`
   width: 100%;
   height: 180px;
   padding-top: 58px;
-  padding-left: 46px;
-  background: #ff9472;
+  padding-left: 28px;
 `;
 
-const StartButton = styled.Text`
+const StartButton = styled(LinearGradient)`
   width: 260px;
   height: 28px;
-  line-height: 28px;
-  background-color: #ff9472;
   border-radius: 270px;
+  align-self: center;
+  margin-top: -14px;
+  elevation: 11;
+`;
+
+const ButtonText = styled.Text`
+  line-height: 28px;
   font-size: 12px;
   text-align: center;
   color: #fff;
   font-weight: bold;
-  align-self: center;
-  margin-top: -14px;
-  elevation: 11;
 `;
