@@ -1,15 +1,9 @@
 import React from 'react';
-// import styled from 'styled-components/native';
-import getFlexibleStyled from 'react-native-styled-px2dp';
+import styled from '../config/styled';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradientHeader from '../components/LinearGradientHeader';
-
-const { styled } = getFlexibleStyled({
-  designWidth: 400,
-  designHeight: 640,
-});
 
 export default function () {
   const navigation = useNavigation();
@@ -26,12 +20,12 @@ export default function () {
         <InfoConainer>
           <Row>
             <Label>家访日期：</Label>
-            <LabelValue>2020年 05 月 08 日 上午 10:00-11:00</LabelValue>
+            <LabelValue>2020年 05 月 08 日{'\n'}上午 10:00-11:00</LabelValue>
           </Row>
           <Row>
             <Label>家访地点：</Label>
-            <LabelValue style={{ width: 139 }}>
-              吉林省/延边朝鲜自治州/安图县朝阳街826号
+            <LabelValue>
+              吉林省/延边朝鲜自治州/{'\n'}安图县朝阳街826号
             </LabelValue>
           </Row>
         </InfoConainer>
@@ -76,7 +70,6 @@ const LabelValue = styled.Text`
   font-size: 10px;
   font-weight: bold;
   color: #4a4a4a;
-  width: 90px;
   text-align: right;
 `;
 
