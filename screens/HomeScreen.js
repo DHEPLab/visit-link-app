@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '../config/styled';
-import { Button, LinearGradientHeader } from '../components';
+import { Button, LinearGradientHeader } from '../components/*';
 import { useNavigation } from '@react-navigation/native';
 
 export default function () {

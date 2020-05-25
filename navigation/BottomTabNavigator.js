@@ -3,11 +3,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import VisitScreen from '../screens/VisitScreen';
-import BabiesScreen from '../screens/BabiesScreen';
-import SessionScreen from '../screens/SessionScreen';
-import MeScreen from '../screens/MeScreen';
+import {
+  HomeScreen,
+  BabiesScreen,
+  VisitScreen,
+  SessionScreen,
+  MeScreen,
+} from '../screens/*';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
