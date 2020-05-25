@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from '../config/styled';
-import { TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Button, LinearGradientHeader } from '../components';
 import { useNavigation } from '@react-navigation/native';
-import LinearGradientHeader from '../components/LinearGradientHeader';
 
 export default function () {
   const navigation = useNavigation();
@@ -30,15 +28,9 @@ export default function () {
           </Row>
         </InfoConainer>
       </VisitCard>
-      <TouchableOpacity style={{ elevation: 11 }} onPress={handleStartSession}>
-        <StartButton
-          start={[1, 0]}
-          end={[0, 1]}
-          colors={['#F2709C', '#FF9472']}
-        >
-          <ButtonText>开始课程</ButtonText>
-        </StartButton>
-      </TouchableOpacity>
+      <ButtonContainer>
+        <Button size="large" title="开始课程" onPress={handleStartSession} />
+      </ButtonContainer>
     </Container>
   );
 }
@@ -100,18 +92,6 @@ const VisitCard = styled.View`
   z-index: 1;
 `;
 
-const StartButton = styled(LinearGradient)`
-  width: 260px;
-  padding: 7px;
-  background-color: #f2709c;
-  border-radius: 270px;
-  align-self: center;
+const ButtonContainer = styled.View`
   margin-top: -14px;
-`;
-
-const ButtonText = styled.Text`
-  font-size: 12px;
-  text-align: center;
-  color: #fff;
-  font-weight: bold;
 `;
