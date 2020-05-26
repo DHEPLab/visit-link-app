@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '../config/styled';
+import { styled } from '../config/styled';
 import { Button, LinearGradientHeader } from '../components/*';
 import { useNavigation } from '@react-navigation/native';
 

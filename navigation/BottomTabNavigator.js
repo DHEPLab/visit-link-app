@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import { px2dp, styled } from '../config/styled';
 
 import TabBarIcon from '../components/TabBarIcon';
 import {
@@ -24,18 +25,30 @@ function HomeStackScreen() {
   );
 }
 
-export default function ({ navigation, route }) {
+export default function () {
   // Set the header title on the parent stack navigator depending on the
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <Tab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <Tab.Navigator
+      initialRouteName={INITIAL_ROUTE_NAME}
+      tabBarOptions={{
+        style: {
+          height: px2dp(68),
+          borderTopWidth: 1,
+          borderTopColor: '#FFC3A0',
+        },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeStackScreen}
         options={{
+          tabBarLabel: ({ focused }) => (
+            <TabBarLabel focused={focused}>首页</TabBarLabel>
+          ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-star" />
           ),
@@ -45,6 +58,9 @@ export default function ({ navigation, route }) {
         name="Babies"
         component={BabiesScreen}
         options={{
+          tabBarLabel: ({ focused }) => (
+            <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>
+          ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-people" />
           ),
@@ -54,6 +70,9 @@ export default function ({ navigation, route }) {
         name="Visit"
         component={VisitScreen}
         options={{
+          tabBarLabel: ({ focused }) => (
+            <TabBarLabel focused={focused}>家访安排</TabBarLabel>
+          ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-time" />
           ),
@@ -63,6 +82,9 @@ export default function ({ navigation, route }) {
         name="Me"
         component={MeScreen}
         options={{
+          tabBarLabel: ({ focused }) => (
+            <TabBarLabel focused={focused}>个人中心</TabBarLabel>
+          ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="md-person" />
           ),
@@ -71,6 +93,13 @@ export default function ({ navigation, route }) {
     </Tab.Navigator>
   );
 }
+
+const TabBarLabel = styled.Text`
+  font-size: 8px;
+  font-weight: ${(props) => (props.focused ? 'bold' : 'normal')};
+  padding-bottom: 12px;
+  color: ${(props) => (props.focused ? '#FF9472' : '#FF794F')};
+`;
 
 function getHeaderTitle(route) {
   const routeName =
