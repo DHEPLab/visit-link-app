@@ -10,10 +10,12 @@ import {
   VisitScreen,
   SessionScreen,
   MeScreen,
+  ChangeProfile,
 } from '../screens/*';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
+const MeStack = createStackNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
 
 function HomeStackScreen() {
@@ -22,6 +24,15 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Home" component={HomeScreen} />
       <HomeStack.Screen name="Session" component={SessionScreen} />
     </HomeStack.Navigator>
+  );
+}
+
+function MeStackScreen() {
+  return (
+    <MeStack.Navigator mode="card">
+      <MeStack.Screen name="Me" component={MeScreen} />
+      <MeStack.Screen name="ChangeProfile" component={ChangeProfile} />
+    </MeStack.Navigator>
   );
 }
 
@@ -80,7 +91,7 @@ export default function () {
       />
       <Tab.Screen
         name="Me"
-        component={MeScreen}
+        component={MeStackScreen}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>个人中心</TabBarLabel>

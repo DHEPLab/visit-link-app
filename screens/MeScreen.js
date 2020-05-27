@@ -1,11 +1,15 @@
 import React from 'react';
 import { View, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { styled } from '../config/styled';
 import { Colors } from '../constants/*';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from '../components/*';
 
 export default function Me() {
+  const navigation = useNavigation();
+
   return (
     <>
       <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
@@ -20,7 +24,11 @@ export default function Me() {
             <PhoneNumber>18618282929</PhoneNumber>
             <Location>某某某某某某省/某某某某市/某某某某某某县</Location>
           </View>
-          <Button ghost title="修改资料" />
+          <Button
+            ghost
+            title="修改资料"
+            onPress={() => navigation.push('ChangeProfile')}
+          />
         </InfoContainer>
       </Header>
     </>
