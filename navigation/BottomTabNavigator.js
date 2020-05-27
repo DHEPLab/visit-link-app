@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { px2dp, styled } from '../config/styled';
 
-import TabBarIcon from '../components/TabBarIcon';
+import { TabBarIcon } from '../components/*';
 import {
   HomeScreen,
   BabiesScreen,
@@ -50,7 +50,7 @@ export default function () {
             <TabBarLabel focused={focused}>首页</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-star" />
+            <TabBarIcon focused={focused} name="home" />
           ),
         }}
       />
@@ -62,7 +62,7 @@ export default function () {
             <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-people" />
+            <TabBarIcon focused={focused} name="baby" />
           ),
         }}
       />
@@ -74,7 +74,7 @@ export default function () {
             <TabBarLabel focused={focused}>家访安排</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-time" />
+            <TabBarIcon focused={focused} name="visit" />
           ),
         }}
       />
@@ -86,7 +86,7 @@ export default function () {
             <TabBarLabel focused={focused}>个人中心</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="md-person" />
+            <TabBarIcon focused={focused} name="me" />
           ),
         }}
       />
@@ -96,9 +96,9 @@ export default function () {
 
 const TabBarLabel = styled.Text`
   font-size: 8px;
-  font-weight: ${(props) => (props.focused ? 'bold' : 'normal')};
-  padding-bottom: 12px;
-  color: ${(props) => (props.focused ? '#FF9472' : '#FF794F')};
+  font-weight: ${({ focused }) => (focused ? 'bold' : 'normal')};
+  padding-bottom: ${({ focused }) => (focused ? 8 : 12)}px;
+  color: ${({ focused }) => (focused ? '#FF9472' : '#FF794F')};
 `;
 
 function getHeaderTitle(route) {

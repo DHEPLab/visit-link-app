@@ -1,15 +1,37 @@
-import { Ionicons } from '@expo/vector-icons';
 import * as React from 'react';
+import Icons from './Icons';
+import { styled, px2dp } from '../config/styled';
+import { LinearGradient } from 'expo-linear-gradient';
 
-import Colors from '../constants/Colors';
-
-export default function TabBarIcon(props) {
+export default function TabBarIcon({ name, focused }) {
+  const size = px2dp(25);
   return (
-    <Ionicons
-      name={props.name}
-      size={30}
-      style={{ marginBottom: -3 }}
-      color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
-    />
+    <TabBarIconContainer focused={focused}>
+      {focused ? (
+        <FocusedIcon
+          start={[1, 0]}
+          end={[0, 1]}
+          colors={['#FF9472', '#F2709C']}
+        >
+          <Icons name={`${name}-focused`} size={size} />
+        </FocusedIcon>
+      ) : (
+        <Icons name={name} size={size} />
+      )}
+    </TabBarIconContainer>
   );
 }
+
+const TabBarIconContainer = styled.View`
+  margin-top: 4px;
+  ${({ focused }) => !focused && 'margin-top: 8px;'}
+`;
+
+const FocusedIcon = styled(LinearGradient)`
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
