@@ -58,12 +58,12 @@ const HeaderTitle = styled(WhiteText)`
   font-size: 12px;
   color: #fff;
   align-self: center;
-  margin-top: 18px;
+  margin-top: 28px;
   font-weight: bold;
 `;
 
 const NameContainer = styled.View`
-  margin-top: 28px;
+  margin-top: 18px;
   margin-bottom: 20px;
   flex-direction: row;
   align-items: flex-end;

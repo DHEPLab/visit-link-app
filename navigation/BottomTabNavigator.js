@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { px2dp, styled } from '../config/styled';
 
-import { TabBarIcon } from '../components/*';
+import { TabBarIcon, NavigatorHeader } from '../components/*';
 import {
   HomeScreen,
   BabiesScreen,
@@ -30,18 +30,24 @@ function HomeStackScreen() {
 function MeStackScreen() {
   return (
     <MeStack.Navigator mode="card">
-      <MeStack.Screen name="Me" component={MeScreen} />
-      <MeStack.Screen name="ChangeProfile" component={ChangeProfile} />
+      <MeStack.Screen
+        name="Me"
+        component={MeScreen}
+        options={{ headerShown: false }}
+      />
+      <MeStack.Screen
+        name="ChangeProfile"
+        component={ChangeProfile}
+        options={{
+          headerTitle: '修改个人资料',
+          header: NavigatorHeader,
+        }}
+      />
     </MeStack.Navigator>
   );
 }
 
 export default function () {
-  // Set the header title on the parent stack navigator depending on the
-  // currently active tab. Learn more in the documentation:
-  // https://reactnavigation.org/docs/en/screen-options-resolution.html
-  // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
-
   return (
     <Tab.Navigator
       initialRouteName={INITIAL_ROUTE_NAME}
@@ -111,15 +117,3 @@ const TabBarLabel = styled.Text`
   padding-bottom: ${({ focused }) => (focused ? 8 : 12)}px;
   color: ${({ focused }) => (focused ? '#FF9472' : '#FF794F')};
 `;
-
-function getHeaderTitle(route) {
-  const routeName =
-    route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME;
-
-  switch (routeName) {
-    case 'Home':
-      return 'How to get started';
-    case 'Links':
-      return 'Links to learn more';
-  }
-}
