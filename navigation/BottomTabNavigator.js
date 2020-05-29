@@ -14,28 +14,18 @@ import {
 } from '../screens/*';
 
 const Tab = createBottomTabNavigator();
-const HomeStack = createStackNavigator();
-const MeStack = createStackNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
+const Stack = createStackNavigator();
 
-function HomeStackScreen() {
+export default function () {
   return (
-    <HomeStack.Navigator mode="modal" headerMode="none">
-      <HomeStack.Screen name="Home" component={HomeScreen} />
-      <HomeStack.Screen name="Session" component={SessionScreen} />
-    </HomeStack.Navigator>
-  );
-}
-
-function MeStackScreen() {
-  return (
-    <MeStack.Navigator mode="card">
-      <MeStack.Screen
-        name="Me"
-        component={MeScreen}
+    <Stack.Navigator mode="card">
+      <Stack.Screen
+        name="Home"
+        component={HomeTabs}
         options={{ headerShown: false }}
       />
-      <MeStack.Screen
+      <Stack.Screen name="Session" component={SessionScreen} />
+      <Stack.Screen
         name="ChangeProfile"
         component={ChangeProfile}
         options={{
@@ -43,14 +33,13 @@ function MeStackScreen() {
           header: NavigatorHeader,
         }}
       />
-    </MeStack.Navigator>
+    </Stack.Navigator>
   );
 }
 
-export default function () {
+function HomeTabs() {
   return (
     <Tab.Navigator
-      initialRouteName={INITIAL_ROUTE_NAME}
       tabBarOptions={{
         style: {
           height: px2dp(68),
@@ -61,7 +50,7 @@ export default function () {
     >
       <Tab.Screen
         name="Home"
-        component={HomeStackScreen}
+        component={HomeScreen}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>首页</TabBarLabel>
@@ -97,7 +86,7 @@ export default function () {
       />
       <Tab.Screen
         name="Me"
-        component={MeStackScreen}
+        component={MeScreen}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>个人中心</TabBarLabel>
