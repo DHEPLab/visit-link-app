@@ -12,11 +12,13 @@ export default function () {
         <FormItem label="联系电话">
           <Input placeholder="请输入 11 位手机号码" />
         </FormItem>
-        <FormItem label="所在区域">
-          <Input placeholder="请输入您的真实姓名" />
+        <FormItem label="所在区域" last>
+          <Input placeholder="请选择省份、城市、区域" />
         </FormItem>
       </Form>
-      <StyledButton size="large" title="提交" />
+      <ButtonContainer>
+        <Button size="large" title="提交" />
+      </ButtonContainer>
     </Container>
   );
 }
@@ -25,6 +27,6 @@ const Container = styled.View`
   padding: 20px 28px;
 `;
 
-const StyledButton = styled(Button)`
+const ButtonContainer = styled.View`
   margin-top: 50px;
 `;

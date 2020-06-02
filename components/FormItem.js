@@ -1,9 +1,9 @@
 import React from 'react';
 import { styled } from '../config/styled';
 
-export default function ({ label, children }) {
+export default function ({ label, children, last }) {
   return (
-    <FormItem>
+    <FormItem last={last}>
       <Label>{label}:</Label>
       {children}
     </FormItem>
@@ -14,8 +14,7 @@ const FormItem = styled.View`
   flex-direction: row;
   align-items: center;
   border-color: #eee;
-  border-bottom-width: 1px;
-  border-style: solid;
+  ${({ last }) => !last && 'border-bottom-width: 1px;'}
   padding: 8px 0;
 `;
 
