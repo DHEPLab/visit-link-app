@@ -4,14 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { px2dp, styled } from '../config/styled';
 
 import { TabBarIcon, NavigatorHeader } from '../components/*';
-import {
-  HomeScreen,
-  BabiesScreen,
-  VisitScreen,
-  SessionScreen,
-  MeScreen,
-  ChangeProfile,
-} from '../screens/*';
+import { Home, Babies, Visit, Session, Me, ChangeProfile } from '../screens/*';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,7 +17,7 @@ export default function () {
         component={HomeTabs}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="Session" component={SessionScreen} />
+      <Stack.Screen name="Session" component={Session} />
       <Stack.Screen
         name="ChangeProfile"
         component={ChangeProfile}
@@ -50,7 +43,7 @@ function HomeTabs() {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={Home}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>首页</TabBarLabel>
@@ -62,7 +55,7 @@ function HomeTabs() {
       />
       <Tab.Screen
         name="Babies"
-        component={BabiesScreen}
+        component={Babies}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>
@@ -74,7 +67,7 @@ function HomeTabs() {
       />
       <Tab.Screen
         name="Visit"
-        component={VisitScreen}
+        component={Visit}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>家访安排</TabBarLabel>
@@ -86,7 +79,7 @@ function HomeTabs() {
       />
       <Tab.Screen
         name="Me"
-        component={MeScreen}
+        component={Me}
         options={{
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>个人中心</TabBarLabel>
