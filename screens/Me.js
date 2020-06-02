@@ -32,7 +32,15 @@ export default function Me() {
         </InfoContainer>
       </Header>
       <CardsContainer>
-        <Card title="账户信息">
+        <Card
+          title="账户信息"
+          right={
+            <Button
+              title="修改密码"
+              onPress={() => navigation.push('ChangePassword')}
+            />
+          }
+        >
           <StaticForm>
             <StaticFormItem label="账户名称">s10001</StaticFormItem>
             <StaticFormItem label="账户密码">******</StaticFormItem>

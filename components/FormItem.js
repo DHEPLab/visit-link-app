@@ -19,6 +19,8 @@ const FormItem = styled.View`
 `;
 
 const Label = styled.Text`
+  width: 50px;
+  text-align: right;
   margin-right: 12px;
   color: #8e8e93;
   font-size: 10px;

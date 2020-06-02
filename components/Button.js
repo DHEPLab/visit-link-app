@@ -58,8 +58,7 @@ const LogoutButton = styled.View`
 
 const Button = styled(LinearGradient)`
   width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
-  min-width: 100px;
-  padding: 7px;
+  padding: ${(props) => (props.size === 'large' ? '7px' : '4px')} 16px;
   border-radius: 270px;
   align-self: center;
 `;

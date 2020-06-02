@@ -4,7 +4,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { px2dp, styled } from '../config/styled';
 
 import { TabBarIcon, NavigatorHeader } from '../components/*';
-import { Home, Babies, Visit, Session, Me, ChangeProfile } from '../screens/*';
+import {
+  Home,
+  Babies,
+  Visit,
+  Session,
+  Me,
+  ChangeProfile,
+  ChangePassword,
+} from '../screens/*';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -23,6 +31,14 @@ export default function () {
         component={ChangeProfile}
         options={{
           headerTitle: '修改个人资料',
+          header: NavigatorHeader,
+        }}
+      />
+      <Stack.Screen
+        name="ChangePassword"
+        component={ChangePassword}
+        options={{
+          headerTitle: '修改账户密码',
           header: NavigatorHeader,
         }}
       />

@@ -1,11 +1,12 @@
 import React from 'react';
 import { styled } from '../config/styled';
 
-export default function ({ title, children }) {
+export default function ({ title, children, right }) {
   return (
     <Card>
       <Header>
         <Title>{title}</Title>
+        {right}
       </Header>
       <Body>{children}</Body>
     </Card>
@@ -23,6 +24,7 @@ const Header = styled.View`
   height: 40px;
   padding: 0 24px;
   align-items: center;
+  justify-content: space-between;
   flex-direction: row;
   border-bottom-width: 1px;
   border-color: #ffede2;
