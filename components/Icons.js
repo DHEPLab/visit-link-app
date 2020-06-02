@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { SvgXml } from 'react-native-svg';
+import { px2dp } from '../config/styled';
 
 const svgs = {
   home: `
@@ -155,11 +156,29 @@ const svgs = {
     </g>
 </svg>
   `,
+  arrow: `
+  <?xml version="1.0" encoding="UTF-8"?>
+  <svg width="12px" height="20px" viewBox="0 0 12 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+      <title>CC3409D4-5738-4525-A0B5-59E9EA63A654</title>
+      <desc>Created with Sketch.</desc>
+      <g id="组件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <g id="icon/卡片箭头/白" fill="#FFFFFF">
+              <path d="M1.999975,20.000025 C1.488225,20.000025 0.976475,19.804775 0.58585,19.41415 C-0.195275,18.632775 -0.195275,17.367275 0.58585,16.586025 L7.171725,9.999775 L0.58585,3.414025 C-0.195275,2.63315 -0.195275,1.36665 0.58585,0.5859 C1.366225,-0.195225 2.633725,-0.195225 3.413975,0.5859 L11.41385,8.585775 C12.1951,9.366525 12.1951,10.633025 11.41385,11.41415 L3.413975,19.41415 C3.02385,19.804775 2.5116,20.000025 1.999975,20.000025" id="Fill-1"></path>
+          </g>
+      </g>
+  </svg>
+  `,
 };
 
-export default function Icons({ name, size = 30 }) {
+export default function Icons({ name, size = 30, style }) {
   return svgs[name] ? (
-    <SvgXml xml={svgs[name]} width={size} height={size} />
+    <SvgXml
+      style={style}
+      xml={svgs[name]}
+      width={px2dp(size)}
+      height={px2dp(size)}
+    />
   ) : (
     <Text>{name}</Text>
   );

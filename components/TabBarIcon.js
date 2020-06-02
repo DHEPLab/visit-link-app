@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Icons from './Icons';
-import { styled, px2dp } from '../config/styled';
+import { styled } from '../config/styled';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TabBarIcon({ name, focused }) {
-  const size = px2dp(25);
+  const size = 25;
   return (
     <TabBarIconContainer focused={focused}>
       {focused ? (
