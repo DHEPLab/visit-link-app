@@ -29,7 +29,8 @@ export default function () {
         </InfoConainer>
       </VisitCard>
       <ButtonContainer>
-        <Button size="large" title="开始课程" onPress={handleStartSession} />
+        {/* <Button size="large" title="开始课程" onPress={handleStartSession} /> */}
+        <Button title="Login" onPress={() => navigation.push('Login')} />
       </ButtonContainer>
     </Container>
   );
@@ -88,8 +89,6 @@ const VisitCard = styled.View`
   margin-top: -35px;
   border-radius: 16px;
   background-color: #fff;
-  elevation: 10;
-  z-index: 1;
 `;
 
 const ButtonContainer = styled.View`

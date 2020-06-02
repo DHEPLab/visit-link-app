@@ -5,6 +5,7 @@ import { px2dp, styled } from '../config/styled';
 
 import { TabBarIcon, NavigatorHeader } from '../components/*';
 import {
+  Login,
   Home,
   Babies,
   Visit,
@@ -26,6 +27,11 @@ export default function () {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Session" component={Session} />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="ChangeProfile"
         component={ChangeProfile}

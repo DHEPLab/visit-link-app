@@ -11,13 +11,17 @@ export default function ({ onPress, ...props }) {
   );
 }
 
-function RenderButton({ title, size, ghost, logout }) {
+function RenderButton({ title, text, size, ghost, logout }) {
   if (logout) {
     return (
       <LogoutButton>
         <Text>{title}</Text>
       </LogoutButton>
     );
+  }
+
+  if (text) {
+    return <TextButton>{title}</TextButton>;
   }
 
   if (ghost) {
@@ -46,6 +50,13 @@ const GhostButton = styled.View`
   border-radius: 25px;
   padding: 4px;
   min-width: 80px;
+`;
+
+const TextButton = styled.Text`
+  color: #ffc3a0;
+  font-size: 10px;
+  font-weight: bold;
+  text-decoration: underline;
 `;
 
 const LogoutButton = styled.View`

@@ -1,10 +1,10 @@
 import React from 'react';
 import { styled } from '../config/styled';
 
-export default function ({ label, children, last }) {
+export default function ({ label, children, center, border = true }) {
   return (
-    <FormItem last={last}>
-      <Label>{label}:</Label>
+    <FormItem border={border} center={center}>
+      {label && <Label>{label}:</Label>}
       {children}
     </FormItem>
   );
@@ -12,9 +12,10 @@ export default function ({ label, children, last }) {
 
 const FormItem = styled.View`
   flex-direction: row;
+  ${({ center }) => center && 'justify-content: center;'}
   align-items: center;
   border-color: #eee;
-  ${({ last }) => !last && 'border-bottom-width: 1px;'}
+  ${({ border }) => border && 'border-bottom-width: 1px;'}
   padding: 8px 0;
 `;
 
