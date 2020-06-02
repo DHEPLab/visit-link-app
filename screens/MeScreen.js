@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { styled } from '../config/styled';
 import { Colors } from '../constants/*';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from '../components/*';
+import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
 
 export default function Me() {
   const navigation = useNavigation();
@@ -31,9 +31,38 @@ export default function Me() {
           />
         </InfoContainer>
       </Header>
+      <CardsContainer>
+        <Card title="账户信息">
+          <StaticForm>
+            <StaticFormItem label="账户名称">s10001</StaticFormItem>
+            <StaticFormItem label="账户密码">******</StaticFormItem>
+          </StaticForm>
+        </Card>
+        <Card title="督导信息">
+          <StaticForm>
+            <StaticFormItem label="督导姓名">
+              张三李四张三李四张三
+            </StaticFormItem>
+            <StaticFormItem label="督导电话">18616881618</StaticFormItem>
+          </StaticForm>
+        </Card>
+      </CardsContainer>
+      <Logout>
+        <Button title="退出登录" logout />
+      </Logout>
     </>
   );
 }
+
+const Logout = styled.View`
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+`;
+
+const CardsContainer = styled.View`
+  padding: 20px 28px;
+`;
 
 const Header = styled(LinearGradient)`
   width: 100%;
