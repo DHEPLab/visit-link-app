@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions } from 'react-native';
 import { styled } from '../config/styled';
 import { FormItem, PrimaryInput, Button } from '../components/*';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
+import Http from '../utils/http';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function () {
+  const [badCredentials, setBadCredentials] = useState(false);
+
+  function onSubmit(values) {
+    setBadCredentials(false);
+
+    Http.post('/api/authenticate', values)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((_) => {
+        setBadCredentials(true);
+      });
+  }
+
   return (
     <Login>
       <Logo
@@ -15,10 +31,20 @@ export default function () {
       />
       <Formik
         initialValues={{ username: '' }}
-        onSubmit={(values) => console.log(values)}
+        validationSchema={Yup.object().shape({
+          username: Yup.string()
+            .min(2, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+          password: Yup.string()
+            .min(2, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Required'),
+        })}
+        onSubmit={onSubmit}
       >
         {({ handleSubmit }) => (
-          <>
+          <FormContainer>
             <FormItem name="username" center noBorder>
               <PrimaryInput placeholder="请输入账户名称" />
             </FormItem>
@@ -28,8 +54,11 @@ export default function () {
             <ForgetPassword>
               <Button text title="忘记密码" />
             </ForgetPassword>
+            {badCredentials && (
+              <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>
+            )}
             <Button size="large" title="登录" onPress={handleSubmit} />
-          </>
+          </FormContainer>
         )}
       </Formik>
       <Inset
@@ -43,6 +72,19 @@ export default function () {
 const Logo = styled.Image`
   width: 136px;
   align-self: center;
+`;
+
+const FormContainer = styled.View`
+  width: 260px;
+  margin: 0 auto;
+`;
+
+const BadCredentials = styled.Text`
+  color: #ff2e2e;
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  margin-top: -10px;
 `;
 
 const Inset = styled.Image`

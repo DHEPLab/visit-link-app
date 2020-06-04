@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '../config/styled';
-import { useField, useFormikContext } from 'formik';
+import { useField, useFormikContext, ErrorMessage } from 'formik';
 
 export default function ({ label, children, ...props }) {
   const { name } = props;
@@ -8,15 +8,18 @@ export default function ({ label, children, ...props }) {
   const [field, meta] = useField(props);
 
   return (
-    <FormItem {...props}>
-      {label && <Label>{label}:</Label>}
-      {React.cloneElement(children, {
-        name,
-        value: field.value,
-        onChange: form.handleChange(name),
-        onBlur: form.handleBlur(name),
-      })}
-    </FormItem>
+    <>
+      <FormItem {...props}>
+        {label && <Label>{label}:</Label>}
+        {React.cloneElement(children, {
+          name,
+          value: field.value,
+          onChange: form.handleChange(name),
+          onBlur: form.handleBlur(name),
+        })}
+      </FormItem>
+      <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
+    </>
   );
 }
 
@@ -36,4 +39,8 @@ const Label = styled.Text`
   color: #8e8e93;
   font-size: 10px;
   font-weight: bold;
+`;
+
+const Error = styled.Text`
+  color: red;
 `;
