@@ -1,7 +1,10 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import { styled } from '../config/styled';
-import { Form, FormItem, PrimaryInput, Button } from '../components/*';
+import { FormItem, PrimaryInput, Button } from '../components/*';
 import { Formik } from 'formik';
+
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function () {
   return (
@@ -15,7 +18,7 @@ export default function () {
         onSubmit={(values) => console.log(values)}
       >
         {({ handleSubmit }) => (
-          <Form>
+          <>
             <FormItem name="username" center noBorder>
               <PrimaryInput placeholder="请输入账户名称" />
             </FormItem>
@@ -26,13 +29,13 @@ export default function () {
               <Button text title="忘记密码" />
             </ForgetPassword>
             <Button size="large" title="登录" onPress={handleSubmit} />
-          </Form>
+          </>
         )}
       </Formik>
-      {/* <Inset
+      <Inset
         resizeMode="contain"
         source={require('../assets/images/login-inset.png')}
-      /> */}
+      />
     </Login>
   );
 }
@@ -48,13 +51,14 @@ const Inset = styled.Image`
   width: 400px;
   left: 0;
   bottom: 0;
+  z-index: -1;
 `;
 
 const Login = styled.View`
   position: relative;
   background: #fff;
   width: 100%;
-  height: 100%;
+  height: ${screenHeight}PX;
   padding-top: 100px;
 `;
 
