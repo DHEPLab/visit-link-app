@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,11 +9,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
 
 export default function Me() {
+  const [user, setUser] = useState({});
   const navigation = useNavigation();
 
   useEffect(() => {
-    Http.get('/api/profile').then((response) => {
-      console.log(response);
+    Http.get('/api/user/profile').then((r) => {
+      setUser(r);
     });
   }, []);
 
@@ -23,19 +24,14 @@ export default function Me() {
         <BackgroundImage source={require('../assets/images/me-bg.png')} />
         <HeaderTitle>个人中心</HeaderTitle>
         <NameContainer>
-          <Name>张三李四张三李四张三</Name>
-          <Identity>ID: 66666888</Identity>
+          <Name>{user.realName}</Name>
+          <Identity>ID: {user.identity}</Identity>
         </NameContainer>
         <InfoContainer>
           <View>
-            <PhoneNumber>18618282929</PhoneNumber>
+            <PhoneNumber>{user.phone}</PhoneNumber>
             <Location>某某某某某某省/某某某某市/某某某某某某县</Location>
           </View>
-          <Button
-            ghost
-            title="修改资料"
-            onPress={() => navigation.push('ChangeProfile')}
-          />
         </InfoContainer>
       </Header>
       <CardsContainer>
@@ -49,7 +45,7 @@ export default function Me() {
           }
         >
           <StaticForm>
-            <StaticFormItem label="账户名称">s10001</StaticFormItem>
+            <StaticFormItem label="账户名称">{user.username}</StaticFormItem>
             <StaticFormItem label="账户密码">******</StaticFormItem>
           </StaticForm>
         </Card>

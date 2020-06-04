@@ -20,7 +20,7 @@ const Stack = createStackNavigator();
 
 export default function () {
   return (
-    <Stack.Navigator mode="card">
+    <Stack.Navigator>
       <Stack.Screen
         name="Home"
         component={HomeTabs}
