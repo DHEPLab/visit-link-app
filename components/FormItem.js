@@ -1,11 +1,21 @@
 import React from 'react';
 import { styled } from '../config/styled';
+import { useField, useFormikContext } from 'formik';
 
-export default function ({ label, children, center, border = true }) {
+export default function ({ label, children, ...props }) {
+  const { name } = props;
+  const form = useFormikContext();
+  const [field, meta] = useField(props);
+
   return (
-    <FormItem border={border} center={center}>
+    <FormItem {...props}>
       {label && <Label>{label}:</Label>}
-      {children}
+      {React.cloneElement(children, {
+        name,
+        value: field.value,
+        onChange: form.handleChange(name),
+        onBlur: form.handleBlur(name),
+      })}
     </FormItem>
   );
 }
@@ -15,7 +25,7 @@ const FormItem = styled.View`
   ${({ center }) => center && 'justify-content: center;'}
   align-items: center;
   border-color: #eee;
-  ${({ border }) => border && 'border-bottom-width: 1px;'}
+  ${({ noBorder }) => !noBorder && 'border-bottom-width: 1px;'}
   padding: 8px 0;
 `;
 

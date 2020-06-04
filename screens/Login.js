@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '../config/styled';
-import { Form, FormItem, Input, Button } from '../components/*';
-import { Formik, Field } from 'formik';
+import { Form, FormItem, PrimaryInput, Button } from '../components/*';
+import { Formik } from 'formik';
 
 export default function () {
   return (
@@ -16,47 +16,16 @@ export default function () {
       >
         {({ handleSubmit }) => (
           <Form>
-            <Field name="username">
-              {({
-                field: { name, value },
-                form: { handleChange, handleBlur },
-              }) => (
-                <FormItem center border={false}>
-                  <Input
-                    value={value}
-                    onChangeText={handleChange(name)}
-                    onBlur={handleBlur(name)}
-                    login
-                    placeholder="请输入账户名称"
-                  />
-                </FormItem>
-              )}
-            </Field>
-            <Field name="password">
-              {({
-                field: { name, value },
-                form: { handleChange, handleBlur },
-              }) => (
-                <FormItem center border={false}>
-                  <Input
-                    secureTextEntry
-                    value={value}
-                    onChangeText={handleChange(name)}
-                    onBlur={handleBlur(name)}
-                    login
-                    placeholder="请输入账户密码"
-                  />
-                </FormItem>
-              )}
-            </Field>
-            <FormItem center border={false}>
-              <ForgetPassword>
-                <Button text title="忘记密码" />
-              </ForgetPassword>
+            <FormItem name="username" center noBorder>
+              <PrimaryInput placeholder="请输入账户名称" />
             </FormItem>
-            <FormItem center border={false}>
-              <Button size="large" title="登录" onPress={handleSubmit} />
+            <FormItem name="password" center noBorder>
+              <PrimaryInput secureTextEntry placeholder="请输入账户密码" />
             </FormItem>
+            <ForgetPassword>
+              <Button text title="忘记密码" />
+            </ForgetPassword>
+            <Button size="large" title="登录" onPress={handleSubmit} />
           </Form>
         )}
       </Formik>
@@ -91,5 +60,6 @@ const Login = styled.View`
 
 const ForgetPassword = styled.View`
   width: 260px;
+  margin: 0px auto 10px auto;
   align-items: flex-end;
 `;
