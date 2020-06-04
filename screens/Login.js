@@ -1,6 +1,7 @@
 import React from 'react';
 import { styled } from '../config/styled';
 import { Form, FormItem, Input, Button } from '../components/*';
+import { Formik, Field } from 'formik';
 
 export default function () {
   return (
@@ -9,26 +10,60 @@ export default function () {
         resizeMode="contain"
         source={require('../assets/images/logo.png')}
       />
-      <Form>
-        <FormItem center border={false}>
-          <Input login placeholder="请输入账户名称" />
-        </FormItem>
-        <FormItem center border={false}>
-          <Input secureTextEntry login placeholder="请输入账户密码" />
-        </FormItem>
-        <FormItem center border={false}>
-          <ForgetPassword>
-            <Button text title="忘记密码" />
-          </ForgetPassword>
-        </FormItem>
-        <FormItem center border={false}>
-          <Button size="large" title="登录" />
-        </FormItem>
-      </Form>
-      <Inset
+      <Formik
+        initialValues={{ username: '' }}
+        onSubmit={(values) => console.log(values)}
+      >
+        {({ handleSubmit }) => (
+          <Form>
+            <Field name="username">
+              {({
+                field: { name, value },
+                form: { handleChange, handleBlur },
+              }) => (
+                <FormItem center border={false}>
+                  <Input
+                    value={value}
+                    onChangeText={handleChange(name)}
+                    onBlur={handleBlur(name)}
+                    login
+                    placeholder="请输入账户名称"
+                  />
+                </FormItem>
+              )}
+            </Field>
+            <Field name="password">
+              {({
+                field: { name, value },
+                form: { handleChange, handleBlur },
+              }) => (
+                <FormItem center border={false}>
+                  <Input
+                    secureTextEntry
+                    value={value}
+                    onChangeText={handleChange(name)}
+                    onBlur={handleBlur(name)}
+                    login
+                    placeholder="请输入账户密码"
+                  />
+                </FormItem>
+              )}
+            </Field>
+            <FormItem center border={false}>
+              <ForgetPassword>
+                <Button text title="忘记密码" />
+              </ForgetPassword>
+            </FormItem>
+            <FormItem center border={false}>
+              <Button size="large" title="登录" onPress={handleSubmit} />
+            </FormItem>
+          </Form>
+        )}
+      </Formik>
+      {/* <Inset
         resizeMode="contain"
         source={require('../assets/images/login-inset.png')}
-      />
+      /> */}
     </Login>
   );
 }
