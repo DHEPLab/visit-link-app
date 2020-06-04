@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import Http from '../utils/http';
 import { styled } from '../config/styled';
 import { Colors } from '../constants/*';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +10,12 @@ import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
 
 export default function Me() {
   const navigation = useNavigation();
+
+  useEffect(() => {
+    Http.get('/api/profile').then((response) => {
+      console.log(response);
+    });
+  }, []);
 
   return (
     <>

@@ -5,10 +5,12 @@ import { FormItem, PrimaryInput, Button } from '../components/*';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Http from '../utils/http';
+import { useNavigation } from '@react-navigation/native';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function () {
+  const navigation = useNavigation();
   const [badCredentials, setBadCredentials] = useState(false);
 
   function onSubmit(values) {
@@ -16,7 +18,8 @@ export default function () {
 
     Http.post('/api/authenticate', values)
       .then((response) => {
-        console.log(response);
+        Http.auth(response.idToken);
+        navigation.goBack();
       })
       .catch((_) => {
         setBadCredentials(true);
