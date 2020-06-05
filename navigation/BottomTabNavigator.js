@@ -11,13 +11,25 @@ import {
   Visit,
   Session,
   Me,
-  ChangeProfile,
   ChangePassword,
 } from '../screens/*';
 import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const screens = [
+  {
+    name: 'Session',
+    title: '会话',
+    component: Session,
+  },
+  {
+    name: 'ChangePassword',
+    title: '修改账户密码',
+    component: ChangePassword,
+  },
+];
 
 export default function () {
   const user = useSelector((state) => state.user);
@@ -31,23 +43,17 @@ export default function () {
             component={HomeTabs}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Session" component={Session} />
-          <Stack.Screen
-            name="ChangeProfile"
-            component={ChangeProfile}
-            options={{
-              headerTitle: '修改个人资料',
-              header: NavigatorHeader,
-            }}
-          />
-          <Stack.Screen
-            name="ChangePassword"
-            component={ChangePassword}
-            options={{
-              headerTitle: '修改账户密码',
-              header: NavigatorHeader,
-            }}
-          />
+          {screens.map((screen) => (
+            <Stack.Screen
+              key={screen.name}
+              name={screen.name}
+              component={screen.component}
+              options={{
+                headerTitle: screen.title,
+                header: NavigatorHeader,
+              }}
+            />
+          ))}
         </>
       ) : (
         <>
