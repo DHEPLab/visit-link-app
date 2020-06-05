@@ -6,14 +6,15 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Http from '../utils/http';
 import { useNavigation } from '@react-navigation/native';
-import AuthContext from '../context/AuthContext';
+import { signIn } from '../actions';
+import { useDispatch } from 'react-redux';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function () {
   const navigation = useNavigation();
   const [badCredentials, setBadCredentials] = useState(false);
-  const { signIn } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   function onSubmit(values) {
     setBadCredentials(false);
@@ -62,7 +63,11 @@ export default function () {
             {badCredentials && (
               <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>
             )}
-            <Button size="large" title="登录" onPress={() => signIn()} />
+            <Button
+              size="large"
+              title="登录"
+              onPress={() => dispatch(signIn())}
+            />
           </FormContainer>
         )}
       </Formik>

@@ -7,12 +7,13 @@ import { styled } from '../config/styled';
 import { Colors } from '../constants/*';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
-import AuthContext from '../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../actions';
 
 export default function Me() {
   const [user, setUser] = useState({});
   const navigation = useNavigation();
-  const { signOut } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     Http.get('/api/user/profile').then((r) => {
@@ -61,7 +62,7 @@ export default function Me() {
         </Card>
       </CardsContainer>
       <Logout>
-        <Button title="退出登录" logout onPress={() => signOut()} />
+        <Button title="退出登录" logout onPress={() => dispatch(signOut())} />
       </Logout>
     </>
   );
