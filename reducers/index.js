@@ -4,7 +4,8 @@ const user = (
   state = {
     isLoading: true,
     isSignout: false,
-    userToken: null,
+    // set default value to fix flash on refreshing
+    userToken: 'default token',
   },
   action
 ) => {

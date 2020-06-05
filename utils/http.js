@@ -32,7 +32,7 @@ export default {
     return await AsyncStorage.getItem('JWT_TOKEN');
   },
   async logout() {
-    AsyncStorage.setItem('JWT_TOKEN', null);
+    await AsyncStorage.removeItem('JWT_TOKEN');
   },
   post(url, body) {
     return request(

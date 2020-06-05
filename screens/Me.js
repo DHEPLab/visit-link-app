@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
+import http from '../utils/http';
 
 export default function Me() {
   const [user, setUser] = useState({});
@@ -62,7 +63,14 @@ export default function Me() {
         </Card>
       </CardsContainer>
       <Logout>
-        <Button title="退出登录" logout onPress={() => dispatch(signOut())} />
+        <Button
+          title="退出登录"
+          logout
+          onPress={async () => {
+            await http.logout();
+            dispatch(signOut());
+          }}
+        />
       </Logout>
     </>
   );
