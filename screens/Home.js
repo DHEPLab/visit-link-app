@@ -29,8 +29,8 @@ export default function () {
         </InfoConainer>
       </VisitCard>
       <ButtonContainer>
-        {/* <Button size="large" title="开始课程" onPress={handleStartSession} /> */}
-        <Button title="Login" onPress={() => navigation.push('Login')} />
+        <Button size="large" title="开始课程" onPress={handleStartSession} />
+        {/* <Button title="Login" onPress={() => navigation.push('Login')} /> */}
       </ButtonContainer>
     </Container>
   );

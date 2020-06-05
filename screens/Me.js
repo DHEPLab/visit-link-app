@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,10 +7,12 @@ import { styled } from '../config/styled';
 import { Colors } from '../constants/*';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
+import AuthContext from '../context/AuthContext';
 
 export default function Me() {
   const [user, setUser] = useState({});
   const navigation = useNavigation();
+  const { signOut } = useContext(AuthContext);
 
   useEffect(() => {
     Http.get('/api/user/profile').then((r) => {
@@ -59,7 +61,7 @@ export default function Me() {
         </Card>
       </CardsContainer>
       <Logout>
-        <Button title="退出登录" logout />
+        <Button title="退出登录" logout onPress={() => signOut()} />
       </Logout>
     </>
   );

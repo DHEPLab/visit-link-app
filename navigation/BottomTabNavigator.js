@@ -18,36 +18,43 @@ import {
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-export default function () {
+export default function ({ isSignedIn }) {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Home"
-        component={HomeTabs}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="Session" component={Session} />
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ChangeProfile"
-        component={ChangeProfile}
-        options={{
-          headerTitle: '修改个人资料',
-          header: NavigatorHeader,
-        }}
-      />
-      <Stack.Screen
-        name="ChangePassword"
-        component={ChangePassword}
-        options={{
-          headerTitle: '修改账户密码',
-          header: NavigatorHeader,
-        }}
-      />
+      {isSignedIn ? (
+        <>
+          <Stack.Screen
+            name="Home"
+            component={HomeTabs}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Session" component={Session} />
+          <Stack.Screen
+            name="ChangeProfile"
+            component={ChangeProfile}
+            options={{
+              headerTitle: '修改个人资料',
+              header: NavigatorHeader,
+            }}
+          />
+          <Stack.Screen
+            name="ChangePassword"
+            component={ChangePassword}
+            options={{
+              headerTitle: '修改账户密码',
+              header: NavigatorHeader,
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   );
 }
