@@ -14,14 +14,17 @@ import {
   ChangeProfile,
   ChangePassword,
 } from '../screens/*';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-export default function ({ isSignedIn }) {
+export default function () {
+  const user = useSelector((state) => state.user);
+
   return (
     <Stack.Navigator>
-      {isSignedIn ? (
+      {user.userToken != null ? (
         <>
           <Stack.Screen
             name="Home"

@@ -28,6 +28,12 @@ export default {
     await AsyncStorage.setItem('JWT_TOKEN', token);
     Token = token;
   },
+  async token() {
+    return await AsyncStorage.getItem('JWT_TOKEN');
+  },
+  async logout() {
+    AsyncStorage.setItem('JWT_TOKEN', null);
+  },
   post(url, body) {
     return request(
       fetch(`${Host}${url}`, {

@@ -8,6 +8,8 @@ import useLinking from './navigation/useLinking';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
+import { restoreToken } from './actions';
+import http from './utils/http';
 
 const store = createStore(rootReducer);
 
@@ -16,13 +18,6 @@ export default function App(props) {
   const [initialNavigationState, setInitialNavigationState] = React.useState();
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
-  const [isSignedIn, setIsSignedIn] = React.useState(false);
-
-  store.subscribe(() => {
-    const { user } = store.getState();
-    setIsSignedIn(user.userToken != null);
-    console.log(user);
-  });
 
   // Load any resources or data that we need prior to rendering the app
   React.useEffect(() => {
@@ -38,6 +33,7 @@ export default function App(props) {
         //   ...Ionicons.font,
         //   'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
         // });
+        store.dispatch(restoreToken(await http.token()));
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
@@ -61,7 +57,7 @@ export default function App(props) {
             ref={containerRef}
             initialState={initialNavigationState}
           >
-            <BottomTabNavigator isSignedIn={isSignedIn} />
+            <BottomTabNavigator />
           </NavigationContainer>
         </View>
       </Provider>
