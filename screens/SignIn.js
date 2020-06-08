@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dimensions } from 'react-native';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 import { FormItem, PrimaryInput, Button } from '../components/*';
 import { Formik } from 'formik';
 import Http from '../utils/http';

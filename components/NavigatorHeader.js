@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { Icons } from '../components/*';
 import { Colors } from '../constants/*';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 
 export default function ({
   navigation,

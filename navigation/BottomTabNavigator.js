@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { px2dp, styled } from '../config/styled';
+import { px2dp, styled } from '../utils/styled';
 
 import { TabBarIcon, NavigatorHeader } from '../components/*';
 import {

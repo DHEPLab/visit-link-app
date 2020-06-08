@@ -3,7 +3,7 @@ import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Http from '../utils/http';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 import { Colors } from '../constants/*';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticFormItem } from '../components/*';

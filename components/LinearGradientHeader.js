@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ({ children }) {

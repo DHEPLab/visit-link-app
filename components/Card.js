@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 
 export default function ({ title, children, right }) {
   return (
