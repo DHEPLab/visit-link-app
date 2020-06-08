@@ -2,8 +2,7 @@ version: "3.6"
 
 services:
   app:
-    image: "kerbe/expo"
-    command: [start]
+    build: .
     ports:
       - "19000:19000"
       - "19001:19001"
