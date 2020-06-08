@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native';
+import Config from '../constants/Config';
 
-const Host = 'http://192.168.3.3:8080';
+const Host = Config.apiHost;
 let Token;
 
 AsyncStorage.getItem('JWT_TOKEN', (_, result) => {
