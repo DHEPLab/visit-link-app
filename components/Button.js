@@ -3,15 +3,15 @@ import { styled } from '../config/styled';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function ({ onPress, ...props }) {
+export default function ({ onPress, disabled, ...props }) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
-      <RenderButton {...props} />
+    <TouchableOpacity onPress={onPress} disabled={disabled} activeOpacity={0.8}>
+      <RenderButton disabled={disabled} {...props} />
     </TouchableOpacity>
   );
 }
 
-function RenderButton({ title, text, size, ghost, logout }) {
+function RenderButton({ title, text, size, ghost, logout, disabled }) {
   if (logout) {
     return (
       <LogoutButton>
@@ -34,6 +34,7 @@ function RenderButton({ title, text, size, ghost, logout }) {
 
   return (
     <Button
+      disabled={disabled}
       block
       size={size}
       start={[1, 0]}
@@ -71,6 +72,7 @@ const Button = styled(LinearGradient)`
   width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
   padding: ${(props) => (props.size === 'large' ? '7px' : '4px')} 16px;
   border-radius: 270px;
+  ${({ disabled }) => disabled && 'opacity: 0.5;'}
   align-self: center;
 `;
 

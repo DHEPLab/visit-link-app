@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Dimensions } from 'react-native';
 import { styled } from '../config/styled';
 import { FormItem, PrimaryInput, Button } from '../components/*';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import Http from '../utils/http';
 import { signIn } from '../actions';
 import { useDispatch } from 'react-redux';
@@ -33,21 +32,8 @@ export default function () {
         resizeMode="contain"
         source={require('../assets/images/logo.png')}
       />
-      <Formik
-        initialValues={{ username: '' }}
-        validationSchema={Yup.object().shape({
-          username: Yup.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
-            .required('Required'),
-          password: Yup.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
-            .required('Required'),
-        })}
-        onSubmit={onSubmit}
-      >
-        {({ handleSubmit }) => (
+      <Formik initialValues={{}} onSubmit={onSubmit}>
+        {({ handleSubmit, values }) => (
           <FormContainer>
             <FormItem name="username" center noBorder>
               <PrimaryInput placeholder="请输入账户名称" />
@@ -61,7 +47,12 @@ export default function () {
             {badCredentials && (
               <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>
             )}
-            <Button size="large" title="登录" onPress={handleSubmit} />
+            <Button
+              disabled={!values.username || !values.password}
+              size="large"
+              title="登录"
+              onPress={handleSubmit}
+            />
           </FormContainer>
         )}
       </Formik>
