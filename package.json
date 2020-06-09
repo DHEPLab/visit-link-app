@@ -1,14 +1,13 @@
 {
+  "name": "healthy-future",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "publish:dev": "expo publish --release-channel dev",
     "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "jest --silent --coverage",
+    "test:watch": "jest  --silent --watchAll"
   },
   "jest": {
     "preset": "jest-expo",
