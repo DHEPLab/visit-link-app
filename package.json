@@ -11,7 +11,10 @@
     "test:watch": "jest --watchAll"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "~10.0.6",
@@ -44,9 +47,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@testing-library/jest-native": "^3.1.0",
     "babel-plugin-wildcard": "^6.0.0",
     "babel-preset-expo": "~8.1.0",
-    "jest-expo": "~37.0.0"
+    "jest-expo": "~37.0.0",
+    "react-native-testing-library": "^2.0.1"
   },
   "private": true
 }
