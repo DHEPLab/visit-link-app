@@ -41,26 +41,21 @@ export default function Me() {
       <CardsContainer>
         <Card
           title="账户信息"
-          right={
-            <Button
-              title="修改密码"
-              onPress={() => navigation.push('ChangePassword')}
-            />
-          }
+          right={<Button title="修改密码" onPress={() => navigation.push('ChangePassword')} />}
         >
           <StaticForm>
             <StaticFormItem label="账户名称">{user.username}</StaticFormItem>
             <StaticFormItem label="账户密码">******</StaticFormItem>
           </StaticForm>
         </Card>
-        <Card title="督导信息">
-          <StaticForm>
-            <StaticFormItem label="督导姓名">
-              张三李四张三李四张三
-            </StaticFormItem>
-            <StaticFormItem label="督导电话">18616881618</StaticFormItem>
-          </StaticForm>
-        </Card>
+        {user.supervisor && (
+          <Card title="督导信息">
+            <StaticForm>
+              <StaticFormItem label="督导姓名">{user.supervisor.realName}</StaticFormItem>
+              <StaticFormItem label="督导电话">{user.supervisor.phone}</StaticFormItem>
+            </StaticForm>
+          </Card>
+        )}
       </CardsContainer>
       <Logout>
         <Button
