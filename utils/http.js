@@ -12,10 +12,15 @@ function request(fetchPromise) {
   return new Promise((resolve, reject) => {
     fetchPromise
       .then((response) => {
-        if (response.status >= 200 && response.status < 300) {
-          return resolve(response.json());
+        if (response.ok) {
+          if (response.headers.get('content-type') === 'application/json') {
+            resolve(response.json());
+          } else {
+            resolve({ text: response.text() });
+          }
+        } else {
+          reject(response.json());
         }
-        reject(response.json());
       })
       .catch((error) => {
         reject(error);
@@ -32,7 +37,7 @@ export default {
   async token() {
     return await AsyncStorage.getItem('JWT_TOKEN');
   },
-  async logout() {
+  async signOut() {
     await AsyncStorage.removeItem('JWT_TOKEN');
   },
   post(url, body) {

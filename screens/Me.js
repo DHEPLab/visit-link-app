@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,7 +9,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
-import http from '../utils/http';
 
 export default function Me() {
   const [user, setUser] = useState({});
@@ -62,7 +61,7 @@ export default function Me() {
           title="退出登录"
           logout
           onPress={async () => {
-            await http.logout();
+            await Http.signOut();
             dispatch(signOut());
           }}
         />
