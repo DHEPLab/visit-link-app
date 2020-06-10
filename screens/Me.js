@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image } from 'react-native';
+import { Alert, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Http from '../utils/http';
@@ -20,6 +20,28 @@ export default function Me() {
       setUser(r);
     });
   }, []);
+
+  function openAlert() {
+    Alert.alert(
+      '您确定要退出登录吗？',
+      '您确定要退出登录吗？',
+      [
+        {
+          text: '稍后再说',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: '退出登录',
+          onPress: async () => {
+            await Http.signOut();
+            dispatch(signOut());
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
 
   return (
     <>
@@ -57,14 +79,7 @@ export default function Me() {
         )}
       </CardsContainer>
       <Logout>
-        <Button
-          title="退出登录"
-          logout
-          onPress={async () => {
-            await Http.signOut();
-            dispatch(signOut());
-          }}
-        />
+        <Button title="退出登录" logout onPress={openAlert} />
       </Logout>
     </>
   );
