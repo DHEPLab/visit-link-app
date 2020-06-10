@@ -2,14 +2,14 @@ import React from 'react';
 import { styled } from '../utils/styled';
 import { useField, useFormikContext, ErrorMessage } from 'formik';
 
-export default function ({ label, children, ...props }) {
+export default function ({ label, children, noBorder, ...props }) {
   const { name } = props;
   const form = useFormikContext();
   const [field, meta] = useField(props);
 
   return (
-    <>
-      <FormItem {...props}>
+    <FormItem noBorder={noBorder}>
+      <Field {...props}>
         {label && <Label>{label}:</Label>}
         {React.cloneElement(children, {
           name,
@@ -17,16 +17,19 @@ export default function ({ label, children, ...props }) {
           onChange: form.handleChange(name),
           onBlur: form.handleBlur(name),
         })}
-      </FormItem>
+      </Field>
       <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
-    </>
+    </FormItem>
   );
 }
 
-const FormItem = styled.View`
+const Field = styled.View`
   flex-direction: row;
   ${({ center }) => center && 'justify-content: center;'}
   align-items: center;
+`;
+
+const FormItem = styled.View`
   border-color: #eee;
   ${({ noBorder }) => !noBorder && 'border-bottom-width: 1px;'}
   padding: 8px 0;
@@ -42,5 +45,7 @@ const Label = styled.Text`
 `;
 
 const Error = styled.Text`
-  color: red;
+  color: #ff2e2eff;
+  font-size: 8px;
+  margin-left: 60px;
 `;
