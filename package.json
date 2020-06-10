@@ -50,6 +50,7 @@
     "babel-plugin-wildcard": "^6.0.0",
     "babel-preset-expo": "~8.1.0",
     "jest-expo": "~37.0.0",
+    "react-devtools": "3",
     "react-native-testing-library": "^2.0.1"
   },
   "private": true
