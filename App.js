@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -55,20 +55,22 @@ export default function App(props) {
   } else {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
-            <BottomTabNavigator />
-          </NavigationContainer>
-        </View>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <NavigationContainer theme={theme} ref={containerRef} initialState={initialNavigationState}>
+          <BottomTabNavigator />
+        </NavigationContainer>
       </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#eee',
+const theme = {
+  dark: false,
+  colors: {
+    primary: '#ff794f',
+    background: '#eeeeee',
+    card: 'rgb(255, 255, 255)',
+    text: 'rgb(28, 28, 30)',
+    border: 'rgb(199, 199, 204)',
   },
-});
+};
