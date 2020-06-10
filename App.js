@@ -11,7 +11,11 @@ import rootReducer from './reducers';
 import { restoreToken } from './actions';
 import http from './utils/http';
 
-const store = createStore(rootReducer);
+const store = createStore(
+  rootReducer,
+  // Debugging Redux
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -53,10 +57,7 @@ export default function App(props) {
       <Provider store={store}>
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <NavigationContainer
-            ref={containerRef}
-            initialState={initialNavigationState}
-          >
+          <NavigationContainer ref={containerRef} initialState={initialNavigationState}>
             <BottomTabNavigator />
           </NavigationContainer>
         </View>
