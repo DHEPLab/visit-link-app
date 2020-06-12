@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Alert, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { useFetch } from '../utils';
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants/*';
@@ -11,15 +12,12 @@ import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
 
 export default function Me() {
-  const [user, setUser] = useState({});
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [user] = useFetch('/api/account/profile');
 
-  useEffect(() => {
-    Http.get('/api/user/profile').then((r) => {
-      setUser(r);
-    });
-  }, []);
+  const chw = () => user.chw || {};
+  const supervisor = () => chw().supervisor || {};
 
   function openAlert() {
     Alert.alert(
@@ -45,17 +43,17 @@ export default function Me() {
 
   return (
     <>
-      <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
+      <Header {...Colors.linearGradient}>
         <BackgroundImage source={require('../assets/images/me-bg.png')} />
         <HeaderTitle>个人中心</HeaderTitle>
         <NameContainer>
           <Name>{user.realName}</Name>
-          <Identity>ID: {user.identity}</Identity>
+          <Identity>ID: {chw().identity}</Identity>
         </NameContainer>
         <InfoContainer>
           <View>
             <PhoneNumber>{user.phone}</PhoneNumber>
-            <Location>某某某某某某省/某某某某市/某某某某某某县</Location>
+            {/* <Location>某某某某某某省/某某某某市/某某某某某某县</Location> */}
           </View>
         </InfoContainer>
       </Header>
@@ -69,11 +67,11 @@ export default function Me() {
             <StaticFormItem label="账户密码">******</StaticFormItem>
           </StaticForm>
         </Card>
-        {user.supervisor && (
+        {supervisor().id && (
           <Card title="督导信息">
             <StaticForm>
-              <StaticFormItem label="督导姓名">{user.supervisor.realName}</StaticFormItem>
-              <StaticFormItem label="督导电话">{user.supervisor.phone}</StaticFormItem>
+              <StaticFormItem label="督导姓名">{supervisor().realName}</StaticFormItem>
+              <StaticFormItem label="督导电话">{supervisor().phone}</StaticFormItem>
             </StaticForm>
           </Card>
         )}
