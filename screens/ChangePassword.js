@@ -1,22 +1,23 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { styled } from '../utils/styled';
-import Http from '../utils/http';
-import { Form, FormItem, Input, Button, Alert } from '../components/*';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
+
+import Http from '../utils/http';
+import { styled } from '../utils/styled';
+import { Form, FormItem, Input, Button, Alert } from '../components/*';
 import { signOut } from '../actions';
 
 const validationSchema = Yup.object().shape({
   oldPassword: Yup.string().required('旧密码不能为空'),
-  password: Yup.string().min(8, '密码必须至少 8 个字符').required('不能为空'),
+  password: Yup.string().min(6, '密码必须至少 6 个字符').required('不能为空'),
 });
 
-export default function () {
+export default function ChangePassword() {
   const dispatch = useDispatch();
 
   function onSubmit({ password }) {
-    Http.post('/api/user/change_password', {
+    Http.put('/api/account/password', {
       password,
     }).then(async () => {
       await Http.signOut();
@@ -41,8 +42,8 @@ export default function () {
                 name="confirmPassword"
                 label="确认密码"
                 noBorder
-                validate={(confirmPassword) => {
-                  if (confirmPassword !== values.password) {
+                validate={(value) => {
+                  if (value !== values.password) {
                     return '您两次输入的新密码不一致';
                   }
                 }}
@@ -50,7 +51,7 @@ export default function () {
                 <Input secureTextEntry />
               </FormItem>
             </Form>
-            <Alert>密码必须至少8个字符，而且同时包含字母和数字。</Alert>
+            {/* <Alert>密码必须至少8个字符，而且同时包含字母和数字。</Alert> */}
             <ButtonContainer>
               <Button size="large" onPress={handleSubmit} title="提交" />
             </ButtonContainer>

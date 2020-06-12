@@ -55,10 +55,34 @@ export default {
       })
     );
   },
+  put(url, body) {
+    return request(
+      fetch(`${Host}${url}`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        body: JSON.stringify(body),
+      })
+    );
+  },
   get(url, params) {
     return request(
       fetch(`${Host}${url}`, {
         method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      })
+    );
+  },
+  delete(url) {
+    return request(
+      fetch(`${Host}${url}`, {
+        method: 'DELETE',
         headers: {
           Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
