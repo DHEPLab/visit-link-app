@@ -13,3 +13,14 @@ export function useFetch(url, params, initialState = {}) {
   useEffect(load, []);
   return [data, load];
 }
+
+export function useBoolState(initialState = false) {
+  const [bool, setBool] = useState(initialState);
+  const setBoolTrue = () => {
+    setBool(true);
+  };
+  const setBoolFalse = () => {
+    setBool(false);
+  };
+  return [bool, setBoolTrue, setBoolFalse];
+}
