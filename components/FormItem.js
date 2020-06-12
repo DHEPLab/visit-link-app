@@ -1,11 +1,11 @@
 import React from 'react';
 import { styled } from '../utils/styled';
-import { useField, useFormikContext, ErrorMessage } from 'formik';
+import { useField, useFormikContext } from 'formik';
 
 export default function ({ label, children, noBorder, ...props }) {
-  const { name } = props;
   const form = useFormikContext();
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
+  const { name } = props;
 
   return (
     <FormItem noBorder={noBorder}>
@@ -18,7 +18,7 @@ export default function ({ label, children, noBorder, ...props }) {
           onBlur: form.handleBlur(name),
         })}
       </Field>
-      <ErrorMessage name={name}>{(msg) => <Error>{msg}</Error>}</ErrorMessage>
+      {form.errors[name] && <Error>{form.errors[name]}</Error>}
     </FormItem>
   );
 }
