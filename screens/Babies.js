@@ -4,9 +4,14 @@ import { TextInput } from 'react-native-gesture-handler';
 
 import { styled } from '../utils/styled';
 import { Colors } from '../constants/*';
-import { Button } from '../components/*';
+import { Button, BabyCard } from '../components/*';
+import { useFetch } from '../utils';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Babies() {
+  const navigation = useNavigation();
+  const [babies] = useFetch('/api/baby', {}, []);
+
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -18,6 +23,9 @@ export default function Babies() {
         <Title>宝宝列表</Title>
         <Button title="添加宝宝" />
       </ListHeader>
+      {babies.map((baby) => (
+        <BabyCard key={baby.name} onPress={() => navigation.push('Baby')} {...baby} />
+      ))}
     </>
   );
 }

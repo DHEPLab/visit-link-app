@@ -4,15 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { px2dp, styled } from '../utils/styled';
 
 import { TabBarIcon, NavigatorHeader } from '../components/*';
-import {
-  SignIn,
-  Home,
-  Babies,
-  Visit,
-  Session,
-  Me,
-  ChangePassword,
-} from '../screens/*';
+import { SignIn, Home, Babies, Visit, Session, Me, ChangePassword, Baby } from '../screens/*';
 import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
@@ -23,6 +15,11 @@ const screens = [
     name: 'Session',
     title: '会话',
     component: Session,
+  },
+  {
+    name: 'Baby',
+    title: '宝宝详情',
+    component: Baby,
   },
   {
     name: 'ChangePassword',
@@ -38,11 +35,7 @@ export default function () {
     <Stack.Navigator>
       {user.userToken != null ? (
         <>
-          <Stack.Screen
-            name="Home"
-            component={HomeTabs}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
           {screens.map((screen) => (
             <Stack.Screen
               key={screen.name}
@@ -57,11 +50,7 @@ export default function () {
         </>
       ) : (
         <>
-          <Stack.Screen
-            name="SignIn"
-            component={SignIn}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         </>
       )}
     </Stack.Navigator>
@@ -83,48 +72,32 @@ function HomeTabs() {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>首页</TabBarLabel>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="home" />
-          ),
+          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>首页</TabBarLabel>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
         }}
       />
       <Tab.Screen
         name="Babies"
         component={Babies}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="baby" />
-          ),
+          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="baby" />,
         }}
       />
       <Tab.Screen
         name="Visit"
         component={Visit}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>家访安排</TabBarLabel>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="visit" />
-          ),
+          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>家访安排</TabBarLabel>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="visit" />,
         }}
       />
       <Tab.Screen
         name="Me"
         component={Me}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>个人中心</TabBarLabel>
-          ),
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name="me" />
-          ),
+          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>个人中心</TabBarLabel>,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="me" />,
         }}
       />
     </Tab.Navigator>
