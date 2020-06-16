@@ -4,10 +4,7 @@ import { Button, LinearGradientHeader } from '../components';
 import { useNavigation } from '@react-navigation/native';
 
 export default function () {
-  const navigation = useNavigation();
-  function handleStartSession() {
-    navigation.push('Session');
-  }
+  const { navigate } = useNavigation();
 
   return (
     <Container>
@@ -27,8 +24,7 @@ export default function () {
         </InfoConainer>
       </VisitCard>
       <ButtonContainer>
-        <Button size="large" title="开始课程" onPress={handleStartSession} />
-        {/* <Button title="Login" onPress={() => navigation.push('Login')} /> */}
+        <Button size="large" title="开始课程" onPress={() => navigate('Session')} />
       </ButtonContainer>
     </Container>
   );

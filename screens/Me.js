@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
 
 export default function Me() {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const [user] = useFetch('/api/account/profile');
 
@@ -60,7 +60,7 @@ export default function Me() {
       <CardsContainer>
         <Card
           title="账户信息"
-          right={<Button title="修改密码" onPress={() => navigation.push('ChangePassword')} />}
+          right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
         >
           <StaticForm>
             <StaticFormItem label="账户名称">{user.username}</StaticFormItem>

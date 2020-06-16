@@ -9,7 +9,7 @@ import { useFetch } from '../utils';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Babies() {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
   const [babies] = useFetch('/api/baby', {}, []);
 
   return (
@@ -24,7 +24,7 @@ export default function Babies() {
         <Button title="添加宝宝" />
       </ListHeader>
       {babies.map((baby) => (
-        <BabyCard key={baby.name} onPress={() => navigation.push('Baby')} {...baby} />
+        <BabyCard key={baby.name} onPress={() => navigate('Baby')} {...baby} />
       ))}
     </>
   );
