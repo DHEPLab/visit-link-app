@@ -1,11 +1,18 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { px2dp, styled } from '../utils/styled';
-
-import { TabBarIcon, NavigatorHeader } from '../components/*';
-import { SignIn, Home, Babies, Visit, Session, Me, ChangePassword, Baby } from '../screens/*';
 import { useSelector } from 'react-redux';
+
+import Babies from '../screens/Babies';
+import Baby from '../screens/Baby';
+import ChangePassword from '../screens/ChangePassword';
+import Home from '../screens/Home';
+import Me from '../screens/Me';
+import Session from '../screens/Session';
+import SignIn from '../screens/SignIn';
+import Visit from '../screens/Visit';
+import { TabBarIcon, NavigatorHeader } from '../components';
+import { px2dp, styled } from '../utils/styled';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();

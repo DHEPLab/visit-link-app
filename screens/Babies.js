@@ -3,8 +3,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TextInput } from 'react-native-gesture-handler';
 
 import { styled } from '../utils/styled';
-import { Colors } from '../constants/*';
-import { Button, BabyCard } from '../components/*';
+import { Colors } from '../constants';
+import { Button, BabyCard } from '../components';
 import { useFetch } from '../utils';
 import { useNavigation } from '@react-navigation/native';
 

@@ -4,9 +4,9 @@ import { Formik } from 'formik';
 
 import Http from '../utils/http';
 import { useBoolState } from '../utils';
-import { Layout } from '../constants/*';
+import { Layout } from '../constants';
 import { styled } from '../utils/styled';
-import { FormItem, PrimaryInput, Button } from '../components/*';
+import { FormItem, PrimaryInput, Button } from '../components';
 import { signIn } from '../actions';
 
 export default function SignIn() {

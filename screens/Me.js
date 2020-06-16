@@ -5,9 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useFetch } from '../utils';
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
-import { Colors } from '../constants/*';
+import { Colors } from '../constants';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
+import { Button, Card, StaticForm, StaticFormItem } from '../components';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
 
