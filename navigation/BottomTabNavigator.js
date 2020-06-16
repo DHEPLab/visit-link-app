@@ -25,8 +25,8 @@ const screens = [
   },
   {
     name: 'Baby',
-    title: '宝宝详情',
     component: Baby,
+    headerShown: false,
   },
   {
     name: 'ChangePassword',
@@ -49,6 +49,7 @@ export default function () {
               name={screen.name}
               component={screen.component}
               options={{
+                headerShown: screen.headerShown,
                 headerTitle: screen.title,
                 header: NavigatorHeader,
               }}
