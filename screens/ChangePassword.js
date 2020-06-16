@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
-import { Form, FormItem, Input, Button, Alert } from '../components/*';
+import { Form, FormItem, Input, Button, Alert } from '../components';
 import { signOut } from '../actions';
 
 const validationSchema = Yup.object().shape({

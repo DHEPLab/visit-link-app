@@ -2,8 +2,8 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { Icons } from '../components/*';
-import { Colors } from '../constants/*';
+import Icons from './Icons';
+import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 
 export default function ({
@@ -21,11 +21,7 @@ export default function ({
     <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
       {navigation.canGoBack() && (
         <Back onPress={() => goBack()}>
-          <Icons
-            name="arrow"
-            size={8}
-            style={{ transform: [{ rotate: '180deg' }] }}
-          />
+          <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
           <BackText>返回</BackText>
         </Back>
       )}
