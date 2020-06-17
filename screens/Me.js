@@ -7,7 +7,7 @@ import Http from '../utils/http';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button, Card, StaticForm, StaticFormItem } from '../components';
+import { Button, Card, StaticForm, StaticField } from '../components';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
 
@@ -63,15 +63,15 @@ export default function Me() {
           right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
         >
           <StaticForm>
-            <StaticFormItem label="账户名称">{user.username}</StaticFormItem>
-            <StaticFormItem label="账户密码">******</StaticFormItem>
+            <StaticField label="账户名称">{user.username}</StaticField>
+            <StaticField label="账户密码">******</StaticField>
           </StaticForm>
         </Card>
         {supervisor().id && (
           <Card title="督导信息">
             <StaticForm>
-              <StaticFormItem label="督导姓名">{supervisor().realName}</StaticFormItem>
-              <StaticFormItem label="督导电话">{supervisor().phone}</StaticFormItem>
+              <StaticField label="督导姓名">{supervisor().realName}</StaticField>
+              <StaticField label="督导电话">{supervisor().phone}</StaticField>
             </StaticForm>
           </Card>
         )}

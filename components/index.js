@@ -11,6 +11,6 @@ export { default as LinearGradientHeader } from './LinearGradientHeader';
 export { default as NavigatorHeader } from './NavigatorHeader';
 export { default as PrimaryInput } from './PrimaryInput';
 export { default as StaticForm } from './StaticForm';
-export { default as StaticFormItem } from './StaticFormItem';
+export { default as StaticField } from './StaticField';
 export { default as StyledText } from './StyledText';
 export { default as TabBarIcon } from './TabBarIcon';

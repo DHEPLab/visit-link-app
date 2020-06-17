@@ -3,14 +3,14 @@ import { styled } from '../utils/styled';
 
 export default function ({ label, children }) {
   return (
-    <StaticFormItem>
+    <StaticField>
       {label && <Label>{label}</Label>}
       <Value>{children}</Value>
-    </StaticFormItem>
+    </StaticField>
   );
 }
 
-const StaticFormItem = styled.View`
+const StaticField = styled.View`
   flex-direction: row;
   margin-bottom: 8px;
 `;

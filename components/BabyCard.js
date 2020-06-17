@@ -3,7 +3,7 @@ import { TouchableNativeFeedback } from 'react-native';
 
 import { styled } from '../utils/styled';
 import { BabyStage, Gender } from '../constants/enums';
-import StaticFormItem from './StaticFormItem';
+import StaticField from './StaticField';
 
 export default function ({ name, identity, gender, stage, month, carerName, carerPhone, onPress }) {
   return (
@@ -21,8 +21,8 @@ export default function ({ name, identity, gender, stage, month, carerName, care
           <Identity>ID:{identity}</Identity>
         </Baby>
         <Carer>
-          <StaticFormItem label="主照料人">{carerName}</StaticFormItem>
-          <StaticFormItem label="联系方式">{carerPhone}</StaticFormItem>
+          <StaticField label="主照料人">{carerName}</StaticField>
+          <StaticField label="联系方式">{carerPhone}</StaticField>
         </Carer>
       </Card>
     </TouchableNativeFeedback>

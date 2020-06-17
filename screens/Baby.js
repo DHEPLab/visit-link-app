@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import { GhostNavigatorHeader, Button, Card, StaticFormItem } from '../components';
+import { GhostNavigatorHeader, Button, Card, StaticField } from '../components';
 import { Layout, Colors } from '../constants';
 import { styled } from '../utils/styled';
 
@@ -117,11 +117,11 @@ function Family() {
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
       <Card title="备注信息">
-        <StaticFormItem>双胞胎</StaticFormItem>
+        <StaticField>双胞胎</StaticField>
       </Card>
       <Card title="地址信息">
-        <StaticFormItem label="所在地区">吉林省/延边朝鲜自治州/安图县</StaticFormItem>
-        <StaticFormItem label="详细地址">朝阳街826号</StaticFormItem>
+        <StaticField label="所在地区">吉林省/延边朝鲜自治州/安图县</StaticField>
+        <StaticField label="详细地址">朝阳街826号</StaticField>
       </Card>
       <Card title="看护人信息">
         <Carer />
@@ -139,10 +139,10 @@ function Carer(props) {
         <CarerNumber>照料人1</CarerNumber>
         <MasterCarer>主照料人</MasterCarer>
       </CarerOperation>
-      <StaticFormItem label="照料人姓名">李四</StaticFormItem>
-      <StaticFormItem label="亲属关系">母亲</StaticFormItem>
-      <StaticFormItem label="联系电话">15638828889</StaticFormItem>
-      <StaticFormItem label="微信号码">monther</StaticFormItem>
+      <StaticField label="照料人姓名">李四</StaticField>
+      <StaticField label="亲属关系">母亲</StaticField>
+      <StaticField label="联系电话">15638828889</StaticField>
+      <StaticField label="微信号码">monther</StaticField>
     </CarerItem>
   );
 }
