@@ -5,10 +5,29 @@ import { styled } from '../utils/styled';
 import { BabyStage, Gender } from '../constants/enums';
 import StaticField from './StaticField';
 
-export default function ({ name, identity, gender, stage, month, carerName, carerPhone, onPress }) {
+export default function ({
+  id,
+  name,
+  identity,
+  gender,
+  stage,
+  month,
+  carerName,
+  carerPhone,
+  onPress,
+}) {
   return (
     <TouchableNativeFeedback
-      onPress={onPress}
+      onPress={() =>
+        onPress({
+          id,
+          name,
+          identity,
+          gender,
+          stage,
+          month,
+        })
+      }
       background={TouchableNativeFeedback.SelectableBackground()}
     >
       <Card>

@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { Image, Text, View, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
+import { useFetch } from '../utils';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
+import { Gender, BabyStage, FamilyTies } from '../constants/enums';
 import { GhostNavigatorHeader, Button, Card, StaticField } from '../components';
 
 export default function () {
   const navigation = useNavigation();
+  const { params } = useRoute();
   const [index, setIndex] = useState(0);
+
+  const [baby] = useFetch(`/api/baby/${params.id}`);
+  const [carers] = useFetch(`/api/baby/${params.id}/carer`, {}, []);
 
   return (
     <>
@@ -20,12 +26,14 @@ export default function () {
         <BackgroundImage source={require('../assets/images/me-bg.png')} />
         <Baby>
           <NameContainer>
-            <Name>张三</Name>
-            <Identity>ID:66684888</Identity>
+            <Name>{params.name}</Name>
+            <Identity>ID: {params.identity}</Identity>
           </NameContainer>
           <InfoContainer>
             <View>
-              <Age>男 婴幼期/16个月</Age>
+              <Age>
+                {Gender[params.gender]} {BabyStage[params.stage]}/{params.month}个月
+              </Age>
             </View>
             <Button ghost title="修改资料" />
           </InfoContainer>
@@ -44,7 +52,7 @@ export default function () {
         )}
         renderScene={SceneMap({
           Visit,
-          Family,
+          Family: () => <Family baby={baby} carers={carers} />,
         })}
       />
     </>
@@ -107,36 +115,41 @@ function Visit() {
   return <Text>家访</Text>;
 }
 
-function Family() {
+function Family({ baby, carers }) {
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
       <Card title="备注信息">
-        <StaticField>双胞胎</StaticField>
+        <StaticField>{baby.remark}</StaticField>
       </Card>
       <Card title="地址信息">
         <StaticField label="所在地区">吉林省/延边朝鲜自治州/安图县</StaticField>
-        <StaticField label="详细地址">朝阳街826号</StaticField>
+        <StaticField label="详细地址">{baby.location}</StaticField>
       </Card>
       <Card title="看护人信息">
-        <Carer />
-        <Carer />
-        <Carer noBorder />
+        {carers.map((carer, index) => (
+          <Carer
+            key={carer.id}
+            carer={carer}
+            number={index + 1}
+            noBorder={index === carers.length - 1}
+          />
+        ))}
       </Card>
     </CardContainer>
   );
 }
 
-function Carer(props) {
+function Carer({ number, carer, noBorder }) {
   return (
-    <CarerItem {...props}>
+    <CarerItem noBorder={noBorder}>
       <CarerOperation>
-        <CarerNumber>照料人1</CarerNumber>
-        <MasterCarer>主照料人</MasterCarer>
+        <CarerNumber>照料人 {number}</CarerNumber>
+        {carer.master && <MasterCarer>主照料人</MasterCarer>}
       </CarerOperation>
-      <StaticField label="照料人姓名">李四</StaticField>
-      <StaticField label="亲属关系">母亲</StaticField>
-      <StaticField label="联系电话">15638828889</StaticField>
-      <StaticField label="微信号码">monther</StaticField>
+      <StaticField label="照料人姓名">{carer.name}</StaticField>
+      <StaticField label="亲属关系">{FamilyTies[carer.familyTies]}</StaticField>
+      <StaticField label="联系电话">{carer.phone}</StaticField>
+      <StaticField label="微信号码">{carer.wechat}</StaticField>
     </CarerItem>
   );
 }
@@ -149,12 +162,13 @@ const CarerOperation = styled.View`
 const CarerNumber = styled.Text`
   font-size: 10px;
   font-weight: bold;
+  width: 50px;
 `;
 
 const MasterCarer = styled.Text`
   color: #8e8e93;
   font-size: 10px;
-  margin-left: 25px;
+  margin-left: 12px;
 `;
 
 const CardContainer = styled(ScrollView)`

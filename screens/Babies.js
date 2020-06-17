@@ -32,8 +32,8 @@ export default function Babies() {
           />
         }
         data={babies}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => <BabyCard onPress={() => navigate('Baby')} {...item} />}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
       />
     </>
   );
