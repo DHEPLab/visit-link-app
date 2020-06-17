@@ -4,7 +4,7 @@ import { styled } from '../utils/styled';
 export default function ({ label, children }) {
   return (
     <StaticFormItem>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <Value>{children}</Value>
     </StaticFormItem>
   );
@@ -18,6 +18,8 @@ const StaticFormItem = styled.View`
 const Label = styled.Text`
   color: #8e8e93;
   font-size: 10px;
+  width: 50px;
+  text-align: right;
 `;
 
 const Value = styled.Text`

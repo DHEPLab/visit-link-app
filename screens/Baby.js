@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import { GhostNavigatorHeader, Button } from '../components';
+import { GhostNavigatorHeader, Button, Card, StaticFormItem } from '../components';
 import { Layout, Colors } from '../constants';
 import { styled } from '../utils/styled';
 
 const initialLayout = { width: Layout.window.width };
 
-export default function TabViewExample() {
+export default function () {
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -114,5 +114,65 @@ function Visit() {
 }
 
 function Family() {
-  return <Text>家庭信息</Text>;
+  return (
+    <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
+      <Card title="备注信息">
+        <StaticFormItem>双胞胎</StaticFormItem>
+      </Card>
+      <Card title="地址信息">
+        <StaticFormItem label="所在地区">吉林省/延边朝鲜自治州/安图县</StaticFormItem>
+        <StaticFormItem label="详细地址">朝阳街826号</StaticFormItem>
+      </Card>
+      <Card title="看护人信息">
+        <Carer />
+        <Carer />
+        <Carer noBorder />
+      </Card>
+    </CardContainer>
+  );
 }
+
+function Carer(props) {
+  return (
+    <CarerItem {...props}>
+      <CarerOperation>
+        <CarerNumber>照料人1</CarerNumber>
+        <MasterCarer>主照料人</MasterCarer>
+      </CarerOperation>
+      <StaticFormItem label="照料人姓名">李四</StaticFormItem>
+      <StaticFormItem label="亲属关系">母亲</StaticFormItem>
+      <StaticFormItem label="联系电话">15638828889</StaticFormItem>
+      <StaticFormItem label="微信号码">monther</StaticFormItem>
+    </CarerItem>
+  );
+}
+
+const CarerOperation = styled.View`
+  flex-direction: row;
+  margin-bottom: 12px;
+`;
+
+const CarerNumber = styled.Text`
+  font-size: 10px;
+  font-weight: bold;
+`;
+
+const MasterCarer = styled.Text`
+  color: #8e8e93;
+  font-size: 10px;
+  margin-left: 25px;
+`;
+
+const CardContainer = styled(ScrollView)`
+  padding: 0 28px;
+`;
+
+const CarerItem = styled.View`
+  ${({ noBorder }) =>
+    !noBorder &&
+    `
+  border-bottom-width: 1px;
+  border-color: #eeeeee;
+  margin-bottom: 10px;
+  `}
+`;
