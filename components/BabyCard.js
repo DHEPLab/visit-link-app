@@ -2,9 +2,10 @@ import React from 'react';
 import { TouchableNativeFeedback } from 'react-native';
 
 import { styled } from '../utils/styled';
+import { BabyStage, Gender } from '../constants/enums';
 import StaticFormItem from './StaticFormItem';
 
-export default function ({ name, identity, stage, carerName, carerPhone, onPress }) {
+export default function ({ name, identity, gender, stage, month, carerName, carerPhone, onPress }) {
   return (
     <TouchableNativeFeedback
       onPress={onPress}
@@ -13,7 +14,10 @@ export default function ({ name, identity, stage, carerName, carerPhone, onPress
       <Card>
         <Baby>
           <Name>{name}</Name>
-          <Age>{stage}/16月</Age>
+          <Age>
+            {Gender[gender] + ` `}
+            {BabyStage[stage]}/{month}月
+          </Age>
           <Identity>ID:{identity}</Identity>
         </Baby>
         <Carer>
