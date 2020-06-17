@@ -4,19 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import { GhostNavigatorHeader, Button, Card, StaticField } from '../components';
-import { Layout, Colors } from '../constants';
+import { Colors } from '../constants';
 import { styled } from '../utils/styled';
-
-const initialLayout = { width: Layout.window.width };
+import { GhostNavigatorHeader, Button, Card, StaticField } from '../components';
 
 export default function () {
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'visit', title: '家访记录' },
-    { key: 'family', title: '家庭信息' },
-  ]);
 
   return (
     <>
@@ -38,18 +32,29 @@ export default function () {
         </Baby>
       </Header>
       <TabView
-        renderTabBar={renderTabBar}
         navigationState={{ index, routes }}
-        renderScene={SceneMap({
-          visit: Visit,
-          family: Family,
-        })}
         onIndexChange={setIndex}
-        initialLayout={initialLayout}
+        renderTabBar={(props) => (
+          <TabBar
+            {...props}
+            labelStyle={{ color: '#FF794F' }}
+            indicatorStyle={{ backgroundColor: '#FF794F' }}
+            style={{ backgroundColor: '#fff' }}
+          />
+        )}
+        renderScene={SceneMap({
+          Visit,
+          Family,
+        })}
       />
     </>
   );
 }
+
+const routes = [
+  { key: 'Visit', title: '家访记录' },
+  { key: 'Family', title: '家庭信息' },
+];
 
 const NameContainer = styled.View`
   flex-direction: row;
@@ -97,17 +102,6 @@ const Header = styled(LinearGradient)`
   height: 160px;
   width: 100%;
 `;
-
-function renderTabBar(props) {
-  return (
-    <TabBar
-      {...props}
-      labelStyle={{ color: '#FF794F' }}
-      indicatorStyle={{ backgroundColor: '#FF794F' }}
-      style={{ backgroundColor: '#fff' }}
-    />
-  );
-}
 
 function Visit() {
   return <Text>家访</Text>;
