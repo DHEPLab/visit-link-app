@@ -1,13 +1,10 @@
 import React from 'react';
-import { styled } from '../config/styled';
-import { Button, LinearGradientHeader } from '../components/*';
+import { styled } from '../utils/styled';
+import { Button, LinearGradientHeader } from '../components';
 import { useNavigation } from '@react-navigation/native';
 
 export default function () {
-  const navigation = useNavigation();
-  function handleStartSession() {
-    navigation.push('Session');
-  }
+  const { navigate } = useNavigation();
 
   return (
     <Container>
@@ -22,15 +19,12 @@ export default function () {
           </Row>
           <Row>
             <Label>家访地点：</Label>
-            <LabelValue>
-              吉林省/延边朝鲜自治州/{'\n'}安图县朝阳街826号
-            </LabelValue>
+            <LabelValue>吉林省/延边朝鲜自治州/{'\n'}安图县朝阳街826号</LabelValue>
           </Row>
         </InfoConainer>
       </VisitCard>
       <ButtonContainer>
-        <Button size="large" title="开始课程" onPress={handleStartSession} />
-        {/* <Button title="Login" onPress={() => navigation.push('Login')} /> */}
+        <Button size="large" title="开始课程" onPress={() => navigate('Session')} />
       </ButtonContainer>
     </Container>
   );

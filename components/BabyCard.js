@@ -1,0 +1,87 @@
+import React from 'react';
+import { TouchableNativeFeedback } from 'react-native';
+
+import { styled } from '../utils/styled';
+import { BabyStage, Gender } from '../constants/enums';
+import StaticField from './StaticField';
+
+export default function ({
+  id,
+  name,
+  identity,
+  gender,
+  stage,
+  month,
+  carerName,
+  carerPhone,
+  onPress,
+}) {
+  return (
+    <TouchableNativeFeedback
+      onPress={() =>
+        onPress({
+          id,
+          name,
+          identity,
+          gender,
+          stage,
+          month,
+        })
+      }
+      background={TouchableNativeFeedback.SelectableBackground()}
+    >
+      <Card>
+        <Baby>
+          <Name>{name}</Name>
+          <Age>
+            {Gender[gender] + ` `}
+            {BabyStage[stage]}/{month}月
+          </Age>
+          <Identity>ID:{identity}</Identity>
+        </Baby>
+        <Carer>
+          <StaticField label="主照料人">{carerName}</StaticField>
+          <StaticField label="联系方式">{carerPhone}</StaticField>
+        </Carer>
+      </Card>
+    </TouchableNativeFeedback>
+  );
+}
+
+const Card = styled.View`
+  padding: 16px;
+  width: 344px;
+  border-radius: 8px;
+  align-self: center;
+  background: #fff;
+  margin-bottom: 8px;
+`;
+
+const Carer = styled.View`
+  margin-top: 16px;
+  margin-bottom: -8px;
+  margin-left: 20px;
+`;
+
+const Baby = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const Name = styled.Text`
+  color: #525252;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 12px;
+`;
+
+const Age = styled.Text`
+  color: #525252;
+  font-size: 8px;
+`;
+
+const Identity = styled.Text`
+  color: #b2b2b2;
+  font-size: 8px;
+  margin-left: auto;
+`;

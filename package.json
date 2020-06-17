@@ -1,16 +1,19 @@
 {
+  "name": "healthy-future",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "publish:dev": "expo publish --release-channel dev",
     "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "jest --silent --coverage",
+    "test:watch": "jest  --silent --watchAll"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
   },
   "dependencies": {
     "@expo/vector-icons": "~10.0.6",
@@ -31,10 +34,12 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-reanimated": "~1.7.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
     "react-native-styled-px2dp": "^1.0.3",
     "react-native-svg": "11.0.1",
+    "react-native-tab-view": "^2.14.4",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
@@ -43,9 +48,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "babel-plugin-wildcard": "^6.0.0",
+    "@testing-library/jest-native": "^3.1.0",
     "babel-preset-expo": "~8.1.0",
-    "jest-expo": "~37.0.0"
+    "jest-expo": "~37.0.0",
+    "react-devtools": "3",
+    "react-native-testing-library": "^2.0.1"
   },
   "private": true
 }

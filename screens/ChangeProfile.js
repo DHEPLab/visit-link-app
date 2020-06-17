@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from '../config/styled';
-import { Form, FormItem, Input, Button } from '../components/*';
+import { styled } from '../utils/styled';
+import { Form, FormItem, Input, Button } from '../components';
 
 export default function () {
   return (

@@ -1,16 +1,16 @@
 import React from 'react';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 
 export default function ({ label, children }) {
   return (
-    <StaticFormItem>
-      <Label>{label}</Label>
+    <StaticField>
+      {label && <Label>{label}</Label>}
       <Value>{children}</Value>
-    </StaticFormItem>
+    </StaticField>
   );
 }
 
-const StaticFormItem = styled.View`
+const StaticField = styled.View`
   flex-direction: row;
   margin-bottom: 8px;
 `;
@@ -18,6 +18,8 @@ const StaticFormItem = styled.View`
 const Label = styled.Text`
   color: #8e8e93;
   font-size: 10px;
+  width: 50px;
+  text-align: right;
 `;
 
 const Value = styled.Text`

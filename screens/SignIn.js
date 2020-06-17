@@ -1,37 +1,31 @@
-import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
-import { styled } from '../config/styled';
-import { FormItem, PrimaryInput, Button } from '../components/*';
-import { Formik } from 'formik';
-import Http from '../utils/http';
-import { signIn } from '../actions';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Formik } from 'formik';
 
-const screenHeight = Math.round(Dimensions.get('window').height);
+import Http from '../utils/http';
+import { useBoolState } from '../utils';
+import { Layout } from '../constants';
+import { styled } from '../utils/styled';
+import { FormItem, PrimaryInput, Button } from '../components';
+import { signIn } from '../actions';
 
-export default function () {
-  const [badCredentials, setBadCredentials] = useState(false);
+export default function SignIn() {
   const dispatch = useDispatch();
+  const [badCredentials, onBadCredentials, resetBadCredentials] = useBoolState();
 
   function onSubmit(values) {
-    setBadCredentials(false);
-
+    resetBadCredentials();
     Http.post('/api/authenticate', values)
-      .then((response) => {
-        Http.auth(response.idToken);
-        dispatch(signIn(response));
+      .then((data) => {
+        Http.auth(data.idToken);
+        dispatch(signIn(data));
       })
-      .catch((_) => {
-        setBadCredentials(true);
-      });
+      .catch(onBadCredentials);
   }
 
   return (
-    <Login>
-      <Logo
-        resizeMode="contain"
-        source={require('../assets/images/logo.png')}
-      />
+    <Container>
+      <Logo resizeMode="contain" source={require('../assets/images/logo.png')} />
       <Formik initialValues={{}} onSubmit={onSubmit}>
         {({ handleSubmit, values }) => (
           <FormContainer>
@@ -44,9 +38,7 @@ export default function () {
             <ForgetPassword>
               <Button text title="忘记密码" />
             </ForgetPassword>
-            {badCredentials && (
-              <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>
-            )}
+            {badCredentials && <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>}
             <Button
               disabled={!values.username || !values.password}
               size="large"
@@ -56,11 +48,8 @@ export default function () {
           </FormContainer>
         )}
       </Formik>
-      <Inset
-        resizeMode="contain"
-        source={require('../assets/images/login-inset.png')}
-      />
-    </Login>
+      <Inset resizeMode="contain" source={require('../assets/images/login-inset.png')} />
+    </Container>
   );
 }
 
@@ -87,15 +76,15 @@ const Inset = styled.Image`
   height: 280px;
   width: 400px;
   left: 0;
-  bottom: 0;
+  bottom: -5px;
   z-index: -1;
 `;
 
-const Login = styled.View`
+const Container = styled.View`
   position: relative;
   background: #fff;
   width: 100%;
-  height: ${screenHeight}PX;
+  height: ${Layout.window.height}px;
   padding-top: 100px;
 `;
 

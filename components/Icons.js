@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { px2dp } from '../config/styled';
+import { px2dp } from '../utils/styled';
 
 const svgs = {
   home: `

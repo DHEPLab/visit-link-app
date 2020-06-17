@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icons from './Icons';
-import { styled } from '../config/styled';
+import { styled } from '../utils/styled';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TabBarIcon({ name, focused }) {

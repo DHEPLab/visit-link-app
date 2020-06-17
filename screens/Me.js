@@ -1,76 +1,83 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { View, Image } from 'react-native';
+import React from 'react';
+import { Alert, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { useFetch } from '../utils';
 import Http from '../utils/http';
-import { styled } from '../config/styled';
-import { Colors } from '../constants/*';
+import { styled } from '../utils/styled';
+import { Colors } from '../constants';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button, Card, StaticForm, StaticFormItem } from '../components/*';
+import { Button, Card, StaticForm, StaticField } from '../components';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
-import http from '../utils/http';
 
 export default function Me() {
-  const [user, setUser] = useState({});
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
   const dispatch = useDispatch();
+  const [user] = useFetch('/api/account/profile');
 
-  useEffect(() => {
-    Http.get('/api/user/profile').then((r) => {
-      setUser(r);
-    });
-  }, []);
+  const chw = () => user.chw || {};
+  const supervisor = () => chw().supervisor || {};
+
+  function openAlert() {
+    Alert.alert(
+      '您确定要退出登录吗？',
+      '您确定要退出登录吗？',
+      [
+        {
+          text: '稍后再说',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: '退出登录',
+          onPress: async () => {
+            await Http.signOut();
+            dispatch(signOut());
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  }
 
   return (
     <>
-      <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
+      <Header {...Colors.linearGradient}>
         <BackgroundImage source={require('../assets/images/me-bg.png')} />
         <HeaderTitle>个人中心</HeaderTitle>
         <NameContainer>
           <Name>{user.realName}</Name>
-          <Identity>ID: {user.identity}</Identity>
+          <Identity>ID: {chw().identity}</Identity>
         </NameContainer>
         <InfoContainer>
           <View>
             <PhoneNumber>{user.phone}</PhoneNumber>
-            <Location>某某某某某某省/某某某某市/某某某某某某县</Location>
+            {/* <Location>某某某某某某省/某某某某市/某某某某某某县</Location> */}
           </View>
         </InfoContainer>
       </Header>
       <CardsContainer>
         <Card
           title="账户信息"
-          right={
-            <Button
-              title="修改密码"
-              onPress={() => navigation.push('ChangePassword')}
-            />
-          }
+          right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
         >
           <StaticForm>
-            <StaticFormItem label="账户名称">{user.username}</StaticFormItem>
-            <StaticFormItem label="账户密码">******</StaticFormItem>
+            <StaticField label="账户名称">{user.username}</StaticField>
+            <StaticField label="账户密码">******</StaticField>
           </StaticForm>
         </Card>
-        <Card title="督导信息">
-          <StaticForm>
-            <StaticFormItem label="督导姓名">
-              张三李四张三李四张三
-            </StaticFormItem>
-            <StaticFormItem label="督导电话">18616881618</StaticFormItem>
-          </StaticForm>
-        </Card>
+        {supervisor().id && (
+          <Card title="督导信息">
+            <StaticForm>
+              <StaticField label="督导姓名">{supervisor().realName}</StaticField>
+              <StaticField label="督导电话">{supervisor().phone}</StaticField>
+            </StaticForm>
+          </Card>
+        )}
       </CardsContainer>
       <Logout>
-        <Button
-          title="退出登录"
-          logout
-          onPress={async () => {
-            await http.logout();
-            dispatch(signOut());
-          }}
-        />
+        <Button title="退出登录" logout onPress={openAlert} />
       </Logout>
     </>
   );
