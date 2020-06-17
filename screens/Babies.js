@@ -1,16 +1,16 @@
 import React from 'react';
+import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextInput } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button, BabyCard } from '../components';
 import { useFetch } from '../utils';
-import { useNavigation } from '@react-navigation/native';
 
 export default function Babies() {
   const { navigate } = useNavigation();
-  const [babies] = useFetch('/api/baby', {}, []);
+  const [babies, refresh, refreshing] = useFetch('/api/baby', {}, []);
 
   return (
     <>
@@ -23,9 +23,18 @@ export default function Babies() {
         <Title>宝宝列表</Title>
         <Button title="添加宝宝" />
       </ListHeader>
-      {babies.map((baby) => (
-        <BabyCard key={baby.name} onPress={() => navigate('Baby')} {...baby} />
-      ))}
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            colors={Colors.colors}
+            onRefresh={() => refresh()}
+            refreshing={refreshing}
+          />
+        }
+        data={babies}
+        keyExtractor={(item) => item.name}
+        renderItem={({ item }) => <BabyCard onPress={() => navigate('Baby')} {...item} />}
+      />
     </>
   );
 }
