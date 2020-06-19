@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Healthy Future",
+    "descritpion": "RURAL EDUCATION ACTION PROGRAM",
     "slug": "healthy-future-app",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
