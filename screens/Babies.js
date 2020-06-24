@@ -2,8 +2,9 @@ import React from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import { styled } from '../utils/styled';
+import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button, BabyCard } from '../components';
 import { useFetch } from '../utils';
@@ -16,7 +17,11 @@ export default function Babies() {
     <>
       <Header {...Colors.linearGradient}>
         <Search>
-          <TextInput placeholder="请您输入要搜索的宝宝姓名" />
+          <MaterialIcons name="search" size={px2dp(16)} color="#fff" />
+          <TextInput
+            style={{ marginLeft: px2dp(4), color: '#fff' }}
+            placeholder="请您输入要搜索的宝宝姓名"
+          />
         </Search>
       </Header>
       <ListHeader>
@@ -60,10 +65,11 @@ const Header = styled(LinearGradient)`
 `;
 
 const Search = styled.View`
+  flex-direction: row;
   width: 334px;
   height: 24px;
   background: rgba(0, 0, 0, 0.2);
-  justify-content: center;
+  align-items: center;
   border-radius: 12px;
   padding-left: 12px;
 `;
