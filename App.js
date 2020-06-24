@@ -3,13 +3,13 @@ import { Platform, StatusBar } from 'react-native';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 
+import Http from './utils/http';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import useLinking from './navigation/useLinking';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './reducers';
 import { restoreToken } from './actions';
-import http from './utils/http';
 
 const store = createStore(
   rootReducer,
@@ -32,12 +32,17 @@ export default function App(props) {
         // Load our initial navigation state
         setInitialNavigationState(await getInitialState());
 
-        // Load fonts
-        // await Font.loadAsync({
-        //   ...Ionicons.font,
-        //   'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-        // });
-        store.dispatch(restoreToken(await http.token()));
+        const token = await Http.token();
+        store.dispatch(restoreToken(token));
+        try {
+          if (token) {
+            // Check whether the token is valid
+            await Http.get('/api/account/profile');
+          }
+        } catch (e) {
+          store.dispatch(restoreToken(null));
+          throw e;
+        }
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
