@@ -36,7 +36,6 @@ export default function App(props) {
           token && (await Http.get('/api/account/profile'));
         } catch (e) {
           // Token is invalid
-          await Http.auth(null);
           store.dispatch(restoreToken(null));
           throw e;
         }
