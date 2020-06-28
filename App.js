@@ -1,15 +1,16 @@
-import * as React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import React, { useEffect } from 'react';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 
-import BottomTabNavigator from './navigation/BottomTabNavigator';
-import useLinking from './navigation/useLinking';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import rootReducer from './reducers';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import { restoreToken } from './actions';
-import http from './utils/http';
+
+import Http from './utils/http';
+import { Colors } from './constants';
+import { useBoolState } from './utils';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
 
 const store = createStore(
   rootReducer,
@@ -18,31 +19,31 @@ const store = createStore(
 );
 
 export default function App(props) {
-  const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-  const [initialNavigationState, setInitialNavigationState] = React.useState();
-  const containerRef = React.useRef();
-  const { getInitialState } = useLinking(containerRef);
+  const [isLoadingComplete, loadingComplete] = useBoolState();
 
   // Load any resources or data that we need prior to rendering the app
-  React.useEffect(() => {
+  useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
 
-        // Load our initial navigation state
-        setInitialNavigationState(await getInitialState());
+        // Restore token from async storage
+        const token = await Http.token();
+        store.dispatch(restoreToken(token));
 
-        // Load fonts
-        // await Font.loadAsync({
-        //   ...Ionicons.font,
-        //   'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-        // });
-        store.dispatch(restoreToken(await http.token()));
+        try {
+          // Check whether the token is valid
+          token && (await Http.get('/api/account/profile'));
+        } catch (e) {
+          // Token is invalid
+          store.dispatch(restoreToken(null));
+          throw e;
+        }
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
       } finally {
-        setLoadingComplete(true);
+        loadingComplete();
         SplashScreen.hide();
       }
     }
@@ -55,22 +56,10 @@ export default function App(props) {
   } else {
     return (
       <Provider store={store}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <NavigationContainer theme={theme} ref={containerRef} initialState={initialNavigationState}>
+        <NavigationContainer theme={Colors.theme}>
           <BottomTabNavigator />
         </NavigationContainer>
       </Provider>
     );
   }
 }
-
-const theme = {
-  dark: false,
-  colors: {
-    primary: '#ff794f',
-    background: '#eeeeee',
-    card: 'rgb(255, 255, 255)',
-    text: 'rgb(28, 28, 30)',
-    border: 'rgb(199, 199, 204)',
-  },
-};

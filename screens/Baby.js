@@ -122,7 +122,7 @@ function Family({ baby, carers }) {
         <StaticField>{baby.remark}</StaticField>
       </Card>
       <Card title="地址信息">
-        <StaticField label="所在地区">吉林省/延边朝鲜自治州/安图县</StaticField>
+        <StaticField label="所在地区">{baby.area}</StaticField>
         <StaticField label="详细地址">{baby.location}</StaticField>
       </Card>
       <Card title="看护人信息">

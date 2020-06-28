@@ -1,9 +1,10 @@
 import React from 'react';
 import { TouchableNativeFeedback } from 'react-native';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { styled } from '../utils/styled';
-import { BabyStage, Gender } from '../constants/enums';
 import StaticField from './StaticField';
+import { styled, px2dp } from '../utils/styled';
+import { BabyStage } from '../constants/enums';
 
 export default function ({
   id,
@@ -16,6 +17,28 @@ export default function ({
   carerPhone,
   onPress,
 }) {
+  function genderIcon(gender) {
+    switch (gender) {
+      case 'MALE':
+        return 'gender-male';
+      case 'FEMALE':
+        return 'gender-female';
+      default:
+        return 'gender-male-female';
+    }
+  }
+
+  function genderColor(gender) {
+    switch (gender) {
+      case 'MALE':
+        return '#64B5CF';
+      case 'FEMALE':
+        return '#F2709C';
+      default:
+        return 'black';
+    }
+  }
+
   return (
     <TouchableNativeFeedback
       onPress={() =>
@@ -32,9 +55,16 @@ export default function ({
     >
       <Card>
         <Baby>
+          <Status>已审核</Status>
           <Name>{name}</Name>
+          <Gender>
+            <MaterialCommunityIcons
+              name={genderIcon(gender)}
+              size={px2dp(12)}
+              color={genderColor(gender)}
+            />
+          </Gender>
           <Age>
-            {Gender[gender] + ` `}
             {BabyStage[stage]}/{month}月
           </Age>
           <Identity>ID:{identity}</Identity>
@@ -42,11 +72,27 @@ export default function ({
         <Carer>
           <StaticField label="主照料人">{carerName}</StaticField>
           <StaticField label="联系方式">{carerPhone}</StaticField>
+          <ArrowRight name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />
         </Carer>
       </Card>
     </TouchableNativeFeedback>
   );
 }
+
+const ArrowRight = styled(MaterialIcons)`
+  position: absolute;
+  top: 10px;
+  right: 0;
+`;
+
+const Status = styled.Text`
+  padding: 1px 4px;
+  margin-right: 8px;
+  font-size: 8px;
+  color: #ff794f;
+  background: #ffede2;
+  border-radius: 2px;
+`;
 
 const Card = styled.View`
   padding: 16px;
@@ -58,7 +104,7 @@ const Card = styled.View`
 `;
 
 const Carer = styled.View`
-  margin-top: 16px;
+  margin-top: 14px;
   margin-bottom: -8px;
   margin-left: 20px;
 `;
@@ -78,6 +124,10 @@ const Name = styled.Text`
 const Age = styled.Text`
   color: #525252;
   font-size: 8px;
+`;
+
+const Gender = styled(Age)`
+  margin-right: 4px;
 `;
 
 const Identity = styled.Text`

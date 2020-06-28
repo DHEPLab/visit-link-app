@@ -69,6 +69,7 @@ function HomeTabs() {
   return (
     <Tab.Navigator
       tabBarOptions={{
+        keyboardHidesTabBar: true,
         style: {
           height: px2dp(68),
           borderTopWidth: 1,
