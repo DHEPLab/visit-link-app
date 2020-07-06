@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableNativeFeedback } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import StaticField from './StaticField';
@@ -40,7 +40,8 @@ export default function ({
   }
 
   return (
-    <TouchableNativeFeedback
+    <TouchableOpacity
+      activeOpacity={0.8}
       onPress={() =>
         onPress({
           id,
@@ -51,7 +52,6 @@ export default function ({
           month,
         })
       }
-      background={TouchableNativeFeedback.SelectableBackground()}
     >
       <Card>
         <Baby>
@@ -75,7 +75,7 @@ export default function ({
           <ArrowRight name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />
         </Carer>
       </Card>
-    </TouchableNativeFeedback>
+    </TouchableOpacity>
   );
 }
 
