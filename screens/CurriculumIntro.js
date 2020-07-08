@@ -24,7 +24,7 @@ export default function CurriculumIntro() {
         </Description>
       </TextContainer>
       <ButtonContainer>
-        <Button info title="下一步" />
+        <Button info title="下一步" onPress={() => navigation.navigate('CurriculumModules')} />
       </ButtonContainer>
     </Container>
   );

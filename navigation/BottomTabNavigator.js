@@ -12,6 +12,7 @@ import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
 import CurriculumIntro from '../screens/CurriculumIntro';
+import CurriculumModules from '../screens/CurriculumModules';
 import { TabBarIcon, NavigatorHeader } from '../components';
 import { px2dp, styled } from '../utils/styled';
 
@@ -19,6 +20,11 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const screens = [
+  {
+    name: 'CurriculumModules',
+    component: CurriculumModules,
+    headerShown: false,
+  },
   {
     name: 'CurriculumIntro',
     component: CurriculumIntro,
