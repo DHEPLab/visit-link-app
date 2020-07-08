@@ -1,9 +1,24 @@
 import React from 'react';
 import { styled } from '../utils/styled';
+import BottomRightBackground from './BottomRightBackground';
 
-export default function ({ title, children, right }) {
+export default function ({
+  title,
+  children,
+  right,
+  background,
+  backgroundWidth = 88,
+  backgroundHeight = 88,
+}) {
   return (
     <Card>
+      {background && (
+        <BottomRightBackground
+          width={backgroundWidth}
+          height={backgroundHeight}
+          source={background}
+        />
+      )}
       <Header>
         <Title>{title}</Title>
         {right}

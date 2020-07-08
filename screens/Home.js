@@ -1,4 +1,6 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
 import { styled } from '../utils/styled';
 import {
   Button,
@@ -8,19 +10,18 @@ import {
   StaticField,
   BabyLine,
 } from '../components';
-import { useNavigation } from '@react-navigation/native';
 
-export default function () {
+export default function Home() {
   const { navigate } = useNavigation();
 
   return (
     <Container>
       <LinearGradientHeader>
         您的下一次家访：{'\n'}
-        2020年06月30日/上午10:00{' '}
+        2020年06月30日/上午10:00
       </LinearGradientHeader>
       <CardContainer>
-        <Card title="家访对象">
+        <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
           <BabyLineContainer>
             <BabyLine
               name="张三李四张三李四张三"
