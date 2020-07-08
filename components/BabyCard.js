@@ -1,77 +1,30 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import StaticField from './StaticField';
+import BabyLine from './BabyLine';
+import StaticForm from './StaticForm';
 import { styled, px2dp } from '../utils/styled';
-import { BabyStage } from '../constants/enums';
 
-export default function ({
-  id,
-  name,
-  identity,
-  gender,
-  stage,
-  month,
-  carerName,
-  carerPhone,
-  onPress,
-}) {
-  function genderIcon(gender) {
-    switch (gender) {
-      case 'MALE':
-        return 'gender-male';
-      case 'FEMALE':
-        return 'gender-female';
-      default:
-        return 'gender-male-female';
-    }
-  }
-
-  function genderColor(gender) {
-    switch (gender) {
-      case 'MALE':
-        return '#64B5CF';
-      case 'FEMALE':
-        return '#F2709C';
-      default:
-        return 'black';
-    }
-  }
-
+export default function ({ id, carerName, carerPhone, onPress, ...props }) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() =>
         onPress({
           id,
-          name,
-          identity,
-          gender,
-          stage,
-          month,
+          ...props,
         })
       }
     >
       <Card>
-        <Baby>
-          <Status>已审核</Status>
-          <Name>{name}</Name>
-          <Gender>
-            <MaterialCommunityIcons
-              name={genderIcon(gender)}
-              size={px2dp(12)}
-              color={genderColor(gender)}
-            />
-          </Gender>
-          <Age>
-            {BabyStage[stage]}/{month}月
-          </Age>
-          <Identity>ID:{identity}</Identity>
-        </Baby>
+        <BabyLine {...props} />
         <Carer>
-          <StaticField label="主照料人">{carerName}</StaticField>
-          <StaticField label="联系方式">{carerPhone}</StaticField>
+          <StaticForm>
+            <StaticField label="主照料人">{carerName}</StaticField>
+            <StaticField label="联系方式">{carerPhone}</StaticField>
+          </StaticForm>
           <ArrowRight name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />
         </Carer>
       </Card>
@@ -85,15 +38,6 @@ const ArrowRight = styled(MaterialIcons)`
   right: 0;
 `;
 
-const Status = styled.Text`
-  padding: 1px 4px;
-  margin-right: 8px;
-  font-size: 8px;
-  color: #ff794f;
-  background: #ffede2;
-  border-radius: 2px;
-`;
-
 const Card = styled.View`
   padding: 16px;
   width: 344px;
@@ -105,33 +49,5 @@ const Card = styled.View`
 
 const Carer = styled.View`
   margin-top: 14px;
-  margin-bottom: -8px;
   margin-left: 20px;
-`;
-
-const Baby = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const Name = styled.Text`
-  color: #525252;
-  font-weight: bold;
-  font-size: 12px;
-  margin-right: 12px;
-`;
-
-const Age = styled.Text`
-  color: #525252;
-  font-size: 8px;
-`;
-
-const Gender = styled(Age)`
-  margin-right: 4px;
-`;
-
-const Identity = styled.Text`
-  color: #b2b2b2;
-  font-size: 8px;
-  margin-left: auto;
 `;

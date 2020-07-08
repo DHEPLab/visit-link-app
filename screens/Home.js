@@ -1,6 +1,13 @@
 import React from 'react';
 import { styled } from '../utils/styled';
-import { Button, LinearGradientHeader } from '../components';
+import {
+  Button,
+  LinearGradientHeader,
+  Card,
+  StaticForm,
+  StaticField,
+  BabyLine,
+} from '../components';
 import { useNavigation } from '@react-navigation/native';
 
 export default function () {
@@ -8,21 +15,38 @@ export default function () {
 
   return (
     <Container>
-      <LinearGradientHeader>您的下一次家访：</LinearGradientHeader>
-      <VisitCard>
-        <Avatar />
-        <Name>张三李四</Name>
-        <InfoConainer>
-          <Row>
-            <Label>家访日期：</Label>
-            <LabelValue>2020年 05 月 08 日{'\n'}上午 10:00-11:00</LabelValue>
-          </Row>
-          <Row>
-            <Label>家访地点：</Label>
-            <LabelValue>吉林省/延边朝鲜自治州/{'\n'}安图县朝阳街826号</LabelValue>
-          </Row>
-        </InfoConainer>
-      </VisitCard>
+      <LinearGradientHeader>
+        您的下一次家访：{'\n'}
+        2020年06月30日/上午10:00{' '}
+      </LinearGradientHeader>
+      <CardContainer>
+        <Card title="家访对象">
+          <BabyLineContainer>
+            <BabyLine
+              name="张三李四张三李四张三"
+              gender="MALE"
+              stage="EDC"
+              month={10}
+              identity="123456"
+            />
+          </BabyLineContainer>
+          <StaticForm>
+            <StaticField label="主照料人">张三李四张三李四</StaticField>
+            <StaticField label="联系电话">18616881618</StaticField>
+            <StaticField label="微信号码">18616881618</StaticField>
+            <StaticField label="所在区域">吉林省/延边朝鲜自治州/安图县</StaticField>
+            <StaticField label="详细地址">朝阳街826号</StaticField>
+          </StaticForm>
+        </Card>
+        <Card title="课程安排" right={<Button title="预览" />}>
+          <LessonName>课程名称课程名称</LessonName>
+          <StaticForm>
+            <StaticField label="课堂01">课堂名称课堂名称课堂名称课堂名称课堂名称</StaticField>
+            <StaticField label="课堂02">课堂名称课堂名称课堂名称课堂名称课堂名称</StaticField>
+            <StaticField label="课堂03">课堂名称课堂名称课堂名称课堂名称课堂名称</StaticField>
+          </StaticForm>
+        </Card>
+      </CardContainer>
       <ButtonContainer>
         <Button size="large" title="开始课程" onPress={() => navigate('Session')} />
       </ButtonContainer>
@@ -30,61 +54,25 @@ export default function () {
   );
 }
 
+const BabyLineContainer = styled.View`
+  padding-bottom: 8px;
+`;
+
+const LessonName = styled.Text`
+  color: #525252;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
+`;
+
 const Container = styled.View`
   height: 100%;
 `;
 
-const InfoConainer = styled.View`
-  margin: 0 24px;
-  margin-top: 16px;
-  border-top-width: 1px;
-  border-style: solid;
-  border-color: #eee;
-  padding-top: 12px;
+const CardContainer = styled.View`
+  margin: 0 28px;
+  margin-top: -34px;
 `;
-
-const Row = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 8px;
-`;
-
-const Label = styled.Text`
-  font-size: 10px;
-  color: #ff9472;
-`;
-const LabelValue = styled.Text`
-  font-size: 10px;
-  font-weight: bold;
-  color: #4a4a4a;
-  text-align: right;
-`;
-
-const Avatar = styled.View`
-  margin-top: 16px;
-  height: 60px;
-  width: 60px;
-  border: 4px solid #ffc3a0;
-  align-self: center;
-  border-radius: 60px;
-`;
-
-const Name = styled.Text`
-  align-self: center;
-  font-size: 12px;
-  font-weight: bold;
-  margin-top: 12px;
-`;
-
-const VisitCard = styled.View`
-  align-self: center;
-  width: 344px;
-  height: 277px;
-  margin-top: -35px;
-  border-radius: 16px;
-  background-color: #fff;
-`;
-
 const ButtonContainer = styled.View`
-  margin-top: -14px;
+  margin-top: 20px;
 `;

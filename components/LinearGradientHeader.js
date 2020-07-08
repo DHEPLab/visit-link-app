@@ -4,11 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ({ children }) {
   return (
-    <LinearGradientHeader
-      start={[0, 0]}
-      end={[1, 1]}
-      colors={['#FF9472', '#F2709C']}
-    >
+    <LinearGradientHeader start={[0, 0]} end={[1, 1]} colors={['#FF9472', '#F2709C']}>
       <Title>{children}</Title>
     </LinearGradientHeader>
   );
@@ -16,8 +12,8 @@ export default function ({ children }) {
 
 const LinearGradientHeader = styled(LinearGradient)`
   width: 100%;
-  height: 180px;
-  padding-top: 58px;
+  height: 160px;
+  padding-top: 50px;
   padding-left: 28px;
 `;
 

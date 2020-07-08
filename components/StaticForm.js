@@ -6,5 +6,5 @@ export default function ({ children }) {
 }
 
 const StaticForm = styled.View`
-  margin-bottom: -8px;
+  margin-bottom: -6px;
 `;

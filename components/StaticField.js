@@ -12,7 +12,7 @@ export default function ({ label, children }) {
 
 const StaticField = styled.View`
   flex-direction: row;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 `;
 
 const Label = styled.Text`
