@@ -27,3 +27,8 @@ export const FamilyTies = {
   GRANDFATHER: '(外)祖父',
   OTHER: '其他',
 };
+
+export const ModuleStatus = {
+  DONE: '已完成',
+  UNDONE: '待开始',
+};

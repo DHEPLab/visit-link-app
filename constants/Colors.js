@@ -15,6 +15,14 @@ export default {
       border: 'rgb(199, 199, 204)',
     },
   },
+  moduleStatus: {
+    DONE: '#FF794F',
+    UNDONE: '#F2709C',
+  },
+  moduleStatusBorder: {
+    DONE: '#FFEDE2',
+    UNDONE: '#FCD4E2',
+  },
   // tintColor,
   // tabIconDefault: '#ccc',
   // tabIconSelected: tintColor,
