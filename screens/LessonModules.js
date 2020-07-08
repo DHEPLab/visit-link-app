@@ -24,7 +24,10 @@ export default function LessonModules() {
         {[0, 1, 2, 3].map((key) => (
           <ModuleItem key={key} value={{ status: 'DONE', number: '01', name: '123b1b23bb31b23' }} />
         ))}
-        <ModuleItem value={{ status: 'UNDONE', number: '02', name: 'b23b2b3b12331' }} />
+        <ModuleItem
+          onPress={() => navigation.navigate('Module')}
+          value={{ status: 'UNDONE', number: '02', name: 'b23b2b3b12331' }}
+        />
         <ButtonContainer>
           <Button size="large" title="完成家访" disabled={true} />
         </ButtonContainer>

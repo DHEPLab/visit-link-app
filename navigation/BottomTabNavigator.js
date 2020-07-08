@@ -13,6 +13,7 @@ import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
+import Module from '../screens/Module';
 import { TabBarIcon, NavigatorHeader } from '../components';
 import { px2dp, styled } from '../utils/styled';
 
@@ -20,6 +21,11 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const screens = [
+  {
+    name: 'Module',
+    component: Module,
+    headerShown: false,
+  },
   {
     name: 'LessonModules',
     component: LessonModules,

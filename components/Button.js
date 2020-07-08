@@ -11,7 +11,7 @@ export default function ({ onPress, disabled, ...props }) {
   );
 }
 
-function RenderButton({ title, text, size, ghost, logout, info, disabled }) {
+function RenderButton({ title, link, text, size, ghost, logout, info, disabled }) {
   if (logout) {
     return (
       <LogoutButton>
@@ -29,7 +29,11 @@ function RenderButton({ title, text, size, ghost, logout, info, disabled }) {
   }
 
   if (text) {
-    return <TextButton>{title}</TextButton>;
+    return <Text>{title}</Text>;
+  }
+
+  if (link) {
+    return <LinkButton>{title}</LinkButton>;
   }
 
   if (ghost) {
@@ -61,7 +65,7 @@ const GhostButton = styled.View`
   min-width: 80px;
 `;
 
-const TextButton = styled.Text`
+const LinkButton = styled.Text`
   color: #ffc3a0;
   font-size: 10px;
   font-weight: bold;
