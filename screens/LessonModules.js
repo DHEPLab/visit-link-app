@@ -6,7 +6,7 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { GhostNavigatorHeader, BottomRightBackground, Button } from '../components';
 
-export default function CurriculumModules() {
+export default function LessonModules() {
   const navigation = useNavigation();
   return (
     <>

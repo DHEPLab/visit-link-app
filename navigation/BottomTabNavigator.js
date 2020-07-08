@@ -11,8 +11,8 @@ import Me from '../screens/Me';
 import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
-import CurriculumIntro from '../screens/CurriculumIntro';
-import CurriculumModules from '../screens/CurriculumModules';
+import LessonIntro from '../screens/LessonIntro';
+import LessonModules from '../screens/LessonModules';
 import { TabBarIcon, NavigatorHeader } from '../components';
 import { px2dp, styled } from '../utils/styled';
 
@@ -21,13 +21,13 @@ const Stack = createStackNavigator();
 
 const screens = [
   {
-    name: 'CurriculumModules',
-    component: CurriculumModules,
+    name: 'LessonModules',
+    component: LessonModules,
     headerShown: false,
   },
   {
-    name: 'CurriculumIntro',
-    component: CurriculumIntro,
+    name: 'LessonIntro',
+    component: LessonIntro,
     headerShown: false,
   },
   {

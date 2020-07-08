@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { styled } from '../utils/styled';
@@ -39,17 +40,17 @@ export default function Home() {
             <StaticField label="详细地址">朝阳街826号</StaticField>
           </StaticForm>
         </Card>
-        <Card title="课程安排" right={<Button title="预览" />}>
-          <LessonName>课程名称课程名称</LessonName>
+        <Card title="课堂安排" right={<Button title="预览" />}>
+          <LessonName>课堂名称</LessonName>
           <StaticForm>
-            <StaticField label="课堂01">课堂名称课堂名称课堂名称课堂名称课堂名称</StaticField>
-            <StaticField label="课堂02">课堂名称课堂名称课堂名称课堂名称课堂名称</StaticField>
-            <StaticField label="课堂03">课堂名称课堂名称课堂名称课堂名称课堂名称</StaticField>
+            <StaticField label="模块01">模块名称</StaticField>
+            <StaticField label="模块02">模块名称</StaticField>
+            <StaticField label="模块03">模块名称</StaticField>
           </StaticForm>
         </Card>
       </CardContainer>
       <ButtonContainer>
-        <Button size="large" title="开始课程" onPress={() => navigate('CurriculumIntro')} />
+        <Button size="large" title="开始课堂" onPress={() => navigate('LessonIntro')} />
       </ButtonContainer>
     </Container>
   );
@@ -66,7 +67,7 @@ const LessonName = styled.Text`
   margin-bottom: 8px;
 `;
 
-const Container = styled.View`
+const Container = styled(ScrollView)`
   height: 100%;
 `;
 
@@ -76,4 +77,5 @@ const CardContainer = styled.View`
 `;
 const ButtonContainer = styled.View`
   margin-top: 20px;
+  margin-bottom: 10px;
 `;

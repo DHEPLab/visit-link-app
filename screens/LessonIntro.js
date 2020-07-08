@@ -6,7 +6,7 @@ import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 import { GhostNavigatorHeader, BottomRightBackground, Button } from '../components';
 
-export default function CurriculumIntro() {
+export default function LessonIntro() {
   const navigation = useNavigation();
 
   return (
@@ -24,7 +24,7 @@ export default function CurriculumIntro() {
         </Description>
       </TextContainer>
       <ButtonContainer>
-        <Button info title="下一步" onPress={() => navigation.navigate('CurriculumModules')} />
+        <Button info title="下一步" onPress={() => navigation.navigate('LessonModules')} />
       </ButtonContainer>
     </Container>
   );
