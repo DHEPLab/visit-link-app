@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import Icons from './Icons';
 import { styled } from '../utils/styled';
 
-export default function ({ navigation, title }) {
+export default function ({ navigation, title, backText = '返回' }) {
   function goBack() {
     navigation.goBack();
   }
@@ -14,10 +14,10 @@ export default function ({ navigation, title }) {
       {navigation.canGoBack() && (
         <Back onPress={() => goBack()}>
           <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
-          <BackText>返回</BackText>
+          <BackText>{backText}</BackText>
         </Back>
       )}
-      <Title>{title || 'Title'}</Title>
+      {title && <Title>{title}</Title>}
     </Header>
   );
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import { styled, px2dp } from '../utils/styled';
 
-export default function ({ source, width, height }) {
+export default function BottomRightBackground({ source, width = 100, height = 100 }) {
   return <BackgroundImage source={source} width={width} height={height} />;
 }
 

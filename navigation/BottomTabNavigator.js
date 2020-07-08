@@ -11,6 +11,7 @@ import Me from '../screens/Me';
 import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
+import CurriculumIntro from '../screens/CurriculumIntro';
 import { TabBarIcon, NavigatorHeader } from '../components';
 import { px2dp, styled } from '../utils/styled';
 
@@ -18,6 +19,11 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const screens = [
+  {
+    name: 'CurriculumIntro',
+    component: CurriculumIntro,
+    headerShown: false,
+  },
   {
     name: 'Session',
     title: '会话',

@@ -49,7 +49,7 @@ export default function Home() {
         </Card>
       </CardContainer>
       <ButtonContainer>
-        <Button size="large" title="开始课程" onPress={() => navigate('Session')} />
+        <Button size="large" title="开始课程" onPress={() => navigate('CurriculumIntro')} />
       </ButtonContainer>
     </Container>
   );

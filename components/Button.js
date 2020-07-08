@@ -11,12 +11,20 @@ export default function ({ onPress, disabled, ...props }) {
   );
 }
 
-function RenderButton({ title, text, size, ghost, logout, disabled }) {
+function RenderButton({ title, text, size, ghost, logout, info, disabled }) {
   if (logout) {
     return (
       <LogoutButton>
         <Text>{title}</Text>
       </LogoutButton>
+    );
+  }
+
+  if (info) {
+    return (
+      <InfoButton>
+        <InfoButtonText>{title}</InfoButtonText>
+      </InfoButton>
     );
   }
 
@@ -33,7 +41,7 @@ function RenderButton({ title, text, size, ghost, logout, disabled }) {
   }
 
   return (
-    <Button
+    <PrimaryButton
       disabled={disabled}
       block
       size={size}
@@ -42,7 +50,7 @@ function RenderButton({ title, text, size, ghost, logout, disabled }) {
       colors={['#F2709C', '#FF9472']}
     >
       <Text>{title}</Text>
-    </Button>
+    </PrimaryButton>
   );
 }
 
@@ -68,7 +76,15 @@ const LogoutButton = styled.View`
   border-radius: 270px;
 `;
 
-const Button = styled(LinearGradient)`
+const InfoButton = styled.View`
+  width: 260px;
+  align-self: center;
+  padding: 7px;
+  background-color: #fff;
+  border-radius: 270px;
+`;
+
+const PrimaryButton = styled(LinearGradient)`
   width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
   padding: ${(props) => (props.size === 'large' ? '7px' : '4px')} 16px;
   border-radius: 270px;
@@ -81,4 +97,8 @@ const Text = styled.Text`
   text-align: center;
   color: #fff;
   font-weight: bold;
+`;
+
+const InfoButtonText = styled(Text)`
+  color: #f2709c;
 `;

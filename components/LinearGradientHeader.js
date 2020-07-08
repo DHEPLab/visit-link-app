@@ -9,7 +9,7 @@ export default function ({ children }) {
       <BottomRightBackground
         width={140}
         height={134}
-        source={require('../assets/images/curriclumn-bg.png')}
+        source={require('../assets/images/curriculum-bg.png')}
       />
       <Title>{children}</Title>
     </LinearGradientHeader>

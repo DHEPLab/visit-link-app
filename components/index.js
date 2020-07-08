@@ -15,3 +15,4 @@ export { default as StaticField } from './StaticField';
 export { default as StyledText } from './StyledText';
 export { default as TabBarIcon } from './TabBarIcon';
 export { default as BabyLine } from './BabyLine';
+export { default as BottomRightBackground } from './BottomRightBackground';
