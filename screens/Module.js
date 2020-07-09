@@ -6,6 +6,7 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
 import { useNavigation } from '@react-navigation/native';
+import Text from '../components/curriculum/Text';
 
 export default function Module() {
   const navigation = useNavigation();
@@ -21,7 +22,9 @@ export default function Module() {
         </Description>
       </Header>
       <StyledScrollView>
-        <ModuleCard></ModuleCard>
+        <ModuleCard>
+          <Text value={{ type: 'script', html: '<b>abc</b>' }} />
+        </ModuleCard>
         <ButtonContainer>
           <Button size="large" title="下一步" />
           <LastStepButton>
@@ -56,6 +59,7 @@ const ModuleCard = styled.View`
   padding: 20px 24px;
   border-radius: 8px;
   background: #fff;
+  height: 100px;
 `;
 
 const Description = styled.Text`
