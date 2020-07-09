@@ -1,35 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { styled } from '../../utils/styled';
+
 export default function CurriculumText({ value }) {
   switch (value.type) {
-    case 'instruction':
-      return <InstructionText html={value.html} />;
+    case 'script':
+      return <ScriptText html={value.html} />;
     case 'reference':
       return <ReferenceText html={value.html} />;
-    case 'script':
+    case 'instruction':
     default:
-      return <ScriptText html={value.html} />;
+      return <InstructionText html={value.html} />;
   }
 }
 
 function InstructionText({ html }) {
-  return <Text>{html}</Text>;
+  return <WebViewContainer body={html} />;
 }
 
 function ReferenceText({ html }) {
-  return <Text>{html}</Text>;
+  return <WebViewContainer body={html} />;
 }
 
 function ScriptText({ html }) {
   return <WebViewContainer body={html} />;
 }
 
+const ScriptContainer = styled.View`
+  border-radius: 4px;
+  background: #ffede2;
+`;
+
 function WebViewContainer({ body }) {
+  const [height, setHeight] = useState(0);
+
   return (
     <WebView
       originWhitelist={['*']}
+      onNavigationStateChange={(state) => setHeight(Number(state.title) || 0)}
+      style={{ height }}
       source={{
         html: `
         <html>
@@ -39,6 +50,10 @@ function WebViewContainer({ body }) {
           <body>
             ${body} 
           </body>
+          <script>
+            window.location.hash = 1;
+            document.title = document.body.scrollHeight;
+          </script>
         </html>`,
       }}
     />

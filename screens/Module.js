@@ -23,7 +23,9 @@ export default function Module() {
       </Header>
       <StyledScrollView>
         <ModuleCard>
-          <Text value={{ type: 'script', html: '<b>abc</b>' }} />
+          <Text value={{ type: 'script', html: '<b>abc</b><p>123</p>' }} />
+          <Text value={{ type: 'instruction', html: '<b>abc</b><p>123</p>' }} />
+          <Text value={{ type: 'reference', html: '<b>abc</b><p>123</p>' }} />
         </ModuleCard>
         <ButtonContainer>
           <Button size="large" title="下一步" />
@@ -59,7 +61,6 @@ const ModuleCard = styled.View`
   padding: 20px 24px;
   border-radius: 8px;
   background: #fff;
-  height: 100px;
 `;
 
 const Description = styled.Text`
