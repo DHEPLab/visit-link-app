@@ -48,7 +48,7 @@ function Script({ html }) {
 }
 
 const Container = styled.View`
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const ScriptContainer = styled.View`

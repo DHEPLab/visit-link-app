@@ -7,6 +7,7 @@ import { Colors } from '../constants';
 import { Button } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import Text from '../components/curriculum/Text';
+import Media from '../components/curriculum/Media';
 
 export default function Module() {
   const navigation = useNavigation();
@@ -26,6 +27,21 @@ export default function Module() {
           <Text value={{ type: 'instruction', html: '<b>abc</b>' }} />
           <Text value={{ type: 'script', html: '<p>123</p><b>abc</b>' }} />
           <Text value={{ type: 'reference', html: '<p>123</p><b>abc</b>' }} />
+          <Media
+            value={{
+              type: 'Video',
+              file: 'https://interactive-examples.mdn.mozilla.net/media/examples/flower.mp4',
+              text: '花开的时候',
+            }}
+          />
+          <Media
+            value={{
+              type: 'Picture',
+              file:
+                'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1089874897,1268118658&fm=26&gp=0.jpg',
+              text: '快乐的一只小青蛙',
+            }}
+          />
         </ModuleCard>
         <ButtonContainer>
           <Button size="large" title="下一步" />
@@ -51,6 +67,7 @@ const LastStepButton = styled.View`
 
 const ButtonContainer = styled.View`
   margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 const StyledScrollView = styled(ScrollView)`
