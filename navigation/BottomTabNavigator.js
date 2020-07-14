@@ -10,7 +10,8 @@ import Home from '../screens/Home';
 import Me from '../screens/Me';
 import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
-import Visit from '../screens/Visit';
+import Visits from '../screens/Visits';
+import CreateVisit from '../screens/CreateVisit';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
@@ -21,6 +22,11 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const screens = [
+  {
+    name: 'CreateVisit',
+    title: '新建家访',
+    component: CreateVisit,
+  },
   {
     name: 'Module',
     component: Module,
@@ -112,8 +118,8 @@ function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name="Visit"
-        component={Visit}
+        name="Visits"
+        component={Visits}
         options={{
           tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>家访安排</TabBarLabel>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="visit" />,
