@@ -15,8 +15,8 @@ export default function () {
   const { params } = useRoute();
   const [index, setIndex] = useState(0);
 
-  const [baby] = useFetch(`/api/baby/${params.id}`);
-  const [carers] = useFetch(`/api/baby/${params.id}/carer`, {}, []);
+  const [baby] = useFetch(`/api/babies/${params.id}`);
+  const [carers] = useFetch(`/api/babies/${params.id}/carer`, {}, []);
 
   return (
     <>

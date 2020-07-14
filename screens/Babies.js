@@ -11,7 +11,7 @@ import { useFetch } from '../utils';
 
 export default function Babies() {
   const { navigate } = useNavigation();
-  const [babies, refresh, refreshing] = useFetch('/api/baby', {}, []);
+  const [babies, refresh, refreshing] = useFetch('/api/babies', {}, []);
 
   return (
     <>
