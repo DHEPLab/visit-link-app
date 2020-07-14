@@ -8,7 +8,7 @@ import { useFetch } from '../utils';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 import { Gender, BabyStage, FamilyTies } from '../constants/enums';
-import { GhostNavigatorHeader, Button, Card, StaticField } from '../components';
+import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField } from '../components';
 
 export default function () {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ export default function () {
                 {Gender[params.gender]} {BabyStage[params.stage]}/{params.month}个月
               </Age>
             </View>
-            <Button ghost title="修改资料" />
+            {/* <Button ghost title="修改资料" /> */}
           </InfoContainer>
         </Baby>
       </Header>
@@ -112,8 +112,16 @@ const Header = styled(LinearGradient)`
 `;
 
 function Visit() {
-  return <Text>家访</Text>;
+  return (
+    <VisitsContainer>
+      <VisitCard onPress={() => {}} />
+    </VisitsContainer>
+  );
 }
+
+const VisitsContainer = styled.View`
+  padding: 20px 28px;
+`;
 
 function Family({ baby, carers }) {
   return (

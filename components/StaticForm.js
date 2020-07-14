@@ -2,9 +2,9 @@ import React from 'react';
 import { styled } from '../utils/styled';
 
 export default function ({ children }) {
-  return <StaticForm>{children}</StaticForm>;
+  return <Container>{children}</Container>;
 }
 
-const StaticForm = styled.View`
+const Container = styled.View`
   margin-bottom: -6px;
 `;
