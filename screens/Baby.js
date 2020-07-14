@@ -16,7 +16,7 @@ export default function () {
   const [index, setIndex] = useState(0);
 
   const [baby] = useFetch(`/api/babies/${params.id}`);
-  const [carers] = useFetch(`/api/babies/${params.id}/carer`, {}, []);
+  const [carers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
 
   return (
     <>
