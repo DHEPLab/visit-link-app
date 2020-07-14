@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { styled } from '../utils/styled';
+import { useBoolState } from '../utils';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
 export default function CreateVisit() {
+  const [date, setDate] = useState(new Date());
+  const { navigate } = useNavigation();
+  const [show, openPicker] = useBoolState();
+
+  function onChange(event, selectedDate) {
+    console.log(event, selectedDate);
+  }
+
   return (
     <Container>
-      <Card title="家访时间" right={<Button title="修改" />}>
+      <Card title="家访时间" right={<Button title="修改" onPress={openPicker} />}>
         <StaticForm>
           <StaticField label="家访时间">2020年05月22日 /上午10:00</StaticField>
         </StaticForm>
       </Card>
       <Card
         title="家访对象"
-        right={<Button title="选择" />}
+        right={<Button title="选择" onPress={() => navigate('PickBaby')} />}
         background={require('../assets/images/baby-bg.png')}
       >
         <BabyLineContainer>
@@ -42,6 +53,15 @@ export default function CreateVisit() {
           <StaticField label="模块03">模块名称</StaticField>
         </StaticForm>
       </Card>
+      {show && (
+        <DateTimePicker
+          value={date}
+          mode={'date'}
+          is24Hour={true}
+          display="default"
+          onChange={onChange}
+        />
+      )}
       <ButtonContainer>
         <Button title="提交" size="large" />
       </ButtonContainer>

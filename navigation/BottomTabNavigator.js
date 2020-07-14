@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+
+import { TabBarIcon, NavigatorHeader } from '../components';
+import { px2dp, styled } from '../utils/styled';
 
 import Babies from '../screens/Babies';
 import Baby from '../screens/Baby';
@@ -12,16 +15,26 @@ import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visits from '../screens/Visits';
 import CreateVisit from '../screens/CreateVisit';
+import PickBaby from '../screens/PickBaby';
+import PickDatetime from '../screens/PickDatetime';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
-import { TabBarIcon, NavigatorHeader } from '../components';
-import { px2dp, styled } from '../utils/styled';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const screens = [
+  {
+    name: 'PickBaby',
+    title: '选择宝宝',
+    component: PickBaby,
+  },
+  {
+    name: 'PickDatetime',
+    title: '选择家访日期',
+    component: PickDatetime,
+  },
   {
     name: 'CreateVisit',
     title: '新建家访',
@@ -64,7 +77,11 @@ export default function () {
 
   return (
     <Stack.Navigator>
-      {user.userToken != null ? (
+      {user.userToken == null ? (
+        <>
+          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+        </>
+      ) : (
         <>
           <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
           {screens.map((screen) => (
@@ -79,10 +96,6 @@ export default function () {
               }}
             />
           ))}
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         </>
       )}
     </Stack.Navigator>
