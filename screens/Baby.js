@@ -23,7 +23,7 @@ export default function () {
       <Header {...Colors.linearGradient}>
         <GhostNavigatorHeader navigation={navigation} title="宝宝详情" />
         {/*TOTO Change image*/}
-        <BackgroundImage source={require('../assets/images/me-bg.png')} />
+        <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
         <Baby>
           <NameContainer>
             <Name>{params.name}</Name>
@@ -72,8 +72,8 @@ const NameContainer = styled.View`
 
 const BackgroundImage = styled(Image)`
   position: absolute;
-  height: 148px;
-  width: 220px;
+  height: 134px;
+  width: 140px;
   right: 0;
   bottom: 0;
 `;
