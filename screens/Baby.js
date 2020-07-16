@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, RefreshControl, Image, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FlatList, RefreshControl, Image, View, ScrollView, TouchableOpacity } from 'react-native';
 
 import { useFetch } from '../utils';
 import { Colors } from '../constants';
@@ -11,8 +11,7 @@ import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FamilyTies } from '../constants/enums';
 import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField } from '../components';
 
-export default function Baby() {
-  const navigation = useNavigation();
+export default function Baby({ navigation }) {
   const { params } = useRoute();
   const [index, setIndex] = useState(0);
 
@@ -60,9 +59,27 @@ export default function Baby() {
           Family: () => <Family baby={baby} carers={carers} />,
         })}
       />
+      <FixedButtonContainer>
+        <Button
+          size="large"
+          title="新建家访"
+          onPress={() => navigation.navigate('CreateVisit', { baby })}
+        />
+      </FixedButtonContainer>
     </>
   );
 }
+
+const FixedButtonContainer = styled.View`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.49);
+`;
 
 const routes = [
   { key: 'Visit', title: '家访记录' },
