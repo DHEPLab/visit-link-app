@@ -1,10 +1,10 @@
 import React from 'react';
-import { styled } from '../utils/styled';
+import { styled, px2dp } from '../utils/styled';
 
-export default function ({ label, children }) {
+export default function ({ label, children, labelWidth = 50 }) {
   return (
     <StaticField>
-      {label && <Label>{label}</Label>}
+      {label && <Label labelWidth={labelWidth}>{label}</Label>}
       <Value>{children}</Value>
     </StaticField>
   );
@@ -18,7 +18,7 @@ const StaticField = styled.View`
 const Label = styled.Text`
   color: #8e8e93;
   font-size: 10px;
-  width: 50px;
+  width: ${({ labelWidth }) => px2dp(labelWidth)}px;
   text-align: right;
 `;
 

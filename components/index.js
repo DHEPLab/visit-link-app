@@ -18,3 +18,4 @@ export { default as BabyLine } from './BabyLine';
 export { default as BottomRightBackground } from './BottomRightBackground';
 export { default as ModuleItem } from './ModuleItem';
 export { default as VisitCard } from './VisitCard';
+export { default as LargeButtonContainer } from './LargeButtonContainer';

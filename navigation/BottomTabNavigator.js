@@ -16,7 +16,7 @@ import SignIn from '../screens/SignIn';
 import Visits from '../screens/Visits';
 import CreateVisit from '../screens/CreateVisit';
 import PickBaby from '../screens/PickBaby';
-import PickDatetime from '../screens/PickDatetime';
+import PickVisitTime from '../screens/PickVisitTime';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
@@ -31,9 +31,9 @@ const screens = [
     component: PickBaby,
   },
   {
-    name: 'PickDatetime',
+    name: 'PickVisitTime',
     title: '选择家访日期',
-    component: PickDatetime,
+    component: PickVisitTime,
   },
   {
     name: 'CreateVisit',
