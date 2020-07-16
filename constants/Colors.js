@@ -1,10 +1,12 @@
+const colors = ['#FF9472', '#F2709C'];
+
 export default {
+  colors,
   linearGradient: {
     start: [0, 0],
     end: [1, 1],
-    colors: ['#FF9472', '#F2709C'],
+    colors,
   },
-  colors: ['#FF9472', '#F2709C'],
   theme: {
     dark: false,
     colors: {
@@ -30,6 +32,32 @@ export default {
   visitStatusBorder: {
     DONE: '#FFEDE2',
     UNDONE: '#FCD4E2',
+  },
+  calendar: {
+    backgroundColor: '#ffffff',
+    calendarBackground: '#ffffff',
+    textSectionTitleColor: '#b6c1cd',
+    textSectionTitleDisabledColor: '#d9e1e8',
+    selectedDayBackgroundColor: '#F2709C',
+    selectedDayTextColor: '#ffffff',
+    todayTextColor: '#F2709C',
+    dayTextColor: '#2d4150',
+    textDisabledColor: '#d9e1e8',
+    dotColor: '#F2709C',
+    selectedDotColor: '#ffffff',
+    arrowColor: '#FF794F',
+    disabledArrowColor: '#d9e1e8',
+    monthTextColor: '#FF794F',
+    indicatorColor: 'blue',
+    textDayFontFamily: 'monospace',
+    textMonthFontFamily: 'monospace',
+    textDayHeaderFontFamily: 'monospace',
+    textDayFontWeight: '300',
+    textMonthFontWeight: 'bold',
+    textDayHeaderFontWeight: '300',
+    textDayFontSize: 16,
+    textMonthFontSize: 16,
+    textDayHeaderFontSize: 16,
   },
   // tintColor,
   // tabIconDefault: '#ccc',

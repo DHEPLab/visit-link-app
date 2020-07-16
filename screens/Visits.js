@@ -15,6 +15,7 @@ export default function Visits() {
   const [now] = useState(moment());
   const { navigate } = useNavigation();
   const [showCalendar, setShowCalendar] = useState(false);
+  const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
   const [visits, setVisits] = useState([
     {
       id: 1,
@@ -43,26 +44,31 @@ export default function Visits() {
     <>
       <Header {...Colors.linearGradient}>
         <Title>家访日程安排</Title>
-        <VisitDate>{now.format('YYYY年MM月DD日')}</VisitDate>
+        <VisitDate>{moment(selected).format('YYYY年MM月DD日')}</VisitDate>
       </Header>
+
       {showCalendar && (
         <CalendarContainer>
           <CalendarList
-            // Enable horizontal scrolling, default = false
             horizontal={true}
-            // Enable paging on horizontal, default = false
             pagingEnabled={true}
             hideArrows={false}
-            markedDates={{
-              '2020-07-17': { marked: true },
-            }}
-            // Set custom calendarWidth.
             calendarWidth={px2dp(400)}
             monthFormat={'yyyy年 M月'}
             current={now.format('YYYY-MM-DD')}
+            theme={Colors.calendar}
+            selected={selected}
+            markedDates={{
+              [selected]: { selected: true },
+              '2020-07-17': { marked: true },
+            }}
+            onDayPress={(day) => {
+              setSelected(day.dateString);
+            }}
           />
         </CalendarContainer>
       )}
+
       <TouchableOpacity onPress={() => setShowCalendar(!showCalendar)} activeOpacity={0.8}>
         <ExtendCalendar>
           <ExtendLabel>
