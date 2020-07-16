@@ -4,8 +4,8 @@ import { styled } from '../utils/styled';
 export default function Status({ color, borderColor, title }) {
   return (
     <Container>
-      <Point color={color} borderColor={borderColor} />
-      <Title color={color}>{title}</Title>
+      <Point color={color || '#FF794F'} borderColor={borderColor || '#FFEDE2'} />
+      <Title color={color || '#FF794F'}>{title}</Title>
     </Container>
   );
 }

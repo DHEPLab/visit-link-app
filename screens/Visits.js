@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import moment from 'moment';
+import { FlatList, RefreshControl } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { Button } from '../components';
+import { Button, VisitCard } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -14,12 +15,35 @@ export default function Visits() {
   const [now] = useState(moment());
   const { navigate } = useNavigation();
   const [showCalendar, setShowCalendar] = useState(false);
+  const [visits, setVisits] = useState([
+    {
+      id: 1,
+      status: 'UNDONE',
+      name: '12323123',
+      babyName: '张三李四',
+      date: new Date(),
+    },
+    {
+      id: 2,
+      status: 'DONE',
+      name: '12323123',
+      babyName: '张三李',
+      date: new Date(),
+    },
+    {
+      id: 3,
+      status: 'UNDONE',
+      name: '123223',
+      babyName: '三李四',
+      date: new Date(),
+    },
+  ]);
 
   return (
     <>
       <Header {...Colors.linearGradient}>
         <Title>家访日程安排</Title>
-        <Date>{now.format('YYYY年MM月DD日')}</Date>
+        <VisitDate>{now.format('YYYY年MM月DD日')}</VisitDate>
       </Header>
       {showCalendar && (
         <CalendarContainer>
@@ -55,9 +79,19 @@ export default function Visits() {
       <ButtonContainer>
         <Button title="新建家访" onPress={() => navigate('CreateVisit')} />
       </ButtonContainer>
+      <StyledFlatList
+        refreshControl={<RefreshControl colors={Colors.colors} />}
+        data={visits}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={({ item }) => <VisitCard onPress={() => {}} value={item} />}
+      />
     </>
   );
 }
+
+const StyledFlatList = styled(FlatList)`
+  padding: 0 28px;
+`;
 
 const CalendarContainer = styled.View`
   border-bottom-width: 1px;
@@ -87,6 +121,8 @@ const ExtendCalendar = styled.View`
 
 const ButtonContainer = styled.View`
   margin: 20px 0;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const Header = styled(LinearGradient)`
@@ -102,7 +138,7 @@ const Title = styled.Text`
   font-weight: bold;
 `;
 
-const Date = styled.Text`
+const VisitDate = styled.Text`
   color: #fff;
   font-size: 12px;
   align-self: center;
