@@ -1,21 +1,10 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { BabyStage } from '../constants/enums';
+import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
 export default function BabyLine({ name, gender, stage, month, identity }) {
-  function genderIcon(value) {
-    switch (value) {
-      case 'MALE':
-        return 'gender-male';
-      case 'FEMALE':
-        return 'gender-female';
-      default:
-        return 'gender-male-female';
-    }
-  }
-
   function genderColor(value) {
     switch (value) {
       case 'MALE':
@@ -33,7 +22,7 @@ export default function BabyLine({ name, gender, stage, month, identity }) {
       <Name>{name}</Name>
       <Gender>
         <MaterialCommunityIcons
-          name={genderIcon(gender)}
+          name={GenderIcon[gender]}
           size={px2dp(12)}
           color={genderColor(gender)}
         />

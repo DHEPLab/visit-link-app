@@ -33,7 +33,7 @@ export default function Visits() {
     },
     {
       id: 3,
-      status: 'UNDONE',
+      status: 'NOT_STARTED',
       name: '123223',
       babyName: '三李四',
       date: new Date(),
@@ -89,7 +89,7 @@ export default function Visits() {
         refreshControl={<RefreshControl colors={Colors.colors} />}
         data={visits}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <VisitCard onPress={() => {}} value={item} />}
+        renderItem={({ item }) => <VisitCard onPress={() => navigate('Visit')} value={item} />}
       />
     </>
   );

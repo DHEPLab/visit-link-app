@@ -13,6 +13,7 @@ import Home from '../screens/Home';
 import Me from '../screens/Me';
 import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
+import Visit from '../screens/Visit';
 import Visits from '../screens/Visits';
 import CreateVisit from '../screens/CreateVisit';
 import PickBaby from '../screens/PickBaby';
@@ -34,6 +35,11 @@ const screens = [
     name: 'PickVisitTime',
     title: '选择家访日期',
     component: PickVisitTime,
+  },
+  {
+    name: 'Visit',
+    title: '家访详情',
+    component: Visit,
   },
   {
     name: 'CreateVisit',

@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { Image, Text, View, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { FlatList, RefreshControl, Image, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useFetch } from '../utils';
 import { Colors } from '../constants';
-import { styled } from '../utils/styled';
-import { Gender, BabyStage, FamilyTies } from '../constants/enums';
+import { styled, px2dp } from '../utils/styled';
+import { GenderIcon, BabyStage, FamilyTies } from '../constants/enums';
 import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField } from '../components';
 
-export default function () {
+export default function Baby() {
   const navigation = useNavigation();
   const { params } = useRoute();
   const [index, setIndex] = useState(0);
@@ -22,9 +23,8 @@ export default function () {
     <>
       <Header {...Colors.linearGradient}>
         <GhostNavigatorHeader navigation={navigation} title="宝宝详情" />
-        {/*TOTO Change image*/}
         <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
-        <Baby>
+        <BabyContainer>
           <NameContainer>
             <Name>{params.name}</Name>
             <Identity>ID: {params.identity}</Identity>
@@ -32,12 +32,17 @@ export default function () {
           <InfoContainer>
             <View>
               <Age>
-                {Gender[params.gender]} {BabyStage[params.stage]}/{params.month}个月
+                <MaterialCommunityIcons
+                  name={GenderIcon[params.gender]}
+                  size={px2dp(12)}
+                  color="#fff"
+                />{' '}
+                {BabyStage[params.stage]} {params.month}个月
               </Age>
             </View>
             {/* <Button ghost title="修改资料" /> */}
           </InfoContainer>
-        </Baby>
+        </BabyContainer>
       </Header>
       <TabView
         navigationState={{ index, routes }}
@@ -84,7 +89,7 @@ const InfoContainer = styled.View`
   justify-content: space-between;
 `;
 
-const Baby = styled.View`
+const BabyContainer = styled.View`
   padding: 0 28px;
 `;
 
@@ -112,11 +117,60 @@ const Header = styled(LinearGradient)`
 `;
 
 function Visit() {
+  const [tab, setTab] = useState('NOT_STARTED');
+  const [visits, setVisits] = useState([]);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (tab === 'NOT_STARTED') {
+      setVisits([
+        {
+          status: 'NOT_STARTED',
+          name: '课堂名称课堂名称课堂名称课堂名称',
+          date: new Date(),
+        },
+      ]);
+    } else {
+      setVisits([
+        {
+          id: 1,
+          status: 'UNDONE',
+          name: '课堂名称称课堂名称课堂名称',
+          date: new Date(),
+        },
+        {
+          id: 2,
+          status: 'EXPIRED',
+          name: '课堂名称称课堂名称课堂名称',
+          date: new Date(),
+        },
+        {
+          id: 3,
+          status: 'DONE',
+          name: '课堂名称称课堂名称课堂名称',
+          date: new Date(),
+        },
+      ]);
+    }
+  }, [tab]);
+
   return (
     <VisitsContainer>
-      <VisitCard
-        value={{ status: 'UNDONE', name: '课堂名称课堂名称课堂名称课堂名称', date: new Date() }}
-        onPress={() => {}}
+      <VisitTabs>
+        <TouchableOpacity onPress={() => setTab('NOT_STARTED')} activeOpacity={0.8}>
+          <VisitTab active={tab === 'NOT_STARTED'}>计划中的家访</VisitTab>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setTab('STARTED')} activeOpacity={0.8}>
+          <VisitTab active={tab !== 'NOT_STARTED'}>已完成家访</VisitTab>
+        </TouchableOpacity>
+      </VisitTabs>
+      <FlatList
+        refreshControl={<RefreshControl colors={Colors.colors} />}
+        data={visits}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={({ item }) => (
+          <VisitCard onPress={() => navigation.navigate('Visit')} value={item} />
+        )}
       />
     </VisitsContainer>
   );
@@ -124,6 +178,24 @@ function Visit() {
 
 const VisitsContainer = styled.View`
   padding: 20px 28px;
+`;
+
+const VisitTabs = styled.View`
+  padding-bottom: 24px;
+  flex-direction: row;
+`;
+
+const VisitTab = styled.Text`
+  font-size: 12px;
+  margin-right: 16px;
+  color: #525252;
+  ${({ active }) =>
+    active &&
+    `
+    font-weight: bold;
+    border-bottom-width: 2px;
+    border-color: #FFC3A0;
+  `}
 `;
 
 function Family({ baby, carers }) {

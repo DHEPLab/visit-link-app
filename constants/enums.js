@@ -10,6 +10,19 @@ export const Gender = {
   UNKNOWN: '未知',
 };
 
+export const GenderIcon = {
+  MALE: 'gender-male',
+  FEMALE: 'gender-female',
+  UNKNOWN: 'gender-male-female',
+};
+
+export const VisitStatus = {
+  NOT_STARTED: '未开始',
+  UNDONE: '未完成',
+  EXPIRED: '已过期',
+  DONE: '已完成',
+};
+
 export const BabyStage = {
   EDC: '预产期',
   BIRTH: '婴幼期',

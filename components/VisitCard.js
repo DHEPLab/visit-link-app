@@ -6,6 +6,7 @@ import StaticField from './StaticField';
 import Status from './Status';
 import { formatVisitTime } from '../utils';
 import { Colors } from '../constants';
+import { VisitStatus } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -14,7 +15,7 @@ export default function VisitCard({ onPress, value }) {
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <Container>
         <Status
-          title={'待开始'}
+          title={VisitStatus[value.status]}
           borderColor={Colors.visitStatusBorder[value.status]}
           color={Colors.visitStatus[value.status]}
         />

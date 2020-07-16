@@ -26,12 +26,16 @@ export default {
     UNDONE: '#FCD4E2',
   },
   visitStatus: {
+    NOT_STARTED: '#F2709C',
+    UNDONE: '#FF2E2E',
+    EXPIRED: '#B2B2B2',
     DONE: '#FF794F',
-    UNDONE: '#F2709C',
   },
   visitStatusBorder: {
+    NOT_STARTED: '#FCD4E2',
+    UNDONE: '#FFEAEA',
+    EXPIRED: '#EEEEEE',
     DONE: '#FFEDE2',
-    UNDONE: '#FCD4E2',
   },
   calendar: {
     backgroundColor: '#ffffff',
