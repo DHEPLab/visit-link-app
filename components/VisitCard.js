@@ -1,7 +1,11 @@
 import React from 'react';
+import moment from 'moment';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { StaticForm, StaticField } from './';
+import StaticForm from './StaticForm';
+import StaticField from './StaticField';
+import Status from './Status';
+import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -9,11 +13,17 @@ export default function VisitCard({ onPress, value }) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <Container>
-        <Status></Status>
+        <Status
+          title={'待开始'}
+          borderColor={Colors.visitStatusBorder[value.status]}
+          color={Colors.visitStatus[value.status]}
+        />
         <FormContainer>
           <StaticForm>
-            <StaticField label="课堂名称">课堂名称课堂名称课堂名称课堂名称</StaticField>
-            <StaticField label="家访时间">2020年05月22日 /上午10:00</StaticField>
+            <StaticField label="课堂名称">{value.name}</StaticField>
+            <StaticField label="家访时间">
+              {moment(value.date).format('YYYY年MM月DD日')}
+            </StaticField>
           </StaticForm>
         </FormContainer>
         <MaterialIcons name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />
@@ -35,5 +45,3 @@ const FormContainer = styled.View`
   flex: 1;
   padding-right: 30px;
 `;
-
-const Status = styled.View``;

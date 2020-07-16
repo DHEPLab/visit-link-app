@@ -114,7 +114,10 @@ const Header = styled(LinearGradient)`
 function Visit() {
   return (
     <VisitsContainer>
-      <VisitCard onPress={() => {}} />
+      <VisitCard
+        value={{ status: 'UNDONE', name: '课堂名称课堂名称课堂名称课堂名称', date: new Date() }}
+        onPress={() => {}}
+      />
     </VisitsContainer>
   );
 }

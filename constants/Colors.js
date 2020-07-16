@@ -23,6 +23,14 @@ export default {
     DONE: '#FFEDE2',
     UNDONE: '#FCD4E2',
   },
+  visitStatus: {
+    DONE: '#FF794F',
+    UNDONE: '#F2709C',
+  },
+  visitStatusBorder: {
+    DONE: '#FFEDE2',
+    UNDONE: '#FCD4E2',
+  },
   // tintColor,
   // tabIconDefault: '#ccc',
   // tabIconSelected: tintColor,
