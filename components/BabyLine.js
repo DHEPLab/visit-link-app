@@ -23,7 +23,7 @@ export default function BabyLine({ name, gender, stage, month, identity }) {
       case 'FEMALE':
         return '#F2709C';
       default:
-        return 'black';
+        return '#CECECE';
     }
   }
 
@@ -39,7 +39,7 @@ export default function BabyLine({ name, gender, stage, month, identity }) {
         />
       </Gender>
       <Age>
-        {BabyStage[stage]}/{month}月
+        {BabyStage[stage]} {month}个月
       </Age>
       <Identity>ID:{identity}</Identity>
     </Baby>
@@ -58,6 +58,7 @@ const Status = styled.Text`
 const Age = styled.Text`
   color: #525252;
   font-size: 8px;
+  margin-right: 16px;
 `;
 
 const Baby = styled.View`
@@ -70,6 +71,7 @@ const Name = styled.Text`
   font-weight: bold;
   font-size: 12px;
   margin-right: 12px;
+  flex: 1;
 `;
 
 const Gender = styled(Age)`

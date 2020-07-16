@@ -26,7 +26,7 @@ export default function Babies() {
       </Header>
       <ListHeader>
         <Title>宝宝列表</Title>
-        <Button title="添加宝宝" />
+        {/* <Button title="添加宝宝" /> */}
       </ListHeader>
       <FlatList
         refreshControl={
