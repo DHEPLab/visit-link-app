@@ -1,49 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
+import { formatVisitTime } from '../utils';
 import { styled } from '../utils/styled';
-import { useBoolState } from '../utils';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
-export default function CreateVisit() {
-  const [date, setDate] = useState(new Date());
-  const { navigate } = useNavigation();
-  const [show, openPicker] = useBoolState();
+export default function CreateVisit({ navigation, route }) {
+  const [baby, setBaby] = useState();
+  const [visitTime, setVisitTime] = useState();
 
-  function onChange(event, selectedDate) {
-    console.log(event, selectedDate);
-  }
+  useEffect(() => {
+    if (route.params?.baby) {
+      setBaby(route.params?.baby);
+    }
+  }, [route.params?.baby]);
+
+  useEffect(() => {
+    if (route.params?.visitTime) {
+      setVisitTime(route.params?.visitTime);
+    }
+  }, [route.params?.visitTime]);
 
   return (
     <Container>
-      <Card title="家访时间" right={<Button title="修改" onPress={openPicker} />}>
-        <StaticForm>
-          <StaticField label="家访时间">2020年05月22日 /上午10:00</StaticField>
-        </StaticForm>
+      <Card
+        title="家访时间"
+        hideBody={!visitTime}
+        right={
+          <Button
+            title="修改"
+            onPress={() => navigation.navigate('PickVisitTime')}
+            hideBody={!visitTime}
+          />
+        }
+      >
+        {visitTime && (
+          <StaticForm>
+            <StaticField label="家访时间">{formatVisitTime(visitTime)}</StaticField>
+          </StaticForm>
+        )}
       </Card>
       <Card
         title="家访对象"
-        right={<Button title="选择" onPress={() => navigate('PickBaby')} />}
+        hideBody={!baby}
+        right={<Button title="选择" onPress={() => navigation.navigate('PickBaby')} />}
         background={require('../assets/images/baby-bg.png')}
       >
-        <BabyLineContainer>
-          <BabyLine
-            name="张三李四张三李四张三"
-            gender="MALE"
-            stage="EDC"
-            month={10}
-            identity="123456"
-          />
-        </BabyLineContainer>
-        <StaticForm>
-          <StaticField label="主照料人">张三李四张三李四</StaticField>
-          <StaticField label="联系电话">18616881618</StaticField>
-          <StaticField label="微信号码">18616881618</StaticField>
-          <StaticField label="所在区域">吉林省/延边朝鲜自治州/安图县</StaticField>
-          <StaticField label="详细地址">朝阳街826号</StaticField>
-        </StaticForm>
+        {baby && (
+          <>
+            <BabyLineContainer>
+              <BabyLine {...baby} />
+            </BabyLineContainer>
+            <StaticForm>
+              <StaticField label="主照料人">{baby.carerName}</StaticField>
+              <StaticField label="联系电话">{baby.carerPhone}</StaticField>
+              {/* <StaticField label="微信号码">18616881618</StaticField>
+              <StaticField label="所在区域">吉林省/延边朝鲜自治州/安图县</StaticField>
+              <StaticField label="详细地址">朝阳街826号</StaticField> */}
+            </StaticForm>
+          </>
+        )}
       </Card>
       <Card title="课程安排">
         <LessonName>课堂名称</LessonName>
@@ -53,15 +69,6 @@ export default function CreateVisit() {
           <StaticField label="模块03">模块名称</StaticField>
         </StaticForm>
       </Card>
-      {show && (
-        <DateTimePicker
-          value={date}
-          mode={'date'}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-        />
-      )}
       <ButtonContainer>
         <Button title="提交" size="large" />
       </ButtonContainer>

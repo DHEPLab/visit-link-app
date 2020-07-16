@@ -2,33 +2,39 @@ import React from 'react';
 import { styled } from '../utils/styled';
 import BottomRightBackground from './BottomRightBackground';
 
-export default function ({
+export default function Card({
   title,
   children,
   right,
   background,
   backgroundWidth = 88,
   backgroundHeight = 88,
+  hideBody,
 }) {
   return (
-    <Card>
-      {background && (
-        <BottomRightBackground
-          width={backgroundWidth}
-          height={backgroundHeight}
-          source={background}
-        />
-      )}
+    <Container>
       <Header>
         <Title>{title}</Title>
         {right}
       </Header>
-      <Body>{children}</Body>
-    </Card>
+      {!hideBody && (
+        <>
+          {background && (
+            <BottomRightBackground
+              width={backgroundWidth}
+              height={backgroundHeight}
+              source={background}
+            />
+          )}
+
+          <Body>{children}</Body>
+        </>
+      )}
+    </Container>
   );
 }
 
-const Card = styled.View`
+const Container = styled.View`
   width: 100%;
   background: #fff;
   border-radius: 8px;
@@ -36,13 +42,11 @@ const Card = styled.View`
 `;
 
 const Header = styled.View`
-  height: 40px;
+  height: 39px;
   padding: 0 24px;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  border-bottom-width: 1px;
-  border-color: #ffede2;
 `;
 
 const Title = styled.Text`
@@ -52,5 +56,7 @@ const Title = styled.Text`
 `;
 
 const Body = styled.View`
+  border-top-width: 1px;
+  border-color: #ffede2;
   padding: 12px 24px;
 `;

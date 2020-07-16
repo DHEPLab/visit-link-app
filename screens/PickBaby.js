@@ -5,7 +5,7 @@ import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 import { BabyCard } from '../components';
 
-export default function PickBaby() {
+export default function PickBaby({ navigation }) {
   const [babies] = useState([
     {
       id: 8,
@@ -29,6 +29,10 @@ export default function PickBaby() {
     },
   ]);
 
+  function pick(baby) {
+    navigation.navigate('CreateVisit', { baby });
+  }
+
   return (
     <Container>
       <Hint>根据系统规则，部分宝宝在该时间无法安排家访，因此不可选。</Hint>
@@ -36,7 +40,7 @@ export default function PickBaby() {
         refreshControl={<RefreshControl colors={Colors.colors} />}
         data={babies}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <BabyCard onPress={() => {}} {...item} />}
+        renderItem={({ item }) => <BabyCard onPress={() => pick(item)} {...item} />}
       />
     </Container>
   );
