@@ -59,8 +59,8 @@ export default function Visits() {
             theme={Colors.calendar}
             selected={selected}
             markedDates={{
+              '2020-07-14': { marked: true },
               [selected]: { selected: true },
-              '2020-07-17': { marked: true },
             }}
             onDayPress={(day) => {
               setSelected(day.dateString);
