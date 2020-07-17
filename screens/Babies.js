@@ -11,7 +11,7 @@ import { useFetch } from '../utils';
 
 export default function Babies() {
   const { navigate } = useNavigation();
-  const [babies, refresh, refreshing] = useFetch('/api/baby', {}, []);
+  const [babies, refresh, refreshing] = useFetch('/api/babies', {}, []);
 
   return (
     <>
@@ -26,7 +26,7 @@ export default function Babies() {
       </Header>
       <ListHeader>
         <Title>宝宝列表</Title>
-        <Button title="添加宝宝" />
+        {/* <Button title="添加宝宝" /> */}
       </ListHeader>
       <FlatList
         refreshControl={

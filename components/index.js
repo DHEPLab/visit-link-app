@@ -14,3 +14,8 @@ export { default as StaticForm } from './StaticForm';
 export { default as StaticField } from './StaticField';
 export { default as StyledText } from './StyledText';
 export { default as TabBarIcon } from './TabBarIcon';
+export { default as BabyLine } from './BabyLine';
+export { default as BottomRightBackground } from './BottomRightBackground';
+export { default as ModuleItem } from './ModuleItem';
+export { default as VisitCard } from './VisitCard';
+export { default as LargeButtonContainer } from './LargeButtonContainer';

@@ -5,18 +5,9 @@ import { formatVisitTime } from '../utils';
 import { styled } from '../utils/styled';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
-export default function Visit({ navigation, route }) {
-  const [baby, setBaby] = useState({
-    id: 7,
-    name: 'baby3',
-    identity: 'baby3',
-    gender: 'FEMALE',
-    stage: 'BIRTH',
-    carerName: 'eeeee333',
-    carerPhone: '15738839999',
-    month: 2,
-  });
-  const [visitTime, setVisitTime] = useState(new Date());
+export default function CreateVisit({ navigation, route }) {
+  const [baby, setBaby] = useState();
+  const [visitTime, setVisitTime] = useState();
 
   useEffect(() => {
     if (route.params?.baby) {
@@ -49,7 +40,12 @@ export default function Visit({ navigation, route }) {
           </StaticForm>
         )}
       </Card>
-      <Card title="家访对象" hideBody={!baby} background={require('../assets/images/baby-bg.png')}>
+      <Card
+        title="家访对象"
+        hideBody={!baby}
+        right={<Button title="选择" onPress={() => navigation.navigate('PickBaby')} />}
+        background={require('../assets/images/baby-bg.png')}
+      >
         {baby && (
           <>
             <BabyLineContainer>
@@ -73,6 +69,9 @@ export default function Visit({ navigation, route }) {
           <StaticField label="模块03">模块名称</StaticField>
         </StaticForm>
       </Card>
+      <ButtonContainer>
+        <Button title="提交" size="large" />
+      </ButtonContainer>
     </Container>
   );
 }
@@ -80,6 +79,10 @@ export default function Visit({ navigation, route }) {
 const Container = styled(ScrollView)`
   padding: 20px 28px;
   height: 100%;
+`;
+
+const ButtonContainer = styled.View`
+  padding-top: 30px;
 `;
 
 const BabyLineContainer = styled.View`

@@ -9,7 +9,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "hf",
     "splash": {
-      "image": "./assets/images/splash-full.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "cover"
     },
     "updates": {

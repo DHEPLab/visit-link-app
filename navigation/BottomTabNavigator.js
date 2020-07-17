@@ -1,7 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+
+import { TabBarIcon, NavigatorHeader } from '../components';
+import { px2dp, styled } from '../utils/styled';
 
 import Babies from '../screens/Babies';
 import Baby from '../screens/Baby';
@@ -11,13 +14,53 @@ import Me from '../screens/Me';
 import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
-import { TabBarIcon, NavigatorHeader } from '../components';
-import { px2dp, styled } from '../utils/styled';
+import Visits from '../screens/Visits';
+import CreateVisit from '../screens/CreateVisit';
+import PickBaby from '../screens/PickBaby';
+import PickVisitTime from '../screens/PickVisitTime';
+import LessonIntro from '../screens/LessonIntro';
+import LessonModules from '../screens/LessonModules';
+import Module from '../screens/Module';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const screens = [
+  {
+    name: 'PickBaby',
+    title: '选择宝宝',
+    component: PickBaby,
+  },
+  {
+    name: 'PickVisitTime',
+    title: '选择家访日期',
+    component: PickVisitTime,
+  },
+  {
+    name: 'Visit',
+    title: '家访详情',
+    component: Visit,
+  },
+  {
+    name: 'CreateVisit',
+    title: '新建家访',
+    component: CreateVisit,
+  },
+  {
+    name: 'Module',
+    component: Module,
+    headerShown: false,
+  },
+  {
+    name: 'LessonModules',
+    component: LessonModules,
+    headerShown: false,
+  },
+  {
+    name: 'LessonIntro',
+    component: LessonIntro,
+    headerShown: false,
+  },
   {
     name: 'Session',
     title: '会话',
@@ -40,7 +83,11 @@ export default function () {
 
   return (
     <Stack.Navigator>
-      {user.userToken != null ? (
+      {user.userToken == null ? (
+        <>
+          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+        </>
+      ) : (
         <>
           <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
           {screens.map((screen) => (
@@ -55,10 +102,6 @@ export default function () {
               }}
             />
           ))}
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
         </>
       )}
     </Stack.Navigator>
@@ -94,8 +137,8 @@ function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name="Visit"
-        component={Visit}
+        name="Visits"
+        component={Visits}
         options={{
           tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>家访安排</TabBarLabel>,
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="visit" />,
