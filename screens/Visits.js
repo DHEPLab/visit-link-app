@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import Http from '../utils/http';
-import { useManualFetch } from '../utils';
+import { useManualFetchArray, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { Button, VisitCard, NoData } from '../components';
@@ -17,15 +17,13 @@ export default function Visits({ navigation }) {
   const [now] = useState(moment());
   const { navigate } = useNavigation();
 
-  const [markedDates, refreshMarkedDates] = useManualFetch('/api/visits/marked-dates', {}, []);
+  const [visits, setVisits] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
-  const [visits, setVisits] = useState([]);
+  const [markedDates, refreshMarkedDates] = useManualFetchArray('/api/visits/marked-dates');
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      refreshMarkedDates();
-    });
+    const unsubscribe = navigation.addListener('focus', refreshMarkedDates);
     return unsubscribe;
   }, [navigation]);
 
@@ -35,16 +33,6 @@ export default function Visits({ navigation }) {
       date: selected,
     }).then(setVisits);
   }, [selected, markedDates]);
-
-  function calenderMarkedDates() {
-    const _markedDates = {};
-    markedDates.forEach((datum) => {
-      _markedDates[datum] = {
-        marked: true,
-      };
-    });
-    return _markedDates;
-  }
 
   return (
     <>
@@ -64,8 +52,12 @@ export default function Visits({ navigation }) {
             current={now.format('YYYY-MM-DD')}
             theme={Colors.calendar}
             markedDates={{
-              ...calenderMarkedDates(),
-              [selected]: { selected: true, marked: !!markedDates[selected], dotColor: '#fff' },
+              ...calenderMarkedDates(markedDates),
+              [selected]: {
+                selected: true,
+                dotColor: '#fff',
+                marked: markedDates?.includes(selected),
+              },
             }}
             onDayPress={(day) => {
               setSelected(day.dateString);

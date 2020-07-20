@@ -10,6 +10,16 @@ export function formatVisitTime(date) {
   );
 }
 
+export function calenderMarkedDates(markedDates) {
+  const _markedDates = {};
+  markedDates.forEach((datum) => {
+    _markedDates[datum] = {
+      marked: true,
+    };
+  });
+  return _markedDates;
+}
+
 export function useFetch(url, params, initialState = {}) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialState);
@@ -25,6 +35,10 @@ export function useFetch(url, params, initialState = {}) {
   return [data, load, loading];
 }
 
+export function useFetchArray(url, params) {
+  return useFetch(url, params, []);
+}
+
 export function useManualFetch(url, params, initialState = {}) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialState);
@@ -37,6 +51,10 @@ export function useManualFetch(url, params, initialState = {}) {
   }
 
   return [data, load, loading];
+}
+
+export function useManualFetchArray(url, params) {
+  return useManualFetch(url, params, []);
 }
 
 export function useBoolState(initialState = false) {

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import Http from '../utils/http';
-import { useBoolState } from '../utils';
+import { useFetchArray, useBoolState, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { StaticField, StaticForm, LargeButtonContainer, Button } from '../components';
@@ -12,25 +11,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function PickVisitTime({ navigation }) {
   const [now] = useState(moment());
-  const [markedDates, setMarkedDates] = useState();
+  const [markedDates] = useFetchArray('/api/visits/marked-dates');
 
   const [mode, setMode] = useState('time');
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
 
   const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
   const [time, setTime] = useState(new Date());
-
-  useEffect(() => {
-    Http.get('/api/visits/marked-dates').then((data) => {
-      const _markedDates = {};
-      data.forEach((datum) => {
-        _markedDates[datum] = {
-          marked: true,
-        };
-      });
-      setMarkedDates(_markedDates);
-    });
-  }, []);
 
   function handleSubmit() {
     navigation.navigate('CreateVisit', {
@@ -71,11 +58,11 @@ export default function PickVisitTime({ navigation }) {
           current={now.format('YYYY-MM-DD')}
           theme={Colors.calendar}
           markedDates={{
-            ...markedDates,
+            ...calenderMarkedDates(markedDates),
             [date]: {
               selected: true,
-              marked: markedDates && !!markedDates[date],
               dotColor: '#fff',
+              marked: markedDates?.includes(date),
             },
           }}
           onDayPress={(day) => {
@@ -88,7 +75,8 @@ export default function PickVisitTime({ navigation }) {
         <CardField>
           <StaticForm>
             <StaticField label="选择家访时间" labelWidth={60}>
-              {moment(time).format('HH:mm')}
+              {(moment(time).format('LT').includes('AM') ? '上午' : '下午') +
+                moment(time).format('h:mm')}
             </StaticField>
           </StaticForm>
         </CardField>
