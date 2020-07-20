@@ -4,30 +4,10 @@ import { FlatList, RefreshControl } from 'react-native';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 import { BabyCard } from '../components';
+import { useFetch } from '../utils';
 
 export default function PickBaby({ navigation }) {
-  const [babies] = useState([
-    {
-      id: 8,
-      name: 'sdasd',
-      identity: '123123123',
-      gender: 'UNKNOWN',
-      stage: 'EDC',
-      carerName: null,
-      carerPhone: null,
-      month: 10,
-    },
-    {
-      id: 7,
-      name: 'baby3',
-      identity: 'baby3',
-      gender: 'FEMALE',
-      stage: 'BIRTH',
-      carerName: 'eeeee333',
-      carerPhone: '15738839999',
-      month: 2,
-    },
-  ]);
+  const [babies, refresh, refreshing] = useFetch('/api/babies/visit-available');
 
   function pick(baby) {
     navigation.navigate('CreateVisit', { baby });
@@ -37,7 +17,13 @@ export default function PickBaby({ navigation }) {
     <Container>
       <Hint>根据系统规则，部分宝宝在该时间无法安排家访，因此不可选。</Hint>
       <FlatList
-        refreshControl={<RefreshControl colors={Colors.colors} />}
+        refreshControl={
+          <RefreshControl
+            colors={Colors.colors}
+            onRefresh={() => refresh()}
+            refreshing={refreshing}
+          />
+        }
         data={babies}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => <BabyCard onPress={() => pick(item)} {...item} />}

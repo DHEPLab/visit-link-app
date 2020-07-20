@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { ScrollView } from 'react-native';
 
+import Http from '../utils/http';
 import { formatVisitTime } from '../utils';
 import { styled } from '../utils/styled';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
 export default function CreateVisit({ navigation, route }) {
-  const [baby, setBaby] = useState();
   const [visitTime, setVisitTime] = useState();
+  const [baby, setBaby] = useState();
+  const [lesson, setLesson] = useState();
 
   useEffect(() => {
     if (route.params?.baby) {
-      setBaby(route.params?.baby);
+      const { baby } = route.params;
+      Http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+      setBaby(baby);
     }
   }, [route.params?.baby]);
 
@@ -20,6 +25,14 @@ export default function CreateVisit({ navigation, route }) {
       setVisitTime(route.params?.visitTime);
     }
   }, [route.params?.visitTime]);
+
+  function handleSubmit() {
+    Http.post('/api/visits', {
+      visitTime: moment(visitTime),
+      babyId: baby.id,
+      lessonId: lesson.id,
+    }).then(navigation.goBack);
+  }
 
   return (
     <Container>
@@ -62,19 +75,34 @@ export default function CreateVisit({ navigation, route }) {
         )}
       </Card>
       <Card title="课程安排">
-        <LessonName>课堂名称</LessonName>
-        <StaticForm>
-          <StaticField label="模块01">模块名称</StaticField>
-          <StaticField label="模块02">模块名称</StaticField>
-          <StaticField label="模块03">模块名称</StaticField>
-        </StaticForm>
+        {lesson ? (
+          <>
+            <LessonName>{lesson.name}</LessonName>
+            <StaticForm>
+              {lesson.moduleNames.map((name, index) => (
+                <StaticField key={name} label={`模块 ${index + 1}`}>
+                  {name}
+                </StaticField>
+              ))}
+            </StaticForm>
+          </>
+        ) : (
+          <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
+        )}
       </Card>
       <ButtonContainer>
-        <Button title="提交" size="large" />
+        <Button
+          onPress={handleSubmit}
+          title="提交"
+          size="large"
+          disabled={!visitTime || !baby || !lesson}
+        />
       </ButtonContainer>
     </Container>
   );
 }
+
+const NoLesson = styled.Text``;
 
 const Container = styled(ScrollView)`
   padding: 20px 28px;
