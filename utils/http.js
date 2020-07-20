@@ -31,6 +31,14 @@ function request(fetchPromise) {
   });
 }
 
+function objToQueryString(obj) {
+  const keyValuePairs = [];
+  for (const key in obj) {
+    keyValuePairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+  }
+  return keyValuePairs.join('&');
+}
+
 export default {
   async auth(token) {
     await AsyncStorage.setItem('JWT_TOKEN', token);
@@ -70,7 +78,7 @@ export default {
   },
   get(url, params) {
     return request(
-      fetch(`${Host}${url}`, {
+      fetch(`${Host}${url}?${objToQueryString(params)}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

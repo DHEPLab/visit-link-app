@@ -1,44 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { FlatList, RefreshControl } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import Http from '../utils/http';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { Button, VisitCard } from '../components';
+import { Button, VisitCard, NoData } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Visits() {
   const [now] = useState(moment());
   const { navigate } = useNavigation();
+  const [markedDates, setMarkedDates] = useState();
   const [showCalendar, setShowCalendar] = useState(false);
   const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
-  const [visits, setVisits] = useState([
-    {
-      id: 1,
-      status: 'UNDONE',
-      name: '12323123',
-      babyName: '张三李四',
-      date: new Date(),
-    },
-    {
-      id: 2,
-      status: 'DONE',
-      name: '12323123',
-      babyName: '张三李',
-      date: new Date(),
-    },
-    {
-      id: 3,
-      status: 'NOT_STARTED',
-      name: '123223',
-      babyName: '三李四',
-      date: new Date(),
-    },
-  ]);
+  const [visits, setVisits] = useState([]);
+
+  useEffect(() => {
+    Http.get('/api/visits/marked-dates').then((data) => {
+      const _markedDates = {};
+      data.forEach((datum) => {
+        _markedDates[datum] = {
+          marked: true,
+        };
+      });
+      setMarkedDates(_markedDates);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (markedDates && !markedDates[selected]) return setVisits([]);
+    Http.get('/api/visits', {
+      date: selected,
+    }).then(setVisits);
+  }, [selected]);
 
   return (
     <>
@@ -57,10 +56,9 @@ export default function Visits() {
             monthFormat={'yyyy年 M月'}
             current={now.format('YYYY-MM-DD')}
             theme={Colors.calendar}
-            selected={selected}
             markedDates={{
-              '2020-07-14': { marked: true },
-              [selected]: { selected: true },
+              ...markedDates,
+              [selected]: { selected: true, marked: !!markedDates[selected], dotColor: '#fff' },
             }}
             onDayPress={(day) => {
               setSelected(day.dateString);
@@ -82,15 +80,21 @@ export default function Visits() {
           />
         </ExtendCalendar>
       </TouchableOpacity>
+
       <ButtonContainer>
         <Button title="新建家访" onPress={() => navigate('CreateVisit')} />
       </ButtonContainer>
-      <StyledFlatList
-        refreshControl={<RefreshControl colors={Colors.colors} />}
-        data={visits}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <VisitCard onPress={() => navigate('Visit')} value={item} />}
-      />
+
+      {visits.length > 0 ? (
+        <StyledFlatList
+          refreshControl={<RefreshControl colors={Colors.colors} />}
+          data={visits}
+          keyExtractor={(item) => item.id + ''}
+          renderItem={({ item }) => <VisitCard onPress={() => navigate('Visit')} value={item} />}
+        />
+      ) : (
+        <NoData title="该日期暂时没有家访安排" />
+      )}
     </>
   );
 }

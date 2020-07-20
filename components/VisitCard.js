@@ -22,8 +22,8 @@ export default function VisitCard({ onPress, value }) {
         <FormContainer>
           <StaticForm>
             {value.babyName && <StaticField label="课堂名称">{value.babyName}</StaticField>}
-            <StaticField label="课堂名称">{value.name}</StaticField>
-            <StaticField label="家访时间">{formatVisitTime(value.date)}</StaticField>
+            <StaticField label="课堂名称">{value.lessonName}</StaticField>
+            <StaticField label="家访时间">{formatVisitTime(value.visitTime)}</StaticField>
           </StaticForm>
         </FormContainer>
         <MaterialIcons name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />
