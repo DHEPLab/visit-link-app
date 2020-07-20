@@ -14,11 +14,9 @@ export function useFetch(url, params, initialState = {}) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialState);
 
-  function load() {
+  function load(search = {}) {
     setLoading(true);
-    Http.get(url, {
-      params,
-    })
+    Http.get(url, { ...params, ...search })
       .then((r) => setData(r))
       .finally((_) => setLoading(false));
   }

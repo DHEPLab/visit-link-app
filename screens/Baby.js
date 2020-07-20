@@ -1,22 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, RefreshControl, Image, View, ScrollView, TouchableOpacity } from 'react-native';
+import { FlatList, Image, View, ScrollView, TouchableOpacity } from 'react-native';
 
 import { useFetch } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FamilyTies } from '../constants/enums';
-import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField } from '../components';
+import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
 
 export default function Baby({ navigation }) {
   const { params } = useRoute();
   const [index, setIndex] = useState(0);
 
+  const [started, setStarted] = useState(false);
+  const [visits, refreshVisits] = useFetch(
+    `/api/babies/${params.id}/visits`,
+    { started: false },
+    []
+  );
+
   const [baby] = useFetch(`/api/babies/${params.id}`);
   const [carers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
+
+  function onChangeVisitTab(_started) {
+    setStarted(_started);
+    refreshVisits({ started: _started });
+  }
 
   return (
     <>
@@ -35,7 +47,7 @@ export default function Baby({ navigation }) {
                   name={GenderIcon[params.gender]}
                   size={px2dp(12)}
                   color="#fff"
-                />{' '}
+                />
                 {BabyStage[params.stage]} {params.month}个月
               </Age>
             </View>
@@ -43,8 +55,15 @@ export default function Baby({ navigation }) {
           </InfoContainer>
         </BabyContainer>
       </Header>
+
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{
+          index,
+          routes: [
+            { key: 'Visits', title: '家访记录' },
+            { key: 'Family', title: '家庭信息' },
+          ],
+        }}
         onIndexChange={setIndex}
         renderTabBar={(props) => (
           <TabBar
@@ -55,10 +74,18 @@ export default function Baby({ navigation }) {
           />
         )}
         renderScene={SceneMap({
-          Visit,
+          Visits: () => (
+            <Visits
+              onChange={onChangeVisitTab}
+              dataSource={visits}
+              started={started}
+              navigation={navigation}
+            />
+          ),
           Family: () => <Family baby={baby} carers={carers} />,
         })}
       />
+
       <FixedButtonContainer>
         <Button
           size="large"
@@ -67,6 +94,71 @@ export default function Baby({ navigation }) {
         />
       </FixedButtonContainer>
     </>
+  );
+}
+
+function Visits({ started, dataSource, onChange, navigation }) {
+  return (
+    <VisitsContainer>
+      <VisitTabs>
+        <TouchableOpacity onPress={() => onChange(false)} activeOpacity={0.8}>
+          <VisitTab active={!started}>计划中的家访</VisitTab>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => onChange(true)} activeOpacity={0.8}>
+          <VisitTab active={started}>已完成家访</VisitTab>
+        </TouchableOpacity>
+      </VisitTabs>
+      {dataSource.length > 0 ? (
+        <FlatList
+          data={dataSource}
+          keyExtractor={(item) => item.id + ''}
+          renderItem={({ item }) => (
+            <VisitCard onPress={() => navigation.navigate('Visit')} value={item} />
+          )}
+        />
+      ) : (
+        <NoData title="抱歉，没有相关结果" />
+      )}
+    </VisitsContainer>
+  );
+}
+
+function Family({ baby, carers }) {
+  return (
+    <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
+      <Card title="备注信息">
+        <StaticField>{baby.remark}</StaticField>
+      </Card>
+      <Card title="地址信息">
+        <StaticField label="所在地区">{baby.area}</StaticField>
+        <StaticField label="详细地址">{baby.location}</StaticField>
+      </Card>
+      <Card title="看护人信息">
+        {carers.map((carer, index) => (
+          <Carer
+            key={carer.id}
+            carer={carer}
+            number={index + 1}
+            noBorder={index === carers.length - 1}
+          />
+        ))}
+      </Card>
+    </CardContainer>
+  );
+}
+
+function Carer({ number, carer, noBorder }) {
+  return (
+    <CarerItem noBorder={noBorder}>
+      <CarerOperation>
+        <CarerNumber>照料人 {number}</CarerNumber>
+        {carer.master && <MasterCarer>主照料人</MasterCarer>}
+      </CarerOperation>
+      <StaticField label="照料人姓名">{carer.name}</StaticField>
+      <StaticField label="亲属关系">{FamilyTies[carer.familyTies]}</StaticField>
+      <StaticField label="联系电话">{carer.phone}</StaticField>
+      <StaticField label="微信号码">{carer.wechat}</StaticField>
+    </CarerItem>
   );
 }
 
@@ -80,11 +172,6 @@ const FixedButtonContainer = styled.View`
   align-items: center;
   background: rgba(255, 255, 255, 0.49);
 `;
-
-const routes = [
-  { key: 'Visit', title: '家访记录' },
-  { key: 'Family', title: '家庭信息' },
-];
 
 const NameContainer = styled.View`
   flex-direction: row;
@@ -133,66 +220,6 @@ const Header = styled(LinearGradient)`
   width: 100%;
 `;
 
-function Visit() {
-  const [tab, setTab] = useState('NOT_STARTED');
-  const [visits, setVisits] = useState([]);
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    if (tab === 'NOT_STARTED') {
-      setVisits([
-        {
-          status: 'NOT_STARTED',
-          name: '课堂名称课堂名称课堂名称课堂名称',
-          date: new Date(),
-        },
-      ]);
-    } else {
-      setVisits([
-        {
-          id: 1,
-          status: 'UNDONE',
-          name: '课堂名称称课堂名称课堂名称',
-          date: new Date(),
-        },
-        {
-          id: 2,
-          status: 'EXPIRED',
-          name: '课堂名称称课堂名称课堂名称',
-          date: new Date(),
-        },
-        {
-          id: 3,
-          status: 'DONE',
-          name: '课堂名称称课堂名称课堂名称',
-          date: new Date(),
-        },
-      ]);
-    }
-  }, [tab]);
-
-  return (
-    <VisitsContainer>
-      <VisitTabs>
-        <TouchableOpacity onPress={() => setTab('NOT_STARTED')} activeOpacity={0.8}>
-          <VisitTab active={tab === 'NOT_STARTED'}>计划中的家访</VisitTab>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setTab('STARTED')} activeOpacity={0.8}>
-          <VisitTab active={tab !== 'NOT_STARTED'}>已完成家访</VisitTab>
-        </TouchableOpacity>
-      </VisitTabs>
-      <FlatList
-        refreshControl={<RefreshControl colors={Colors.colors} />}
-        data={visits}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => (
-          <VisitCard onPress={() => navigation.navigate('Visit')} value={item} />
-        )}
-      />
-    </VisitsContainer>
-  );
-}
-
 const VisitsContainer = styled.View`
   padding: 20px 28px;
 `;
@@ -214,45 +241,6 @@ const VisitTab = styled.Text`
     border-color: #FFC3A0;
   `}
 `;
-
-function Family({ baby, carers }) {
-  return (
-    <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
-      <Card title="备注信息">
-        <StaticField>{baby.remark}</StaticField>
-      </Card>
-      <Card title="地址信息">
-        <StaticField label="所在地区">{baby.area}</StaticField>
-        <StaticField label="详细地址">{baby.location}</StaticField>
-      </Card>
-      <Card title="看护人信息">
-        {carers.map((carer, index) => (
-          <Carer
-            key={carer.id}
-            carer={carer}
-            number={index + 1}
-            noBorder={index === carers.length - 1}
-          />
-        ))}
-      </Card>
-    </CardContainer>
-  );
-}
-
-function Carer({ number, carer, noBorder }) {
-  return (
-    <CarerItem noBorder={noBorder}>
-      <CarerOperation>
-        <CarerNumber>照料人 {number}</CarerNumber>
-        {carer.master && <MasterCarer>主照料人</MasterCarer>}
-      </CarerOperation>
-      <StaticField label="照料人姓名">{carer.name}</StaticField>
-      <StaticField label="亲属关系">{FamilyTies[carer.familyTies]}</StaticField>
-      <StaticField label="联系电话">{carer.phone}</StaticField>
-      <StaticField label="微信号码">{carer.wechat}</StaticField>
-    </CarerItem>
-  );
-}
 
 const CarerOperation = styled.View`
   flex-direction: row;
