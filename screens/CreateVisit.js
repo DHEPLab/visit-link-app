@@ -28,7 +28,7 @@ export default function CreateVisit({ navigation, route }) {
 
   function handleSubmit() {
     Http.post('/api/visits', {
-      visitTime: moment(visitTime),
+      visitTime: moment(visitTime).format('YYYY-MM-DDTHH:mm:ss'),
       babyId: baby.id,
       lessonId: lesson.id,
     }).then(navigation.goBack);
