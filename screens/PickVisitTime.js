@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Http from '../utils/http';
+import { useBoolState } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { StaticField, StaticForm, LargeButtonContainer, Button } from '../components';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function PickVisitTime({ navigation }) {
   const [now] = useState(moment());
   const [markedDates, setMarkedDates] = useState();
-  const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
 
-  function handleSubmit() {
-    navigation.navigate('CreateVisit', { visitTime: `${selected}T10:00` });
-  }
+  const [mode, setMode] = useState('time');
+  const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
+
+  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
     Http.get('/api/visits/marked-dates').then((data) => {
@@ -28,12 +32,31 @@ export default function PickVisitTime({ navigation }) {
     });
   }, []);
 
+  function handleSubmit() {
+    navigation.navigate('CreateVisit', {
+      visitTime: `${date}T${moment(time).format('HH:mm')}`,
+    });
+  }
+
+  function onPressTime() {
+    showTimePicker();
+    // set mode value to trigger render
+    setMode('time');
+  }
+
+  function onChangeTime({ nativeEvent }) {
+    hideTimePicker();
+    if (nativeEvent.timestamp) {
+      setTime(new Date(nativeEvent.timestamp));
+    }
+  }
+
   return (
     <Container>
       <CardField>
         <StaticForm>
           <StaticField label="选择家访日期" labelWidth={60}>
-            {moment(selected).format('YYYY年MM月DD日')}
+            {moment(date).format('YYYY年MM月DD日')}
           </StaticField>
         </StaticForm>
       </CardField>
@@ -49,25 +72,37 @@ export default function PickVisitTime({ navigation }) {
           theme={Colors.calendar}
           markedDates={{
             ...markedDates,
-            [selected]: {
+            [date]: {
               selected: true,
-              marked: markedDates && !!markedDates[selected],
+              marked: markedDates && !!markedDates[date],
               dotColor: '#fff',
             },
           }}
           onDayPress={(day) => {
-            setSelected(day.dateString);
+            setDate(day.dateString);
           }}
         />
       </CalendarContainer>
 
-      <CardField>
-        <StaticForm>
-          <StaticField label="选择家访时间" labelWidth={60}>
-            上午10:00
-          </StaticField>
-        </StaticForm>
-      </CardField>
+      <TouchableOpacity onPress={onPressTime} activeOpacity={0.8}>
+        <CardField>
+          <StaticForm>
+            <StaticField label="选择家访时间" labelWidth={60}>
+              {moment(time).format('HH:mm')}
+            </StaticField>
+          </StaticForm>
+        </CardField>
+      </TouchableOpacity>
+
+      {timePicker && (
+        <DateTimePicker
+          mode={mode}
+          value={time}
+          is24Hour={false}
+          display="default"
+          onChange={onChangeTime}
+        />
+      )}
 
       <LargeButtonContainer>
         <Button size="large" title="提交" onPress={handleSubmit} />
