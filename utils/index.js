@@ -25,6 +25,20 @@ export function useFetch(url, params, initialState = {}) {
   return [data, load, loading];
 }
 
+export function useManualFetch(url, params, initialState = {}) {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(initialState);
+
+  function load(search = {}) {
+    setLoading(true);
+    Http.get(url, { ...params, ...search })
+      .then((r) => setData(r))
+      .finally((_) => setLoading(false));
+  }
+
+  return [data, load, loading];
+}
+
 export function useBoolState(initialState = false) {
   const [bool, setBool] = useState(initialState);
   const setBoolTrue = () => {

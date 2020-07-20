@@ -6,38 +6,45 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import Http from '../utils/http';
+import { useManualFetch } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { Button, VisitCard, NoData } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Visits() {
+export default function Visits({ navigation }) {
   const [now] = useState(moment());
   const { navigate } = useNavigation();
-  const [markedDates, setMarkedDates] = useState();
+
+  const [markedDates, refreshMarkedDates] = useManualFetch('/api/visits/marked-dates', {}, []);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
   const [visits, setVisits] = useState([]);
 
   useEffect(() => {
-    Http.get('/api/visits/marked-dates').then((data) => {
-      const _markedDates = {};
-      data.forEach((datum) => {
-        _markedDates[datum] = {
-          marked: true,
-        };
-      });
-      setMarkedDates(_markedDates);
+    const unsubscribe = navigation.addListener('focus', () => {
+      refreshMarkedDates();
     });
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
-    if (markedDates && !markedDates[selected]) return setVisits([]);
+    if (markedDates && !markedDates.includes(selected)) return setVisits([]);
     Http.get('/api/visits', {
       date: selected,
     }).then(setVisits);
-  }, [selected]);
+  }, [selected, markedDates]);
+
+  function calenderMarkedDates() {
+    const _markedDates = {};
+    markedDates.forEach((datum) => {
+      _markedDates[datum] = {
+        marked: true,
+      };
+    });
+    return _markedDates;
+  }
 
   return (
     <>
@@ -57,7 +64,7 @@ export default function Visits() {
             current={now.format('YYYY-MM-DD')}
             theme={Colors.calendar}
             markedDates={{
-              ...markedDates,
+              ...calenderMarkedDates(),
               [selected]: { selected: true, marked: !!markedDates[selected], dotColor: '#fff' },
             }}
             onDayPress={(day) => {
