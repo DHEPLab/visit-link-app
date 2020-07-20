@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -87,7 +87,6 @@ export default function Visits() {
 
       {visits.length > 0 ? (
         <StyledFlatList
-          refreshControl={<RefreshControl colors={Colors.colors} />}
           data={visits}
           keyExtractor={(item) => item.id + ''}
           renderItem={({ item }) => <VisitCard onPress={() => navigate('Visit')} value={item} />}
