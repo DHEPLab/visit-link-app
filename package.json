@@ -6,8 +6,8 @@
     "publish:dev": "expo publish --release-channel dev",
     "android": "expo start --android",
     "eject": "expo eject",
-    "test": "jest --silent --coverage",
-    "test:watch": "jest  --silent --watchAll"
+    "test": "jest --watchAll",
+    "test:ci": "jest --silent --coverage"
   },
   "jest": {
     "preset": "jest-expo",

@@ -1,5 +1,6 @@
 import React from 'react';
-import { render } from 'react-native-testing-library';
+import moment from 'moment';
+import { render, fireEvent } from 'react-native-testing-library';
 
 import Visits from './Visits';
 
@@ -18,7 +19,11 @@ describe('<Visits />', () => {
     wrapper = render(<Visits {...props} />);
   });
 
-  it('should render create visit button', () => {
-    expect(wrapper.queryByText(/新建家访/)).not.toBeNull();
+  it('should create visit use current selected date', () => {
+    fireEvent.press(wrapper.getByText(/新建家访/));
+
+    expect(props.navigation.navigate).toBeCalledWith('CreateVisit', {
+      visitTime: `${moment().format('YYYY-MM-DD')}T10:00`,
+    });
   });
 });
