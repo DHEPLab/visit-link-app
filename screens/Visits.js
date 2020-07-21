@@ -82,7 +82,7 @@ export default function Visits({ navigation }) {
         <Button
           title="新建家访"
           disabled={moment(now.format('YYYY-MM-DD')).isAfter(selected)}
-          onPress={() => navigation.navigate('CreateVisit')}
+          onPress={() => navigation.navigate('CreateVisit', { visitTime: `${selected}T10:00` })}
         />
       </ButtonContainer>
 
