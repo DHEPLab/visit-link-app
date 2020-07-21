@@ -79,7 +79,11 @@ export default function Visits({ navigation }) {
       </TouchableOpacity>
 
       <ButtonContainer>
-        <Button title="新建家访" onPress={() => navigation.navigate('CreateVisit')} />
+        <Button
+          title="新建家访"
+          disabled={moment(now.format('YYYY-MM-DD')).isAfter(selected)}
+          onPress={() => navigation.navigate('CreateVisit')}
+        />
       </ButtonContainer>
 
       {visits.length > 0 ? (
