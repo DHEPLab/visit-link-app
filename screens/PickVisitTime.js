@@ -3,21 +3,22 @@ import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { useFetchArray, useBoolState, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { StaticField, StaticForm, LargeButtonContainer, Button } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useFetchArray, useBoolState, calenderMarkedDates } from '../utils';
+import { StaticField, StaticForm, LargeButtonContainer, Button } from '../components';
 
-export default function PickVisitTime({ navigation }) {
+export default function PickVisitTime({ navigation, route }) {
   const [now] = useState(moment());
   const [markedDates] = useFetchArray('/api/visits/marked-dates');
 
   const [mode, setMode] = useState('time');
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
 
-  const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-  const [time, setTime] = useState(new Date());
+  const defaultDatetime = route.params?.visitTime ? moment(route.params.visitTime) : moment();
+  const [date, setDate] = useState(defaultDatetime.format('YYYY-MM-DD'));
+  const [time, setTime] = useState(defaultDatetime.toDate());
 
   function handleSubmit() {
     navigation.navigate('CreateVisit', {

@@ -42,7 +42,11 @@ export default function CreateVisit({ navigation, route }) {
         right={
           <Button
             title="修改"
-            onPress={() => navigation.navigate('PickVisitTime')}
+            onPress={() =>
+              navigation.navigate('PickVisitTime', {
+                visitTime: moment(visitTime).format('YYYY-MM-DDTHH:mm'),
+              })
+            }
             hideBody={!visitTime}
           />
         }
