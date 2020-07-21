@@ -30,9 +30,8 @@ export default function Visit({ navigation, route }) {
             <StaticForm>
               <StaticField label="主照料人">{visit.baby.carerName}</StaticField>
               <StaticField label="联系电话">{visit.baby.carerPhone}</StaticField>
-              {/* <StaticField label="微信号码">18616881618</StaticField>
-              <StaticField label="所在区域">吉林省/延边朝鲜自治州/安图县</StaticField>
-              <StaticField label="详细地址">朝阳街826号</StaticField> */}
+              <StaticField label="所在区域">{visit.baby.area}</StaticField>
+              <StaticField label="详细地址">{visit.baby.location}</StaticField>
             </StaticForm>
           </>
         )}
