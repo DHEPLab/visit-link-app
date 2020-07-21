@@ -10,12 +10,10 @@ import { useManualFetchArray, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { Button, VisitCard, NoData } from '../components';
-import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Visits({ navigation }) {
   const [now] = useState(moment());
-  const { navigate } = useNavigation();
 
   const [visits, setVisits] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -81,7 +79,7 @@ export default function Visits({ navigation }) {
       </TouchableOpacity>
 
       <ButtonContainer>
-        <Button title="新建家访" onPress={() => navigate('CreateVisit')} />
+        <Button title="新建家访" onPress={() => navigation.navigate('CreateVisit')} />
       </ButtonContainer>
 
       {visits.length > 0 ? (
@@ -89,7 +87,7 @@ export default function Visits({ navigation }) {
           data={visits}
           keyExtractor={(item) => item.id + ''}
           renderItem={({ item }) => (
-            <VisitCard onPress={() => navigate('Visit', { id: item.id })} value={item} />
+            <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
           )}
         />
       ) : (
