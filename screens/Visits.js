@@ -88,7 +88,9 @@ export default function Visits({ navigation }) {
         <StyledFlatList
           data={visits}
           keyExtractor={(item) => item.id + ''}
-          renderItem={({ item }) => <VisitCard onPress={() => navigate('Visit')} value={item} />}
+          renderItem={({ item }) => (
+            <VisitCard onPress={() => navigate('Visit', { id: item.id })} value={item} />
+          )}
         />
       ) : (
         <NoData title="该日期暂时没有家访安排" />

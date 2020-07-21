@@ -113,7 +113,7 @@ function Visits({ started, dataSource, onChange, navigation }) {
           data={dataSource}
           keyExtractor={(item) => item.id + ''}
           renderItem={({ item }) => (
-            <VisitCard onPress={() => navigation.navigate('Visit')} value={item} />
+            <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
           )}
         />
       ) : (

@@ -1,63 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
 
-import { formatVisitTime } from '../utils';
 import { styled } from '../utils/styled';
+import { formatVisitTime, useFetch } from '../utils';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
 export default function Visit({ navigation, route }) {
-  const [baby, setBaby] = useState({
-    id: 7,
-    name: 'baby3',
-    identity: 'baby3',
-    gender: 'FEMALE',
-    stage: 'BIRTH',
-    carerName: 'eeeee333',
-    carerPhone: '15738839999',
-    month: 2,
-  });
-  const [visitTime, setVisitTime] = useState(new Date());
-
-  useEffect(() => {
-    if (route.params?.baby) {
-      setBaby(route.params?.baby);
-    }
-  }, [route.params?.baby]);
-
-  useEffect(() => {
-    if (route.params?.visitTime) {
-      setVisitTime(route.params?.visitTime);
-    }
-  }, [route.params?.visitTime]);
+  const [visit] = useFetch(`/api/visits/${route.params.id}`);
 
   return (
     <Container>
       <Card
         title="家访时间"
-        hideBody={!visitTime}
-        right={
-          <Button
-            title="修改"
-            onPress={() => navigation.navigate('PickVisitTime')}
-            hideBody={!visitTime}
-          />
-        }
+        right={<Button title="修改" onPress={() => navigation.navigate('PickVisitTime')} />}
       >
-        {visitTime && (
+        {visit.visitTime && (
           <StaticForm>
-            <StaticField label="家访时间">{formatVisitTime(visitTime)}</StaticField>
+            <StaticField label="家访时间">{formatVisitTime(visit.visitTime)}</StaticField>
           </StaticForm>
         )}
       </Card>
-      <Card title="家访对象" hideBody={!baby} background={require('../assets/images/baby-bg.png')}>
-        {baby && (
+
+      <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
+        {visit.baby && (
           <>
             <BabyLineContainer>
-              <BabyLine {...baby} />
+              <BabyLine {...visit.baby} />
             </BabyLineContainer>
             <StaticForm>
-              <StaticField label="主照料人">{baby.carerName}</StaticField>
-              <StaticField label="联系电话">{baby.carerPhone}</StaticField>
+              <StaticField label="主照料人">{visit.baby.carerName}</StaticField>
+              <StaticField label="联系电话">{visit.baby.carerPhone}</StaticField>
               {/* <StaticField label="微信号码">18616881618</StaticField>
               <StaticField label="所在区域">吉林省/延边朝鲜自治州/安图县</StaticField>
               <StaticField label="详细地址">朝阳街826号</StaticField> */}
@@ -65,13 +37,22 @@ export default function Visit({ navigation, route }) {
           </>
         )}
       </Card>
+
       <Card title="课程安排">
-        <LessonName>课堂名称</LessonName>
-        <StaticForm>
-          <StaticField label="模块01">模块名称</StaticField>
-          <StaticField label="模块02">模块名称</StaticField>
-          <StaticField label="模块03">模块名称</StaticField>
-        </StaticForm>
+        {visit.lesson ? (
+          <>
+            <LessonName>{visit.lesson.name}</LessonName>
+            <StaticForm>
+              {visit.lesson.moduleNames.map((name, index) => (
+                <StaticField key={name} label={`模块 ${index + 1}`}>
+                  {name}
+                </StaticField>
+              ))}
+            </StaticForm>
+          </>
+        ) : (
+          <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
+        )}
       </Card>
     </Container>
   );
@@ -92,3 +73,5 @@ const LessonName = styled.Text`
   font-weight: bold;
   margin-bottom: 8px;
 `;
+
+const NoLesson = styled.Text``;
