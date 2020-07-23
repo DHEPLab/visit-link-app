@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,11 +8,11 @@ import http from '../utils/http';
 import { useFetch } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { GenderIcon, BabyStage, FamilyTies } from '../constants/enums';
+import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
 import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
 
-export default function Baby({ navigation }) {
-  const { params } = useRoute();
+export default function Baby({ navigation, route }) {
+  const { params } = route;
   const [index, setIndex] = useState(0);
 
   const [started, setStarted] = useState(false);
@@ -50,14 +49,22 @@ export default function Baby({ navigation }) {
           </NameContainer>
           <InfoContainer>
             <View>
-              <Age>
+              <Stage>
                 <MaterialCommunityIcons
                   name={GenderIcon[params.gender]}
                   size={px2dp(12)}
                   color="#fff"
                 />
-                {BabyStage[params.stage]} {params.months}个月
-              </Age>
+                <Age>
+                  {BabyStage[params.stage]} {params.months}个月
+                </Age>
+              </Stage>
+              {baby.feedingPattern && (
+                <FeedingPatternContainer>
+                  <FeedingPatternLabel>喂养状态：</FeedingPatternLabel>
+                  <FeedingPatternValue>{FeedingPattern[baby.feedingPattern]}</FeedingPatternValue>
+                </FeedingPatternContainer>
+              )}
             </View>
             {/* <Button ghost title="修改资料" /> */}
           </InfoContainer>
@@ -100,6 +107,30 @@ export default function Baby({ navigation }) {
     </>
   );
 }
+
+const FeedingPatternContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 4px;
+`;
+
+const FeedingPatternLabel = styled.Text`
+  color: #fff;
+  font-size: 10px;
+`;
+
+const FeedingPatternValue = styled.Text`
+  background: #ffede2;
+  border-radius: 2px;
+  color: #ff794f;
+  padding: 2px 4px;
+  font-size: 8px;
+`;
+
+const Stage = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
 
 function Visits({ started, dataSource, onChange, navigation }) {
   return (
@@ -208,7 +239,7 @@ const WhiteText = styled.Text`
 const Name = styled(WhiteText)`
   font-size: 20px;
   font-weight: bold;
-  margin-top: 16px;
+  margin-top: 10px;
 `;
 
 const Identity = styled(WhiteText)`
@@ -216,6 +247,7 @@ const Identity = styled(WhiteText)`
 `;
 
 const Age = styled(WhiteText)`
+  margin-left: 4px;
   font-size: 10px;
 `;
 
