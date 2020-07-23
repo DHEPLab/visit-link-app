@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import http from '../utils/http';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -19,6 +20,12 @@ export default function PickVisitTime({ navigation, route }) {
   const defaultDatetime = route.params?.visitTime ? moment(route.params.visitTime) : moment();
   const [date, setDate] = useState(defaultDatetime.format('YYYY-MM-DD'));
   const [time, setTime] = useState(defaultDatetime.toDate());
+  const [range, setRange] = useState([moment().format('YYYY-MM-DD'), null]);
+
+  useEffect(() => {
+    if (!route.params?.babyId) return;
+    http.get(`/api/babies/${route.params.babyId}/visit-date-range`).then(setRange);
+  }, [route.params?.babyId]);
 
   function handleSubmit() {
     navigation.navigate('CreateVisit', {
@@ -57,7 +64,10 @@ export default function PickVisitTime({ navigation, route }) {
           calendarWidth={px2dp(344)}
           monthFormat={'yyyy年 M月'}
           current={now.format('YYYY-MM-DD')}
+          minDate={range[0]}
+          maxDate={range[1]}
           theme={Colors.calendar}
+          onDayPress={(day) => setDate(day.dateString)}
           markedDates={{
             ...calenderMarkedDates(markedDates),
             [date]: {
@@ -65,9 +75,6 @@ export default function PickVisitTime({ navigation, route }) {
               dotColor: '#fff',
               marked: markedDates?.includes(date),
             },
-          }}
-          onDayPress={(day) => {
-            setDate(day.dateString);
           }}
         />
       </CalendarContainer>

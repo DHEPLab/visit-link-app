@@ -56,7 +56,7 @@ export default function Baby({ navigation }) {
                   size={px2dp(12)}
                   color="#fff"
                 />
-                {BabyStage[params.stage]} {params.month}个月
+                {BabyStage[params.stage]} {params.months}个月
               </Age>
             </View>
             {/* <Button ghost title="修改资料" /> */}
@@ -121,7 +121,7 @@ function Visits({ started, dataSource, onChange, navigation }) {
           )}
         />
       ) : (
-        <NoData title="抱歉，没有相关结果" />
+        <NoData title="没有相关结果" />
       )}
     </VisitsContainer>
   );

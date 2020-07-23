@@ -45,6 +45,7 @@ export default function CreateVisit({ navigation, route }) {
             onPress={() =>
               navigation.navigate('PickVisitTime', {
                 visitTime: moment(visitTime).format('YYYY-MM-DDTHH:mm'),
+                babyId: baby.id,
               })
             }
             hideBody={!visitTime}
