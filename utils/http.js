@@ -8,20 +8,23 @@ AsyncStorage.getItem('JWT_TOKEN', (_, result) => {
   Token = result;
 });
 
+function responseContentTypeJSON(response) {
+  return response.headers.get('content-type') === 'application/json';
+}
+
 function request(fetchPromise) {
   return new Promise((resolve, reject) => {
     fetchPromise
       .then(async (response) => {
         if (response.ok) {
-          if (response.headers.get('content-type') === 'application/json') {
-            resolve(await response.json());
-          } else {
-            resolve({ text: await response.text() });
-          }
+          resolve(
+            responseContentTypeJSON(response)
+              ? await response.json()
+              : { text: await response.text() }
+          );
         } else {
-          const error = await response.json();
-          console.warn(error);
-          reject(error);
+          console.warn(response);
+          reject(response);
         }
       })
       .catch((error) => {

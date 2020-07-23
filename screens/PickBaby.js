@@ -7,7 +7,7 @@ import { BabyCard } from '../components';
 import { useFetch } from '../utils';
 
 export default function PickBaby({ navigation }) {
-  const [babies, refresh, refreshing] = useFetch('/api/babies/visit-available');
+  const [babies, refresh, refreshing] = useFetch('/api/babies/available-for-visit');
 
   function pick(baby) {
     navigation.navigate('CreateVisit', { baby });

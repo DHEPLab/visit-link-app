@@ -3,8 +3,9 @@ import { useRoute } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, Image, View, ScrollView, TouchableOpacity } from 'react-native';
+import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
+import http from '../utils/http';
 import { useFetch } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
@@ -28,6 +29,13 @@ export default function Baby({ navigation }) {
   function onChangeVisitTab(_started) {
     setStarted(_started);
     refreshVisits({ started: _started });
+  }
+
+  function handleCreateVisit() {
+    http
+      .get(`/api/babies/${baby.id}/lesson`)
+      .then((_) => navigation.navigate('CreateVisit', { baby }))
+      .catch((_) => ToastAndroid.show('没有匹配的课堂，无法新建家访', ToastAndroid.LONG));
   }
 
   return (
@@ -87,11 +95,7 @@ export default function Baby({ navigation }) {
       />
 
       <FixedButtonContainer>
-        <Button
-          size="large"
-          title="新建家访"
-          onPress={() => navigation.navigate('CreateVisit', { baby })}
-        />
+        <Button size="large" title="新建家访" onPress={handleCreateVisit} />
       </FixedButtonContainer>
     </>
   );

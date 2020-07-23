@@ -82,7 +82,7 @@ export default function CreateVisit({ navigation, route }) {
           <>
             <LessonName>{lesson.name}</LessonName>
             <StaticForm>
-              {lesson.moduleNames.map((name, index) => (
+              {lesson.moduleNames?.map((name, index) => (
                 <StaticField key={name} label={`模块 ${index + 1}`}>
                   {name}
                 </StaticField>
