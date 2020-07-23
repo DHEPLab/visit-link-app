@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { Button, BabyCard } from '../components';
+import { BabyCard, NoData } from '../components';
 import { useFetch } from '../utils';
 
 export default function Babies() {
@@ -25,24 +25,38 @@ export default function Babies() {
         </Search>
       </Header>
       <ListHeader>
-        <Title>宝宝列表</Title>
+        {babies.length > 0 && <Title>宝宝列表</Title>}
         {/* <Button title="添加宝宝" /> */}
       </ListHeader>
-      <FlatList
-        refreshControl={
-          <RefreshControl
-            colors={Colors.colors}
-            onRefresh={() => refresh()}
-            refreshing={refreshing}
-          />
-        }
-        data={babies}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
-      />
+      {babies.length > 0 ? (
+        <FlatList
+          refreshControl={
+            <RefreshControl
+              colors={Colors.colors}
+              onRefresh={() => refresh()}
+              refreshing={refreshing}
+            />
+          }
+          data={babies}
+          keyExtractor={(item) => item.id + ''}
+          renderItem={({ item }) => (
+            <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />
+          )}
+        />
+      ) : (
+        <NoDataContainer>
+          <NoData title="尚未添加宝宝信息" />
+        </NoDataContainer>
+      )}
     </>
   );
 }
+
+const NoDataContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  padding-bottom: 50px;
+`;
 
 const ListHeader = styled.View`
   flex-direction: row;
