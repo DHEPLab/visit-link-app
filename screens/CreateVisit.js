@@ -61,7 +61,16 @@ export default function CreateVisit({ navigation, route }) {
       <Card
         title="家访对象"
         hideBody={!baby}
-        right={<Button title="选择" onPress={() => navigation.navigate('PickBaby')} />}
+        right={
+          <Button
+            title="选择"
+            onPress={() =>
+              navigation.navigate('PickBaby', {
+                visitDate: visitTime && moment(visitTime).format('YYYY-MM-DD'),
+              })
+            }
+          />
+        }
         background={require('../assets/images/baby-bg.png')}
       >
         {baby && (

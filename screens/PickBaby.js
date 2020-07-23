@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 
 import { Colors } from '../constants';
@@ -6,8 +6,10 @@ import { styled } from '../utils/styled';
 import { BabyCard } from '../components';
 import { useFetch } from '../utils';
 
-export default function PickBaby({ navigation }) {
-  const [babies, refresh, refreshing] = useFetch('/api/babies/available-for-visit');
+export default function PickBaby({ navigation, route }) {
+  const [babies, refresh, refreshing] = useFetch('/api/babies/available-for-visit', {
+    visitDate: route.params.visitDate,
+  });
 
   function pick(baby) {
     navigation.navigate('CreateVisit', { baby });
