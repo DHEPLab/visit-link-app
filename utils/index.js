@@ -28,6 +28,7 @@ export function useFetch(url, params, initialState = {}) {
     setLoading(true);
     Http.get(url, { ...params, ...search })
       .then((r) => setData(r))
+      .catch((_) => {})
       .finally((_) => setLoading(false));
   }
 

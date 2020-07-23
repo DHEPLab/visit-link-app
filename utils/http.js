@@ -22,6 +22,8 @@ function request(fetchPromise) {
               ? await response.json()
               : { text: await response.text() }
           );
+        } else if (response.status === 404) {
+          reject(response);
         } else {
           console.warn(response);
           reject(response);
