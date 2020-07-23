@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { ScrollView } from 'react-native';
 
 import { styled } from '../utils/styled';
@@ -23,6 +24,9 @@ export default function Visit({ navigation, route }) {
 
   const showRemark = undone || expired;
   const remarkTitle = undone ? '未完成原因' : '过期原因';
+  const canBegin =
+    notStarted &&
+    moment(moment().format('YYYY-MM-DD')).isSame(moment(visitTime).format('YYYY-MM-DD'));
 
   function handleContinue() {
     navigation.navigate('LessonIntro', { id: lesson.id });
@@ -94,7 +98,7 @@ export default function Visit({ navigation, route }) {
           )}
         </Card>
 
-        {notStarted && (
+        {canBegin && (
           <LargeButtonContainer>
             <Button size="large" title="开始课堂" onPress={handleBegin} />
           </LargeButtonContainer>

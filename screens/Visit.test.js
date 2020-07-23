@@ -23,9 +23,11 @@ const createTestProps = () => ({
 
 describe('<Visit />', () => {
   it('should display begin button', () => {
+    jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-07'));
     useFetch.mockImplementation(() => [
       {
         status: 'NOT_STARTED',
+        visitTime: '2020-07-07T10:00',
       },
     ]);
     const { queryByText } = render(<Visit {...createTestProps()} />);
