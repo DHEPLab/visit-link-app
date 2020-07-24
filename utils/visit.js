@@ -8,12 +8,16 @@ function formatDateCN(date) {
   return moment(date).format('YYYY年MM月DD日');
 }
 
-function formatTime(time) {
+function formatTimeCN(time) {
   return (moment(time).format('LT').includes('AM') ? '上午' : '下午') + moment(time).format('h:mm');
 }
 
 function formatDateTime(datetime) {
-  return moment(datetime).format('YYYY年MM月DD日/') + formatTime(datetime);
+  return moment(datetime).format('YYYY-MM-DDTHH:mm');
+}
+
+function formatDateTimeCN(datetime) {
+  return moment(datetime).format('YYYY年MM月DD日/') + formatTimeCN(datetime);
 }
 
 function mergeDateAndTime(date, time) {
@@ -26,8 +30,9 @@ export default {
     return moment(formatDate(moment())).isSame(formatDate(moment(visitTime)));
   },
   formatDate,
-  formatTime,
   formatDateTime,
+  formatTimeCN,
+  formatDateTimeCN,
   formatDateCN,
   mergeDateAndTime,
 };

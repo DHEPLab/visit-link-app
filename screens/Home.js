@@ -29,7 +29,7 @@ export default function Home({ navigation }) {
         {visit.id && (
           <>
             您的下一次家访：{'\n'}
-            {Visit.formatDateTime(visitTime)}
+            {Visit.formatDateTimeCN(visitTime)}
           </>
         )}
       </LinearGradientHeader>

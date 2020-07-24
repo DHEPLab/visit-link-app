@@ -84,7 +84,7 @@ export default function PickVisitTime({ navigation, route }) {
         <CardField>
           <StaticForm>
             <StaticField label="选择家访时间" labelWidth={60}>
-              {Visit.formatTime(time)}
+              {Visit.formatTimeCN(time)}
             </StaticField>
           </StaticForm>
         </CardField>

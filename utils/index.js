@@ -3,7 +3,7 @@ import Http from './http';
 import Visit from './visit';
 
 export function formatVisitTime(date) {
-  return Visit.formatDateTime(date);
+  return Visit.formatDateTimeCN(date);
 }
 
 export function calenderMarkedDates(markedDates) {

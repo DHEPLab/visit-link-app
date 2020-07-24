@@ -53,7 +53,7 @@ export default function CreateVisit({ navigation, route }) {
       >
         {visitTime && (
           <StaticForm>
-            <StaticField label="家访时间">{Visit.formatDateTime(visitTime)}</StaticField>
+            <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
           </StaticForm>
         )}
       </Card>
