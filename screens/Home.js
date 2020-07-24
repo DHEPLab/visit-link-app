@@ -67,7 +67,7 @@ export default function Home({ navigation }) {
         </NoDataContainer>
       )}
 
-      {Visit.canBeign(status, visitTime) && (
+      {Visit.canBegin(status, visitTime) && (
         <ButtonContainer>
           <Button
             size="large"

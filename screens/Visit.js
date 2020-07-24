@@ -1,9 +1,9 @@
 import React from 'react';
-import moment from 'moment';
 import { ScrollView } from 'react-native';
 
 import { styled } from '../utils/styled';
-import { formatVisitTime, useFetch } from '../utils';
+import VisitUtils from '../utils/visit';
+import { useFetch } from '../utils';
 import {
   BabyLine,
   Card,
@@ -24,9 +24,6 @@ export default function Visit({ navigation, route }) {
 
   const showRemark = undone || expired;
   const remarkTitle = undone ? '未完成原因' : '过期原因';
-  const canBegin =
-    notStarted &&
-    moment(moment().format('YYYY-MM-DD')).isSame(moment(visitTime).format('YYYY-MM-DD'));
 
   function handleContinue() {
     navigation.navigate('LessonIntro', { id: lesson.id });
@@ -60,7 +57,7 @@ export default function Visit({ navigation, route }) {
         >
           {visitTime && (
             <StaticForm>
-              <StaticField label="家访时间">{formatVisitTime(visitTime)}</StaticField>
+              <StaticField label="家访时间">{VisitUtils.formatDateTime(visitTime)}</StaticField>
             </StaticForm>
           )}
         </Card>
@@ -98,7 +95,7 @@ export default function Visit({ navigation, route }) {
           )}
         </Card>
 
-        {canBegin && (
+        {VisitUtils.canBegin(status, visitTime) && (
           <LargeButtonContainer>
             <Button size="large" title="开始课堂" onPress={handleBegin} />
           </LargeButtonContainer>

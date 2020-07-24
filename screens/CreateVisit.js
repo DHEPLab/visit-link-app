@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { ScrollView } from 'react-native';
 
 import Http from '../utils/http';
-import { formatVisitTime } from '../utils';
+import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
@@ -28,7 +27,7 @@ export default function CreateVisit({ navigation, route }) {
 
   function handleSubmit() {
     Http.post('/api/visits', {
-      visitTime: moment(visitTime).format('YYYY-MM-DDTHH:mm:ss'),
+      visitTime: Visit.formatDateTime(visitTime),
       babyId: baby.id,
       lessonId: lesson.id,
     }).then(navigation.goBack);
@@ -44,7 +43,7 @@ export default function CreateVisit({ navigation, route }) {
             title="修改"
             onPress={() =>
               navigation.navigate('PickVisitTime', {
-                visitTime: moment(visitTime).format('YYYY-MM-DDTHH:mm'),
+                visitTime: Visit.formatDateTime(visitTime),
                 babyId: baby?.id,
               })
             }
@@ -54,7 +53,7 @@ export default function CreateVisit({ navigation, route }) {
       >
         {visitTime && (
           <StaticForm>
-            <StaticField label="家访时间">{formatVisitTime(visitTime)}</StaticField>
+            <StaticField label="家访时间">{Visit.formatDateTime(visitTime)}</StaticField>
           </StaticForm>
         )}
       </Card>
@@ -66,7 +65,7 @@ export default function CreateVisit({ navigation, route }) {
             title="选择"
             onPress={() =>
               navigation.navigate('PickBaby', {
-                visitDate: visitTime && moment(visitTime).format('YYYY-MM-DD'),
+                visitDate: visitTime && Visit.formatDate(visitTime),
               })
             }
           />

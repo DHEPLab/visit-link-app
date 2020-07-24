@@ -5,6 +5,7 @@ import { CalendarList } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import Visit from '../utils/visit';
 import Http from '../utils/http';
 import { useManualFetchArray, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
@@ -17,7 +18,7 @@ export default function Visits({ navigation }) {
 
   const [visits, setVisits] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
+  const [selected, setSelected] = useState(Visit.formatDate(moment()));
   const [markedDates, refreshMarkedDates] = useManualFetchArray('/api/visits/marked-dates');
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function Visits({ navigation }) {
     <>
       <Header {...Colors.linearGradient}>
         <Title>家访日程安排</Title>
-        <VisitDate>{moment(selected).format('YYYY年MM月DD日')}</VisitDate>
+        <VisitDate>{Visit.formatDateCN(selected)}</VisitDate>
       </Header>
 
       {showCalendar && (
@@ -47,7 +48,7 @@ export default function Visits({ navigation }) {
             hideArrows={false}
             calendarWidth={px2dp(400)}
             monthFormat={'yyyy年 M月'}
-            current={now.format('YYYY-MM-DD')}
+            current={Visit.formatDate(now)}
             theme={Colors.calendar}
             markedDates={{
               ...calenderMarkedDates(markedDates),
@@ -57,9 +58,7 @@ export default function Visits({ navigation }) {
                 marked: markedDates?.includes(selected),
               },
             }}
-            onDayPress={(day) => {
-              setSelected(day.dateString);
-            }}
+            onDayPress={(day) => setSelected(day.dateString)}
           />
         </CalendarContainer>
       )}
@@ -81,7 +80,7 @@ export default function Visits({ navigation }) {
       <ButtonContainer>
         <Button
           title="新建家访"
-          disabled={moment(now.format('YYYY-MM-DD')).isAfter(selected)}
+          disabled={moment(Visit.formatDate(now)).isAfter(selected)}
           onPress={() => navigation.navigate('CreateVisit', { visitTime: `${selected}T10:00` })}
         />
       </ButtonContainer>

@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
 import Http from './http';
-import moment from 'moment';
+import Visit from './visit';
 
 export function formatVisitTime(date) {
-  return (
-    moment(date).format('YYYY年MM月DD日/') +
-    (moment(date).format('LT').includes('AM') ? '上午' : '下午') +
-    moment(date).format('h:mm')
-  );
+  return Visit.formatDateTime(date);
 }
 
 export function calenderMarkedDates(markedDates) {

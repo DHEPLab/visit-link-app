@@ -3,6 +3,7 @@ import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import Visit from '../utils/visit';
 import http from '../utils/http';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
@@ -18,9 +19,9 @@ export default function PickVisitTime({ navigation, route }) {
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
 
   const defaultDatetime = route.params?.visitTime ? moment(route.params.visitTime) : moment();
-  const [date, setDate] = useState(defaultDatetime.format('YYYY-MM-DD'));
+  const [date, setDate] = useState(Visit.formatDate(defaultDatetime));
   const [time, setTime] = useState(defaultDatetime.toDate());
-  const [range, setRange] = useState([moment().format('YYYY-MM-DD'), null]);
+  const [range, setRange] = useState([Visit.formatDate(moment()), null]);
 
   useEffect(() => {
     if (!route.params?.babyId) return;
@@ -29,7 +30,7 @@ export default function PickVisitTime({ navigation, route }) {
 
   function handleSubmit() {
     navigation.navigate('CreateVisit', {
-      visitTime: `${date}T${moment(time).format('HH:mm')}`,
+      visitTime: Visit.mergeDateAndTime(date, time),
     });
   }
 
@@ -51,7 +52,7 @@ export default function PickVisitTime({ navigation, route }) {
       <CardField>
         <StaticForm>
           <StaticField label="选择家访日期" labelWidth={60}>
-            {moment(date).format('YYYY年MM月DD日')}
+            {Visit.formatDateCN(date)}
           </StaticField>
         </StaticForm>
       </CardField>
@@ -63,7 +64,7 @@ export default function PickVisitTime({ navigation, route }) {
           hideArrows={false}
           calendarWidth={px2dp(344)}
           monthFormat={'yyyy年 M月'}
-          current={now.format('YYYY-MM-DD')}
+          current={Visit.formatDate(now)}
           minDate={range[0]}
           maxDate={range[1]}
           theme={Colors.calendar}
@@ -83,8 +84,7 @@ export default function PickVisitTime({ navigation, route }) {
         <CardField>
           <StaticForm>
             <StaticField label="选择家访时间" labelWidth={60}>
-              {(moment(time).format('LT').includes('AM') ? '上午' : '下午') +
-                moment(time).format('h:mm')}
+              {Visit.formatTime(time)}
             </StaticField>
           </StaticForm>
         </CardField>
