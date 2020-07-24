@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, RefreshControl } from 'react-native';
 
 import { styled } from '../utils/styled';
+import { Colors } from '../constants';
 import { useFetch, formatVisitTime } from '../utils';
 import {
   Button,
@@ -14,11 +15,15 @@ import {
 } from '../components';
 
 export default function Home({ navigation }) {
-  const [visit] = useFetch('/api/visits/next');
+  const [visit, refresh, refreshing] = useFetch('/api/visits/next');
   const { visitTime, baby, lesson } = visit;
 
   return (
-    <Container>
+    <StyledScrollView
+      refreshControl={
+        <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
+      }
+    >
       <LinearGradientHeader>
         {visit.id && (
           <>
@@ -56,7 +61,9 @@ export default function Home({ navigation }) {
           </Card>
         </CardContainer>
       ) : (
-        <NoData title="暂无家访安排" />
+        <NoDataContainer>
+          <NoData title="暂无家访安排" />
+        </NoDataContainer>
       )}
 
       {visit.id && (
@@ -68,9 +75,14 @@ export default function Home({ navigation }) {
           />
         </ButtonContainer>
       )}
-    </Container>
+    </StyledScrollView>
   );
 }
+
+const NoDataContainer = styled.View`
+  height: 300px;
+  justify-content: center;
+`;
 
 const BabyLineContainer = styled.View`
   padding-bottom: 8px;
@@ -83,8 +95,8 @@ const LessonName = styled.Text`
   margin-bottom: 8px;
 `;
 
-const Container = styled(ScrollView)`
-  height: 100%;
+const StyledScrollView = styled(ScrollView)`
+  flex: 1;
 `;
 
 const CardContainer = styled.View`
