@@ -13,6 +13,8 @@ import { Colors } from './constants';
 import { useBoolState } from './utils';
 import Navigator from './navigation/Navigator';
 
+console.reportErrorsAsExceptions = false;
+
 const store = createStore(
   rootReducer,
   // Debugging Redux

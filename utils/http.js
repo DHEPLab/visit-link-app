@@ -31,7 +31,7 @@ function request(fetchPromise) {
       })
       .catch((error) => {
         reject(error);
-        console.warn(error);
+        console.warn(JSON.stringify(error));
       });
   });
 }
