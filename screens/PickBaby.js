@@ -3,7 +3,7 @@ import { FlatList, RefreshControl } from 'react-native';
 
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
-import { BabyCard } from '../components';
+import { BabyCard, NoData } from '../components';
 import { useFetch } from '../utils';
 
 export default function PickBaby({ navigation, route }) {
@@ -19,6 +19,7 @@ export default function PickBaby({ navigation, route }) {
     <Container>
       <Hint>根据系统规则，部分宝宝在该时间无法安排家访，因此不可选。</Hint>
       <FlatList
+        ListEmptyComponent={<NoData title="暂无可用宝宝" />}
         refreshControl={
           <RefreshControl
             colors={Colors.colors}

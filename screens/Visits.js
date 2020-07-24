@@ -85,17 +85,14 @@ export default function Visits({ navigation }) {
         />
       </ButtonContainer>
 
-      {visits.length > 0 ? (
-        <StyledFlatList
-          data={visits}
-          keyExtractor={(item) => item.id + ''}
-          renderItem={({ item }) => (
-            <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
-          )}
-        />
-      ) : (
-        <NoData title="该日期暂时没有家访安排" />
-      )}
+      <StyledFlatList
+        ListEmptyComponent={<NoData title="该日期暂时没有家访安排" />}
+        data={visits}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={({ item }) => (
+          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
+        )}
+      />
     </>
   );
 }

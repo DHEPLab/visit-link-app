@@ -28,34 +28,30 @@ export default function Babies() {
         {babies.length > 0 && <Title>宝宝列表</Title>}
         {/* <Button title="添加宝宝" /> */}
       </ListHeader>
-      {babies.length > 0 ? (
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              colors={Colors.colors}
-              onRefresh={() => refresh()}
-              refreshing={refreshing}
-            />
-          }
-          data={babies}
-          keyExtractor={(item) => item.id + ''}
-          renderItem={({ item }) => (
-            <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />
-          )}
-        />
-      ) : (
-        <NoDataContainer>
-          <NoData title="尚未添加宝宝信息" />
-        </NoDataContainer>
-      )}
+      <FlatList
+        ListEmptyComponent={
+          <NoDataContainer>
+            <NoData title="尚未添加宝宝信息" />
+          </NoDataContainer>
+        }
+        refreshControl={
+          <RefreshControl
+            colors={Colors.colors}
+            onRefresh={() => refresh()}
+            refreshing={refreshing}
+          />
+        }
+        data={babies}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
+      />
     </>
   );
 }
 
 const NoDataContainer = styled.View`
-  flex: 1;
+  height: 350px;
   justify-content: center;
-  padding-bottom: 50px;
 `;
 
 const ListHeader = styled.View`

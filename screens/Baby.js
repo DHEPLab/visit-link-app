@@ -143,17 +143,14 @@ function Visits({ started, dataSource, onChange, navigation }) {
           <VisitTab active={started}>已完成家访</VisitTab>
         </TouchableOpacity>
       </VisitTabs>
-      {dataSource.length > 0 ? (
-        <FlatList
-          data={dataSource}
-          keyExtractor={(item) => item.id + ''}
-          renderItem={({ item }) => (
-            <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
-          )}
-        />
-      ) : (
-        <NoData title="没有相关结果" />
-      )}
+      <FlatList
+        ListEmptyComponent={<NoData title="没有相关结果" />}
+        data={dataSource}
+        keyExtractor={(item) => item.id + ''}
+        renderItem={({ item }) => (
+          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
+        )}
+      />
     </VisitsContainer>
   );
 }
