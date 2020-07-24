@@ -25,7 +25,10 @@ export default function PickVisitTime({ navigation, route }) {
 
   useEffect(() => {
     if (!route.params?.babyId) return;
-    http.get(`/api/babies/${route.params.babyId}/visit-date-range`).then(setRange);
+    http.get(`/api/babies/${route.params.babyId}/visit-date-range`).then((data) => {
+      setRange(data);
+      setDate(data[0]);
+    });
   }, [route.params?.babyId]);
 
   function handleSubmit() {
