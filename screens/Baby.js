@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
-import { useFetch } from '../utils';
+import { useFetch, useManualFetchArray } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
@@ -16,14 +16,13 @@ export default function Baby({ navigation, route }) {
   const [index, setIndex] = useState(0);
 
   const [started, setStarted] = useState(false);
-  const [visits, refreshVisits] = useFetch(
-    `/api/babies/${params.id}/visits`,
-    { started: false },
-    []
-  );
-
   const [baby] = useFetch(`/api/babies/${params.id}`);
   const [carers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
+  const [visits, refreshVisits] = useManualFetchArray(`/api/babies/${params.id}/visits`, {
+    started: false,
+  });
+
+  useEffect(() => navigation.addListener('focus', () => refreshVisits({ started })), [navigation]);
 
   function onChangeVisitTab(_started) {
     setStarted(_started);
@@ -33,7 +32,17 @@ export default function Baby({ navigation, route }) {
   function handleCreateVisit() {
     http
       .get(`/api/babies/${baby.id}/lesson`)
-      .then((_) => navigation.navigate('CreateVisit', { baby }))
+      .then((_) =>
+        navigation.navigate('CreateVisit', {
+          lockBaby: true,
+          baby: {
+            ...baby,
+            months: params.months,
+            carerName: carers[0]?.name,
+            carerPhone: carers[0]?.phone,
+          },
+        })
+      )
       .catch((_) => ToastAndroid.show('没有匹配的课堂，无法新建家访', ToastAndroid.LONG));
   }
 

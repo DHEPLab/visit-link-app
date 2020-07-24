@@ -7,23 +7,24 @@ import { styled } from '../utils/styled';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
 
 export default function CreateVisit({ navigation, route }) {
+  const { params } = route;
   const [visitTime, setVisitTime] = useState();
   const [baby, setBaby] = useState();
   const [lesson, setLesson] = useState();
 
   useEffect(() => {
-    if (route.params?.baby) {
-      const { baby } = route.params;
+    if (params?.baby) {
+      const { baby } = params;
       Http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
       setBaby(baby);
     }
-  }, [route.params?.baby]);
+  }, [params?.baby]);
 
   useEffect(() => {
-    if (route.params?.visitTime) {
-      setVisitTime(route.params?.visitTime);
+    if (params?.visitTime) {
+      setVisitTime(params?.visitTime);
     }
-  }, [route.params?.visitTime]);
+  }, [params?.visitTime]);
 
   function handleSubmit() {
     Http.post('/api/visits', {
@@ -61,14 +62,16 @@ export default function CreateVisit({ navigation, route }) {
         title="家访对象"
         hideBody={!baby}
         right={
-          <Button
-            title="选择"
-            onPress={() =>
-              navigation.navigate('PickBaby', {
-                visitDate: visitTime && Visit.formatDate(visitTime),
-              })
-            }
-          />
+          !params?.lockBaby && (
+            <Button
+              title="选择"
+              onPress={() =>
+                navigation.navigate('PickBaby', {
+                  visitDate: visitTime && Visit.formatDate(visitTime),
+                })
+              }
+            />
+          )
         }
         background={require('../assets/images/baby-bg.png')}
       >

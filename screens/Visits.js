@@ -21,10 +21,7 @@ export default function Visits({ navigation }) {
   const [selected, setSelected] = useState(Visit.formatDate(moment()));
   const [markedDates, refreshMarkedDates] = useManualFetchArray('/api/visits/marked-dates');
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', refreshMarkedDates);
-    return unsubscribe;
-  }, [navigation]);
+  useEffect(() => navigation.addListener('focus', () => refreshMarkedDates()), [navigation]);
 
   useEffect(() => {
     if (markedDates && !markedDates.includes(selected)) return setVisits([]);
