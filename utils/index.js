@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
 import Http from './http';
-import Visit from './visit';
-
-export function formatVisitTime(date) {
-  return Visit.formatDateTimeCN(date);
-}
 
 export function calenderMarkedDates(markedDates) {
   const _markedDates = {};

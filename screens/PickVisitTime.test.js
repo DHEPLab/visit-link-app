@@ -8,8 +8,8 @@ jest.mock('../utils', () => ({
 
 it('should set default visit time', () => {
   const { queryByText } = render(
-    <PickVisitTime route={{ params: { visitTime: '2020-07-20T11:00' } }} />
+    <PickVisitTime route={{ params: { visitTime: '2020-07-20T10:00' } }} />
   );
   expect(queryByText(/2020年07月20日/)).not.toBeNull();
-  expect(queryByText(/上午11:00/)).not.toBeNull();
+  expect(queryByText(/上午10:00/)).not.toBeNull();
 });

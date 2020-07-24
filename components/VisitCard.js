@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import StaticForm from './StaticForm';
 import StaticField from './StaticField';
 import Status from './Status';
-import { formatVisitTime } from '../utils';
+import Visit from '../utils/visit';
 import { Colors } from '../constants';
 import { VisitStatus } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
@@ -23,7 +23,7 @@ export default function VisitCard({ onPress, value }) {
           <StaticForm>
             {value.babyName && <StaticField label="课堂名称">{value.babyName}</StaticField>}
             <StaticField label="课堂名称">{value.lessonName}</StaticField>
-            <StaticField label="家访时间">{formatVisitTime(value.visitTime)}</StaticField>
+            <StaticField label="家访时间">{Visit.formatDateTimeCN(value.visitTime)}</StaticField>
           </StaticForm>
         </FormContainer>
         <MaterialIcons name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />

@@ -1,5 +1,21 @@
 import moment from 'moment';
 
+function meridiem(momentInstance) {
+  const hour = momentInstance.hour();
+  const minute = momentInstance.minute();
+  if (hour < 9) {
+    return '早上';
+  } else if (hour < 11 && minute < 30) {
+    return '上午';
+  } else if (hour < 13 && minute < 30) {
+    return '中午';
+  } else if (hour < 18) {
+    return '下午';
+  } else {
+    return '晚上';
+  }
+}
+
 function formatDate(date) {
   return moment(date).format('YYYY-MM-DD');
 }
@@ -9,7 +25,7 @@ function formatDateCN(date) {
 }
 
 function formatTimeCN(time) {
-  return (moment(time).format('LT').includes('AM') ? '上午' : '下午') + moment(time).format('h:mm');
+  return meridiem(moment(time)) + moment(time).format('h:mm');
 }
 
 function formatDateTime(datetime) {
