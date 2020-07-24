@@ -4,6 +4,7 @@
   "scripts": {
     "start": "expo start",
     "publish:dev": "expo publish --release-channel dev",
+    "export:dev": "expo export --config app.dev.json -p https://dev.healthyfutures.cloud/expo",
     "android": "expo start --android",
     "eject": "expo eject",
     "test": "jest --watchAll",
