@@ -1,9 +1,10 @@
 import React from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 
+import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
-import { useFetch, formatVisitTime } from '../utils';
+import { useFetch } from '../utils';
 import {
   Button,
   LinearGradientHeader,
@@ -16,7 +17,7 @@ import {
 
 export default function Home({ navigation }) {
   const [visit, refresh, refreshing] = useFetch('/api/visits/next');
-  const { visitTime, baby, lesson } = visit;
+  const { visitTime, baby, lesson, status } = visit;
 
   return (
     <StyledScrollView
@@ -28,7 +29,7 @@ export default function Home({ navigation }) {
         {visit.id && (
           <>
             您的下一次家访：{'\n'}
-            {formatVisitTime(visitTime)}
+            {Visit.formatDateTime(visitTime)}
           </>
         )}
       </LinearGradientHeader>
@@ -40,19 +41,19 @@ export default function Home({ navigation }) {
               <BabyLine {...baby} />
             </BabyLineContainer>
             <StaticForm>
-              <StaticField label="主照料人">{baby.carerName}</StaticField>
-              <StaticField label="联系电话">{baby.carerPhone}</StaticField>
-              <StaticField label="所在区域">{baby.area}</StaticField>
-              <StaticField label="详细地址">{baby.location}</StaticField>
+              <StaticField label="主照料人">{baby?.carerName}</StaticField>
+              <StaticField label="联系电话">{baby?.carerPhone}</StaticField>
+              <StaticField label="所在区域">{baby?.area}</StaticField>
+              <StaticField label="详细地址">{baby?.location}</StaticField>
             </StaticForm>
           </Card>
           <Card
             title="课堂安排"
             right={<Button title="预览" onPress={() => navigation.navigate('LessonIntro')} />}
           >
-            <LessonName>{lesson.name}</LessonName>
+            <LessonName>{lesson?.name}</LessonName>
             <StaticForm>
-              {lesson.moduleNames?.map((name, index) => (
+              {lesson?.moduleNames?.map((name, index) => (
                 <StaticField key={name} label={`模块 ${index + 1}`}>
                   {name}
                 </StaticField>
@@ -66,7 +67,7 @@ export default function Home({ navigation }) {
         </NoDataContainer>
       )}
 
-      {visit.id && (
+      {Visit.canBeign(status, visitTime) && (
         <ButtonContainer>
           <Button
             size="large"
