@@ -19,6 +19,8 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {}
+    "android": {
+        "package": "edu.stanford.fsi.reap.app"
+    }
   }
 }

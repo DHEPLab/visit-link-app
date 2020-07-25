@@ -50,7 +50,9 @@ export default function Visit({ navigation, route }) {
             notStarted && (
               <Button
                 title="修改"
-                onPress={() => navigation.navigate('PickVisitTime', { visitTime })}
+                onPress={() =>
+                  navigation.navigate('PickVisitTime', { visitTime, babyId: baby?.id })
+                }
               />
             )
           }
