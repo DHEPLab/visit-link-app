@@ -9,7 +9,7 @@ services:
     environment:
       - "TZ=Asia/Shanghai"
     volumes:
-      - ./dist:/data/www
+      - ./dist:/data/www/expo
       - ./etc/nginx:/etc/nginx
       - /var/log/healthy-future-app:/var/log/nginx
     networks:
