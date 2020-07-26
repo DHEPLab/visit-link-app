@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Config from '../constants/Config';
 
 const Host = Config.apiHost;
@@ -8,27 +8,40 @@ AsyncStorage.getItem('JWT_TOKEN', (_, result) => {
   Token = result;
 });
 
+function responseContentTypeJSON(response) {
+  return response.headers.get('content-type') === 'application/json';
+}
+
 function request(fetchPromise) {
   return new Promise((resolve, reject) => {
     fetchPromise
       .then(async (response) => {
         if (response.ok) {
-          if (response.headers.get('content-type') === 'application/json') {
-            resolve(await response.json());
-          } else {
-            resolve({ text: await response.text() });
-          }
+          resolve(
+            responseContentTypeJSON(response)
+              ? await response.json()
+              : { text: await response.text() }
+          );
+        } else if (response.status === 404) {
+          reject(response);
         } else {
-          const error = await response.json();
-          console.warn(error);
-          reject(error);
+          console.warn(response);
+          reject(response);
         }
       })
       .catch((error) => {
         reject(error);
-        console.warn(error);
+        console.warn(JSON.stringify(error));
       });
   });
+}
+
+function objToQueryString(obj) {
+  const keyValuePairs = [];
+  for (const key in obj) {
+    keyValuePairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+  }
+  return keyValuePairs.join('&');
 }
 
 export default {
@@ -70,7 +83,7 @@ export default {
   },
   get(url, params) {
     return request(
-      fetch(`${Host}${url}`, {
+      fetch(`${Host}${url}?${objToQueryString(params)}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',

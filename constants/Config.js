@@ -7,6 +7,9 @@ const environments = {
   dev: {
     apiHost: 'https://dev.healthyfutures.cloud',
   },
+  stg: {
+    apiHost: 'https://stg.healthyfutures.cloud',
+  },
 };
 
 const env = Constants.manifest.releaseChannel || 'local';

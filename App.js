@@ -11,7 +11,9 @@ import { restoreToken } from './actions';
 import Http from './utils/http';
 import { Colors } from './constants';
 import { useBoolState } from './utils';
-import BottomTabNavigator from './navigation/BottomTabNavigator';
+import Navigator from './navigation/Navigator';
+
+console.reportErrorsAsExceptions = false;
 
 const store = createStore(
   rootReducer,
@@ -58,7 +60,7 @@ export default function App(props) {
     return (
       <Provider store={store}>
         <NavigationContainer theme={Colors.theme}>
-          <BottomTabNavigator />
+          <Navigator />
         </NavigationContainer>
       </Provider>
     );

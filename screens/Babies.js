@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { Button, BabyCard } from '../components';
+import { BabyCard, NoData } from '../components';
 import { useFetch } from '../utils';
 
 export default function Babies() {
@@ -25,10 +25,15 @@ export default function Babies() {
         </Search>
       </Header>
       <ListHeader>
-        <Title>宝宝列表</Title>
+        {babies.length > 0 && <Title>宝宝列表</Title>}
         {/* <Button title="添加宝宝" /> */}
       </ListHeader>
       <FlatList
+        ListEmptyComponent={
+          <NoDataContainer>
+            <NoData title="尚未添加宝宝信息" />
+          </NoDataContainer>
+        }
         refreshControl={
           <RefreshControl
             colors={Colors.colors}
@@ -43,6 +48,11 @@ export default function Babies() {
     </>
   );
 }
+
+const NoDataContainer = styled.View`
+  height: 350px;
+  justify-content: center;
+`;
 
 const ListHeader = styled.View`
   flex-direction: row;

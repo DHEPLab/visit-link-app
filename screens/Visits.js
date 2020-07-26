@@ -1,50 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
+import Visit from '../utils/visit';
+import Http from '../utils/http';
+import { useManualFetchArray, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { Button, VisitCard } from '../components';
-import { useNavigation } from '@react-navigation/native';
+import { Button, VisitCard, NoData } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Visits() {
+export default function Visits({ navigation }) {
   const [now] = useState(moment());
-  const { navigate } = useNavigation();
+
+  const [visits, setVisits] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [selected, setSelected] = useState(moment().format('YYYY-MM-DD'));
-  const [visits, setVisits] = useState([
-    {
-      id: 1,
-      status: 'UNDONE',
-      name: '12323123',
-      babyName: '张三李四',
-      date: new Date(),
-    },
-    {
-      id: 2,
-      status: 'DONE',
-      name: '12323123',
-      babyName: '张三李',
-      date: new Date(),
-    },
-    {
-      id: 3,
-      status: 'NOT_STARTED',
-      name: '123223',
-      babyName: '三李四',
-      date: new Date(),
-    },
-  ]);
+  const [selected, setSelected] = useState(Visit.formatDate(moment()));
+  const [markedDates, refreshMarkedDates] = useManualFetchArray('/api/visits/marked-dates');
+
+  useEffect(() => navigation.addListener('focus', () => refreshMarkedDates()), [navigation]);
+
+  useEffect(() => {
+    if (markedDates && !markedDates.includes(selected)) return setVisits([]);
+    Http.get('/api/visits', {
+      date: selected,
+    }).then(setVisits);
+  }, [selected, markedDates]);
 
   return (
     <>
       <Header {...Colors.linearGradient}>
         <Title>家访日程安排</Title>
-        <VisitDate>{moment(selected).format('YYYY年MM月DD日')}</VisitDate>
+        <VisitDate>{Visit.formatDateCN(selected)}</VisitDate>
       </Header>
 
       {showCalendar && (
@@ -55,16 +45,17 @@ export default function Visits() {
             hideArrows={false}
             calendarWidth={px2dp(400)}
             monthFormat={'yyyy年 M月'}
-            current={now.format('YYYY-MM-DD')}
+            current={Visit.formatDate(now)}
             theme={Colors.calendar}
-            selected={selected}
             markedDates={{
-              '2020-07-14': { marked: true },
-              [selected]: { selected: true },
+              ...calenderMarkedDates(markedDates),
+              [selected]: {
+                selected: true,
+                dotColor: '#fff',
+                marked: markedDates?.includes(selected),
+              },
             }}
-            onDayPress={(day) => {
-              setSelected(day.dateString);
-            }}
+            onDayPress={(day) => setSelected(day.dateString)}
           />
         </CalendarContainer>
       )}
@@ -82,14 +73,22 @@ export default function Visits() {
           />
         </ExtendCalendar>
       </TouchableOpacity>
+
       <ButtonContainer>
-        <Button title="新建家访" onPress={() => navigate('CreateVisit')} />
+        <Button
+          title="新建家访"
+          disabled={moment(Visit.formatDate(now)).isAfter(selected)}
+          onPress={() => navigation.navigate('CreateVisit', { visitTime: `${selected}T10:00` })}
+        />
       </ButtonContainer>
+
       <StyledFlatList
-        refreshControl={<RefreshControl colors={Colors.colors} />}
+        ListEmptyComponent={<NoData title="该日期暂时没有家访安排" />}
         data={visits}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <VisitCard onPress={() => navigate('Visit')} value={item} />}
+        renderItem={({ item }) => (
+          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
+        )}
       />
     </>
   );

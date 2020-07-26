@@ -1,22 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { FlatList, RefreshControl, Image, View, ScrollView, TouchableOpacity } from 'react-native';
+import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
-import { useFetch } from '../utils';
+import http from '../utils/http';
+import { useFetch, useManualFetchArray } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { GenderIcon, BabyStage, FamilyTies } from '../constants/enums';
-import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField } from '../components';
+import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
+import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
 
-export default function Baby({ navigation }) {
-  const { params } = useRoute();
+export default function Baby({ navigation, route }) {
+  const { params } = route;
   const [index, setIndex] = useState(0);
 
+  const [started, setStarted] = useState(false);
   const [baby] = useFetch(`/api/babies/${params.id}`);
   const [carers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
+  const [visits, refreshVisits] = useManualFetchArray(`/api/babies/${params.id}/visits`, {
+    started: false,
+  });
+
+  useEffect(() => navigation.addListener('focus', () => refreshVisits({ started })), [navigation]);
+
+  function onChangeVisitTab(_started) {
+    setStarted(_started);
+    refreshVisits({ started: _started });
+  }
+
+  function handleCreateVisit() {
+    http
+      .get(`/api/babies/${baby.id}/lesson`)
+      .then((_) =>
+        navigation.navigate('CreateVisit', {
+          lockBaby: true,
+          baby: {
+            ...baby,
+            months: params.months,
+            carerName: carers[0]?.name,
+            carerPhone: carers[0]?.phone,
+          },
+        })
+      )
+      .catch((_) => ToastAndroid.show('没有匹配的课堂，无法新建家访', ToastAndroid.LONG));
+  }
 
   return (
     <>
@@ -30,21 +58,36 @@ export default function Baby({ navigation }) {
           </NameContainer>
           <InfoContainer>
             <View>
-              <Age>
+              <Stage>
                 <MaterialCommunityIcons
                   name={GenderIcon[params.gender]}
                   size={px2dp(12)}
                   color="#fff"
-                />{' '}
-                {BabyStage[params.stage]} {params.month}个月
-              </Age>
+                />
+                <Age>
+                  {BabyStage[params.stage]} {params.months}个月
+                </Age>
+              </Stage>
+              {baby.feedingPattern && (
+                <FeedingPatternContainer>
+                  <FeedingPatternLabel>喂养状态：</FeedingPatternLabel>
+                  <FeedingPatternValue>{FeedingPattern[baby.feedingPattern]}</FeedingPatternValue>
+                </FeedingPatternContainer>
+              )}
             </View>
             {/* <Button ghost title="修改资料" /> */}
           </InfoContainer>
         </BabyContainer>
       </Header>
+
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{
+          index,
+          routes: [
+            { key: 'Visits', title: '家访记录' },
+            { key: 'Family', title: '家庭信息' },
+          ],
+        }}
         onIndexChange={setIndex}
         renderTabBar={(props) => (
           <TabBar
@@ -55,165 +98,71 @@ export default function Baby({ navigation }) {
           />
         )}
         renderScene={SceneMap({
-          Visit,
+          Visits: () => (
+            <Visits
+              onChange={onChangeVisitTab}
+              dataSource={visits}
+              started={started}
+              navigation={navigation}
+            />
+          ),
           Family: () => <Family baby={baby} carers={carers} />,
         })}
       />
+
       <FixedButtonContainer>
-        <Button
-          size="large"
-          title="新建家访"
-          onPress={() => navigation.navigate('CreateVisit', { baby })}
-        />
+        <Button size="large" title="新建家访" onPress={handleCreateVisit} />
       </FixedButtonContainer>
     </>
   );
 }
 
-const FixedButtonContainer = styled.View`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 48px;
-  display: flex;
-  justify-content: center;
+const FeedingPatternContainer = styled.View`
+  flex-direction: row;
   align-items: center;
-  background: rgba(255, 255, 255, 0.49);
+  margin-top: 4px;
 `;
 
-const routes = [
-  { key: 'Visit', title: '家访记录' },
-  { key: 'Family', title: '家庭信息' },
-];
-
-const NameContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
-const BackgroundImage = styled(Image)`
-  position: absolute;
-  height: 134px;
-  width: 140px;
-  right: 0;
-  bottom: 0;
-`;
-
-const InfoContainer = styled.View`
-  margin-top: 20px;
-  flex-direction: row;
-  justify-content: space-between;
-`;
-
-const BabyContainer = styled.View`
-  padding: 0 28px;
-`;
-
-const WhiteText = styled.Text`
+const FeedingPatternLabel = styled.Text`
   color: #fff;
-`;
-
-const Name = styled(WhiteText)`
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 16px;
-`;
-
-const Identity = styled(WhiteText)`
   font-size: 10px;
 `;
 
-const Age = styled(WhiteText)`
-  font-size: 10px;
+const FeedingPatternValue = styled.Text`
+  background: #ffede2;
+  border-radius: 2px;
+  color: #ff794f;
+  padding: 2px 4px;
+  font-size: 8px;
 `;
 
-const Header = styled(LinearGradient)`
-  height: 160px;
-  width: 100%;
+const Stage = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
-function Visit() {
-  const [tab, setTab] = useState('NOT_STARTED');
-  const [visits, setVisits] = useState([]);
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    if (tab === 'NOT_STARTED') {
-      setVisits([
-        {
-          status: 'NOT_STARTED',
-          name: '课堂名称课堂名称课堂名称课堂名称',
-          date: new Date(),
-        },
-      ]);
-    } else {
-      setVisits([
-        {
-          id: 1,
-          status: 'UNDONE',
-          name: '课堂名称称课堂名称课堂名称',
-          date: new Date(),
-        },
-        {
-          id: 2,
-          status: 'EXPIRED',
-          name: '课堂名称称课堂名称课堂名称',
-          date: new Date(),
-        },
-        {
-          id: 3,
-          status: 'DONE',
-          name: '课堂名称称课堂名称课堂名称',
-          date: new Date(),
-        },
-      ]);
-    }
-  }, [tab]);
-
+function Visits({ started, dataSource, onChange, navigation }) {
   return (
     <VisitsContainer>
       <VisitTabs>
-        <TouchableOpacity onPress={() => setTab('NOT_STARTED')} activeOpacity={0.8}>
-          <VisitTab active={tab === 'NOT_STARTED'}>计划中的家访</VisitTab>
+        <TouchableOpacity onPress={() => onChange(false)} activeOpacity={0.8}>
+          <VisitTab active={!started}>计划中的家访</VisitTab>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setTab('STARTED')} activeOpacity={0.8}>
-          <VisitTab active={tab !== 'NOT_STARTED'}>已完成家访</VisitTab>
+        <TouchableOpacity onPress={() => onChange(true)} activeOpacity={0.8}>
+          <VisitTab active={started}>已完成家访</VisitTab>
         </TouchableOpacity>
       </VisitTabs>
       <FlatList
-        refreshControl={<RefreshControl colors={Colors.colors} />}
-        data={visits}
+        ListEmptyComponent={<NoData title="没有相关结果" />}
+        data={dataSource}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => (
-          <VisitCard onPress={() => navigation.navigate('Visit')} value={item} />
+          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
         )}
       />
     </VisitsContainer>
   );
 }
-
-const VisitsContainer = styled.View`
-  padding: 20px 28px;
-`;
-
-const VisitTabs = styled.View`
-  padding-bottom: 24px;
-  flex-direction: row;
-`;
-
-const VisitTab = styled.Text`
-  font-size: 12px;
-  margin-right: 16px;
-  color: #525252;
-  ${({ active }) =>
-    active &&
-    `
-    font-weight: bold;
-    border-bottom-width: 2px;
-    border-color: #FFC3A0;
-  `}
-`;
 
 function Family({ baby, carers }) {
   return (
@@ -253,6 +202,87 @@ function Carer({ number, carer, noBorder }) {
     </CarerItem>
   );
 }
+
+const FixedButtonContainer = styled.View`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.49);
+`;
+
+const NameContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+const BackgroundImage = styled(Image)`
+  position: absolute;
+  height: 134px;
+  width: 140px;
+  right: 0;
+  bottom: 0;
+`;
+
+const InfoContainer = styled.View`
+  margin-top: 20px;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const BabyContainer = styled.View`
+  padding: 0 28px;
+`;
+
+const WhiteText = styled.Text`
+  color: #fff;
+`;
+
+const Name = styled(WhiteText)`
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+`;
+
+const Identity = styled(WhiteText)`
+  font-size: 10px;
+`;
+
+const Age = styled(WhiteText)`
+  margin-left: 4px;
+  font-size: 10px;
+`;
+
+const Header = styled(LinearGradient)`
+  height: 160px;
+  width: 100%;
+`;
+
+const VisitsContainer = styled.View`
+  padding: 20px 28px;
+`;
+
+const VisitTabs = styled.View`
+  padding-bottom: 24px;
+  flex-direction: row;
+`;
+
+const VisitTab = styled.Text`
+  font-size: 12px;
+  margin-right: 16px;
+  color: #525252;
+  ${({ active }) =>
+    active &&
+    `
+    font-weight: bold;
+    border-bottom-width: 2px;
+    border-color: #FFC3A0;
+  `}
+`;
 
 const CarerOperation = styled.View`
   flex-direction: row;

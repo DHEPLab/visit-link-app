@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
-export default function BabyLine({ name, gender, stage, month, identity }) {
+export default function BabyLine({ name, gender, stage, months, identity }) {
   function genderColor(value) {
     switch (value) {
       case 'MALE':
@@ -28,7 +28,7 @@ export default function BabyLine({ name, gender, stage, month, identity }) {
         />
       </Gender>
       <Age>
-        {BabyStage[stage]} {month}个月
+        {BabyStage[stage]} {months}个月
       </Age>
       <Identity>ID:{identity}</Identity>
     </Baby>

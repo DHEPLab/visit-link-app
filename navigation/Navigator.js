@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 
 import { TabBarIcon, NavigatorHeader } from '../components';
 import { px2dp, styled } from '../utils/styled';
@@ -78,14 +78,20 @@ const screens = [
   },
 ];
 
-export default function () {
+export default function StackNavigator() {
   const user = useSelector((state) => state.user);
 
   return (
     <Stack.Navigator>
       {user.userToken == null ? (
         <>
-          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
+            options={{
+              headerShown: false,
+            }}
+          />
         </>
       ) : (
         <>
@@ -96,9 +102,10 @@ export default function () {
               name={screen.name}
               component={screen.component}
               options={{
-                headerShown: screen.headerShown,
-                headerTitle: screen.title,
                 header: NavigatorHeader,
+                headerTitle: screen.title,
+                headerShown: screen.headerShown,
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
               }}
             />
           ))}
