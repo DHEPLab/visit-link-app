@@ -4,8 +4,8 @@
   "scripts": {
     "start": "expo start",
     "publish:dev": "expo publish --release-channel dev",
-    "export:dev": "expo export --config app.dev.json -p https://dev.healthyfutures.cloud/expo",
-    "export:stg": "expo export --config app.stg.json -p https://stg.healthyfutures.cloud/expo",
+    "export:dev": "expo export --config app.dev.json -p https://dev.healthyfutures.cloud/expo --output-dir dist.dev",
+    "export:stg": "expo export --config app.stg.json -p https://stg.healthyfutures.cloud/expo --output-dir dist.stg",
     "android": "expo start --android",
     "eject": "expo eject",
     "test": "jest --watchAll",
