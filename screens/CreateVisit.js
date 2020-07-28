@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { ScrollView } from 'react-native';
 
-import Http from '../utils/http';
+import http from '../utils/http';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
@@ -16,7 +16,7 @@ export default function CreateVisit({ navigation, route }) {
   useEffect(() => {
     if (params?.baby) {
       const { baby } = params;
-      Http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+      http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
       setBaby(baby);
     }
   }, [params?.baby]);
@@ -28,11 +28,13 @@ export default function CreateVisit({ navigation, route }) {
   }, [params?.visitTime]);
 
   function handleSubmit() {
-    Http.post('/api/visits', {
-      visitTime: Visit.formatDateTime(visitTime),
-      babyId: baby.id,
-      lessonId: lesson.id,
-    }).then(navigation.goBack);
+    http
+      .post('/api/visits', {
+        visitTime: Visit.formatDateTime(visitTime),
+        babyId: baby.id,
+        lessonId: lesson.id,
+      })
+      .then(navigation.goBack);
   }
 
   async function handleChangeVisitTime() {
