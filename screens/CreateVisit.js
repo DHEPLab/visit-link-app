@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { ScrollView } from 'react-native';
 
 import Http from '../utils/http';
@@ -34,23 +35,23 @@ export default function CreateVisit({ navigation, route }) {
     }).then(navigation.goBack);
   }
 
+  async function handleChangeVisitTime() {
+    let range = [Visit.formatDate(moment())];
+    if (baby?.id) {
+      range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
+    }
+    navigation.navigate('PickVisitTime', {
+      visitTime: Visit.formatDateTime(visitTime),
+      range,
+    });
+  }
+
   return (
     <Container>
       <Card
         title="家访时间"
         hideBody={!visitTime}
-        right={
-          <Button
-            title="修改"
-            onPress={() =>
-              navigation.navigate('PickVisitTime', {
-                visitTime: Visit.formatDateTime(visitTime),
-                babyId: baby?.id,
-              })
-            }
-            hideBody={!visitTime}
-          />
-        }
+        right={<Button title="修改" onPress={handleChangeVisitTime} hideBody={!visitTime} />}
       >
         {visitTime && (
           <StaticForm>

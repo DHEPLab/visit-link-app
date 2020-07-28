@@ -1,5 +1,16 @@
 import moment from 'moment';
 
+function defaultDatetime(range, visitTime) {
+  if (!range || !range[0]) return visitTime || moment();
+  if (
+    moment(range[0]).isBefore(formatDate(visitTime)) &&
+    moment(range[1]).isAfter(formatDate(visitTime))
+  ) {
+    return visitTime;
+  }
+  return range[0];
+}
+
 function meridiem(momentInstance) {
   const hour = momentInstance.hour();
   const minute = momentInstance.minute();
@@ -51,4 +62,5 @@ export default {
   formatDateTimeCN,
   formatDateCN,
   mergeDateAndTime,
+  defaultDatetime,
 };

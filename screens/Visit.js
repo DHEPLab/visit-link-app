@@ -15,7 +15,8 @@ import {
 import http from '../utils/http';
 
 export default function Visit({ navigation, route }) {
-  const [visit] = useFetch(`/api/visits/${route.params.id}`);
+  const { params } = route;
+  const [visit] = useFetch(`/api/visits/${params.id}`);
   const { visitTime, status, baby, lesson } = visit;
 
   const notStarted = status === 'NOT_STARTED';
@@ -30,7 +31,13 @@ export default function Visit({ navigation, route }) {
   }
 
   function handleBegin() {
-    http.put(`/api/visits/${route.params.id}/begin`).then(handleContinue);
+    http.put(`/api/visits/${params.id}/begin`).then(handleContinue);
+  }
+
+  function handleChangeVisitTime() {
+    http.get(`/api/visits/${params.id}/date-range`).then((range) => {
+      navigation.navigate('PickVisitTime', { visitTime, from: 'Visit', range });
+    });
   }
 
   return (
@@ -46,20 +53,7 @@ export default function Visit({ navigation, route }) {
 
         <Card
           title="家访时间"
-          right={
-            notStarted && (
-              <Button
-                title="修改"
-                onPress={() =>
-                  navigation.navigate('PickVisitTime', {
-                    visitTime,
-                    babyId: baby?.id,
-                    from: 'Visit',
-                  })
-                }
-              />
-            )
-          }
+          right={notStarted && <Button title="修改" onPress={handleChangeVisitTime} />}
         >
           {visitTime && (
             <StaticForm>
