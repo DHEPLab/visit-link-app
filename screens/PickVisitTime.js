@@ -12,6 +12,7 @@ import { useFetchArray, useBoolState, calenderMarkedDates } from '../utils';
 import { StaticField, StaticForm, LargeButtonContainer, Button } from '../components';
 
 export default function PickVisitTime({ navigation, route }) {
+  const from = route.params?.from || 'CreateVisit';
   const [now] = useState(moment());
   const [markedDates] = useFetchArray('/api/visits/marked-dates');
 
@@ -32,7 +33,7 @@ export default function PickVisitTime({ navigation, route }) {
   }, [route.params?.babyId]);
 
   function handleSubmit() {
-    navigation.navigate('CreateVisit', {
+    navigation.navigate(from, {
       visitTime: Visit.mergeDateAndTime(date, time),
     });
   }
