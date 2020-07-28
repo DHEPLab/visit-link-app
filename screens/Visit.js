@@ -21,6 +21,7 @@ export default function Visit({ navigation, route }) {
 
   const notStarted = status === 'NOT_STARTED';
   const undone = status === 'UNDONE';
+  const done = status === 'DONE';
   const expired = status === 'EXPIRED';
 
   const showRemark = undone || expired;
@@ -37,7 +38,11 @@ export default function Visit({ navigation, route }) {
   }
 
   function handleBegin() {
-    http.put(`/api/visits/${params.id}/begin`).then(handleContinue);
+    // http.put(`/api/visits/${params.id}/begin`).then(handleContinue);
+  }
+
+  function handleDone() {
+    http.put(`/api/visits/${params.id}/done`).then(() => refresh());
   }
 
   function handleChangeVisitTime() {
@@ -102,9 +107,17 @@ export default function Visit({ navigation, route }) {
         </Card>
 
         {VisitUtils.canBegin(status, visitTime) && (
-          <LargeButtonContainer>
-            <Button size="large" title="开始课堂" onPress={handleBegin} />
-          </LargeButtonContainer>
+          <>
+            <LargeButtonContainer>
+              <Button size="large" title="开始课堂" onPress={handleBegin} />
+            </LargeButtonContainer>
+            {/** TEST ONLY */}
+            {!done && (
+              <LargeButtonContainer>
+                <Button size="large" title="直接完成课堂" onPress={handleDone} />
+              </LargeButtonContainer>
+            )}
+          </>
         )}
 
         {undone && (
