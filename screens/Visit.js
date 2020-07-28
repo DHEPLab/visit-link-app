@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 
 import { styled } from '../utils/styled';
@@ -16,7 +16,7 @@ import http from '../utils/http';
 
 export default function Visit({ navigation, route }) {
   const { params } = route;
-  const [visit] = useFetch(`/api/visits/${params.id}`);
+  const [visit, refresh] = useFetch(`/api/visits/${params.id}`);
   const { visitTime, status, baby, lesson } = visit;
 
   const notStarted = status === 'NOT_STARTED';
@@ -25,6 +25,12 @@ export default function Visit({ navigation, route }) {
 
   const showRemark = undone || expired;
   const remarkTitle = undone ? '未完成原因' : '过期原因';
+
+  useEffect(() => {
+    if (route.params.visitTime) {
+      http.put(`/api/visits/${params.id}`, { visitTime: params.visitTime }).then(() => refresh());
+    }
+  }, [route.params?.visitTime]);
 
   function handleContinue() {
     navigation.navigate('LessonIntro', { id: lesson.id });

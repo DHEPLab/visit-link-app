@@ -8,7 +8,7 @@ function defaultDatetime(range, visitTime) {
   ) {
     return visitTime;
   }
-  return range[0];
+  return range[0] + 'T10:00';
 }
 
 function meridiem(momentInstance) {

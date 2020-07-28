@@ -1,8 +1,14 @@
 import React from 'react';
 import { render } from 'react-native-testing-library';
 import { useFetch } from '../utils';
+import http from '../utils/http';
 
 import Visit from './Visit';
+
+jest.mock('../utils/http', () => ({
+  ...jest.requireActual('../utils/http'),
+  put: jest.fn(),
+}));
 
 jest.mock('../utils', () => ({
   ...jest.requireActual('../utils'),
@@ -64,5 +70,14 @@ describe('<Visit />', () => {
     const { queryByText } = render(<Visit {...createTestProps()} />);
     expect(queryByText(/修改/)).toBeNull();
     expect(queryByText(/开始课堂/)).toBeNull();
+  });
+
+  it('should change visit time', () => {
+    http.put.mockImplementation(() => ({ then: jest.fn() }));
+    const props = createTestProps();
+    const { rerender } = render(<Visit {...createTestProps()} />);
+    props.route.params.visitTime = '2020-01-01T12:00';
+    rerender(<Visit {...props} />);
+    expect(http.put).toBeCalledWith(`/api/visits/1`, { visitTime: '2020-01-01T12:00' });
   });
 });
