@@ -1,13 +1,22 @@
 import moment from 'moment';
 
 function defaultDatetime(range, visitTime) {
-  if (!range || !range[0]) return visitTime || moment();
+  if (!visitTime) visitTime = moment();
+
   if (
-    moment(range[0]).isBefore(formatDate(visitTime)) &&
-    moment(range[1]).isAfter(formatDate(visitTime))
+    // unlimit range
+    !range ||
+    !range[0] ||
+    // unlimit range end
+    (!range[1] && moment(range[0]).isBefore(formatDate(visitTime))) ||
+    // limit range
+    (moment(range[0]).isBefore(formatDate(visitTime)) &&
+      moment(range[1]).isAfter(formatDate(visitTime)))
   ) {
     return visitTime;
   }
+
+  // return range start with default time 10:00 AM
   return range[0] + 'T10:00';
 }
 
