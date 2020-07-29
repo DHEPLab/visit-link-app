@@ -38,6 +38,7 @@ export default function Visit({ navigation, route }) {
   }
 
   function handleBegin() {
+    handleContinue();
     // http.put(`/api/visits/${params.id}/begin`).then(handleContinue);
   }
 
