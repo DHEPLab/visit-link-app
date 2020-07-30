@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import net from './net';
 
 const user = (
   state = {
@@ -35,4 +36,5 @@ const user = (
 
 export default combineReducers({
   user,
+  net,
 });
