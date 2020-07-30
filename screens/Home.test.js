@@ -11,7 +11,7 @@ jest.mock('../utils', () => ({
 it('should no data', () => {
   useFetch.mockImplementation(() => [{}]);
   const { queryByText } = render(<Home />);
-  expect(queryByText(/暂无家访安排/)).not.toBeNull();
+  expect(queryByText(/您尚未创建任何家访/)).not.toBeNull();
 });
 
 it('should render next visit', () => {
