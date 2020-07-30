@@ -1,5 +1,5 @@
 export const signIn = ({ idToken }) => ({
-  type: 'SIGN_IN',
+  type: 'RESTORE_TOKEN',
   token: idToken,
 });
 

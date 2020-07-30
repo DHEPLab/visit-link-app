@@ -11,11 +11,6 @@ export default function user(
         ...state,
         userToken: action.token,
       };
-    case 'SIGN_IN':
-      return {
-        ...state,
-        userToken: action.token,
-      };
     case 'SIGN_OUT':
       return {
         ...state,
