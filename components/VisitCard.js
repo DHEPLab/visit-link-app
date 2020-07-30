@@ -21,7 +21,7 @@ export default function VisitCard({ onPress, value }) {
         />
         <FormContainer>
           <StaticForm>
-            {value.babyName && <StaticField label="课堂名称">{value.babyName}</StaticField>}
+            {value.babyName && <StaticField label="宝宝名称">{value.babyName}</StaticField>}
             <StaticField label="课堂名称">{value.lessonName}</StaticField>
             <StaticField label="家访时间">{Visit.formatDateTimeCN(value.visitTime)}</StaticField>
           </StaticForm>
