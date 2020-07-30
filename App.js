@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { ToastAndroid } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,7 +9,7 @@ import './config';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
-import { restoreToken } from './actions';
+import { restoreToken, netInfo } from './actions';
 
 import Http from './utils/http';
 import Navigator from './navigation/Navigator';
@@ -30,14 +31,15 @@ export default function App(props) {
       try {
         SplashScreen.preventAutoHide();
 
-        NetInfo.fetch().then((state) => {
-          console.log('Connection type', state.type);
-          console.log('Is connected?', state.isConnected);
-        });
+        const net = await NetInfo.fetch();
 
         // Restore token from async storage
         const token = await Http.token();
         store.dispatch(restoreToken(token));
+
+        if (!net.isConnected) {
+          return ToastAndroid.show('当前处于离线模式', ToastAndroid.LONG);
+        }
 
         try {
           // Check whether the token is valid
@@ -57,10 +59,7 @@ export default function App(props) {
     }
 
     loadResourcesAndDataAsync();
-    return NetInfo.addEventListener((state) => {
-      console.log('Event Connection type', state.type);
-      console.log('Event Is connected?', state.isConnected);
-    });
+    return NetInfo.addEventListener((state) => store.dispatch(netInfo(state)));
   }, []);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {

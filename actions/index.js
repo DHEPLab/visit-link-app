@@ -11,3 +11,8 @@ export const restoreToken = (token) => ({
   type: 'RESTORE_TOKEN',
   token,
 });
+
+export const netInfo = (state) => ({
+  type: 'NET_INFO',
+  payload: state,
+});
