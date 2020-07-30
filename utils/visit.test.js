@@ -26,3 +26,15 @@ it('should merge date and time', () => {
     '2020-07-12T18:00'
   );
 });
+
+it('should default datetime is visit time', () => {
+  expect(Visit.defaultDatetime([], '2020-07-12')).toBe('2020-07-12');
+  expect(Visit.defaultDatetime(['2020-07-11', '2020-07-13'], '2020-07-12')).toBe('2020-07-12');
+  expect(Visit.defaultDatetime(['2020-07-11'], '2020-07-12')).toBe('2020-07-12');
+});
+
+it('should default datetime is range0', () => {
+  expect(Visit.defaultDatetime(['2020-07-28', '2020-08-13'], '2020-07-26')).toBe(
+    '2020-07-28T10:00'
+  );
+});

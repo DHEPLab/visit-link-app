@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { ScrollView } from 'react-native';
 
-import Http from '../utils/http';
+import http from '../utils/http';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
@@ -15,7 +16,7 @@ export default function CreateVisit({ navigation, route }) {
   useEffect(() => {
     if (params?.baby) {
       const { baby } = params;
-      Http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+      http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
       setBaby(baby);
     }
   }, [params?.baby]);
@@ -27,11 +28,24 @@ export default function CreateVisit({ navigation, route }) {
   }, [params?.visitTime]);
 
   function handleSubmit() {
-    Http.post('/api/visits', {
+    http
+      .post('/api/visits', {
+        visitTime: Visit.formatDateTime(visitTime),
+        babyId: baby.id,
+        lessonId: lesson.id,
+      })
+      .then(navigation.goBack);
+  }
+
+  async function handleChangeVisitTime() {
+    let range = [Visit.formatDate(moment())];
+    if (baby?.id) {
+      range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
+    }
+    navigation.navigate('PickVisitTime', {
       visitTime: Visit.formatDateTime(visitTime),
-      babyId: baby.id,
-      lessonId: lesson.id,
-    }).then(navigation.goBack);
+      range,
+    });
   }
 
   return (
@@ -39,18 +53,7 @@ export default function CreateVisit({ navigation, route }) {
       <Card
         title="家访时间"
         hideBody={!visitTime}
-        right={
-          <Button
-            title="修改"
-            onPress={() =>
-              navigation.navigate('PickVisitTime', {
-                visitTime: Visit.formatDateTime(visitTime),
-                babyId: baby?.id,
-              })
-            }
-            hideBody={!visitTime}
-          />
-        }
+        right={<Button title="修改" onPress={handleChangeVisitTime} hideBody={!visitTime} />}
       >
         {visitTime && (
           <StaticForm>

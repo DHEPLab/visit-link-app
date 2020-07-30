@@ -4,10 +4,16 @@ import { Video } from 'expo-av';
 
 import { styled, px2dp } from '../../utils/styled';
 
+const Host = 'https://healthy-future-dev.oss-cn-shanghai.aliyuncs.com';
+
 export default function CurriculumMedia({ value }) {
   return (
     <Container>
-      {value.type === 'Video' ? <VideoMedia uri={value.file} /> : <PictureMedia uri={value.file} />}
+      {value.type === 'Video' ? (
+        <VideoMedia uri={`${Host}${value.file}`} />
+      ) : (
+        <PictureMedia uri={`${Host}${value.file}`} />
+      )}
       <Title>{value.text}</Title>
     </Container>
   );

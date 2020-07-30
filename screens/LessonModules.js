@@ -22,11 +22,11 @@ export default function LessonModules() {
       </Header>
       <StyledScrollView>
         {[0, 1, 2, 3].map((key) => (
-          <ModuleItem key={key} value={{ status: 'DONE', number: '01', name: '123b1b23bb31b23' }} />
+          <ModuleItem key={key} value={{ status: 'DONE', number: 'L' + key, name: '模块名称' }} />
         ))}
         <ModuleItem
           onPress={() => navigation.navigate('Module')}
-          value={{ status: 'UNDONE', number: '02', name: 'b23b2b3b12331' }}
+          value={{ status: 'UNDONE', number: 'H4.2', name: '照料人的心理健康' }}
         />
         <ButtonContainer>
           <Button size="large" title="完成家访" disabled={true} />
