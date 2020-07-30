@@ -11,7 +11,6 @@ import Baby from '../screens/Baby';
 import ChangePassword from '../screens/ChangePassword';
 import Home from '../screens/Home';
 import Me from '../screens/Me';
-import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
 import Visits from '../screens/Visits';
@@ -60,11 +59,6 @@ const screens = [
     name: 'LessonIntro',
     component: LessonIntro,
     headerShown: false,
-  },
-  {
-    name: 'Session',
-    title: '会话',
-    component: Session,
   },
   {
     name: 'Baby',

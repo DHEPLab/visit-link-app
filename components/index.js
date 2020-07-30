@@ -7,7 +7,6 @@ export { default as FormItem } from './FormItem';
 export { default as GhostNavigatorHeader } from './GhostNavigatorHeader';
 export { default as Icons } from './Icons';
 export { default as Input } from './Input';
-export { default as LinearGradientHeader } from './LinearGradientHeader';
 export { default as NavigatorHeader } from './NavigatorHeader';
 export { default as PrimaryInput } from './PrimaryInput';
 export { default as StaticForm } from './StaticForm';

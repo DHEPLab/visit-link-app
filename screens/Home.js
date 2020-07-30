@@ -1,4 +1,5 @@
 import React from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl } from 'react-native';
 
 import Visit from '../utils/visit';
@@ -7,13 +8,14 @@ import { Colors } from '../constants';
 import { useFetch } from '../utils';
 import {
   Button,
-  LinearGradientHeader,
   Card,
   StaticForm,
   StaticField,
   BabyLine,
-  NoData,
+  BottomRightBackground,
 } from '../components';
+
+import sync from '../cache/sync';
 
 export default function Home({ navigation }) {
   const [visit, refresh, refreshing] = useFetch('/api/visits/next');
@@ -25,14 +27,29 @@ export default function Home({ navigation }) {
         <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      <LinearGradientHeader>
-        {visit.id && (
-          <>
-            您的下一次家访：{'\n'}
-            {Visit.formatDateTimeCN(visitTime)}
-          </>
-        )}
-      </LinearGradientHeader>
+      <Header {...Colors.linearGradient}>
+        <BottomRightBackground
+          width={140}
+          height={134}
+          source={require('../assets/images/curriculum-bg.png')}
+        />
+        <Title>
+          {visit.id ? (
+            <>
+              您的下一次家访：{'\n'}
+              {Visit.formatDateTimeCN(visitTime)}
+            </>
+          ) : (
+            <>
+              您尚未创建任何家访：{'\n'}
+              快来创建家访吧！
+            </>
+          )}
+        </Title>
+        <SyncButton>
+          <Button onPress={sync} ghost size="small" title="一键下载" />
+        </SyncButton>
+      </Header>
 
       {visit.id ? (
         <CardContainer>
@@ -63,7 +80,7 @@ export default function Home({ navigation }) {
         </CardContainer>
       ) : (
         <NoDataContainer>
-          <NoData title="暂无家访安排" />
+          <Button title="新建家访" size="large" />
         </NoDataContainer>
       )}
 
@@ -80,8 +97,28 @@ export default function Home({ navigation }) {
   );
 }
 
+const SyncButton = styled.View`
+  position: absolute;
+  right: 20px;
+  top: 30px;
+`;
+
+const Header = styled(LinearGradient)`
+  position: relative;
+  width: 100%;
+  height: 160px;
+  padding-top: 50px;
+  padding-left: 28px;
+`;
+
+const Title = styled.Text`
+  font-size: 20px;
+  color: #fff;
+  font-weight: bold;
+`;
+
 const NoDataContainer = styled.View`
-  height: 300px;
+  height: 100px;
   justify-content: center;
 `;
 
@@ -104,6 +141,7 @@ const CardContainer = styled.View`
   margin: 0 28px;
   margin-top: -34px;
 `;
+
 const ButtonContainer = styled.View`
   margin-top: 20px;
   margin-bottom: 10px;
