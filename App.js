@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
+import NetInfo from '@react-native-community/netinfo';
 import { SplashScreen } from 'expo';
-import { LocaleConfig } from 'react-native-calendars';
 import { NavigationContainer } from '@react-navigation/native';
 
-import rootReducer from './reducers';
+import './config';
+
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import rootReducer from './reducers';
 import { restoreToken } from './actions';
 
 import Http from './utils/http';
+import Navigator from './navigation/Navigator';
 import { Colors } from './constants';
 import { useBoolState } from './utils';
-import Navigator from './navigation/Navigator';
-
-console.reportErrorsAsExceptions = false;
 
 const store = createStore(
   rootReducer,
@@ -29,6 +29,11 @@ export default function App(props) {
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();
+
+        NetInfo.fetch().then((state) => {
+          console.log('Connection type', state.type);
+          console.log('Is connected?', state.isConnected);
+        });
 
         // Restore token from async storage
         const token = await Http.token();
@@ -52,52 +57,21 @@ export default function App(props) {
     }
 
     loadResourcesAndDataAsync();
+    return NetInfo.addEventListener((state) => {
+      console.log('Event Connection type', state.type);
+      console.log('Event Is connected?', state.isConnected);
+    });
   }, []);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return null;
-  } else {
-    return (
-      <Provider store={store}>
-        <NavigationContainer theme={Colors.theme}>
-          <Navigator />
-        </NavigationContainer>
-      </Provider>
-    );
   }
-}
 
-LocaleConfig.locales['zh'] = {
-  monthNames: [
-    '1 月',
-    '2 月',
-    '3 月',
-    '4 月',
-    '5 月',
-    '6 月',
-    '7 月',
-    '8 月',
-    '9 月',
-    '10 月',
-    '11 月',
-    '12 月',
-  ],
-  monthNamesShort: [
-    '1 月',
-    '2 月',
-    '3 月',
-    '4 月',
-    '5 月',
-    '6 月',
-    '7 月',
-    '8 月',
-    '9 月',
-    '10 月',
-    '11 月',
-    '12 月',
-  ],
-  dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-  dayNamesShort: ['日', '一', '二', '三', '四', '五', '六'],
-  today: '今天',
-};
-LocaleConfig.defaultLocale = 'zh';
+  return (
+    <Provider store={store}>
+      <NavigationContainer theme={Colors.theme}>
+        <Navigator />
+      </NavigationContainer>
+    </Provider>
+  );
+}
