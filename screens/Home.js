@@ -25,10 +25,9 @@ export default function Home({ navigation }) {
   const { visitTime, baby, lesson, status } = visit;
 
   useEffect(() => {
-    async function nextVisit() {
-      setVisit((await storage.getNextVisit()) || {});
-    }
-    nextVisit();
+    storage.getNextVisit().then((_visit) => {
+      setVisit(_visit || {});
+    });
   }, []);
 
   function refresh() {
