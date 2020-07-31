@@ -1,6 +1,7 @@
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
@@ -22,24 +23,33 @@ import { useBoolState } from '../utils';
 export default function Home({ navigation }) {
   const [visit, setVisit] = storage.useNextVisit();
   const { visitTime, baby, lesson, status } = visit;
-  const [refreshing, startRefresh, endRefresh] = useBoolState();
 
-  function refresh() {
+  const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [inTheSynchronous, startSynchronous, endSynchronous] = useBoolState();
+
+  async function refresh() {
     startRefresh();
-    http
-      .get('/api/visits/next')
-      .then((data) => {
-        storage.setNextVisit(data);
-        setVisit(data);
-      })
-      .catch((error) => {
-        if (error.status === 404) {
-          storage.setNextVisit(null);
-        }
-      })
-      .finally((_) => {
-        endRefresh();
-      });
+    try {
+      const data = await http.get('/api/visits/next');
+      storage.setNextVisit(data);
+      setVisit(data);
+    } catch (error) {
+      if (error.status === 404) {
+        storage.setNextVisit(null);
+      }
+    } finally {
+      endRefresh();
+    }
+  }
+
+  async function handleSynchronous() {
+    startSynchronous();
+    try {
+      await sync();
+      ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
+    } finally {
+      endSynchronous();
+    }
   }
 
   return (
@@ -48,6 +58,11 @@ export default function Home({ navigation }) {
         <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
       }
     >
+      <Spinner
+        visible={inTheSynchronous}
+        textContent={'Loading...'}
+        textStyle={{ color: '#FFF' }}
+      />
       <Header {...Colors.linearGradient}>
         <BottomRightBackground
           width={140}
@@ -68,7 +83,7 @@ export default function Home({ navigation }) {
           )}
         </Title>
         <SyncButton>
-          <Button onPress={sync} ghost size="small" title="一键下载" />
+          <Button onPress={handleSynchronous} ghost size="small" title="一键下载" />
         </SyncButton>
       </Header>
 

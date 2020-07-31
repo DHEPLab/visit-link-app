@@ -4,8 +4,6 @@ import NetInfo from '@react-native-community/netinfo';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 
-import './config';
-
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers';
@@ -15,6 +13,7 @@ import Http from './utils/http';
 import Navigator from './navigation/Navigator';
 import { Colors } from './constants';
 import { useBoolState } from './utils';
+import './config';
 
 const store = createStore(
   rootReducer,
