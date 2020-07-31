@@ -4,9 +4,9 @@ import http from '../utils/http';
 
 export default async function sync() {
   try {
-    const lessons = await http.get('/api/download/lessons');
+    const lessons = await http.get('/api/resources/lessons');
     lessons.forEach(storage.addLesson);
-    const { modules, media } = await http.get('/api/download/modules');
+    const { modules, media } = await http.get('/api/resources/modules');
     modules.forEach(storage.addModule);
 
     media.forEach(async (medium) => {
