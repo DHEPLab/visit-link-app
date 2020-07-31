@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl } from 'react-native';
 
@@ -20,15 +20,9 @@ import http from '../utils/http';
 import { useBoolState } from '../utils';
 
 export default function Home({ navigation }) {
-  const [visit, setVisit] = useState({});
-  const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [visit, setVisit] = storage.useNextVisit();
   const { visitTime, baby, lesson, status } = visit;
-
-  useEffect(() => {
-    storage.getNextVisit().then((_visit) => {
-      setVisit(_visit || {});
-    });
-  }, []);
+  const [refreshing, startRefresh, endRefresh] = useBoolState();
 
   function refresh() {
     startRefresh();
