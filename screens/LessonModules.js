@@ -1,14 +1,15 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
+import storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
 
-export default function LessonModules() {
-  const navigation = useNavigation();
+export default function LessonModules({ navigation, route }) {
+  const [lesson] = storage.useLesson(route.params?.id);
+
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -21,13 +22,13 @@ export default function LessonModules() {
         <Hint>你需要在本次家访中完成{'\n'}如下全部模块：</Hint>
       </Header>
       <StyledScrollView>
-        {[0, 1, 2, 3].map((key) => (
-          <ModuleItem key={key} value={{ status: 'DONE', number: 'L' + key, name: '模块名称' }} />
+        {lesson.modules?.map((module) => (
+          <ModuleItem
+            key={module.id}
+            value={{ ...module, status: 'UNDONE' }}
+            onPress={() => navigation.navigate('Module', module)}
+          />
         ))}
-        <ModuleItem
-          onPress={() => navigation.navigate('Module')}
-          value={{ status: 'UNDONE', number: 'H4.2', name: '照料人的心理健康' }}
-        />
         <ButtonContainer>
           <Button size="large" title="完成家访" disabled={true} />
         </ButtonContainer>
