@@ -1,13 +1,13 @@
 import React from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
+import storage from '../cache/storage';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 import { GhostNavigatorHeader, BottomRightBackground, Button } from '../components';
 
-export default function LessonIntro() {
-  const navigation = useNavigation();
+export default function LessonIntro({ navigation, route }) {
+  const [lesson] = storage.useLesson(route.params?.id);
 
   return (
     <Container {...Colors.linearGradient}>
@@ -18,10 +18,8 @@ export default function LessonIntro() {
       />
       <GhostNavigatorHeader navigation={navigation} />
       <TextContainer>
-        <Name>课堂名称课堂名称课堂名称课堂名称课堂名称：</Name>
-        <Description>
-          课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述课堂描述
-        </Description>
+        <Name>{lesson.name}：</Name>
+        <Description>{lesson.description}</Description>
       </TextContainer>
       <ButtonContainer>
         <Button info title="下一步" onPress={() => navigation.navigate('LessonModules')} />

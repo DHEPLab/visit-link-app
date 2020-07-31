@@ -116,7 +116,7 @@ export default function Home({ navigation }) {
           <Button
             size="large"
             title="开始课堂"
-            onPress={() => navigation.navigate('LessonIntro')}
+            onPress={() => navigation.navigate('LessonIntro', { id: visit.lesson?.id })}
           />
         </ButtonContainer>
       )}

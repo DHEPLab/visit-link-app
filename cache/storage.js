@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 
 async function getObject(key) {
@@ -11,12 +12,23 @@ async function getObject(key) {
   });
 }
 
+function getLesson(id) {
+  return getObject(`LESSON_${id}`);
+}
+
 export default {
   addLesson: (lesson) => {
     return AsyncStorage.setItem(`LESSON_${lesson.id}`, JSON.stringify(lesson));
   },
-  getLesson: (id) => {
-    return getObject(`LESSON_${id}`);
+  getLesson,
+  useLesson: (id) => {
+    const [value, setValue] = useState({});
+    useEffect(() => {
+      getLesson(id).then((data) => {
+        setValue(data || {});
+      });
+    }, []);
+    return [value, setValue];
   },
   addModule: (module) => {
     return AsyncStorage.setItem(`MODULE_${module.id}`, JSON.stringify(module));
