@@ -2,17 +2,16 @@ import React from 'react';
 import { Image } from 'react-native';
 import { Video } from 'expo-av';
 
+import * as FileSystem from 'expo-file-system';
 import { styled, px2dp } from '../../utils/styled';
-
-const Host = 'https://healthy-future-dev.oss-cn-shanghai.aliyuncs.com';
 
 export default function CurriculumMedia({ value }) {
   return (
     <Container>
       {value.type === 'Video' ? (
-        <VideoMedia uri={`${Host}${value.file}`} />
+        <VideoMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
       ) : (
-        <PictureMedia uri={`${Host}${value.file}`} />
+        <PictureMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
       )}
       <Title>{value.text}</Title>
     </Container>

@@ -52,6 +52,10 @@ export default function Home({ navigation }) {
     }
   }
 
+  function startVisit() {
+    navigation.navigate('LessonIntro', { id: visit.lesson?.id });
+  }
+
   return (
     <StyledScrollView
       refreshControl={
@@ -100,10 +104,7 @@ export default function Home({ navigation }) {
               <StaticField label="详细地址">{baby?.location}</StaticField>
             </StaticForm>
           </Card>
-          <Card
-            title="课堂安排"
-            right={<Button title="预览" onPress={() => navigation.navigate('LessonIntro')} />}
-          >
+          <Card title="课堂安排" right={<Button title="预览" onPress={startVisit} />}>
             <LessonName>{lesson?.name}</LessonName>
             <StaticForm>
               {lesson?.moduleNames?.map((name, index) => (
@@ -122,11 +123,7 @@ export default function Home({ navigation }) {
 
       {Visit.canBegin(status, visitTime) && (
         <ButtonContainer>
-          <Button
-            size="large"
-            title="开始课堂"
-            onPress={() => navigation.navigate('LessonIntro', { id: visit.lesson?.id })}
-          />
+          <Button size="large" title="开始课堂" onPress={startVisit} />
         </ButtonContainer>
       )}
     </StyledScrollView>
