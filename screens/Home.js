@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl } from 'react-native';
 
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
-import { useFetch } from '../utils';
 import {
   Button,
   Card,
@@ -15,11 +14,40 @@ import {
   BottomRightBackground,
 } from '../components';
 
+import storage from '../cache/storage';
 import sync from '../cache/sync';
+import http from '../utils/http';
+import { useBoolState } from '../utils';
 
 export default function Home({ navigation }) {
-  const [visit, refresh, refreshing] = useFetch('/api/visits/next');
+  const [visit, setVisit] = useState({});
+  const [refreshing, startRefresh, endRefresh] = useBoolState();
   const { visitTime, baby, lesson, status } = visit;
+
+  useEffect(() => {
+    async function nextVisit() {
+      setVisit((await storage.getNextVisit()) || {});
+    }
+    nextVisit();
+  }, []);
+
+  function refresh() {
+    startRefresh();
+    http
+      .get('/api/visits/next')
+      .then((data) => {
+        storage.setNextVisit(data);
+        setVisit(data);
+      })
+      .catch((error) => {
+        if (error.status === 404) {
+          storage.setNextVisit(null);
+        }
+      })
+      .finally((_) => {
+        endRefresh();
+      });
+  }
 
   return (
     <StyledScrollView

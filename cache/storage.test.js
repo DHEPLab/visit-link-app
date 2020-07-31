@@ -10,6 +10,11 @@ it('should add module to storage', async () => {
   expect(await storage.getModule(2)).toStrictEqual({ id: 2, name: 'Module1' });
 });
 
+it('should set next visit to storage', async () => {
+  storage.setNextVisit({ id: 3, name: 'Next Visit' });
+  expect(await storage.getNextVisit()).toStrictEqual({ id: 3, name: 'Next Visit' });
+});
+
 it('should return null', async () => {
   expect(await storage.getModule(3)).toBeNull();
 });
