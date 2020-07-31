@@ -8,7 +8,7 @@ import { styled, px2dp } from '../../utils/styled';
 export default function CurriculumMedia({ value }) {
   return (
     <Container>
-      {value.type === 'Video' ? (
+      {value.type === 'VIDEO' ? (
         <VideoMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
       ) : (
         <PictureMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
