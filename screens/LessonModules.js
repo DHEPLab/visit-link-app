@@ -24,8 +24,8 @@ export default function LessonModules({ navigation, route }) {
   }
 
   function finish() {
-    navigation.navigate('Home');
     storage.setVisitStatus('DONE');
+    navigation.navigate('Home');
   }
 
   return (

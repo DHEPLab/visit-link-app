@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import Config from '../constants/Config';
+import { ToastAndroid } from 'react-native';
 
 const Host = Config.apiHost;
 let Token;
@@ -30,6 +31,7 @@ function request(fetchPromise) {
         }
       })
       .catch((error) => {
+        ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
         reject(error);
         console.warn(JSON.stringify(error));
       });

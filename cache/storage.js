@@ -52,32 +52,41 @@ function getVisitStatus() {
 
 function useString(getFn, id) {
   const [value, setValue] = useState('');
-  useEffect(() => {
+  function load() {
     getFn(id).then((data) => {
       setValue(data || '');
     });
+  }
+  useEffect(() => {
+    load();
   }, []);
-  return [value, setValue];
+  return [value, load];
 }
 
 function useNumber(getFn, id) {
   const [value, setValue] = useState(0);
-  useEffect(() => {
+  function load() {
     getFn(id).then((data) => {
       setValue(Number(data) || 0);
     });
+  }
+  useEffect(() => {
+    load();
   }, []);
-  return [value, setValue];
+  return [value, load];
 }
 
 function use(getFn, id) {
   const [value, setValue] = useState({});
-  useEffect(() => {
+  function load() {
     getFn(id).then((data) => {
       setValue(data || {});
     });
+  }
+  useEffect(() => {
+    load();
   }, []);
-  return [value, setValue];
+  return [value, load];
 }
 
 export default {

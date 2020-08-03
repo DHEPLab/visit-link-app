@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -21,25 +21,48 @@ import http from '../utils/http';
 import { useBoolState } from '../utils';
 
 export default function Home({ navigation }) {
-  const [visit, setVisit] = storage.useNextVisit();
+  const [visit, reloadVisit] = storage.useNextVisit();
+  const [visitStatus, reloadVisitStatus] = storage.useVisitStatus();
   const { visitTime, baby, lesson, status } = visit;
 
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [inTheSynchronous, startSynchronous, endSynchronous] = useBoolState();
 
+  const finished = visitStatus === 'DONE';
+
+  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+
   async function refresh() {
     startRefresh();
     try {
+      await submit();
       const data = await http.get('/api/visits/next');
       storage.setNextVisit(data);
-      setVisit(data);
     } catch (error) {
       if (error.status === 404) {
         storage.setNextVisit(null);
       }
     } finally {
+      reloadVisit();
+      reloadVisitStatus();
       endRefresh();
     }
+  }
+
+  async function submit() {
+    const _visitStatus = await storage.getVisitStatus();
+    if (_visitStatus) {
+      const nextModuleIndex = await storage.getNextModule();
+       return http
+          .put(`/api/visits/${visit.id}/status`, {
+            visitStatus: _visitStatus,
+            nextModuleIndex,
+          })
+          .then((_) => {
+            storage.setNextVisit({});
+            storage.setVisitStatus('');
+            storage.setNextModule(0);
+          });
   }
 
   async function handleSynchronous() {
@@ -104,7 +127,7 @@ export default function Home({ navigation }) {
               <StaticField label="详细地址">{baby?.location}</StaticField>
             </StaticForm>
           </Card>
-          <Card title="课堂安排" right={<Button title="预览" onPress={startVisit} />}>
+          <Card title="课堂安排" right={!finished && <Button title="预览" onPress={startVisit} />}>
             <LessonName>{lesson?.name}</LessonName>
             <StaticForm>
               {lesson?.moduleNames?.map((name, index) => (
@@ -123,7 +146,7 @@ export default function Home({ navigation }) {
 
       {Visit.canBegin(status, visitTime) && (
         <ButtonContainer>
-          <Button size="large" title="开始课堂" onPress={startVisit} />
+          <Button size="large" title="开始课堂" disabled={finished} onPress={startVisit} />
         </ButtonContainer>
       )}
     </StyledScrollView>

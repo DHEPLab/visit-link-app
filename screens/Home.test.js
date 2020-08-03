@@ -5,11 +5,20 @@ import Home from './Home';
 
 jest.mock('../cache/storage', () => ({
   useNextVisit: jest.fn(),
+  useVisitStatus: jest.fn(),
 }));
+
+const createTestProps = () => ({
+  navigation: {
+    addListener: jest.fn(),
+    navigate: jest.fn(),
+  },
+});
 
 it('should no data', async () => {
   storage.useNextVisit.mockImplementation(() => [{}]);
-  const { queryByText } = render(<Home />);
+  storage.useVisitStatus.mockImplementation(() => [{}]);
+  const { queryByText } = render(<Home {...createTestProps()} />);
   await waitFor(() => {
     expect(queryByText(/您尚未创建任何家访/)).not.toBeNull();
   });
@@ -28,7 +37,8 @@ it('should render next visit', async () => {
       },
     },
   ]);
-  const { queryByText } = render(<Home />);
+  storage.useVisitStatus.mockImplementation(() => [{}]);
+  const { queryByText } = render(<Home {...createTestProps()} />);
   await waitFor(() => {
     expect(queryByText(/2020年01月01日\/上午10:00/)).not.toBeNull();
     expect(queryByText(/Baby Name/)).not.toBeNull();
