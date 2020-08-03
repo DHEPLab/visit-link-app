@@ -40,7 +40,7 @@ export default function Home({ navigation }) {
       storage.setNextVisit(data);
     } catch (error) {
       if (error.status === 404) {
-        storage.setNextVisit(null);
+        storage.setNextVisit({});
       }
     } finally {
       reloadVisit();
@@ -53,8 +53,10 @@ export default function Home({ navigation }) {
     const _visitStatus = await storage.getVisitStatus();
     if (_visitStatus) {
       const nextModuleIndex = await storage.getNextModule();
-       return http
-          .put(`/api/visits/${visit.id}/status`, {
+      const { id } = await storage.getNextVisit();
+      if (id) {
+        return http
+          .put(`/api/visits/${id}/status`, {
             visitStatus: _visitStatus,
             nextModuleIndex,
           })
@@ -63,6 +65,8 @@ export default function Home({ navigation }) {
             storage.setVisitStatus('');
             storage.setNextModule(0);
           });
+      }
+    }
   }
 
   async function handleSynchronous() {
@@ -127,7 +131,10 @@ export default function Home({ navigation }) {
               <StaticField label="详细地址">{baby?.location}</StaticField>
             </StaticForm>
           </Card>
-          <Card title="课堂安排" right={!finished && <Button title="预览" onPress={startVisit} />}>
+          <Card
+            title="课堂安排"
+            //  right={!finished && <Button title="预览" onPress={startVisit} />}
+          >
             <LessonName>{lesson?.name}</LessonName>
             <StaticForm>
               {lesson?.moduleNames?.map((name, index) => (

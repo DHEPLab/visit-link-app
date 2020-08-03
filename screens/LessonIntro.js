@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import storage from '../cache/storage';
@@ -8,6 +8,10 @@ import { GhostNavigatorHeader, BottomRightBackground, Button } from '../componen
 
 export default function LessonIntro({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
+
+  useEffect(() => {
+    storage.setVisitStatus('UNDONE');
+  }, []);
 
   return (
     <Container {...Colors.linearGradient}>
