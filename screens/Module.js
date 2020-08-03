@@ -34,7 +34,11 @@ export default function Module({ navigation, route }) {
   }
 
   function finish() {
-    navigation.navigate('LessonModules', { id: params.id, finish: true });
+    navigation.navigate('LessonModules', {
+      id: params.lessonId,
+      moduleId: params.id,
+      finished: true,
+    });
   }
 
   function lastStep() {

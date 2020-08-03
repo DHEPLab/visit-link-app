@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -9,6 +9,18 @@ import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from 
 
 export default function LessonModules({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
+  const [nextModule, setNextModule] = storage.useNextModule();
+
+  useEffect(() => {
+    if (route.params.moduleId && route.params.finished) {
+      storage.setNextModule(nextModule + 1);
+      setNextModule(nextModule + 1);
+    }
+  }, [route.params?.moduleId]);
+
+  function status(index) {
+    return index < nextModule ? 'DONE' : 'UNDONE';
+  }
 
   return (
     <>
@@ -22,11 +34,14 @@ export default function LessonModules({ navigation, route }) {
         <Hint>你需要在本次家访中完成{'\n'}如下全部模块：</Hint>
       </Header>
       <StyledScrollView>
-        {lesson.modules?.map((module) => (
+        {lesson.modules?.map((module, index) => (
           <ModuleItem
             key={module.id}
-            value={{ ...module, status: 'UNDONE' }}
-            onPress={() => navigation.navigate('Module', module)}
+            value={{ ...module, status: status(index) }}
+            disabled={index !== nextModule}
+            onPress={() =>
+              navigation.navigate('Module', { id: module.id, lessonId: route.params.id })
+            }
           />
         ))}
         <ButtonContainer>

@@ -23,7 +23,7 @@ function getObject(key) {
 function getValue(key) {
   return new Promise(async (resolve, reject) => {
     try {
-      resolve(await AsyncStorage.getItem(key));
+      resolve((await AsyncStorage.getItem(key)) || 0);
     } catch (e) {
       reject(e);
     }
@@ -46,6 +46,16 @@ function getNextModule() {
   return getValue(`NEXT_MODULE`);
 }
 
+function useNumber(getFn, id) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    getFn(id).then((data) => {
+      setValue(Number(data) || 0);
+    });
+  }, []);
+  return [value, setValue];
+}
+
 function use(getFn, id) {
   const [value, setValue] = useState({});
   useEffect(() => {
@@ -60,12 +70,12 @@ export default {
   addLesson: (lesson) => addObject(`LESSON_${lesson.id}`, lesson),
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
-  setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule),
+  setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
   getLesson,
   getModule,
   getNextVisit,
   useLesson: (id) => use(getLesson, id),
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),
-  useNextModule: () => use(getNextModule),
+  useNextModule: () => useNumber(getNextModule),
 };
