@@ -10,6 +10,7 @@ import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from 
 export default function LessonModules({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
   const [nextModule, setNextModule] = storage.useNextModule();
+  const canFinish = nextModule > lesson.modules?.length - 1;
 
   useEffect(() => {
     if (route.params.moduleId && route.params.finished) {
@@ -20,6 +21,11 @@ export default function LessonModules({ navigation, route }) {
 
   function status(index) {
     return index < nextModule ? 'DONE' : 'UNDONE';
+  }
+
+  function finish() {
+    navigation.navigate('Home');
+    storage.setVisitStatus('DONE');
   }
 
   return (
@@ -45,7 +51,7 @@ export default function LessonModules({ navigation, route }) {
           />
         ))}
         <ButtonContainer>
-          <Button size="large" title="完成家访" disabled={true} />
+          <Button size="large" title="完成家访" disabled={!canFinish} onPress={finish} />
         </ButtonContainer>
       </StyledScrollView>
     </>

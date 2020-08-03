@@ -9,7 +9,7 @@ import { styled } from '../utils/styled';
 export default function ModuleItem({ value = {}, onPress, disabled }) {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} disabled={disabled}>
-      <Container>
+      <Container opacity={value.status === 'UNDONE' && disabled ? 0.4 : 1}>
         <Status
           title={ModuleStatus[value.status]}
           borderColor={Colors.moduleStatusBorder[value.status]}
@@ -40,4 +40,5 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   padding-left: 12px;
+  opacity: ${({ opacity }) => opacity};
 `;

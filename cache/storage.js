@@ -46,6 +46,20 @@ function getNextModule() {
   return getValue(`NEXT_MODULE`);
 }
 
+function getVisitStatus() {
+  return getValue(`VISIT_STATUS`);
+}
+
+function useString(getFn, id) {
+  const [value, setValue] = useState('');
+  useEffect(() => {
+    getFn(id).then((data) => {
+      setValue(data || '');
+    });
+  }, []);
+  return [value, setValue];
+}
+
 function useNumber(getFn, id) {
   const [value, setValue] = useState(0);
   useEffect(() => {
@@ -71,11 +85,15 @@ export default {
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
   setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
+  setVisitStatus: (status) => addValue('VISIT_STATUS', status),
   getLesson,
   getModule,
   getNextVisit,
+  getNextModule,
+  getVisitStatus,
   useLesson: (id) => use(getLesson, id),
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),
   useNextModule: () => useNumber(getNextModule),
+  useVisitStatus: () => useString(getVisitStatus),
 };
