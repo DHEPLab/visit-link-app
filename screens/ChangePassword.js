@@ -16,8 +16,9 @@ const validationSchema = Yup.object().shape({
 export default function ChangePassword() {
   const dispatch = useDispatch();
 
-  function onSubmit({ password }) {
+  function onSubmit({ oldPassword, password }) {
     Http.put('/api/account/password', {
+      oldPassword,
       password,
     }).then(async () => {
       await Http.signOut();
