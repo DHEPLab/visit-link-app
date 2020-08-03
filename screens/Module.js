@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Text from '../components/curriculum/Text';
 import Media from '../components/curriculum/Media';
 import storage from '../cache/storage';
-import ModuleUtils from '../utils/module';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
@@ -14,20 +13,13 @@ export default function Module({ navigation, route }) {
   const { params } = route;
   const [module] = storage.useModule(params.id);
   const [page, setPage] = useState(0);
-  const [pageComponents, setPageComponents] = useState([[]]);
 
   const [caseComponents, setCaseComponents] = useState();
   const [finishAction, setFinishAction] = useState();
 
-  const components = caseComponents || pageComponents[page] || [];
+  const components = caseComponents || (module.pageComponents && module.pageComponents[page]) || [];
   const lastComponent = components[components.length - 1] || {};
   const switchAtTheEnd = lastComponent.type === 'Switch';
-
-  useEffect(() => {
-    if (module.components) {
-      setPageComponents(ModuleUtils.pageable(module.components));
-    }
-  }, [module]);
 
   function nextStep() {
     if (caseComponents) {
@@ -35,7 +27,7 @@ export default function Module({ navigation, route }) {
       setFinishAction();
       // TODO Finish Action
     }
-    if (page === pageComponents.length - 1) {
+    if (page === module.pageComponents?.length - 1) {
       return finish();
     }
     setPage(page + 1);
