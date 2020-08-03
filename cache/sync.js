@@ -20,6 +20,7 @@ export default async function sync() {
       const { uri } = await fs.downloadFromOSS(medium);
       console.log('Finished downloading to ', uri);
     });
+    storage.setLastUpdateAt(new Date());
   } catch (error) {
     console.error(error);
   } finally {

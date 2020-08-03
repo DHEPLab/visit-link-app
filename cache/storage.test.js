@@ -51,3 +51,10 @@ it('should save visit status', async () => {
     expect(status).toBe('UNDONE');
   });
 });
+
+it('should set last update at', async () => {
+  storage.setLastUpdateAt(new Date('2020-07-12 11:11'));
+  return storage.getLastUpdateAt().then((at) => {
+    expect(at).toBe('2020-07-12T11:11:00');
+  });
+});

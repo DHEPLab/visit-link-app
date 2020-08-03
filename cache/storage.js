@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
 function addObject(key, obj) {
@@ -95,11 +96,14 @@ export default {
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
   setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
   setVisitStatus: (status) => addValue('VISIT_STATUS', status),
+  setLastUpdateAt: (datetime) =>
+    addValue('LAST_UPDATE_AT', moment(datetime).format('YYYY-MM-DDTHH:mm:ss')),
   getLesson,
   getModule,
   getNextVisit,
   getNextModule,
   getVisitStatus,
+  getLastUpdateAt: () => getValue('LAST_UPDATE_AT'),
   useLesson: (id) => use(getLesson, id),
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),

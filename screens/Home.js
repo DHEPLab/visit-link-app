@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
+import { Alert, ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Visit from '../utils/visit';
@@ -28,6 +28,8 @@ export default function Home({ navigation }) {
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [inTheSynchronous, startSynchronous, endSynchronous] = useBoolState();
 
+  const [downloadResource, setDownloadResource] = useState();
+
   const finished = visitStatus === 'DONE';
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
@@ -38,6 +40,7 @@ export default function Home({ navigation }) {
       await submit();
       const data = await http.get('/api/visits/next');
       storage.setNextVisit(data);
+      checkResourceUpdate();
     } catch (error) {
       if (error.status === 404) {
         storage.setNextVisit({});
@@ -47,6 +50,19 @@ export default function Home({ navigation }) {
       reloadVisitStatus();
       endRefresh();
     }
+  }
+
+  function checkResourceUpdate() {
+    storage.getLastUpdateAt().then((lastUpdateAt) => {
+      if (!lastUpdateAt) return setDownloadResource('一键下载');
+      http
+        .get('/api/resources/check-for-updates', {
+          lastUpdateAt: lastUpdateAt || '',
+        })
+        .then(({ updated }) => {
+          setDownloadResource(updated ? '一键更新' : null);
+        });
+    });
   }
 
   async function submit() {
@@ -73,6 +89,7 @@ export default function Home({ navigation }) {
     startSynchronous();
     try {
       await sync();
+      setDownloadResource();
       ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
     } finally {
       endSynchronous();
@@ -80,7 +97,28 @@ export default function Home({ navigation }) {
   }
 
   function startVisit(preview = false) {
-    navigation.navigate('LessonIntro', { id: visit.lesson?.id, preview });
+    if (!preview) {
+      Alert.alert(
+        '确认',
+        '立即开始课堂？',
+        [
+          {
+            text: '稍后再说',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: '开始',
+            onPress: () => {
+              navigation.navigate('LessonIntro', { id: visit.lesson?.id, preview });
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      navigation.navigate('LessonIntro', { id: visit.lesson?.id, preview });
+    }
   }
 
   return (
@@ -113,9 +151,11 @@ export default function Home({ navigation }) {
             </>
           )}
         </Title>
-        <SyncButton>
-          <Button onPress={handleSynchronous} ghost size="small" title="一键下载" />
-        </SyncButton>
+        {downloadResource && (
+          <SyncButton>
+            <Button onPress={handleSynchronous} ghost size="small" title={downloadResource} />
+          </SyncButton>
+        )}
       </Header>
 
       {visit.id ? (
@@ -133,7 +173,10 @@ export default function Home({ navigation }) {
           </Card>
           <Card
             title="课堂安排"
-            right={!finished && <Button title="预览" onPress={() => startVisit(true)} />}
+            right={
+              !finished &&
+              !downloadResource && <Button title="预览" onPress={() => startVisit(true)} />
+            }
           >
             <LessonName>{lesson?.name}</LessonName>
             <StaticForm>
@@ -151,9 +194,14 @@ export default function Home({ navigation }) {
         </NoDataContainer>
       )}
 
-      {Visit.canBegin(status, visitTime) && (
+      {Visit.canBegin(status, visitTime) && !downloadResource && (
         <ButtonContainer>
-          <Button size="large" title="开始课堂" disabled={finished} onPress={startVisit} />
+          <Button
+            size="large"
+            title="开始课堂"
+            disabled={finished}
+            onPress={() => startVisit(false)}
+          />
         </ButtonContainer>
       )}
     </StyledScrollView>
