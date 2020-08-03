@@ -11,11 +11,15 @@ import { Colors } from '../constants';
 import { Button } from '../components';
 
 export default function Module({ navigation, route }) {
-  const [module] = storage.useModule(route.params.id);
+  const { params } = route;
+  const [module] = storage.useModule(params.id);
   const [page, setPage] = useState(0);
   const [pageComponents, setPageComponents] = useState([[]]);
 
-  const components = pageComponents[page] || [];
+  const [caseComponents, setCaseComponents] = useState();
+  const [finishAction, setFinishAction] = useState();
+
+  const components = caseComponents || pageComponents[page] || [];
   const lastComponent = components[components.length - 1] || {};
   const switchAtTheEnd = lastComponent.type === 'Switch';
 
@@ -26,11 +30,33 @@ export default function Module({ navigation, route }) {
   }, [module]);
 
   function nextStep() {
+    if (caseComponents) {
+      setCaseComponents();
+      setFinishAction();
+      // TODO Finish Action
+    }
+    if (page === pageComponents.length - 1) {
+      return finish();
+    }
     setPage(page + 1);
   }
 
+  function finish() {
+    navigation.navigate('LessonModules', { id: params.id, finish: true });
+  }
+
   function lastStep() {
-    setPage(page - 1);
+    if (caseComponents) {
+      setCaseComponents();
+      setFinishAction();
+    } else {
+      setPage(page - 1);
+    }
+  }
+
+  function onCase(_case) {
+    setCaseComponents(_case.components);
+    setFinishAction(_case.finishAction);
   }
 
   return (
@@ -55,7 +81,12 @@ export default function Module({ navigation, route }) {
           {switchAtTheEnd ? (
             <>
               {lastComponent?.value?.cases?.map((_case) => (
-                <Button key={_case.key} size="large" title={_case.text} />
+                <Button
+                  key={_case.key}
+                  size="large"
+                  title={_case.text}
+                  onPress={() => onCase(_case)}
+                />
               ))}
             </>
           ) : (
