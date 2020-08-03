@@ -91,6 +91,7 @@ const InfoButton = styled.View`
 const PrimaryButton = styled(LinearGradient)`
   width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
   padding: ${(props) => (props.size === 'large' ? '7px' : '4px')} 16px;
+  margin-bottom: ${(props) => (props.size === 'large' ? '10px' : 0)};
   border-radius: 270px;
   ${({ disabled }) => disabled && 'opacity: 0.5;'}
   align-self: center;
