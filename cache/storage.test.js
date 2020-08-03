@@ -33,3 +33,12 @@ it('should set next visit to storage', async () => {
 it('should return null', async () => {
   expect(await storage.getModule(3)).toBeNull();
 });
+
+it('should set next module index', async () => {
+  storage.setNextModule(1);
+  const { result } = renderHook(() => storage.useNextModule());
+  await waitFor(() => {
+    const [nextModule] = result.current;
+    expect(nextModule).toBe(1);
+  });
+});
