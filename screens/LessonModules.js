@@ -8,14 +8,15 @@ import { Colors } from '../constants';
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
 
 export default function LessonModules({ navigation, route }) {
-  const [lesson] = storage.useLesson(route.params?.id);
-  const [nextModule, setNextModule] = storage.useNextModule();
+  const { params } = route;
+  const [lesson] = storage.useLesson(params?.id);
+  const [nextModule, reloadNextModule] = storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
 
   useEffect(() => {
-    if (route.params.moduleId && route.params.finished) {
+    if (!params.preview && params.moduleId && params.finished) {
       storage.setNextModule(nextModule + 1);
-      setNextModule(nextModule + 1);
+      reloadNextModule();
     }
   }, [route.params?.moduleId]);
 
@@ -24,7 +25,9 @@ export default function LessonModules({ navigation, route }) {
   }
 
   function finish() {
-    storage.setVisitStatus('DONE');
+    if (!params.preview) {
+      storage.setVisitStatus('DONE');
+    }
     navigation.navigate('Home');
   }
 
@@ -44,10 +47,8 @@ export default function LessonModules({ navigation, route }) {
           <ModuleItem
             key={module.id}
             value={{ ...module, status: status(index) }}
-            disabled={index !== nextModule}
-            onPress={() =>
-              navigation.navigate('Module', { id: module.id, lessonId: route.params.id })
-            }
+            disabled={!params.preview && index !== nextModule}
+            onPress={() => navigation.navigate('Module', { id: module.id, lessonId: params.id })}
           />
         ))}
         <ButtonContainer>

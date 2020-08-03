@@ -10,7 +10,9 @@ export default function LessonIntro({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
 
   useEffect(() => {
-    storage.setVisitStatus('UNDONE');
+    if (!route.params.preview) {
+      storage.setVisitStatus('UNDONE');
+    }
   }, []);
 
   return (

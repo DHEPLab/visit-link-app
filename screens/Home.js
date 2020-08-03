@@ -79,8 +79,8 @@ export default function Home({ navigation }) {
     }
   }
 
-  function startVisit() {
-    navigation.navigate('LessonIntro', { id: visit.lesson?.id });
+  function startVisit(preview = false) {
+    navigation.navigate('LessonIntro', { id: visit.lesson?.id, preview });
   }
 
   return (
@@ -133,7 +133,7 @@ export default function Home({ navigation }) {
           </Card>
           <Card
             title="课堂安排"
-            //  right={!finished && <Button title="预览" onPress={startVisit} />}
+            right={!finished && <Button title="预览" onPress={() => startVisit(true)} />}
           >
             <LessonName>{lesson?.name}</LessonName>
             <StaticForm>

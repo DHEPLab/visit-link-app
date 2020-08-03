@@ -49,13 +49,36 @@ it('should finish current module', async () => {
       ],
     },
   ]);
-  const setNextModule = jest.fn();
-  storage.useNextModule.mockImplementation(() => [1, setNextModule]);
+  const reloadNextModule = jest.fn();
+  storage.useNextModule.mockImplementation(() => [1, reloadNextModule]);
   const props = createTestProps();
   const { rerender } = render(<LessonModules {...props} />);
   props.route.params.moduleId = 11;
   props.route.params.finished = true;
   rerender(<LessonModules {...props} />);
-  expect(setNextModule).toBeCalledWith(2);
+  expect(reloadNextModule).toBeCalled();
   expect(storage.setNextModule).toBeCalledWith(2);
+});
+
+it('should preview mode, do not set status', async () => {
+  storage.useLesson.mockImplementation(() => [
+    {
+      modules: [
+        { id: 10, number: 'M2', name: 'M2' },
+        { id: 11, number: 'M2', name: 'M2' },
+        { id: 12, number: 'M2', name: 'M2' },
+      ],
+    },
+  ]);
+  const reloadNextModule = jest.fn();
+  storage.setNextModule = jest.fn();
+  storage.useNextModule.mockImplementation(() => [1, reloadNextModule]);
+  const props = createTestProps();
+  const { rerender } = render(<LessonModules {...props} />);
+  props.route.params.moduleId = 11;
+  props.route.params.finished = true;
+  props.route.params.preview = true;
+  rerender(<LessonModules {...props} />);
+  expect(reloadNextModule).not.toBeCalled();
+  expect(storage.setNextModule).not.toBeCalled();
 });
