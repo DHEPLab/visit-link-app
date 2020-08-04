@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Modal } from 'react-native';
-import VideoPlayer from 'expo-video-player';
+import { Video } from 'expo-av';
 import ImageViewer from 'react-native-image-zoom-viewer';
-
+import * as ScreenOrientation from 'expo-screen-orientation';
 import * as FileSystem from 'expo-file-system';
+
 import { styled, px2dp } from '../../utils/styled';
 import { useBoolState } from '../../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -22,25 +23,33 @@ export default function CurriculumMedia({ value }) {
 }
 
 function VideoMedia({ uri }) {
+  const [inFullscreen, switchToLandscape, switchToPortrait] = useBoolState();
+  // Use state to resolve unnecessary calculations when the screen direction changes
+  const [width] = useState(px2dp(272));
+  const [height] = useState(px2dp(136));
+
   return (
-    <VideoPlayer
-      width={px2dp(272)}
-      height={px2dp(136)}
-      showControlsOnLoad={true}
-      videoProps={{
-        source: { uri },
-        resizeMode: 'cover',
+    <StyledVideo
+      source={{ uri }}
+      rate={1.0}
+      volume={1.0}
+      isMuted={false}
+      useNativeControls
+      resizeMode={inFullscreen ? Video.RESIZE_MODE_CONTAIN : Video.RESIZE_MODE_COVER}
+      style={{ width, height }}
+      onFullscreenUpdate={async ({ fullscreenUpdate }) => {
+        switch (fullscreenUpdate) {
+          case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
+            switchToLandscape();
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+            break;
+          case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
+            switchToPortrait();
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+            break;
+        }
       }}
     />
-    // <Modal>
-    //   <VideoPlayer
-    //     showControlsOnLoad={true}
-    //     videoProps={{
-    //       source: { uri },
-    //       resizeMode: 'cover',
-    //     }}
-    //   />
-    // </Modal>
   );
 }
 
@@ -58,7 +67,7 @@ function PictureMedia({ uri }) {
   );
 }
 
-const StyledVideoPlayer = styled(VideoPlayer)`
+const StyledVideo = styled(Video)`
   border-radius: 4px;
 `;
 
