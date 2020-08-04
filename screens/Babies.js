@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
@@ -7,11 +7,37 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
 import { BabyCard, NoData } from '../components';
-import { useFetch } from '../utils';
+import { useBoolState } from '../utils';
+import http from '../utils/http';
 
 export default function Babies() {
   const { navigate } = useNavigation();
-  const [babies, refresh, refreshing] = useFetch('/api/babies', {}, []);
+  const [search, setSearch] = useState({
+    page: 0,
+    size: 10,
+  });
+  const [totalPages, setTotalPages] = useState(0);
+  const [contents, setContents] = useState([]);
+  const [refreshing, startRefresh, endRefresh] = useBoolState();
+
+  useEffect(() => {
+    startRefresh();
+    if (search.page === 0) setContents([]);
+    http
+      .get('/api/babies', search)
+      .then((data) => {
+        setTotalPages(data.totalPages);
+        setContents((c) => [...c, ...data.content]);
+      })
+      .finally(() => endRefresh());
+  }, [search]);
+
+  function refresh() {
+    setSearch((s) => ({
+      ...s,
+      page: 0,
+    }));
+  }
 
   return (
     <>
@@ -25,7 +51,7 @@ export default function Babies() {
         </Search>
       </Header>
       <ListHeader>
-        {babies.length > 0 && <Title>宝宝列表</Title>}
+        {contents.length > 0 && <Title>宝宝列表</Title>}
         {/* <Button title="添加宝宝" /> */}
       </ListHeader>
       <FlatList
@@ -41,7 +67,7 @@ export default function Babies() {
             refreshing={refreshing}
           />
         }
-        data={babies}
+        data={contents}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
       />
