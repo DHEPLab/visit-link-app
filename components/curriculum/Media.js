@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Modal } from 'react-native';
-import { Video } from 'expo-av';
+import VideoPlayer from 'expo-video-player';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 import * as FileSystem from 'expo-file-system';
@@ -23,16 +23,24 @@ export default function CurriculumMedia({ value }) {
 
 function VideoMedia({ uri }) {
   return (
-    <StyledVideo
-      source={{ uri }}
-      rate={1.0}
-      volume={1.0}
-      isMuted={false}
-      resizeMode="cover"
-      shouldPlay
-      isLooping
-      style={{ width: px2dp(272), height: px2dp(136) }}
+    <VideoPlayer
+      width={px2dp(272)}
+      height={px2dp(136)}
+      showControlsOnLoad={true}
+      videoProps={{
+        source: { uri },
+        resizeMode: 'cover',
+      }}
     />
+    // <Modal>
+    //   <VideoPlayer
+    //     showControlsOnLoad={true}
+    //     videoProps={{
+    //       source: { uri },
+    //       resizeMode: 'cover',
+    //     }}
+    //   />
+    // </Modal>
   );
 }
 
@@ -50,9 +58,7 @@ function PictureMedia({ uri }) {
   );
 }
 
-const StyledVideo = styled(Video)`
-  width: 272px;
-  height: 136px;
+const StyledVideoPlayer = styled(VideoPlayer)`
   border-radius: 4px;
 `;
 

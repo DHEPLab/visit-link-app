@@ -37,6 +37,7 @@
     "expo-file-system": "~9.0.1",
     "expo-font": "~8.2.1",
     "expo-linear-gradient": "~8.2.1",
+    "expo-video-player": "^1.5.8",
     "expo-web-browser": "~8.3.1",
     "formik": "^2.1.4",
     "moment": "^2.27.0",
