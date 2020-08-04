@@ -4,11 +4,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
 import { BabyCard, NoData } from '../components';
 import { useBoolState } from '../utils';
-import http from '../utils/http';
 
 export default function Babies() {
   const { navigate } = useNavigation();
@@ -19,6 +19,7 @@ export default function Babies() {
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
   const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [name, setName] = useState();
 
   useEffect(() => {
     startRefresh();
@@ -36,6 +37,7 @@ export default function Babies() {
     setSearch((s) => ({
       ...s,
       page: 0,
+      name,
     }));
   }
 
@@ -45,19 +47,23 @@ export default function Babies() {
         <Search>
           <MaterialIcons name="search" size={px2dp(16)} color="#fff" />
           <TextInput
-            style={{ marginLeft: px2dp(4), color: '#fff' }}
+            style={{ marginLeft: px2dp(4), flex: 1, color: '#fff' }}
+            onChangeText={(text) => setName(text)}
+            onEndEditing={() => refresh()}
             placeholder="请您输入要搜索的宝宝姓名"
           />
         </Search>
       </Header>
+
       <ListHeader>
         {contents.length > 0 && <Title>宝宝列表</Title>}
         {/* <Button title="添加宝宝" /> */}
       </ListHeader>
+
       <FlatList
         ListEmptyComponent={
           <NoDataContainer>
-            <NoData title="尚未添加宝宝信息" />
+            <NoData title="暂无匹配的宝宝信息" />
           </NoDataContainer>
         }
         refreshControl={
@@ -69,6 +75,7 @@ export default function Babies() {
         }
         data={contents}
         keyExtractor={(item) => item.id + ''}
+        onEndReached={() => console.log('on end reached')}
         renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
       />
     </>
