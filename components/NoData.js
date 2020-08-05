@@ -23,6 +23,7 @@ const Title = styled.Text`
 `;
 
 const StyledImage = styled(Image)`
-  height: 100px;
+  height: 115px;
+  width: 160px;
   margin-bottom: 16px;
 `;
