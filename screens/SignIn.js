@@ -6,7 +6,7 @@ import Http from '../utils/http';
 import { useBoolState } from '../utils';
 import { Layout } from '../constants';
 import { styled } from '../utils/styled';
-import { FormItem, PrimaryInput, Button, Message } from '../components';
+import { FormItem, SpecialInput, Button, Message } from '../components';
 import { signIn } from '../actions';
 
 export default function SignIn() {
@@ -33,10 +33,10 @@ export default function SignIn() {
         {({ handleSubmit, values }) => (
           <FormContainer>
             <FormItem name="username" center noBorder>
-              <PrimaryInput placeholder="请输入账户名称" />
+              <SpecialInput placeholder="请输入账户名称" />
             </FormItem>
             <FormItem name="password" center noBorder>
-              <PrimaryInput secureTextEntry placeholder="请输入账户密码" />
+              <SpecialInput secureTextEntry placeholder="请输入账户密码" />
             </FormItem>
             <ForgetPassword>
               <Button link title="忘记密码" />

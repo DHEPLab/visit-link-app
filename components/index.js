@@ -5,7 +5,7 @@ export { default as Form } from './elements/Form';
 export { default as FormItem } from './elements/FormItem';
 export { default as Icons } from './elements/Icons';
 export { default as Input } from './elements/Input';
-export { default as PrimaryInput } from './elements/PrimaryInput';
+export { default as SpecialInput } from './elements/SpecialInput';
 export { default as StaticForm } from './elements/StaticForm';
 export { default as StaticField } from './elements/StaticField';
 export { default as TabBarIcon } from './elements/TabBarIcon';

@@ -4,7 +4,7 @@ import { TextInput } from 'react-native';
 
 export default function ({ value, onChange, onBlur, ...props }) {
   return (
-    <PrimaryInput
+    <SpecialInput
       value={value}
       onChangeText={onChange}
       onBlur={onBlur}
@@ -14,7 +14,7 @@ export default function ({ value, onChange, onBlur, ...props }) {
   );
 }
 
-const PrimaryInput = styled(TextInput)`
+const SpecialInput = styled(TextInput)`
   width: 260px;
   height: 28px;
   border-radius: 13px;
