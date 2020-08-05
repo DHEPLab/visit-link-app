@@ -53,7 +53,7 @@ export default function Me() {
         <InfoContainer>
           <View>
             <PhoneNumber>{user.phone}</PhoneNumber>
-            {/* <Location>某某某某某某省/某某某某市/某某某某某某县</Location> */}
+            <Location>{user.chw?.tags?.join(', ')}</Location>
           </View>
         </InfoContainer>
       </Header>
