@@ -37,7 +37,7 @@ export default function Babies() {
     setSearch((s) => ({
       ...s,
       page: 0,
-      name,
+      name: name || '',
     }));
   }
 
