@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native';
 import http from '../utils/http';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
-import { BabyLine, Card, Button, StaticField, StaticForm } from '../components';
+import { MiniBaby, Card, Button, StaticField, StaticForm } from '../components';
 
 export default function CreateVisit({ navigation, route }) {
   const { params } = route;
@@ -80,9 +80,9 @@ export default function CreateVisit({ navigation, route }) {
       >
         {baby && (
           <>
-            <BabyLineContainer>
-              <BabyLine {...baby} />
-            </BabyLineContainer>
+            <MiniBabyContainer>
+              <MiniBaby {...baby} />
+            </MiniBabyContainer>
             <StaticForm>
               <StaticField label="主照料人">{baby.carerName}</StaticField>
               <StaticField label="联系电话">{baby.carerPhone}</StaticField>
@@ -134,7 +134,7 @@ const ButtonContainer = styled.View`
   padding-top: 30px;
 `;
 
-const BabyLineContainer = styled.View`
+const MiniBabyContainer = styled.View`
   padding-bottom: 8px;
 `;
 

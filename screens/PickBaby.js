@@ -3,7 +3,7 @@ import { FlatList, RefreshControl } from 'react-native';
 
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
-import { BabyCard, NoData } from '../components';
+import { BabyItem, NoData } from '../components';
 import { useFetch } from '../utils';
 
 export default function PickBaby({ navigation, route }) {
@@ -29,7 +29,7 @@ export default function PickBaby({ navigation, route }) {
         }
         data={babies}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <BabyCard onPress={() => pick(item)} {...item} />}
+        renderItem={({ item }) => <BabyItem onPress={() => pick(item)} {...item} />}
       />
     </Container>
   );

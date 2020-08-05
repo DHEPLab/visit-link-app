@@ -9,7 +9,7 @@ import { useFetch, useManualFetchArray } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
-import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
+import { VisitItem, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
@@ -157,7 +157,7 @@ function Visits({ started, dataSource, onChange, navigation }) {
         data={dataSource}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => (
-          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
+          <VisitItem onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
         )}
       />
     </VisitsContainer>

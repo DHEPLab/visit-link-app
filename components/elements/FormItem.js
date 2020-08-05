@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../utils/styled';
+import { styled } from '../../utils/styled';
 import { useField, useFormikContext } from 'formik';
 
 export default function ({ label, children, noBorder, ...props }) {

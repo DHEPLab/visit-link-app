@@ -5,7 +5,7 @@ import { styled } from '../utils/styled';
 import VisitUtils from '../utils/visit';
 import { useFetch } from '../utils';
 import {
-  BabyLine,
+  MiniBaby,
   Card,
   Button,
   StaticField,
@@ -77,9 +77,9 @@ export default function Visit({ navigation, route }) {
         <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
           {baby && (
             <>
-              <BabyLineContainer>
-                <BabyLine {...baby} />
-              </BabyLineContainer>
+              <MiniBabyContainer>
+                <MiniBaby {...baby} />
+              </MiniBabyContainer>
               <StaticForm>
                 <StaticField label="主照料人">{baby.carerName}</StaticField>
                 <StaticField label="联系电话">{baby.carerPhone}</StaticField>
@@ -135,7 +135,7 @@ const Container = styled.View`
   padding: 20px 28px;
 `;
 
-const BabyLineContainer = styled.View`
+const MiniBabyContainer = styled.View`
   padding-bottom: 8px;
 `;
 

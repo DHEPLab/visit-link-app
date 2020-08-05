@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../utils/styled';
+import { styled } from '../../utils/styled';
 
 export default function ({ children }) {
   return <Form>{children}</Form>;

@@ -11,7 +11,7 @@ import {
   Card,
   StaticForm,
   StaticField,
-  BabyLine,
+  MiniBaby,
   BottomRightBackground,
 } from '../components';
 
@@ -161,9 +161,9 @@ export default function Home({ navigation }) {
       {visit.id ? (
         <CardContainer>
           <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
-            <BabyLineContainer>
-              <BabyLine {...baby} />
-            </BabyLineContainer>
+            <MiniBabyContainer>
+              <MiniBaby {...baby} />
+            </MiniBabyContainer>
             <StaticForm>
               <StaticField label="主照料人">{baby?.carerName}</StaticField>
               <StaticField label="联系电话">{baby?.carerPhone}</StaticField>
@@ -233,7 +233,7 @@ const NoDataContainer = styled.View`
   justify-content: center;
 `;
 
-const BabyLineContainer = styled.View`
+const MiniBabyContainer = styled.View`
   padding-bottom: 8px;
 `;
 

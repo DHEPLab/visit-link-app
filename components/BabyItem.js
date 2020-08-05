@@ -2,12 +2,12 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import StaticField from './StaticField';
-import BabyLine from './BabyLine';
-import StaticForm from './StaticForm';
+import StaticField from './elements/StaticField';
+import StaticForm from './elements/StaticForm';
+import MiniBaby from './MiniBaby';
 import { styled, px2dp } from '../utils/styled';
 
-export default function BabyCard({ id, carerName, carerPhone, onPress, ...props }) {
+export default function BabyItem({ id, carerName, carerPhone, onPress, ...props }) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -19,7 +19,7 @@ export default function BabyCard({ id, carerName, carerPhone, onPress, ...props 
       }
     >
       <Card>
-        <BabyLine {...props} />
+        <MiniBaby {...props} />
         <Carer>
           <StaticForm>
             <StaticField label="主要看护人">{carerName || '无'}</StaticField>

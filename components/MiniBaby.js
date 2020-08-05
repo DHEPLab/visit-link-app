@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
-export default function BabyLine({ name, gender, stage, months, identity }) {
+export default function MiniBaby({ name, gender, stage, months, identity }) {
   function genderColor(value) {
     switch (value) {
       case 'MALE':

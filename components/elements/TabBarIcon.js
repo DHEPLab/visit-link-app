@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icons from './Icons';
-import { styled } from '../utils/styled';
+import { styled } from '../../utils/styled';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function TabBarIcon({ name, focused }) {
@@ -8,11 +8,7 @@ export default function TabBarIcon({ name, focused }) {
   return (
     <TabBarIconContainer focused={focused}>
       {focused ? (
-        <FocusedIcon
-          start={[1, 0]}
-          end={[0, 1]}
-          colors={['#FF9472', '#F2709C']}
-        >
+        <FocusedIcon start={[1, 0]} end={[0, 1]} colors={['#FF9472', '#F2709C']}>
           <Icons name={`${name}-focused`} size={size} />
         </FocusedIcon>
       ) : (

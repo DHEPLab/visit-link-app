@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, Image } from 'react-native';
 
-import { styled } from '../utils/styled';
+import { styled } from '../../utils/styled';
 
 export default function Message({ visible, title, content }) {
   return (
     <Modal visible={visible} transparent={true}>
       <Container>
         <Box>
-          <StyledImage source={require('../assets/images/success.png')} />
+          <StyledImage source={require('../../assets/images/success.png')} />
           <Title>{title}</Title>
           {content && <Content>{content}</Content>}
         </Box>

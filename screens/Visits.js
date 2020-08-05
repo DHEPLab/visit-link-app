@@ -10,7 +10,7 @@ import Http from '../utils/http';
 import { useManualFetchArray, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { Button, VisitCard, NoData } from '../components';
+import { Button, VisitItem, NoData } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Visits({ navigation }) {
@@ -87,7 +87,7 @@ export default function Visits({ navigation }) {
         data={visits}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => (
-          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
+          <VisitItem onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
         )}
       />
     </>

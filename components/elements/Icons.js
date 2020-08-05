@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { SvgXml } from 'react-native-svg';
-import { px2dp } from '../utils/styled';
+import { px2dp } from '../../utils/styled';
 
 const svgs = {
   home: `
@@ -173,12 +173,7 @@ const svgs = {
 
 export default function Icons({ name, size = 30, style }) {
   return svgs[name] ? (
-    <SvgXml
-      style={style}
-      xml={svgs[name]}
-      width={px2dp(size)}
-      height={px2dp(size)}
-    />
+    <SvgXml style={style} xml={svgs[name]} width={px2dp(size)} height={px2dp(size)} />
   ) : (
     <Text>{name}</Text>
   );

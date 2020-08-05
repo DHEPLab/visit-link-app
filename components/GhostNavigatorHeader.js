@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import Icons from './Icons';
+import Icons from './elements/Icons';
 import { styled } from '../utils/styled';
 
 export default function ({ navigation, title, backText = '返回' }) {

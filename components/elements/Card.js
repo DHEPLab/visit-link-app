@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from '../utils/styled';
-import BottomRightBackground from './BottomRightBackground';
+import { styled } from '../../utils/styled';
+import BottomRightBackground from '../BottomRightBackground';
 
 export default function Card({
   title,

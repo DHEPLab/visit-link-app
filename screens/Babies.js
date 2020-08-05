@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { BabyCard, NoData, Button } from '../components';
+import { BabyItem, NoData, Button } from '../components';
 import { useBoolState } from '../utils';
 
 export default function Babies({ navigation }) {
@@ -75,7 +75,7 @@ export default function Babies({ navigation }) {
         data={contents}
         keyExtractor={(item) => item.id + ''}
         onEndReached={() => console.log('on end reached')}
-        renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
+        renderItem={({ item }) => <BabyItem onPress={(baby) => navigate('Baby', baby)} {...item} />}
       />
     </>
   );

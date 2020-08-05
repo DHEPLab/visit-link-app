@@ -1,8 +1,8 @@
 import React from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import StaticForm from './StaticForm';
-import StaticField from './StaticField';
+import StaticForm from './elements/StaticForm';
+import StaticField from './elements/StaticField';
 import Status from './Status';
 import Visit from '../utils/visit';
 import { Colors } from '../constants';
@@ -10,7 +10,7 @@ import { VisitStatus } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function VisitCard({ onPress, value }) {
+export default function VisitItem({ onPress, value }) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <Container>

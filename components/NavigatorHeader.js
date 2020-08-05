@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Icons from './Icons';
+import Icons from './elements/Icons';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 
