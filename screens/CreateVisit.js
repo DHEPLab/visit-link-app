@@ -120,7 +120,10 @@ export default function CreateVisit({ navigation, route }) {
   );
 }
 
-const NoLesson = styled.Text``;
+const NoLesson = styled.Text`
+  font-size: 10px;
+  color: #8e8e93;
+`;
 
 const Container = styled(ScrollView)`
   padding: 20px 28px;
