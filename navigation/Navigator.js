@@ -8,6 +8,7 @@ import { px2dp, styled } from '../utils/styled';
 
 import Babies from '../screens/Babies';
 import Baby from '../screens/Baby';
+import CreateBaby from '../screens/CreateBaby';
 import ChangePassword from '../screens/ChangePassword';
 import Home from '../screens/Home';
 import Me from '../screens/Me';
@@ -64,6 +65,11 @@ const screens = [
     name: 'Baby',
     component: Baby,
     headerShown: false,
+  },
+  {
+    name: 'CreateBaby',
+    title: '添加宝宝',
+    component: CreateBaby,
   },
   {
     name: 'ChangePassword',

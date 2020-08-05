@@ -1,14 +1,22 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 
-export default function ({ value, onChange, onBlur, ...props }) {
+import { styled } from '../utils/styled';
+import { Colors } from '../constants';
+
+export default function Input({ value, onChange, onBlur, ...props }) {
   return (
-    <TextInput
+    <StyledTextInput
       value={value}
+      selectionColor={Colors.theme.colors.primary}
       onChangeText={onChange}
       onBlur={onBlur}
-      style={{ width: '100%' }}
       {...props}
     />
   );
 }
+
+const StyledTextInput = styled(TextInput)`
+  width: 100%;
+  font-size: 10px;
+`;

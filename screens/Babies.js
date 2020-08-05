@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { BabyCard, NoData } from '../components';
+import { BabyCard, NoData, Button } from '../components';
 import { useBoolState } from '../utils';
 
-export default function Babies() {
-  const { navigate } = useNavigation();
+export default function Babies({ navigation }) {
+  const { navigate } = navigation;
   const [search, setSearch] = useState({
     page: 0,
     size: 10,
@@ -54,12 +53,12 @@ export default function Babies() {
           />
         </Search>
       </Header>
-
-      <ListHeader>
-        {contents.length > 0 && <Title>宝宝列表</Title>}
-        {/* <Button title="添加宝宝" /> */}
-      </ListHeader>
-
+      {contents.length > 0 && (
+        <ListHeader>
+          <Title>宝宝列表</Title>
+          <Button onPress={() => navigate('CreateBaby')} title="添加宝宝" />
+        </ListHeader>
+      )}
       <FlatList
         ListEmptyComponent={
           <NoDataContainer>

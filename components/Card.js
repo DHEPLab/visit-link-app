@@ -10,6 +10,7 @@ export default function Card({
   backgroundWidth = 88,
   backgroundHeight = 88,
   hideBody,
+  noPadding,
 }) {
   return (
     <Container>
@@ -27,7 +28,7 @@ export default function Card({
             />
           )}
 
-          <Body>{children}</Body>
+          <Body noPadding={noPadding}>{children}</Body>
         </>
       )}
     </Container>
@@ -58,5 +59,5 @@ const Title = styled.Text`
 const Body = styled.View`
   border-top-width: 1px;
   border-color: #ffede2;
-  padding: 12px 24px;
+  ${({ noPadding }) => !noPadding && 'padding: 12px 24px;'}
 `;
