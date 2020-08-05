@@ -18,3 +18,4 @@ export { default as ModuleItem } from './ModuleItem';
 export { default as VisitCard } from './VisitCard';
 export { default as LargeButtonContainer } from './LargeButtonContainer';
 export { default as NoData } from './NoData';
+export { default as Message } from './Message';

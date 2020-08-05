@@ -6,18 +6,20 @@ import Http from '../utils/http';
 import { useBoolState } from '../utils';
 import { Layout } from '../constants';
 import { styled } from '../utils/styled';
-import { FormItem, PrimaryInput, Button } from '../components';
+import { FormItem, PrimaryInput, Button, Message } from '../components';
 import { signIn } from '../actions';
 
 export default function SignIn() {
   const dispatch = useDispatch();
   const [badCredentials, onBadCredentials, resetBadCredentials] = useBoolState();
+  const [visible, open] = useBoolState();
 
   function onSubmit(values) {
     resetBadCredentials();
     Http.post('/api/authenticate', values)
       .then((data) => {
         Http.auth(data.idToken);
+        open();
         dispatch(signIn(data));
       })
       .catch(onBadCredentials);
@@ -26,6 +28,7 @@ export default function SignIn() {
   return (
     <Container>
       <Logo resizeMode="contain" source={require('../assets/images/logo.png')} />
+      <Message visible={visible} title="登录" content="登录成功" />
       <Formik initialValues={{}} onSubmit={onSubmit}>
         {({ handleSubmit, values }) => (
           <FormContainer>

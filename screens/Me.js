@@ -2,12 +2,12 @@ import React from 'react';
 import { Alert, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { useFetch } from '../utils';
+import { useFetch, useBoolState } from '../utils';
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button, Card, StaticForm, StaticField } from '../components';
+import { Button, Card, StaticForm, StaticField, Message } from '../components';
 import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
 
@@ -15,6 +15,7 @@ export default function Me() {
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const [user] = useFetch('/api/account/profile');
+  const [visible, open] = useBoolState();
 
   const chw = () => user.chw || {};
   const supervisor = () => chw().supervisor || {};
@@ -33,6 +34,7 @@ export default function Me() {
           text: '退出登录',
           onPress: async () => {
             await Http.signOut();
+            open();
             dispatch(signOut());
           },
         },
@@ -44,6 +46,7 @@ export default function Me() {
   return (
     <>
       <Header {...Colors.linearGradient}>
+        <Message visible={visible} title="您已退出登录" />
         <BackgroundImage source={require('../assets/images/me-bg.png')} />
         <HeaderTitle>个人中心</HeaderTitle>
         <NameContainer>
