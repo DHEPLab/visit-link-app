@@ -80,7 +80,7 @@ export default function Me() {
         )}
       </CardsContainer>
       <Logout>
-        <Button title="退出登录" logout onPress={openAlert} />
+        <Button title="退出登录" type="logout" onPress={openAlert} />
       </Logout>
     </>
   );

@@ -29,7 +29,7 @@ export default function LessonIntro({ navigation, route }) {
       </TextContainer>
       <ButtonContainer>
         <Button
-          info
+          type="info"
           title="下一步"
           onPress={() => navigation.navigate('LessonModules', route.params)}
         />

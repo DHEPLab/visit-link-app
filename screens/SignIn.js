@@ -39,7 +39,7 @@ export default function SignIn() {
               <SpecialInput secureTextEntry placeholder="请输入账户密码" />
             </FormItem>
             <ForgetPassword>
-              <Button link title="忘记密码" />
+              <Button type="link" title="忘记密码" />
             </ForgetPassword>
             {badCredentials && <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>}
             <Button

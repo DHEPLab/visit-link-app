@@ -3,7 +3,7 @@ import { styled } from '../../utils/styled';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function ({ onPress, disabled, ...props }) {
+export default function Button({ onPress, disabled, ...props }) {
   return (
     <TouchableOpacity onPress={onPress} disabled={disabled} activeOpacity={0.8}>
       <RenderButton disabled={disabled} {...props} />
@@ -11,31 +11,7 @@ export default function ({ onPress, disabled, ...props }) {
   );
 }
 
-function RenderButton({ title, link, text, size, ghost, logout, info, disabled }) {
-  if (logout) {
-    return (
-      <LogoutButton>
-        <Text>{title}</Text>
-      </LogoutButton>
-    );
-  }
-
-  if (info) {
-    return (
-      <InfoButton>
-        <InfoButtonText>{title}</InfoButtonText>
-      </InfoButton>
-    );
-  }
-
-  if (text) {
-    return <Text>{title}</Text>;
-  }
-
-  if (link) {
-    return <LinkButton>{title}</LinkButton>;
-  }
-
+function RenderButton({ title, type, size, ghost, disabled }) {
   if (ghost) {
     return (
       <GhostButton>
@@ -44,18 +20,38 @@ function RenderButton({ title, link, text, size, ghost, logout, info, disabled }
     );
   }
 
-  return (
-    <PrimaryButton
-      disabled={disabled}
-      block
-      size={size}
-      start={[1, 0]}
-      end={[0, 1]}
-      colors={['#F2709C', '#FF9472']}
-    >
-      <Text>{title}</Text>
-    </PrimaryButton>
-  );
+  switch (type) {
+    case 'logout':
+      return (
+        <LogoutButton>
+          <Text>{title}</Text>
+        </LogoutButton>
+      );
+    case 'info':
+      return (
+        <InfoButton>
+          <InfoButtonText>{title}</InfoButtonText>
+        </InfoButton>
+      );
+    case 'text':
+      return <Text>{title}</Text>;
+    case 'link':
+      return <LinkButton>{title}</LinkButton>;
+    case 'primary':
+    default:
+      return (
+        <PrimaryButton
+          disabled={disabled}
+          block
+          size={size}
+          start={[1, 0]}
+          end={[0, 1]}
+          colors={['#F2709C', '#FF9472']}
+        >
+          <Text>{title}</Text>
+        </PrimaryButton>
+      );
+  }
 }
 
 const GhostButton = styled.View`

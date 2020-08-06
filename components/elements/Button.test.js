@@ -2,11 +2,16 @@ import React from 'react';
 import { render, fireEvent } from 'react-native-testing-library';
 import Button from './Button';
 
-test('should called fn when button press', () => {
+it('should called fn when button press', () => {
   const mockFn = jest.fn();
 
   const { getByText } = render(<Button title="Button" onPress={mockFn} />);
   fireEvent.press(getByText('Button'));
 
   expect(mockFn).toBeCalled();
+});
+
+it('should render primary button', () => {
+  const button = <Button />;
+  console.log(button.type());
 });

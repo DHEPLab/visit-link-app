@@ -59,7 +59,7 @@ export default function Module({ navigation, route }) {
     <>
       <Header {...Colors.linearGradient}>
         <Escape>
-          <Button text title="退出模块" onPress={navigation.goBack} />
+          <Button type="text" title="退出模块" onPress={navigation.goBack} />
         </Escape>
         <Name>{module.name}</Name>
         <Description>{module.description}</Description>
@@ -88,7 +88,7 @@ export default function Module({ navigation, route }) {
           ) : (
             <Button size="large" title="下一步" onPress={nextStep} />
           )}
-          {page > 0 && <Button info title="上一步" onPress={lastStep} />}
+          {page > 0 && <Button type="info" title="上一步" onPress={lastStep} />}
         </ButtonContainer>
       </StyledScrollView>
     </>
