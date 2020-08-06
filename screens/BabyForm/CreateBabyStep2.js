@@ -51,15 +51,17 @@ export default function CreateBabyStep2({ navigation, route }) {
     setCarers(keepMasterCarerUnique(carers, index));
   }
 
+  function create(dataSource, carer) {
+    return carer.master
+      ? keepMasterCarerUnique([...dataSource, carer], dataSource.length)
+      : [...dataSource, carer];
+  }
+
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1
-      ? // add new carer
-        setCarers(
-          route.params.carer.master
-            ? keepMasterCarerUnique([...carers, route.params.carer], carers.length)
-            : [...carers, route.params.carer]
-        )
+      ? // create new carer
+        setCarers(create(carers, route.params.carer))
       : // edit old carer
         setCarers(replace(carers, route.params.carerIndex, route.params.carer));
   }, [route.params.carer]);
