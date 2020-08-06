@@ -72,12 +72,12 @@ const screens = [
   },
   {
     name: 'CreateBabyStep1',
-    title: '添加宝宝',
+    headerShown: false,
     component: CreateBabyStep1,
   },
   {
     name: 'CreateBabyStep2',
-    title: '添加宝宝',
+    headerShown: false,
     component: CreateBabyStep2,
   },
   {
@@ -87,7 +87,7 @@ const screens = [
   },
   {
     name: 'CreateBabyStep3',
-    title: '添加宝宝',
+    headerShown: false,
     component: CreateBabyStep3,
   },
   {

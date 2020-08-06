@@ -2,9 +2,9 @@ import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Icons from './elements/Icons';
-import { Colors } from '../constants';
-import { styled } from '../utils/styled';
+import Icons from '../elements/Icons';
+import { Colors } from '../../constants';
+import { styled } from '../../utils/styled';
 
 export default function ({
   navigation,

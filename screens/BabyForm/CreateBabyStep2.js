@@ -2,26 +2,37 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { styled } from '../../utils/styled';
-import { Card, LargeButtonContainer, Button, Form, FormItem, Input } from '../../components';
+import {
+  CreateBabyNavigator,
+  Card,
+  LargeButtonContainer,
+  Button,
+  Form,
+  FormItem,
+  Input,
+} from '../../components';
 
 export default function CreateBabyStep2({ navigation }) {
   return (
-    <Container>
-      <ListHeader>
-        <View>
-          <Title>看护人列表</Title>
-          <SubTitle>最多可添加4位看护人</SubTitle>
-        </View>
-        <Button title="添加看护人" onPress={() => navigation.navigate('CreateCarer')} />
-      </ListHeader>
-      <LargeButtonContainer>
-        <Button
-          size="large"
-          title="下一步"
-          onPress={() => navigation.navigate('CreateBabyStep3')}
-        />
-      </LargeButtonContainer>
-    </Container>
+    <>
+      <CreateBabyNavigator active={2} navigation={navigation} />
+      <Container>
+        <ListHeader>
+          <View>
+            <Title>看护人列表</Title>
+            <SubTitle>最多可添加4位看护人</SubTitle>
+          </View>
+          <Button title="添加看护人" onPress={() => navigation.navigate('CreateCarer')} />
+        </ListHeader>
+        <LargeButtonContainer>
+          <Button
+            size="large"
+            title="下一步"
+            onPress={() => navigation.navigate('CreateBabyStep3')}
+          />
+        </LargeButtonContainer>
+      </Container>
+    </>
   );
 }
 

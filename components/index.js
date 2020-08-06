@@ -12,11 +12,13 @@ export { default as TabBarIcon } from './elements/TabBarIcon';
 export { default as NoData } from './elements/NoData';
 export { default as Message } from './elements/Message';
 
+export { default as GhostNavigatorHeader } from './navigator/Ghost';
+export { default as NavigatorHeader } from './navigator/Primary';
+export { default as CreateBabyNavigator } from './navigator/CreateBaby';
+
 export { default as MiniBaby } from './MiniBaby';
 export { default as BottomRightBackground } from './BottomRightBackground';
 export { default as BabyItem } from './BabyItem';
 export { default as LargeButtonContainer } from './LargeButtonContainer';
-export { default as GhostNavigatorHeader } from './GhostNavigatorHeader';
-export { default as NavigatorHeader } from './NavigatorHeader';
 export { default as ModuleItem } from './ModuleItem';
 export { default as VisitItem } from './VisitItem';
