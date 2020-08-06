@@ -11,6 +11,7 @@ import {
   FormItem,
   Input,
   Radios,
+  DatePicker,
 } from '../../components';
 import { Gender, BabyStage, FeedingPattern, AssistedFood } from '../../constants/enums';
 
@@ -32,21 +33,27 @@ export default function CreateBabyStep1({ navigation }) {
                   <FormItem name="gender" label="宝宝性别">
                     <Radios enums={Gender} />
                   </FormItem>
-                  <FormItem name="stage" label="成长阶段">
+                  <FormItem name="stage" label="成长阶段" noBorder={!values.stage}>
                     <Radios enums={BabyStage} />
                   </FormItem>
-                  <FormItem name="edc" label="预产日期">
-                    <Input />
-                  </FormItem>
-                  <FormItem name="birthday" label="出生日期">
-                    <Input />
-                  </FormItem>
-                  <FormItem name="assistedFood" label="添加辅食">
-                    <Radios enums={AssistedFood} />
-                  </FormItem>
-                  <FormItem name="feedingPattern" label="喂养状态" noBorder>
-                    <Radios enums={FeedingPattern} />
-                  </FormItem>
+                  {values.stage === 'EDC' && (
+                    <FormItem name="edc" label="预产日期" noBorder>
+                      <DatePicker />
+                    </FormItem>
+                  )}
+                  {values.stage === 'BIRTH' && (
+                    <>
+                      <FormItem name="birthday" label="出生日期">
+                        <DatePicker />
+                      </FormItem>
+                      <FormItem name="assistedFood" label="添加辅食">
+                        <Radios enums={AssistedFood} />
+                      </FormItem>
+                      <FormItem name="feedingPattern" label="喂养状态" noBorder>
+                        <Radios enums={FeedingPattern} />
+                      </FormItem>
+                    </>
+                  )}
                 </Form>
               </Card>
               <LargeButtonContainer>

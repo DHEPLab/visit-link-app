@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '../utils/styled';
 import StaticForm from './elements/StaticForm';
-import { StaticField } from '.';
+import StaticField from './elements/StaticField';
 
 export default function CarerItem({ noBorder }) {
   return (
