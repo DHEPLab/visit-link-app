@@ -1,21 +1,27 @@
 import React from 'react';
 import { styled } from '../utils/styled';
+import { FamilyTies } from '../constants/enums';
+
 import StaticForm from './elements/StaticForm';
 import StaticField from './elements/StaticField';
+import Button from './elements/Button';
 
-export default function CarerItem({ noBorder }) {
+export default function CarerItem({ number, value, noBorder }) {
   return (
     <Container noBorder={noBorder}>
       <Header>
-        <Number>看护人1</Number>
+        <Number>看护人{number}</Number>
         <Master>主看护人</Master>
-        <Operation>删除|修改</Operation>
+        <Operation>
+          <Button title="删除" />
+          <Button title="修改" />
+        </Operation>
       </Header>
       <StaticForm>
-        <StaticField label="看护人姓名">张三</StaticField>
-        <StaticField label="亲属关系">母亲</StaticField>
-        <StaticField label="联系电话">1238123812983</StaticField>
-        <StaticField label="微信号码">123123123124</StaticField>
+        <StaticField label="看护人姓名">{value.name}</StaticField>
+        <StaticField label="亲属关系">{FamilyTies[value.familyTies]}</StaticField>
+        <StaticField label="联系电话">{value.phone}</StaticField>
+        <StaticField label="微信号码">{value.wechat}</StaticField>
       </StaticForm>
     </Container>
   );
@@ -49,7 +55,7 @@ const Master = styled.Text`
   font-size: 10px;
 `;
 
-const Operation = styled.Text`
+const Operation = styled.View`
   flex: 1;
   text-align: right;
 `;

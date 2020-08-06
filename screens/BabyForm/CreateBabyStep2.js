@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { styled } from '../../utils/styled';
 import { CarerItem, CreateBabyNavigator, LargeButtonContainer, Button } from '../../components';
 
-export default function CreateBabyStep2({ navigation }) {
+export default function CreateBabyStep2({ navigation, route }) {
+  const { params } = route;
+  const { baby } = params;
+  const [carers, setCarers] = useState([]);
+
+  useEffect(() => {
+    if (route.params.carer) {
+      setCarers([...carers, route.params.carer]);
+    }
+  }, [route.params.carer]);
+
   return (
     <>
       <CreateBabyNavigator active={2} navigation={navigation} />
@@ -15,12 +25,22 @@ export default function CreateBabyStep2({ navigation }) {
               <Title>看护人列表</Title>
               <SubTitle>最多可添加4位看护人</SubTitle>
             </View>
-            <Button title="添加看护人" onPress={() => navigation.navigate('CreateCarer')} />
+            <Button
+              disabled={carers.length > 3}
+              title="添加看护人"
+              onPress={() => navigation.navigate('CreateCarer')}
+            />
           </ListHeader>
 
           <CarerListContainer>
-            <CarerItem />
-            <CarerItem noBorder />
+            {carers.map((carer, index) => (
+              <CarerItem
+                number={index + 1}
+                key={carer.id}
+                value={carer}
+                noBorder={index === carers.length - 1}
+              />
+            ))}
           </CarerListContainer>
 
           <LargeButtonContainer>
