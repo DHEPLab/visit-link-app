@@ -56,7 +56,7 @@ export default function Babies({ navigation }) {
       {contents.length > 0 && (
         <ListHeader>
           <Title>宝宝列表</Title>
-          <Button onPress={() => navigate('CreateBaby')} title="添加宝宝" />
+          <Button onPress={() => navigate('CreateBabyStep1')} title="添加宝宝" />
         </ListHeader>
       )}
       <FlatList

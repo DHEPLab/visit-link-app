@@ -8,7 +8,11 @@ import { px2dp, styled } from '../utils/styled';
 
 import Babies from '../screens/Babies';
 import Baby from '../screens/Baby';
-import CreateBaby from '../screens/CreateBaby';
+import CreateBabyStep1 from '../screens/BabyForm/CreateBabyStep1';
+import CreateBabyStep2 from '../screens/BabyForm/CreateBabyStep2';
+import CreateBabyStep3 from '../screens/BabyForm/CreateBabyStep3';
+import CreateCarer from '../screens/BabyForm/CreateCarer';
+
 import ChangePassword from '../screens/ChangePassword';
 import Home from '../screens/Home';
 import Me from '../screens/Me';
@@ -67,9 +71,24 @@ const screens = [
     headerShown: false,
   },
   {
-    name: 'CreateBaby',
+    name: 'CreateBabyStep1',
     title: '添加宝宝',
-    component: CreateBaby,
+    component: CreateBabyStep1,
+  },
+  {
+    name: 'CreateBabyStep2',
+    title: '添加宝宝',
+    component: CreateBabyStep2,
+  },
+  {
+    name: 'CreateCarer',
+    title: '添加看护人',
+    component: CreateCarer,
+  },
+  {
+    name: 'CreateBabyStep3',
+    title: '添加宝宝',
+    component: CreateBabyStep3,
   },
   {
     name: 'ChangePassword',

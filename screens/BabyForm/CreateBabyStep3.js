@@ -1,10 +1,10 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { styled } from '../utils/styled';
+import { styled } from '../../utils/styled';
 
-import { Card, LargeButtonContainer, Button, Form, FormItem, Input } from '../components';
+import { Card, LargeButtonContainer, Button, Form, FormItem, Input } from '../../components';
 
-export default function CreateBaby() {
+export default function CreateBabyStep1({ navigation }) {
   function onSubmit() {}
 
   return (
@@ -12,21 +12,18 @@ export default function CreateBaby() {
       <Formik initialValues={{}} onSubmit={onSubmit}>
         {({ handleSubmit, values }) => (
           <>
-            <Card title="宝宝信息" noPadding>
+            <Card title="地址信息" noPadding>
               <Form>
-                <FormItem name="name" label="宝宝姓名">
+                <FormItem name="name" label="所在区域">
                   <Input placeholder="请输入2-10个汉字" />
                 </FormItem>
-                <FormItem name="gender" label="宝宝性别">
-                  <Input />
-                </FormItem>
-                <FormItem name="stage" label="成长阶段" noBorder>
-                  <Input />
+                <FormItem name="gender" label="详细地址" noBorder>
+                  <Input placeholder="请输入详细地址，精确到门牌号" />
                 </FormItem>
               </Form>
             </Card>
             <LargeButtonContainer>
-              <Button size="large" title="下一步" />
+              <Button size="large" title="提交" onPress={() => navigation.navigate('Babies')} />
             </LargeButtonContainer>
           </>
         )}
