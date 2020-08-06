@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { styled } from '../../utils/styled';
 
 import {
-  Radios,
+  SolidRadios,
   Card,
   LargeButtonContainer,
   Button,
@@ -55,7 +55,7 @@ export default function CreateCarer({ navigation, route }) {
                   <Input placeholder="请输入2-10个汉字" />
                 </FormItem>
                 <FormItem name="familyTies" label="亲属关系">
-                  <Radios enums={FamilyTies} />
+                  <SolidRadios enums={FamilyTies} />
                 </FormItem>
                 <FormItem name="phone" label="联系电话">
                   <Input placeholder="请输入11位手机号码" />

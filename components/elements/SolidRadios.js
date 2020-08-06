@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '../../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Radios({ value, onChange, enums = {} }) {
+export default function SolidRadios({ value, onChange, enums = {} }) {
   return (
     <Container>
       {Object.keys(enums).map((key) => (
