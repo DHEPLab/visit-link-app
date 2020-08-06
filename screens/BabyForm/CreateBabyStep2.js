@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, ToastAndroid } from 'react-native';
 import Arrays from 'lodash/array';
 
 import { styled } from '../../utils/styled';
@@ -13,6 +13,7 @@ export default function CreateBabyStep2({ navigation, route }) {
   function replace(array, index, object) {
     const clone = [...array];
     clone[index] = object;
+    if (object.master) clone = keepMasterCarerUnique(clone, index);
     return clone;
   }
 
@@ -27,14 +28,38 @@ export default function CreateBabyStep2({ navigation, route }) {
   }
 
   function handleNextStep() {
+    let hasMaster = false;
+    for (const carer of carers) {
+      if (carer.master) {
+        hasMaster = true;
+        break;
+      }
+    }
+    if (!hasMaster) return ToastAndroid.show('必须设置一个主看护人', ToastAndroid.LONG);
+
     navigation.navigate('CreateBabyStep3', { baby, carers });
+  }
+
+  function keepMasterCarerUnique(carers, masterCarerIndex) {
+    return carers.map((carer, index) => {
+      carer.master = index === masterCarerIndex;
+      return carer;
+    });
+  }
+
+  function onChangeMaster(index) {
+    setCarers(keepMasterCarerUnique(carers, index));
   }
 
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1
       ? // add new carer
-        setCarers([...carers, route.params.carer])
+        setCarers(
+          route.params.carer.master
+            ? keepMasterCarerUnique([...carers, route.params.carer], carers.length)
+            : [...carers, route.params.carer]
+        )
       : // edit old carer
         setCarers(replace(carers, route.params.carerIndex, route.params.carer));
   }, [route.params.carer]);
@@ -64,6 +89,7 @@ export default function CreateBabyStep2({ navigation, route }) {
                 value={carer}
                 noBorder={index === carers.length - 1}
                 onPressDelete={() => handleDelete(index)}
+                onChangeMaster={() => onChangeMaster(index)}
                 onPressModify={() => navigation.navigate('EditCarer', { carer, carerIndex: index })}
               />
             ))}

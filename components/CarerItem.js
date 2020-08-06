@@ -5,13 +5,25 @@ import { FamilyTies } from '../constants/enums';
 import Button from './elements/Button';
 import StaticForm from './elements/StaticForm';
 import StaticField from './elements/StaticField';
+import Radio from './elements/Radio';
 
-export default function CarerItem({ number, value, noBorder, onPressDelete, onPressModify }) {
+export default function CarerItem({
+  number,
+  value,
+  noBorder,
+  onPressDelete,
+  onChangeMaster,
+  onPressModify,
+}) {
   return (
     <Container noBorder={noBorder}>
       <Header>
         <Number>看护人{number}</Number>
-        <Master>主看护人</Master>
+        <Radio
+          label={value.master ? '主看护人' : '设为主看护人'}
+          value={value.master}
+          onChange={onChangeMaster}
+        />
         <Operation>
           <Button type="delete" title="删除" onPress={onPressDelete} />
           <Separator />
