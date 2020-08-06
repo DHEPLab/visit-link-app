@@ -60,6 +60,10 @@ it('should finish current module', async () => {
   expect(storage.setNextModule).toBeCalledWith(2);
 });
 
+// ignore console.warn
+// Animated: `useNativeDriver` is not supported because the native animated module is missing. Falling back to JS-based animation. To resolve this, add `RCTAnimation` module to this app, or remove `useNativeDriver`. More info: https://github.com/facebook/react-native/issues/11094#issuecomment-263240420
+console.warn = jest.fn();
+
 it('should preview mode, do not set status', async () => {
   storage.useLesson.mockImplementation(() => [
     {
@@ -77,6 +81,7 @@ it('should preview mode, do not set status', async () => {
   const { rerender } = render(<LessonModules {...props} />);
   props.route.params.moduleId = 11;
   props.route.params.finished = true;
+  // trigger console.warn
   props.route.params.preview = true;
   rerender(<LessonModules {...props} />);
   expect(reloadNextModule).not.toBeCalled();

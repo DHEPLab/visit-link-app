@@ -1,9 +1,9 @@
 import React from 'react';
-import RMCascader from 'rmc-cascader';
+import { View } from 'react-native';
 
 export default function Cascader({ data }) {
   function onChange(value) {
     console.log('onChange', value);
   }
-  return <RMCascader data={data} onChange={onChange} />;
+  return <View></View>;
 }

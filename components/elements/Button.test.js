@@ -10,8 +10,3 @@ it('should called fn when button press', () => {
 
   expect(mockFn).toBeCalled();
 });
-
-it('should render primary button', () => {
-  const button = <Button />;
-  console.log(button.type());
-});
