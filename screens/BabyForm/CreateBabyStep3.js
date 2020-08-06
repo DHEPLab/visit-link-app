@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { styled } from '../../utils/styled';
 
 import {
+  Cascader,
   CreateBabyNavigator,
   Card,
   LargeButtonContainer,
@@ -25,7 +26,7 @@ export default function CreateBabyStep3({ navigation }) {
               <Card title="地址信息" noPadding>
                 <Form>
                   <FormItem name="name" label="所在区域">
-                    <Input placeholder="请输入2-10个汉字" />
+                    <Input />
                   </FormItem>
                   <FormItem name="gender" label="详细地址" noBorder>
                     <Input placeholder="请输入详细地址，精确到门牌号" />
