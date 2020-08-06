@@ -3,6 +3,7 @@ export { default as Button } from './elements/Button';
 export { default as Card } from './elements/Card';
 export { default as DatePicker } from './elements/DatePicker';
 export { default as Cascader } from './elements/Cascader';
+export { default as CheckBox } from './elements/CheckBox';
 export { default as Form } from './elements/Form';
 export { default as FormItem } from './elements/FormItem';
 export { default as Icons } from './elements/Icons';

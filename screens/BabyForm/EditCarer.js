@@ -11,6 +11,7 @@ import {
   Form,
   FormItem,
   Input,
+  CheckBox,
 } from '../../components';
 import { FamilyTies } from '../../constants/enums';
 
@@ -31,14 +32,24 @@ export default function CreateCarer({ navigation, route }) {
   return (
     <Container>
       <Formik
-        initialValues={params?.carer || {}}
+        initialValues={params?.carer || { master: false }}
         validateOnChange={false}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit, values, setFieldValue }) => (
           <>
-            <Card title="看护人" noPadding>
+            <Card
+              title="看护人"
+              right={
+                <CheckBox
+                  label="主看护人"
+                  value={values.master}
+                  onChange={(checked) => setFieldValue('master', checked)}
+                />
+              }
+              noPadding
+            >
               <Form>
                 <FormItem name="name" label="真实姓名">
                   <Input placeholder="请输入2-10个汉字" />
