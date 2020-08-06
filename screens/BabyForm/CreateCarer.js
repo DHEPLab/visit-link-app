@@ -2,7 +2,16 @@ import React from 'react';
 import { Formik } from 'formik';
 import { styled } from '../../utils/styled';
 
-import { Card, LargeButtonContainer, Button, Form, FormItem, Input } from '../../components';
+import {
+  Radios,
+  Card,
+  LargeButtonContainer,
+  Button,
+  Form,
+  FormItem,
+  Input,
+} from '../../components';
+import { FamilyTies } from '../../constants/enums';
 
 export default function CreateCarer({ navigation }) {
   function onSubmit() {}
@@ -18,7 +27,7 @@ export default function CreateCarer({ navigation }) {
                   <Input placeholder="请输入2-10个汉字" />
                 </FormItem>
                 <FormItem name="gender" label="亲属关系">
-                  <Input />
+                  <Radios enums={FamilyTies} />
                 </FormItem>
                 <FormItem name="stage" label="联系电话">
                   <Input placeholder="请输入11位手机号码" />

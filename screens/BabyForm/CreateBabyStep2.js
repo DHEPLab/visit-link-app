@@ -1,40 +1,47 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { styled } from '../../utils/styled';
-import {
-  CreateBabyNavigator,
-  Card,
-  LargeButtonContainer,
-  Button,
-  Form,
-  FormItem,
-  Input,
-} from '../../components';
+import { CarerItem, CreateBabyNavigator, LargeButtonContainer, Button } from '../../components';
 
 export default function CreateBabyStep2({ navigation }) {
   return (
     <>
       <CreateBabyNavigator active={2} navigation={navigation} />
-      <Container>
-        <ListHeader>
-          <View>
-            <Title>看护人列表</Title>
-            <SubTitle>最多可添加4位看护人</SubTitle>
-          </View>
-          <Button title="添加看护人" onPress={() => navigation.navigate('CreateCarer')} />
-        </ListHeader>
-        <LargeButtonContainer>
-          <Button
-            size="large"
-            title="下一步"
-            onPress={() => navigation.navigate('CreateBabyStep3')}
-          />
-        </LargeButtonContainer>
-      </Container>
+      <ScrollView>
+        <Container>
+          <ListHeader>
+            <View>
+              <Title>看护人列表</Title>
+              <SubTitle>最多可添加4位看护人</SubTitle>
+            </View>
+            <Button title="添加看护人" onPress={() => navigation.navigate('CreateCarer')} />
+          </ListHeader>
+
+          <CarerListContainer>
+            <CarerItem />
+            <CarerItem noBorder />
+          </CarerListContainer>
+
+          <LargeButtonContainer>
+            <Button
+              size="large"
+              title="下一步"
+              onPress={() => navigation.navigate('CreateBabyStep3')}
+            />
+          </LargeButtonContainer>
+        </Container>
+      </ScrollView>
     </>
   );
 }
+
+const CarerListContainer = styled.View`
+  border-radius: 8px;
+  padding: 0 24px;
+  background: #fff;
+  margin-top: 20px;
+`;
 
 const Container = styled.View`
   padding: 20px 28px;

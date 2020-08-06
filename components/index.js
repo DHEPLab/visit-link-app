@@ -20,6 +20,7 @@ export { default as CreateBabyNavigator } from './navigator/CreateBaby';
 export { default as MiniBaby } from './MiniBaby';
 export { default as BottomRightBackground } from './BottomRightBackground';
 export { default as BabyItem } from './BabyItem';
+export { default as CarerItem } from './CarerItem';
 export { default as LargeButtonContainer } from './LargeButtonContainer';
 export { default as ModuleItem } from './ModuleItem';
 export { default as VisitItem } from './VisitItem';
