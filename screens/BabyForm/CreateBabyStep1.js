@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { styled } from '../../utils/styled';
 
@@ -15,14 +16,43 @@ import {
 } from '../../components';
 import { Gender, BabyStage, FeedingPattern, AssistedFood } from '../../constants/enums';
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string().min(2, '最少2个字符').max(10, '最多10个字符').required('此项为必填'),
+  gender: Yup.string().required('此项为必填'),
+  stage: Yup.string().required('此项为必填'),
+});
+
 export default function CreateBabyStep1({ navigation }) {
-  function onSubmit() {}
+  function onSubmit(values) {
+    navigation.navigate('CreateBabyStep2', { baby: values });
+  }
+
+  function validate(values) {
+    const errors = {};
+    switch (values.stage) {
+      case 'EDC':
+        if (!values.edc) errors.edc = '此项为必填';
+        break;
+      case 'BIRTH':
+        if (!values.birthday) errors.birthday = '此项为必填';
+        if (!values.assistedFood) errors.assistedFood = '此项为必填';
+        if (!values.feedingPattern) errors.feedingPattern = '此项为必填';
+        break;
+    }
+    return errors;
+  }
 
   return (
     <>
       <CreateBabyNavigator active={1} navigation={navigation} />
       <Container>
-        <Formik initialValues={{}} onSubmit={onSubmit}>
+        <Formik
+          initialValues={{}}
+          validate={validate}
+          validateOnChange={false}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
           {({ handleSubmit, values }) => (
             <>
               <Card title="宝宝信息" noPadding>
@@ -57,11 +87,7 @@ export default function CreateBabyStep1({ navigation }) {
                 </Form>
               </Card>
               <LargeButtonContainer>
-                <Button
-                  size="large"
-                  title="下一步"
-                  onPress={() => navigation.navigate('CreateBabyStep2')}
-                />
+                <Button size="large" title="下一步" onPress={handleSubmit} />
               </LargeButtonContainer>
             </>
           )}
