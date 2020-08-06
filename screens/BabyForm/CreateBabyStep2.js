@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import Arrays from 'lodash/array';
 
 import { styled } from '../../utils/styled';
 import { CarerItem, CreateBabyNavigator, LargeButtonContainer, Button } from '../../components';
@@ -9,10 +10,33 @@ export default function CreateBabyStep2({ navigation, route }) {
   const { baby } = params;
   const [carers, setCarers] = useState([]);
 
+  function replace(array, index, object) {
+    const clone = [...array];
+    clone[index] = object;
+    return clone;
+  }
+
+  function pullAt(array, index) {
+    const clone = [...array];
+    Arrays.pullAt(clone, [index]);
+    return clone;
+  }
+
+  function handleDelete(index) {
+    setCarers(pullAt(carers, index));
+  }
+
+  function handleNextStep() {
+    navigation.navigate('CreateBabyStep3', { baby, carers });
+  }
+
   useEffect(() => {
-    if (route.params.carer) {
-      setCarers([...carers, route.params.carer]);
-    }
+    if (!route.params.carer) return;
+    route.params.carerIndex === -1
+      ? // add new carer
+        setCarers([...carers, route.params.carer])
+      : // edit old carer
+        setCarers(replace(carers, route.params.carerIndex, route.params.carer));
   }, [route.params.carer]);
 
   return (
@@ -36,18 +60,21 @@ export default function CreateBabyStep2({ navigation, route }) {
             {carers.map((carer, index) => (
               <CarerItem
                 number={index + 1}
-                key={carer.id}
+                key={carer.familyTies}
                 value={carer}
                 noBorder={index === carers.length - 1}
+                onPressDelete={() => handleDelete(index)}
+                onPressModify={() => navigation.navigate('EditCarer', { carer, carerIndex: index })}
               />
             ))}
           </CarerListContainer>
 
           <LargeButtonContainer>
             <Button
+              disabled={carers.length === 0}
               size="large"
               title="下一步"
-              onPress={() => navigation.navigate('CreateBabyStep3')}
+              onPress={handleNextStep}
             />
           </LargeButtonContainer>
         </Container>

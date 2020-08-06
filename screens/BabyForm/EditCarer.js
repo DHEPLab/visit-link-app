@@ -22,21 +22,23 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function CreateCarer({ navigation, route }) {
+  const { params } = route;
   function onSubmit(carer) {
-    navigation.navigate('CreateBabyStep2', { carer });
+    const carerIndex = params?.carerIndex == null ? -1 : params?.carerIndex;
+    navigation.navigate('CreateBabyStep2', { carer, carerIndex });
   }
 
   return (
     <Container>
       <Formik
-        initialValues={{}}
+        initialValues={params?.carer || {}}
         validateOnChange={false}
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
         {({ handleSubmit }) => (
           <>
-            <Card title="看护人1" noPadding>
+            <Card title="看护人" noPadding>
               <Form>
                 <FormItem name="name" label="真实姓名">
                   <Input placeholder="请输入2-10个汉字" />
@@ -53,7 +55,7 @@ export default function CreateCarer({ navigation, route }) {
               </Form>
             </Card>
             <LargeButtonContainer>
-              <Button size="large" title="添加" onPress={handleSubmit} />
+              <Button size="large" title={params?.carer ? '提交' : '添加'} onPress={handleSubmit} />
             </LargeButtonContainer>
           </>
         )}

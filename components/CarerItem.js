@@ -2,19 +2,20 @@ import React from 'react';
 import { styled } from '../utils/styled';
 import { FamilyTies } from '../constants/enums';
 
+import Button from './elements/Button';
 import StaticForm from './elements/StaticForm';
 import StaticField from './elements/StaticField';
-import Button from './elements/Button';
 
-export default function CarerItem({ number, value, noBorder }) {
+export default function CarerItem({ number, value, noBorder, onPressDelete, onPressModify }) {
   return (
     <Container noBorder={noBorder}>
       <Header>
         <Number>看护人{number}</Number>
         <Master>主看护人</Master>
         <Operation>
-          <Button title="删除" />
-          <Button title="修改" />
+          <Button type="delete" title="删除" onPress={onPressDelete} />
+          <Separator />
+          <Button type="link" title="修改" onPress={onPressModify} />
         </Operation>
       </Header>
       <StaticForm>
@@ -57,5 +58,14 @@ const Master = styled.Text`
 
 const Operation = styled.View`
   flex: 1;
-  text-align: right;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const Separator = styled.View`
+  margin: 0 8px;
+  height: 8px;
+  border-left-width: 1px;
+  border-color: #cecece;
 `;

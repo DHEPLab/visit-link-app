@@ -35,6 +35,8 @@ function RenderButton({ title, type, size, ghost, disabled }) {
       );
     case 'text':
       return <Text>{title}</Text>;
+    case 'delete':
+      return <DeleteText>{title}</DeleteText>;
     case 'link':
       return <LinkButton>{title}</LinkButton>;
     case 'primary':
@@ -62,10 +64,10 @@ const GhostButton = styled.View`
 `;
 
 const LinkButton = styled.Text`
-  color: #ffc3a0;
+  color: #ff794f;
   font-size: 10px;
   font-weight: bold;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 `;
 
 const LogoutButton = styled.View`
@@ -98,6 +100,10 @@ const Text = styled.Text`
   text-align: center;
   color: #fff;
   font-weight: bold;
+`;
+
+const DeleteText = styled(Text)`
+  color: #8e8e93;
 `;
 
 const InfoButtonText = styled(Text)`
