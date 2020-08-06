@@ -11,22 +11,27 @@ export default function ({ label, children, noBorder, ...props }) {
     <FormItem noBorder={noBorder}>
       <Field {...props}>
         {label && <Label>{label}:</Label>}
-        {React.cloneElement(children, {
-          name,
-          value: field.value,
-          onChange: form.handleChange(name),
-          onBlur: form.handleBlur(name),
-        })}
+        <FieldComponent>
+          {React.cloneElement(children, {
+            name,
+            value: field.value,
+            onChange: form.handleChange(name),
+            onBlur: form.handleBlur(name),
+          })}
+        </FieldComponent>
       </Field>
       {form.errors[name] && <Error>{form.errors[name]}</Error>}
     </FormItem>
   );
 }
 
+const FieldComponent = styled.View`
+  flex: 1;
+`;
+
 const Field = styled.View`
   flex-direction: row;
   ${({ center }) => center && 'justify-content: center;'}
-  align-items: center;
 `;
 
 const FormItem = styled.View`
@@ -41,7 +46,7 @@ const Label = styled.Text`
   margin-right: 12px;
   color: #8e8e93;
   font-size: 10px;
-  font-weight: bold;
+  line-height: 16px;
 `;
 
 const Error = styled.Text`

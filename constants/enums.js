@@ -5,8 +5,8 @@ export const Role = {
 };
 
 export const Gender = {
-  MALE: '男',
   FEMALE: '女',
+  MALE: '男',
   UNKNOWN: '未知',
 };
 
@@ -24,8 +24,13 @@ export const VisitStatus = {
 };
 
 export const BabyStage = {
-  EDC: '预产期',
-  BIRTH: '婴幼期',
+  EDC: '未出生',
+  BIRTH: '已出生',
+};
+
+export const AssistedFood = {
+  true: '已添加',
+  false: '未添加',
 };
 
 export const FeedingPattern = {

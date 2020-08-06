@@ -10,7 +10,9 @@ import {
   Form,
   FormItem,
   Input,
+  Radios,
 } from '../../components';
+import { Gender, BabyStage, FeedingPattern, AssistedFood } from '../../constants/enums';
 
 export default function CreateBabyStep1({ navigation }) {
   function onSubmit() {}
@@ -28,10 +30,10 @@ export default function CreateBabyStep1({ navigation }) {
                     <Input placeholder="请输入2-10个汉字" />
                   </FormItem>
                   <FormItem name="gender" label="宝宝性别">
-                    <Input />
+                    <Radios enums={Gender} />
                   </FormItem>
                   <FormItem name="stage" label="成长阶段">
-                    <Input />
+                    <Radios enums={BabyStage} />
                   </FormItem>
                   <FormItem name="edc" label="预产日期">
                     <Input />
@@ -40,10 +42,10 @@ export default function CreateBabyStep1({ navigation }) {
                     <Input />
                   </FormItem>
                   <FormItem name="assistedFood" label="添加辅食">
-                    <Input />
+                    <Radios enums={AssistedFood} />
                   </FormItem>
                   <FormItem name="feedingPattern" label="喂养状态" noBorder>
-                    <Input />
+                    <Radios enums={FeedingPattern} />
                   </FormItem>
                 </Form>
               </Card>
