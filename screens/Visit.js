@@ -78,7 +78,7 @@ export default function Visit({ navigation, route }) {
           {baby && (
             <>
               <MiniBabyContainer>
-                <MiniBaby {...baby} />
+                <MiniBaby hideStatus baby={baby} />
               </MiniBabyContainer>
               <StaticForm>
                 <StaticField label="主照料人">{baby.carerName}</StaticField>

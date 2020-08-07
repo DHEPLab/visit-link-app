@@ -20,6 +20,7 @@ export { default as GhostNavigatorHeader } from './navigator/Ghost';
 export { default as NavigatorHeader } from './navigator/Primary';
 export { default as CreateBabyNavigator } from './navigator/CreateBaby';
 
+export { default as ApproveStatus } from './ApproveStatus';
 export { default as MiniBaby } from './MiniBaby';
 export { default as BottomRightBackground } from './BottomRightBackground';
 export { default as BabyItem } from './BabyItem';

@@ -162,7 +162,7 @@ export default function Home({ navigation }) {
         <CardContainer>
           <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
             <MiniBabyContainer>
-              <MiniBaby {...baby} />
+              <MiniBaby hideStatus baby={baby} />
             </MiniBabyContainer>
             <StaticForm>
               <StaticField label="主照料人">{baby?.carerName}</StaticField>

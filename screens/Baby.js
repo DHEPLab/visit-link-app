@@ -9,7 +9,15 @@ import { useFetch, useManualFetchArray } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
-import { VisitItem, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
+import {
+  VisitItem,
+  GhostNavigatorHeader,
+  Button,
+  Card,
+  StaticField,
+  NoData,
+  ApproveStatus,
+} from '../components';
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
@@ -54,7 +62,10 @@ export default function Baby({ navigation, route }) {
         <BabyContainer>
           <NameContainer>
             <Name>{params.name}</Name>
-            <Identity>ID: {params.identity}</Identity>
+            <IdentityContainer>
+              <ApproveStatus approved={params.approved} />
+              <Identity>ID: {params.identity || '暂无'}</Identity>
+            </IdentityContainer>
           </NameContainer>
           <InfoContainer>
             <View>
@@ -116,6 +127,11 @@ export default function Baby({ navigation, route }) {
     </>
   );
 }
+
+const IdentityContainer = styled.View`
+  align-items: flex-end;
+  opacity: .6;
+`;
 
 const FeedingPatternContainer = styled.View`
   flex-direction: row;
@@ -249,6 +265,7 @@ const Name = styled(WhiteText)`
 `;
 
 const Identity = styled(WhiteText)`
+  margin-top: 4px;
   font-size: 10px;
 `;
 

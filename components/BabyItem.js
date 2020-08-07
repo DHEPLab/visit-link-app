@@ -5,6 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import StaticField from './elements/StaticField';
 import StaticForm from './elements/StaticForm';
 import MiniBaby from './MiniBaby';
+
 import { styled, px2dp } from '../utils/styled';
 
 export default function BabyItem({ id, carerName, carerPhone, onPress, ...props }) {
@@ -19,7 +20,7 @@ export default function BabyItem({ id, carerName, carerPhone, onPress, ...props 
       }
     >
       <Card>
-        <MiniBaby {...props} />
+        <MiniBaby baby={props} />
         <Carer>
           <StaticForm>
             <StaticField label="主要看护人">{carerName || '无'}</StaticField>

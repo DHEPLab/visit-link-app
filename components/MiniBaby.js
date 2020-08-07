@@ -1,10 +1,14 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { ApproveStatus } from '../components';
 import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
-export default function MiniBaby({ approved, name, gender, stage, months, identity }) {
+export default function MiniBaby({
+  baby: { approved, name, gender, stage, months, identity },
+  hideStatus,
+}) {
   function genderColor(value) {
     switch (value) {
       case 'MALE':
@@ -18,7 +22,11 @@ export default function MiniBaby({ approved, name, gender, stage, months, identi
 
   return (
     <Baby>
-      <Status approved={approved}>{approved ? '已审核' : '待审核'}</Status>
+      {!hideStatus && (
+        <StatusContainer>
+          <ApproveStatus gray approved={approved} />
+        </StatusContainer>
+      )}
       <Name>{name}</Name>
       <Gender>
         <MaterialCommunityIcons
@@ -35,20 +43,8 @@ export default function MiniBaby({ approved, name, gender, stage, months, identi
   );
 }
 
-const Status = styled.Text`
-  padding: 1px 4px;
+const StatusContainer = styled.View`
   margin-right: 8px;
-  font-size: 8px;
-  color: #ff794f;
-  background: #ffede2;
-  border-radius: 2px;
-
-  ${({ approved }) =>
-    !approved &&
-    `
-    background: #EEEEEE;
-    color: #B2B2B2;
-  `}
 `;
 
 const Age = styled.Text`
