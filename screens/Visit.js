@@ -108,17 +108,9 @@ export default function Visit({ navigation, route }) {
         </Card>
 
         {VisitUtils.canBegin(status, visitTime) && (
-          <>
-            <LargeButtonContainer>
-              <Button size="large" title="开始课堂" onPress={handleBegin} />
-            </LargeButtonContainer>
-            {/** TEST ONLY */}
-            {!done && (
-              <LargeButtonContainer>
-                <Button size="large" title="直接完成课堂" onPress={handleDone} />
-              </LargeButtonContainer>
-            )}
-          </>
+          <LargeButtonContainer>
+            <Button size="large" title="开始课堂" onPress={handleBegin} />
+          </LargeButtonContainer>
         )}
 
         {undone && (
