@@ -29,10 +29,15 @@ export default function ChangePassword() {
   return (
     <Container>
       <Alert>请您牢记修改的账户密码，提交后将不再显示。</Alert>
-      <Formik initialValues={{}} validationSchema={validationSchema} onSubmit={onSubmit}>
+      <Formik
+        initialValues={{}}
+        validateOnChange={false}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
         {({ handleSubmit, values }) => (
           <>
-            <Form>
+            <Form labelWidth={50} labelAlign="right">
               <FormItem name="oldPassword" label="旧密码">
                 <Input secureTextEntry />
               </FormItem>

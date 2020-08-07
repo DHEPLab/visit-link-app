@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '../../utils/styled';
 import { useField, useFormikContext } from 'formik';
 
-export default function ({ label, children, noBorder, ...props }) {
+export default function ({ label, children, noBorder, labelWidth, labelAlign, ...props }) {
   const form = useFormikContext();
   const [field] = useField(props);
   const { name } = props;
@@ -10,7 +10,11 @@ export default function ({ label, children, noBorder, ...props }) {
   return (
     <FormItem noBorder={noBorder}>
       <Field {...props}>
-        {label && <Label>{label}:</Label>}
+        {label && (
+          <Label labelWidth={labelWidth} labelAlign={labelAlign}>
+            {label}:
+          </Label>
+        )}
         <FieldComponent>
           {React.cloneElement(children, {
             name,
@@ -41,8 +45,8 @@ const FormItem = styled.View`
 `;
 
 const Label = styled.Text`
-  /* width: 50px; */
-  /* text-align: right; */
+  ${({ labelWidth }) => labelWidth && `width: ${labelWidth}px`}
+  ${({ labelAlign }) => labelAlign && `text-align: ${labelAlign}`}
   margin-right: 12px;
   color: #8e8e93;
   font-size: 10px;
