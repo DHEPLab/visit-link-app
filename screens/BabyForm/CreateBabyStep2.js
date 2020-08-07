@@ -5,41 +5,7 @@ import Arrays from 'lodash/array';
 import { styled } from '../../utils/styled';
 import { CarerItem, CreateBabyNavigator, LargeButtonContainer, Button } from '../../components';
 
-export default function CreateBabyStep2({ navigation, route }) {
-  const { params } = route;
-  const { baby } = params;
-  const [carers, setCarers] = useState([]);
-
-  function replace(array, index, object) {
-    let clone = [...array];
-    clone[index] = object;
-    if (object.master) clone = keepMasterCarerUnique(clone, index);
-    return clone;
-  }
-
-  function pullAt(array, index) {
-    const clone = [...array];
-    Arrays.pullAt(clone, [index]);
-    return clone;
-  }
-
-  function handleDelete(index) {
-    setCarers(pullAt(carers, index));
-  }
-
-  function handleNextStep() {
-    let hasMaster = false;
-    for (const carer of carers) {
-      if (carer.master) {
-        hasMaster = true;
-        break;
-      }
-    }
-    if (!hasMaster) return ToastAndroid.show('必须设置一个主看护人', ToastAndroid.LONG);
-
-    navigation.navigate('CreateBabyStep3', { baby, carers });
-  }
-
+export function useMethods() {
   function keepMasterCarerUnique(carers, masterCarerIndex) {
     return carers.map((carer, index) => {
       carer.master = index === masterCarerIndex;
@@ -47,14 +13,55 @@ export default function CreateBabyStep2({ navigation, route }) {
     });
   }
 
-  function onChangeMaster(index) {
-    setCarers(keepMasterCarerUnique(carers, index));
+  return {
+    keepMasterCarerUnique,
+
+    pullAt: (array, index) => {
+      const clone = [...array];
+      Arrays.pullAt(clone, [index]);
+      return clone;
+    },
+
+    replace: (array, index, object) => {
+      let clone = [...array];
+      clone[index] = object;
+      if (object.master) clone = keepMasterCarerUnique(clone, index);
+      return clone;
+    },
+
+    handleNextStep: (navigation, baby, carers) => {
+      let hasMaster = false;
+      for (const carer of carers) {
+        if (carer.master) {
+          hasMaster = true;
+          break;
+        }
+      }
+      if (!hasMaster) return ToastAndroid.show('必须设置一个主看护人', ToastAndroid.LONG);
+
+      navigation.navigate('CreateBabyStep3', { baby, carers });
+    },
+
+    create: (dataSource, carer) => {
+      return carer.master
+        ? keepMasterCarerUnique([...dataSource, carer], dataSource.length)
+        : [...dataSource, carer];
+    },
+  };
+}
+
+export default function CreateBabyStep2({ navigation, route }) {
+  const { params } = route;
+  const { baby } = params;
+  const [carers, setCarers] = useState([]);
+  const { pullAt, keepMasterCarerUnique, replace, handleNextStep, create } = useMethods();
+
+  function handleDelete(index) {
+    setCarers(pullAt(carers, index));
   }
 
-  function create(dataSource, carer) {
-    return carer.master
-      ? keepMasterCarerUnique([...dataSource, carer], dataSource.length)
-      : [...dataSource, carer];
+  function onChangeMaster(index) {
+    setCarers(keepMasterCarerUnique(carers, index));
   }
 
   useEffect(() => {
@@ -102,7 +109,7 @@ export default function CreateBabyStep2({ navigation, route }) {
               disabled={carers.length === 0}
               size="large"
               title="下一步"
-              onPress={handleNextStep}
+              onPress={() => handleNextStep(navigation, baby, carers)}
             />
           </LargeButtonContainer>
         </Container>
