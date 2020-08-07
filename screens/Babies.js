@@ -6,7 +6,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { BabyItem, NoData, Button } from '../components';
+import { BabyItem, NoData, Button, ListFooter } from '../components';
 import { useBoolState } from '../utils';
 
 export default function Babies({ navigation }) {
@@ -65,6 +65,7 @@ export default function Babies({ navigation }) {
             <NoData title="暂无匹配的宝宝信息" />
           </NoDataContainer>
         }
+        ListFooterComponent={contents.length > 0 && <ListFooter />}
         refreshControl={
           <RefreshControl
             colors={Colors.colors}
