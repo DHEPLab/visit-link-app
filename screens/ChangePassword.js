@@ -7,6 +7,7 @@ import Http from '../utils/http';
 import { styled } from '../utils/styled';
 import { Form, FormItem, Input, Button, Alert } from '../components';
 import { signOut } from '../actions';
+import { ToastAndroid } from 'react-native';
 
 const validationSchema = Yup.object().shape({
   oldPassword: Yup.string().required('旧密码不能为空'),
@@ -20,10 +21,14 @@ export default function ChangePassword() {
     Http.put('/api/account/password', {
       oldPassword,
       password,
-    }).then(async () => {
-      await Http.signOut();
-      dispatch(signOut());
-    });
+    })
+      .then(async () => {
+        await Http.signOut();
+        dispatch(signOut());
+      })
+      .catch((_) => {
+        ToastAndroid.showWithGravity('旧密码错误', ToastAndroid.LONG, ToastAndroid.TOP);
+      });
   }
 
   return (
