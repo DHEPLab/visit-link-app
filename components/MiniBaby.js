@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
-export default function MiniBaby({ name, gender, stage, months, identity }) {
+export default function MiniBaby({ approved, name, gender, stage, months, identity }) {
   function genderColor(value) {
     switch (value) {
       case 'MALE':
@@ -18,7 +18,7 @@ export default function MiniBaby({ name, gender, stage, months, identity }) {
 
   return (
     <Baby>
-      {/* <Status>已审核</Status> */}
+      <Status approved={approved}>{approved ? '已审核' : '待审核'}</Status>
       <Name>{name}</Name>
       <Gender>
         <MaterialCommunityIcons
@@ -30,7 +30,7 @@ export default function MiniBaby({ name, gender, stage, months, identity }) {
       <Age>
         {BabyStage[stage]} {months}个月
       </Age>
-      <Identity>ID:{identity}</Identity>
+      <Identity>ID:{identity || '未填写'}</Identity>
     </Baby>
   );
 }
@@ -42,6 +42,13 @@ const Status = styled.Text`
   color: #ff794f;
   background: #ffede2;
   border-radius: 2px;
+
+  ${({ approved }) =>
+    !approved &&
+    `
+    background: #EEEEEE;
+    color: #B2B2B2;
+  `}
 `;
 
 const Age = styled.Text`
