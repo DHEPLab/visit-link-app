@@ -11,7 +11,7 @@ export default function CreateBabyStep2({ navigation, route }) {
   const [carers, setCarers] = useState([]);
 
   function replace(array, index, object) {
-    const clone = [...array];
+    let clone = [...array];
     clone[index] = object;
     if (object.master) clone = keepMasterCarerUnique(clone, index);
     return clone;
