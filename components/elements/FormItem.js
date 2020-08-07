@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image } from 'react-native';
 import { styled } from '../../utils/styled';
 import { useField, useFormikContext } from 'formik';
 
@@ -24,10 +25,32 @@ export default function ({ label, children, noBorder, labelWidth, labelAlign, ..
           })}
         </FieldComponent>
       </Field>
-      {form.errors[name] && <Error>{form.errors[name]}</Error>}
+      {form.errors[name] && (
+        <ErrorContainer>
+          <ErrorIcon source={require('../../assets/images/error.png')} />
+          <Error>{form.errors[name]}</Error>
+        </ErrorContainer>
+      )}
     </FormItem>
   );
 }
+
+const ErrorContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-left: 55px;
+`;
+
+const ErrorIcon = styled(Image)`
+  height: 8px;
+  width: 8px;
+`;
+
+const Error = styled.Text`
+  color: #ff2e2eff;
+  font-size: 8px;
+  margin-left: 4px;
+`;
 
 const FieldComponent = styled.View`
   flex: 1;
@@ -51,10 +74,4 @@ const Label = styled.Text`
   color: #8e8e93;
   font-size: 10px;
   line-height: 16px;
-`;
-
-const Error = styled.Text`
-  color: #ff2e2eff;
-  font-size: 8px;
-  margin-left: 60px;
 `;
