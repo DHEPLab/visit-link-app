@@ -13,30 +13,43 @@ export default function Babies({ navigation }) {
   const { navigate } = navigation;
   const [search, setSearch] = useState({
     page: 0,
-    size: 10,
+    size: 5,
   });
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
   const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [loading, startLoad, endLoad] = useBoolState();
   const [name, setName] = useState();
 
   useEffect(() => {
-    startRefresh();
-    if (search.page === 0) setContents([]);
+    search.page === 0 ? startRefresh() : startLoad();
     http
       .get('/api/babies', search)
       .then((data) => {
         setTotalPages(data.totalPages);
         setContents((c) => [...c, ...data.content]);
       })
-      .finally(() => endRefresh());
+      .finally(() => {
+        endRefresh();
+        endLoad();
+      });
   }, [search]);
 
   function refresh() {
+    setContents([]);
     setSearch((s) => ({
       ...s,
       page: 0,
       name: name || '',
+    }));
+  }
+
+  function handleLoadMore() {
+    if (refreshing || loading) return;
+    if (totalPages === search.page + 1) return;
+    setSearch((s) => ({
+      ...s,
+      page: s.page + 1,
     }));
   }
 
@@ -59,13 +72,17 @@ export default function Babies({ navigation }) {
           <Button onPress={() => navigate('CreateBabyStep1')} title="添加宝宝" />
         </ListHeader>
       )}
+
       <FlatList
         ListEmptyComponent={
-          <NoDataContainer>
-            <NoData title="暂无匹配的宝宝信息" />
-          </NoDataContainer>
+          !refreshing &&
+          !loading && (
+            <NoDataContainer>
+              <NoData title="暂无匹配的宝宝信息" />
+            </NoDataContainer>
+          )
         }
-        ListFooterComponent={contents.length > 0 && <ListFooter />}
+        ListFooterComponent={!refreshing && <ListFooter loading={loading} />}
         refreshControl={
           <RefreshControl
             colors={Colors.colors}
@@ -75,7 +92,8 @@ export default function Babies({ navigation }) {
         }
         data={contents}
         keyExtractor={(item) => item.id + ''}
-        onEndReached={() => console.log('on end reached')}
+        onEndReachedThreshold={0.4}
+        onEndReached={handleLoadMore}
         renderItem={({ item }) => <BabyItem onPress={(baby) => navigate('Baby', baby)} {...item} />}
       />
     </>
