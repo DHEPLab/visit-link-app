@@ -1,20 +1,19 @@
 import React from 'react';
-import { Alert, View, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Alert, View, Image, RefreshControl, ScrollView } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { useFetch, useBoolState } from '../utils';
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
+import { useFetch, useBoolState } from '../utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Button, Card, StaticForm, StaticField, Message } from '../components';
-import { useDispatch } from 'react-redux';
 import { signOut } from '../actions';
 
-export default function Me() {
-  const { navigate } = useNavigation();
+export default function Me({ navigation }) {
+  const { navigate } = navigation;
   const dispatch = useDispatch();
-  const [user] = useFetch('/api/account/profile');
+  const [user, refresh, refreshing] = useFetch('/api/account/profile');
   const [visible, open] = useBoolState();
 
   const chw = () => user.chw || {};
@@ -45,40 +44,46 @@ export default function Me() {
 
   return (
     <>
-      <Header {...Colors.linearGradient}>
-        <Message visible={visible} title="您已退出登录" />
-        <BackgroundImage source={require('../assets/images/me-bg.png')} />
-        <HeaderTitle>个人中心</HeaderTitle>
-        <NameContainer>
-          <Name>{user.realName}</Name>
-          <Identity>ID: {chw().identity}</Identity>
-        </NameContainer>
-        <InfoContainer>
-          <View>
-            <PhoneNumber>{user.phone}</PhoneNumber>
-            <Location>{user.chw?.tags?.join(', ')}</Location>
-          </View>
-        </InfoContainer>
-      </Header>
-      <CardsContainer>
-        <Card
-          title="账户信息"
-          right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
-        >
-          <StaticForm>
-            <StaticField label="账户名称">{user.username}</StaticField>
-            <StaticField label="账户密码">******</StaticField>
-          </StaticForm>
-        </Card>
-        {supervisor().id && (
-          <Card title="督导信息">
+      <ScrollView
+        refreshControl={
+          <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
+        }
+      >
+        <Header {...Colors.linearGradient}>
+          <Message visible={visible} title="您已退出登录" />
+          <BackgroundImage source={require('../assets/images/me-bg.png')} />
+          <HeaderTitle>个人中心</HeaderTitle>
+          <NameContainer>
+            <Name>{user.realName}</Name>
+            <Identity>ID: {chw().identity}</Identity>
+          </NameContainer>
+          <InfoContainer>
+            <View>
+              <PhoneNumber>{user.phone}</PhoneNumber>
+              <Location>{user.chw?.tags?.join(', ')}</Location>
+            </View>
+          </InfoContainer>
+        </Header>
+        <CardsContainer>
+          <Card
+            title="账户信息"
+            right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
+          >
             <StaticForm>
-              <StaticField label="督导姓名">{supervisor().realName}</StaticField>
-              <StaticField label="督导电话">{supervisor().phone}</StaticField>
+              <StaticField label="账户名称">{user.username}</StaticField>
+              <StaticField label="账户密码">******</StaticField>
             </StaticForm>
           </Card>
-        )}
-      </CardsContainer>
+          {supervisor().id && (
+            <Card title="督导信息">
+              <StaticForm>
+                <StaticField label="督导姓名">{supervisor().realName}</StaticField>
+                <StaticField label="督导电话">{supervisor().phone}</StaticField>
+              </StaticForm>
+            </Card>
+          )}
+        </CardsContainer>
+      </ScrollView>
       <Logout>
         <Button title="退出登录" type="logout" onPress={openAlert} />
       </Logout>
