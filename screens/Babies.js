@@ -13,7 +13,7 @@ export default function Babies({ navigation }) {
   const { navigate } = navigation;
   const [search, setSearch] = useState({
     page: 0,
-    size: 5,
+    size: 10,
   });
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
@@ -22,7 +22,13 @@ export default function Babies({ navigation }) {
   const [name, setName] = useState();
 
   useEffect(() => {
-    search.page === 0 ? startRefresh() : startLoad();
+    if (search.page === 0) {
+      startRefresh();
+      setContents([]);
+    } else {
+      startLoad();
+    }
+
     http
       .get('/api/babies', search)
       .then((data) => {
@@ -36,7 +42,6 @@ export default function Babies({ navigation }) {
   }, [search]);
 
   function refresh() {
-    setContents([]);
     setSearch((s) => ({
       ...s,
       page: 0,
@@ -66,6 +71,7 @@ export default function Babies({ navigation }) {
           />
         </Search>
       </Header>
+
       {contents.length > 0 && (
         <ListHeader>
           <Title>宝宝列表</Title>
