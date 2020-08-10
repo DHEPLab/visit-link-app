@@ -12,6 +12,7 @@ import CreateBabyStep1 from '../screens/BabyForm/CreateBabyStep1';
 import CreateBabyStep2 from '../screens/BabyForm/CreateBabyStep2';
 import CreateBabyStep3 from '../screens/BabyForm/CreateBabyStep3';
 import EditCarer from '../screens/BabyForm/EditCarer';
+import EditBaby from '../screens/BabyForm/EditBaby';
 
 import ChangePassword from '../screens/ChangePassword';
 import Home from '../screens/Home';
@@ -84,6 +85,11 @@ const screens = [
     name: 'EditCarer',
     title: '编辑看护人',
     component: EditCarer,
+  },
+  {
+    name: 'EditBaby',
+    title: '修改宝宝信息',
+    component: EditBaby,
   },
   {
     name: 'CreateCarer',

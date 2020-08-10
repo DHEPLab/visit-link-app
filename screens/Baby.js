@@ -86,7 +86,11 @@ export default function Baby({ navigation, route }) {
                 </FeedingPatternContainer>
               )}
             </View>
-            {/* <Button ghost title="修改资料" /> */}
+            <Button
+              ghost
+              title="修改资料"
+              onPress={() => navigation.navigate('EditBaby', { baby })}
+            />
           </InfoContainer>
         </BabyContainer>
       </Header>
