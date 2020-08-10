@@ -1,3 +1,5 @@
+import { ToastAndroid } from 'react-native';
+
 jest.mock('@react-native-community/async-storage', () => {
   let storage = {};
   return {
@@ -5,3 +7,6 @@ jest.mock('@react-native-community/async-storage', () => {
     setItem: (key, value) => (storage[key] = value),
   };
 });
+
+ToastAndroid.showWithGravity = jest.fn();
+ToastAndroid.show = jest.fn();
