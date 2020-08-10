@@ -5,11 +5,19 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default function SolidRadios({ value, onChange, enums = {} }) {
   return (
     <Container>
-      {Object.keys(enums).map((key) => (
-        <TouchableOpacity key={key} activeOpacity={0.8} onPress={() => onChange(key)}>
-          <Radio active={key === value}>{enums[key]}</Radio>
-        </TouchableOpacity>
-      ))}
+      {Object.keys(enums).map((key) => {
+        if (key === 'true') key = true;
+        if (key === 'false') key = false;
+        return (
+          <TouchableOpacity
+            key={key}
+            activeOpacity={0.8}
+            onPress={() => onChange({ target: { value: key } })}
+          >
+            <Radio active={key === value}>{enums[key]}</Radio>
+          </TouchableOpacity>
+        );
+      })}
     </Container>
   );
 }
