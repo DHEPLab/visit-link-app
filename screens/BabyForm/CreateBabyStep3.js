@@ -43,7 +43,7 @@ export default function CreateBabyStep3({ navigation, route }) {
             routes: [home],
           });
         });
-        navigation.navigate('Baby', data);
+        navigation.navigate('Baby', { ...data, tab: 'family' });
       });
   }
 

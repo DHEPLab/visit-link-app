@@ -22,7 +22,7 @@ import {
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(params?.tab === 'family' ? 1 : 0);
 
   const [started, setStarted] = useState(false);
   const [baby] = useFetch(`/api/babies/${params.id}`);
