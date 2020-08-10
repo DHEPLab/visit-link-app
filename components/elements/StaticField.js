@@ -20,11 +20,13 @@ const Label = styled.Text`
   font-size: 10px;
   width: ${({ labelWidth }) => px2dp(labelWidth)}px;
   text-align: right;
+  margin-right: 12px;
 `;
 
 const Value = styled.Text`
   color: #4a4a4a;
   font-size: 10px;
   font-weight: bold;
-  margin-left: 12px;
+  flex: 1;
+  flex-wrap: wrap;
 `;
