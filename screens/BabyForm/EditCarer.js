@@ -18,7 +18,9 @@ import { FamilyTies } from '../../constants/enums';
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2, '最少2个字符').max(10, '最多10个字符').required('此项为必填'),
   familyTies: Yup.string().required('此项为必填'),
-  phone: Yup.string().required('此项为必填'),
+  phone: Yup.string()
+    .matches(/^1[0-9]{10}$/, '请输入正确的手机号')
+    .required('此项为必填'),
   wechat: Yup.string().max(20, '最多20个字符'),
 });
 

@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { styled } from '../../utils/styled';
 import { useBoolState } from '../../utils';
 
-export default function DatePicker({ value, onChange }) {
+export default function DatePicker({ value, onChange, ...props }) {
   const [mode, setMode] = useState('date');
   const [visible, show, hide] = useBoolState();
 
@@ -30,6 +30,7 @@ export default function DatePicker({ value, onChange }) {
       </TouchableOpacity>
       {visible && (
         <DateTimePicker
+          {...props}
           mode={mode}
           value={(value && new Date(moment(value))) || new Date()}
           display="default"

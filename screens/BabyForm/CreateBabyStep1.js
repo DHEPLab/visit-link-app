@@ -68,13 +68,13 @@ export default function CreateBabyStep1({ navigation }) {
                   </FormItem>
                   {values.stage === 'EDC' && (
                     <FormItem name="edc" label="预产日期" noBorder>
-                      <DatePicker />
+                      <DatePicker minimumDate={new Date()} />
                     </FormItem>
                   )}
                   {values.stage === 'BIRTH' && (
                     <>
                       <FormItem name="birthday" label="出生日期">
-                        <DatePicker />
+                        <DatePicker maximumDate={new Date()} />
                       </FormItem>
                       <FormItem name="assistedFood" label="添加辅食">
                         <SolidRadios enums={AssistedFood} />

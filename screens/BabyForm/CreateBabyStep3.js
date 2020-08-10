@@ -18,7 +18,7 @@ import { styled } from '../../utils/styled';
 
 const validationSchema = Yup.object().shape({
   area: Yup.string().required('此项为必填'),
-  location: Yup.string().required('此项为必填'),
+  location: Yup.string().max(200, '最多200个字符').required('此项为必填'),
 });
 
 export default function CreateBabyStep3({ navigation, route }) {
