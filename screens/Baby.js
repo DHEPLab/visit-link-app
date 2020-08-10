@@ -8,7 +8,7 @@ import http from '../utils/http';
 import { useFetch, useManualFetchArray } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
+import { GenderIcon, BabyStage, FeedingPattern } from '../constants/enums';
 import {
   VisitItem,
   GhostNavigatorHeader,
@@ -17,6 +17,7 @@ import {
   StaticField,
   NoData,
   ApproveStatus,
+  CarerItem,
 } from '../components';
 
 export default function Baby({ navigation, route }) {
@@ -185,43 +186,51 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
 }
 
 function Family({ baby, carers }) {
+  function handleChangeMaster() {}
+
+  function handleDelete() {}
+
+  function handleModify() {}
+
+  function handleChangeAddress() {}
+
+  function handleChangeRemark() {}
+
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
-      <Card title="备注信息" hideBody={!baby.remark}>
+      <Card
+        title="备注信息"
+        hideBody={!baby.remark}
+        right={<Button title={baby.remark ? '修改' : '添加'} onPress={handleChangeRemark} />}
+      >
         <StaticField>{baby.remark}</StaticField>
       </Card>
-      <Card title="地址信息">
+      <Card title="地址信息" right={<Button title="修改" onPress={handleChangeAddress} />}>
         <StaticField label="所在地区">{baby.area}</StaticField>
         <StaticField label="详细地址">{baby.location}</StaticField>
       </Card>
-      <Card title="看护人信息">
-        {carers.map((carer, index) => (
-          <Carer
-            key={carer.id}
-            carer={carer}
-            number={index + 1}
-            noBorder={index === carers.length - 1}
-          />
-        ))}
+      <Card title="看护人信息" noPadding>
+        <CarersContainer>
+          {carers.map((carer, index) => (
+            <CarerItem
+              key={carer.id}
+              value={carer}
+              number={index + 1}
+              noBorder={index === carers.length - 1}
+              onChangeMaster={handleChangeMaster}
+              onPressDelete={handleDelete}
+              onPressModify={handleModify}
+            />
+          ))}
+        </CarersContainer>
       </Card>
     </CardContainer>
   );
 }
 
-function Carer({ number, carer, noBorder }) {
-  return (
-    <CarerItem noBorder={noBorder}>
-      <CarerOperation>
-        <CarerNumber>照料人 {number}</CarerNumber>
-        {carer.master && <MasterCarer>主照料人</MasterCarer>}
-      </CarerOperation>
-      <StaticField label="照料人姓名">{carer.name}</StaticField>
-      <StaticField label="亲属关系">{FamilyTies[carer.familyTies]}</StaticField>
-      <StaticField label="联系电话">{carer.phone}</StaticField>
-      <StaticField label="微信号码">{carer.wechat}</StaticField>
-    </CarerItem>
-  );
-}
+const CarersContainer = styled.View`
+  padding: 0 24px;
+`;
 
 const FixedButtonContainer = styled.View`
   position: absolute;
@@ -307,34 +316,7 @@ const VisitTab = styled.Text`
   `}
 `;
 
-const CarerOperation = styled.View`
-  flex-direction: row;
-  margin-bottom: 12px;
-`;
-
-const CarerNumber = styled.Text`
-  font-size: 10px;
-  font-weight: bold;
-  width: 50px;
-`;
-
-const MasterCarer = styled.Text`
-  color: #8e8e93;
-  font-size: 10px;
-  margin-left: 12px;
-`;
-
 const CardContainer = styled(ScrollView)`
   padding: 0 28px;
   padding-bottom: 60px;
-`;
-
-const CarerItem = styled.View`
-  ${({ noBorder }) =>
-    !noBorder &&
-    `
-  border-bottom-width: 1px;
-  border-color: #eeeeee;
-  margin-bottom: 10px;
-  `}
 `;
