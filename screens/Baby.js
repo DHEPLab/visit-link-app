@@ -111,6 +111,7 @@ export default function Baby({ navigation, route }) {
         renderScene={SceneMap({
           Visits: () => (
             <Visits
+              onCreateVisit={handleCreateVisit}
               onChange={onChangeVisitTab}
               dataSource={visits}
               started={started}
@@ -120,17 +121,13 @@ export default function Baby({ navigation, route }) {
           Family: () => <Family baby={baby} carers={carers} />,
         })}
       />
-
-      <FixedButtonContainer>
-        <Button size="large" title="新建家访" onPress={handleCreateVisit} />
-      </FixedButtonContainer>
     </>
   );
 }
 
 const IdentityContainer = styled.View`
   align-items: flex-end;
-  opacity: .6;
+  opacity: 0.6;
 `;
 
 const FeedingPatternContainer = styled.View`
@@ -157,7 +154,7 @@ const Stage = styled.View`
   align-items: center;
 `;
 
-function Visits({ started, dataSource, onChange, navigation }) {
+function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
   return (
     <VisitsContainer>
       <VisitTabs>
@@ -176,6 +173,9 @@ function Visits({ started, dataSource, onChange, navigation }) {
           <VisitItem onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
         )}
       />
+      <FixedButtonContainer>
+        <Button size="large" title="新建家访" onPress={onCreateVisit} />
+      </FixedButtonContainer>
     </VisitsContainer>
   );
 }
@@ -183,7 +183,7 @@ function Visits({ started, dataSource, onChange, navigation }) {
 function Family({ baby, carers }) {
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
-      <Card title="备注信息">
+      <Card title="备注信息" hideBody={!baby.remark}>
         <StaticField>{baby.remark}</StaticField>
       </Card>
       <Card title="地址信息">
@@ -222,9 +222,9 @@ function Carer({ number, carer, noBorder }) {
 const FixedButtonContainer = styled.View`
   position: absolute;
   bottom: 0;
-  width: 100%;
-  height: 48px;
+  width: 400px;
   display: flex;
+  padding-top: 10px;
   justify-content: center;
   align-items: center;
   background: rgba(255, 255, 255, 0.49);
@@ -281,6 +281,8 @@ const Header = styled(LinearGradient)`
 
 const VisitsContainer = styled.View`
   padding: 20px 28px;
+  position: relative;
+  flex: 1;
 `;
 
 const VisitTabs = styled.View`
@@ -320,6 +322,7 @@ const MasterCarer = styled.Text`
 
 const CardContainer = styled(ScrollView)`
   padding: 0 28px;
+  padding-bottom: 60px;
 `;
 
 const CarerItem = styled.View`
