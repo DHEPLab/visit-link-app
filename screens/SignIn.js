@@ -28,7 +28,7 @@ export default function SignIn() {
   return (
     <Container>
       <Logo resizeMode="contain" source={require('../assets/images/logo.png')} />
-      <Message visible={visible} title="登录" content="登录成功" />
+      <Message visible={visible} title="登录成功" />
       <Formik initialValues={{}} onSubmit={onSubmit}>
         {({ handleSubmit, values }) => (
           <FormContainer>
