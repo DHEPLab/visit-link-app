@@ -1,7 +1,7 @@
 import { useMethods } from './CreateBabyStep2';
 
 describe('<CreateBabyStep2 />', () => {
-  const { handleNextStep, pullAt, keepMasterCarerUnique, create } = useMethods();
+  const { familyTies, handleNextStep, pullAt, keepMasterCarerUnique, create } = useMethods();
   it('should pull at element', () => {
     expect(pullAt([1, 2], 1)).toStrictEqual([1]);
   });
@@ -57,5 +57,20 @@ describe('<CreateBabyStep2 />', () => {
     const carers = [{ master: true }];
     handleNextStep(navigation, baby, carers);
     expect(navigation.navigate).toBeCalledWith('CreateBabyStep3', { baby, carers });
+  });
+
+  it('should get all family ties', () => {
+    const carers = [
+      {
+        id: 1,
+        familyTies: 'MONTHER',
+      },
+      {
+        id: 2,
+        familyTies: 'FATHER',
+      },
+    ];
+    expect(familyTies(carers)).toStrictEqual(['MONTHER', 'FATHER']);
+    expect(familyTies(carers, 'FATHER')).toStrictEqual(['MONTHER']);
   });
 });

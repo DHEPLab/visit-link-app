@@ -24,11 +24,23 @@ const validationSchema = Yup.object().shape({
   wechat: Yup.string().max(20, '最多20个字符'),
 });
 
+// The same baby cannot choose caregivers who have the same family ties
+function filteredFamilyTies(familyTies) {
+  if (!familyTies) return FamilyTies;
+  const filtered = {};
+  Object.keys(FamilyTies)
+    .filter((key) => !familyTies.includes(key))
+    .forEach((key) => {
+      filtered[key] = FamilyTies[key];
+    });
+  return filtered;
+}
+
 export default function CreateCarer({ navigation, route }) {
   const { params } = route;
   function onSubmit(carer) {
     const carerIndex = params?.carerIndex == null ? -1 : params?.carerIndex;
-    navigation.navigate('CreateBabyStep2', { carer, carerIndex });
+    navigation.navigate(params.from, { carer, carerIndex });
   }
 
   return (
@@ -57,7 +69,7 @@ export default function CreateCarer({ navigation, route }) {
                   <Input placeholder="请输入2-10个汉字" />
                 </FormItem>
                 <FormItem name="familyTies" label="亲属关系">
-                  <SolidRadios enums={FamilyTies} />
+                  <SolidRadios enums={filteredFamilyTies(params.filterFamilyTies)} />
                 </FormItem>
                 <FormItem name="phone" label="联系电话">
                   <Input placeholder="请输入11位手机号码" />

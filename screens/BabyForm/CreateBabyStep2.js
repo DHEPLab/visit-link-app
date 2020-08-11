@@ -47,6 +47,10 @@ export function useMethods() {
         ? keepMasterCarerUnique([...dataSource, carer], dataSource.length)
         : [...dataSource, carer];
     },
+
+    familyTies(carers, exclude) {
+      return carers.filter((c) => c.familyTies !== exclude).map((c) => c.familyTies);
+    },
   };
 }
 
@@ -54,7 +58,14 @@ export default function CreateBabyStep2({ navigation, route }) {
   const { params } = route;
   const { baby } = params;
   const [carers, setCarers] = useState([]);
-  const { pullAt, keepMasterCarerUnique, replace, handleNextStep, create } = useMethods();
+  const {
+    pullAt,
+    keepMasterCarerUnique,
+    replace,
+    handleNextStep,
+    create,
+    familyTies,
+  } = useMethods();
 
   function handleDelete(index) {
     setCarers(pullAt(carers, index));
@@ -86,7 +97,12 @@ export default function CreateBabyStep2({ navigation, route }) {
             <Button
               disabled={carers.length > 3}
               title="添加看护人"
-              onPress={() => navigation.navigate('CreateCarer')}
+              onPress={() =>
+                navigation.navigate('CreateCarer', {
+                  from: 'CreateBabyStep2',
+                  filterFamilyTies: familyTies(carers),
+                })
+              }
             />
           </ListHeader>
 
@@ -99,7 +115,14 @@ export default function CreateBabyStep2({ navigation, route }) {
                 noBorder={index === carers.length - 1}
                 onPressDelete={() => handleDelete(index)}
                 onChangeMaster={() => onChangeMaster(index)}
-                onPressModify={() => navigation.navigate('EditCarer', { carer, carerIndex: index })}
+                onPressModify={() =>
+                  navigation.navigate('EditCarer', {
+                    carer,
+                    carerIndex: index,
+                    from: 'CreateBabyStep2',
+                    filterFamilyTies: familyTies(carers, carer.familyTies),
+                  })
+                }
               />
             ))}
           </CarerListContainer>

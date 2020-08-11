@@ -196,6 +196,8 @@ function Family({ baby, carers }) {
 
   function handleChangeRemark() {}
 
+  function handleCreateCarer() {}
+
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
       <Card
@@ -209,7 +211,11 @@ function Family({ baby, carers }) {
         <StaticField label="所在地区">{baby.area}</StaticField>
         <StaticField label="详细地址">{baby.location}</StaticField>
       </Card>
-      <Card title="看护人信息" noPadding>
+      <Card
+        title="看护人信息"
+        noPadding
+        right={<Button title="添加" onPress={handleCreateCarer} />}
+      >
         <CarersContainer>
           {carers.map((carer, index) => (
             <CarerItem
