@@ -219,7 +219,10 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
 
 function Family({ baby, carers, navigation, onRefresh }) {
   const [remark, setRemark] = useState(baby.remark);
+  const [deleteId, setDeleteId] = useState();
+
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
+  const [deleteVisible, openDelete, closeDelete] = useBoolState();
   const { familyTies } = useMethods();
 
   function handleChangeMaster(carer) {
@@ -231,7 +234,9 @@ function Family({ baby, carers, navigation, onRefresh }) {
       .then(onRefresh);
   }
 
-  function handleDelete() {}
+  function handleDelete() {
+    http.delete(`/api/babies/${baby.id}/carers/${deleteId}`).then(onRefresh);
+  }
 
   function handleChangeRemark() {
     http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
@@ -242,21 +247,6 @@ function Family({ baby, carers, navigation, onRefresh }) {
 
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
-      <Modal
-        title="添加备注信息"
-        visible={remarkVisible}
-        content={
-          <Input
-            value={remark}
-            onChangeText={setRemark}
-            border
-            placeholder="请输入宝宝的备注信息"
-          />
-        }
-        onCancel={closeRemark}
-        onOk={handleChangeRemark}
-      />
-
       <Card
         title="备注信息"
         hideBody={!baby.remark}
@@ -307,7 +297,13 @@ function Family({ baby, carers, navigation, onRefresh }) {
               number={index + 1}
               noBorder={index === carers.length - 1}
               onChangeMaster={() => handleChangeMaster(carer)}
-              onPressDelete={handleDelete}
+              onPressDelete={() => {
+                if (carer.master) {
+                  // TODO master carer logic
+                }
+                setDeleteId(carer.id);
+                openDelete();
+              }}
               onPressModify={() =>
                 navigation.navigate('EditCarer', {
                   carer,
@@ -320,6 +316,30 @@ function Family({ baby, carers, navigation, onRefresh }) {
           ))}
         </CarersContainer>
       </Card>
+
+      <Modal
+        title="添加备注信息"
+        visible={remarkVisible}
+        content={
+          <Input
+            value={remark}
+            onChangeText={setRemark}
+            border
+            placeholder="请输入宝宝的备注信息"
+          />
+        }
+        onCancel={closeRemark}
+        onOk={handleChangeRemark}
+      />
+      <Modal
+        title="删除此看护人"
+        visible={deleteVisible}
+        contentText="确认要删除此看护人？"
+        okText="删除"
+        cancelText="取消"
+        onCancel={closeDelete}
+        onOk={handleDelete}
+      />
     </CardContainer>
   );
 }

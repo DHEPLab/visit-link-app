@@ -4,24 +4,42 @@ import { Modal } from 'react-native';
 import { styled } from '../../utils/styled';
 import Button from './Button';
 
-export default function ElementModal({ visible, title, content, onCancel, onOk }) {
+export default function ElementModal({
+  visible,
+  title,
+  content,
+  contentText,
+  onCancel,
+  onOk,
+  okText,
+  cancelText,
+}) {
   return (
     <Modal visible={visible} transparent={true}>
       <Container>
         <Box>
           <Title>{title}</Title>
           {content}
+          {contentText && <ContentText>{contentText}</ContentText>}
           <Footer>
             <CancelButtonContainer>
-              <Button ghost type="primary" title="放弃" onPress={onCancel} />
+              <Button ghost type="primary" title={cancelText || '放弃'} onPress={onCancel} />
             </CancelButtonContainer>
-            <Button type="primary" title="提交" onPress={onOk} />
+            <Button type="primary" title={okText || '提交'} onPress={onOk} />
           </Footer>
         </Box>
       </Container>
     </Modal>
   );
 }
+
+const ContentText = styled.Text`
+  color: 10px;
+  color: #4a4a4a;
+  text-align: left;
+  width: 100%;
+  font-weight: bold;
+`;
 
 const CancelButtonContainer = styled.View`
   margin-right: 12px;
