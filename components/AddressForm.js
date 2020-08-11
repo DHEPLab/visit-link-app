@@ -7,8 +7,10 @@ import Card from './elements/Card';
 import FormItem from './elements/FormItem';
 import Input from './elements/Input';
 import Button from './elements/Button';
+import Cascader from './elements/Cascader';
 import LargeButtonContainer from './LargeButtonContainer';
 
+import Pcas from '../constants/pcas-code.json';
 import { styled } from '../utils/styled';
 
 const validationSchema = Yup.object().shape({
@@ -30,7 +32,7 @@ export default function AddressForm({ onSubmit, initialValues = {} }) {
             <Card title="地址信息" noPadding>
               <Form>
                 <FormItem name="area" label="所在区域">
-                  <Input />
+                  <Cascader options={Pcas} />
                 </FormItem>
                 <FormItem name="location" label="详细地址" noBorder>
                   <Input placeholder="请输入详细地址，精确到门牌号" />
