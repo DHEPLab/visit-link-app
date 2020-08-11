@@ -24,7 +24,7 @@ export const VisitStatus = {
 };
 
 export const BabyStage = {
-  EDC: '未出生',
+  EDC: '待产期',
   BIRTH: '已出生',
 };
 
