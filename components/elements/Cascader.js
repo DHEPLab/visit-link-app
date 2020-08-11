@@ -50,16 +50,19 @@ export default function Cascader({ value, onChange, options }) {
 }
 
 const Placeholder = styled.Text`
+  color: #ff794f;
   font-size: 10px;
+  line-height: 16px;
 `;
 
 const Value = styled.Text`
   font-size: 10px;
+  line-height: 16px;
 `;
 
 const Container = styled.View`
   flex: 1;
-  padding: 20px;
+  padding: 50px 20px;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
@@ -67,6 +70,7 @@ const Container = styled.View`
 
 const StyledFlatList = styled(FlatList)`
   width: 100%;
+  padding: 6px 0;
   background: #fff;
 `;
 
