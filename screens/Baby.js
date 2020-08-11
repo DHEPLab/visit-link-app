@@ -35,6 +35,12 @@ export default function Baby({ navigation, route }) {
   });
 
   useEffect(() => navigation.addListener('focus', () => refreshVisits({ started })), [navigation]);
+  // on change address
+  useEffect(() => {
+    if (route.params.address) {
+      http.put(`/api/babies/${params.id}/address`, route.params.address).then(() => onRefresh());
+    }
+  }, [route.params.address]);
 
   function onChangeVisitTab(_started) {
     setStarted(_started);
@@ -246,7 +252,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
             onPress={() =>
               navigation.navigate('EditAddress', {
                 from: 'Baby',
-                baby,
+                address: { area: baby.area, location: baby.location },
               })
             }
           />

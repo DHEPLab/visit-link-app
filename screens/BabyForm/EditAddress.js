@@ -11,5 +11,5 @@ export default function EditAddress({ navigation, route }) {
     });
   }
 
-  return <AddressForm initialValues={params.baby} onSubmit={onSubmit} />;
+  return <AddressForm initialValues={params.address} onSubmit={onSubmit} />;
 }
