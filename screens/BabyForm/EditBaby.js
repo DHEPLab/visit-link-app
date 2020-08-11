@@ -4,7 +4,11 @@ import { styled } from '../../utils/styled';
 
 export default function EditBaby({ navigation, route }) {
   const { params } = route;
-  function onSubmit(values) {}
+  function onSubmit(values) {
+    navigation.navigate(params.from, {
+      baby: values,
+    });
+  }
 
   return (
     <Container>

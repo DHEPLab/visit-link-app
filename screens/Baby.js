@@ -41,6 +41,12 @@ export default function Baby({ navigation, route }) {
       http.put(`/api/babies/${params.id}/address`, route.params.address).then(() => onRefresh());
     }
   }, [route.params.address]);
+  // on change baby basic info
+  useEffect(() => {
+    if (route.params.baby) {
+      http.put(`/api/babies/${params.id}`, route.params.baby).then(() => onRefresh());
+    }
+  }, [route.params.baby]);
 
   function onChangeVisitTab(_started) {
     setStarted(_started);
@@ -104,7 +110,7 @@ export default function Baby({ navigation, route }) {
             <Button
               ghost
               title="修改资料"
-              onPress={() => navigation.navigate('EditBaby', { baby })}
+              onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby })}
             />
           </InfoContainer>
         </BabyContainer>
@@ -209,8 +215,6 @@ function Family({ baby, carers, navigation, onRefresh }) {
   function handleChangeMaster() {}
 
   function handleDelete() {}
-
-  function handleChangeAddress() {}
 
   function handleChangeRemark() {
     http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
