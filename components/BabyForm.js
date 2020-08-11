@@ -26,7 +26,7 @@ function validate(values) {
       break;
     case 'BIRTH':
       if (!values.birthday) errors.birthday = '此项为必填';
-      if (!values.assistedFood) errors.assistedFood = '此项为必填';
+      if (values.assistedFood == null) errors.assistedFood = '此项为必填';
       if (!values.feedingPattern) errors.feedingPattern = '此项为必填';
       break;
   }
