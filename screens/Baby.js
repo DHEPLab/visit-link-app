@@ -222,7 +222,14 @@ function Family({ baby, carers, navigation, onRefresh }) {
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
   const { familyTies } = useMethods();
 
-  function handleChangeMaster() {}
+  function handleChangeMaster(carer) {
+    http
+      .put(`/api/babies/${baby.id}/carers/${carer.id}`, {
+        ...carer,
+        master: true,
+      })
+      .then(onRefresh);
+  }
 
   function handleDelete() {}
 
@@ -299,7 +306,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
               value={carer}
               number={index + 1}
               noBorder={index === carers.length - 1}
-              onChangeMaster={handleChangeMaster}
+              onChangeMaster={() => handleChangeMaster(carer)}
               onPressDelete={handleDelete}
               onPressModify={() =>
                 navigation.navigate('EditCarer', {
