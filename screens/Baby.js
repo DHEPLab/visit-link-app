@@ -28,8 +28,8 @@ export default function Baby({ navigation, route }) {
   const [index, setIndex] = useState(params?.tab === 'family' ? 1 : 0);
 
   const [started, setStarted] = useState(false);
-  const [baby] = useFetch(`/api/babies/${params.id}`);
-  const [carers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
+  const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`);
+  const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
   const [visits, refreshVisits] = useManualFetchArray(`/api/babies/${params.id}/visits`, {
     started: false,
   });
@@ -41,6 +41,11 @@ export default function Baby({ navigation, route }) {
     refreshVisits({ started: _started });
   }
 
+  function onRefresh() {
+    refreshBaby();
+    refreshCarers();
+  }
+
   function handleCreateVisit() {
     http
       .get(`/api/babies/${baby.id}/lesson`)
@@ -49,7 +54,7 @@ export default function Baby({ navigation, route }) {
           lockBaby: true,
           baby: {
             ...baby,
-            months: params.months,
+            months: baby.months,
             carerName: carers[0]?.name,
             carerPhone: carers[0]?.phone,
           },
@@ -65,22 +70,22 @@ export default function Baby({ navigation, route }) {
         <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
         <BabyContainer>
           <NameContainer>
-            <Name>{params.name}</Name>
+            <Name>{baby.name || params.name}</Name>
             <IdentityContainer>
-              <ApproveStatus approved={params.approved} />
-              <Identity>ID: {params.identity || '暂无'}</Identity>
+              <ApproveStatus approved={baby.approved} />
+              <Identity>ID: {baby.identity || params.identity || '暂无'}</Identity>
             </IdentityContainer>
           </NameContainer>
           <InfoContainer>
             <View>
               <Stage>
                 <MaterialCommunityIcons
-                  name={GenderIcon[params.gender]}
+                  name={GenderIcon[baby.gender || params.gender]}
                   size={px2dp(12)}
                   color="#fff"
                 />
                 <Age>
-                  {BabyStage[params.stage]} {params.months}个月
+                  {BabyStage[baby.stage || params.stage]} {baby.months || params.months}个月
                 </Age>
               </Stage>
               {baby.feedingPattern && (
@@ -126,7 +131,9 @@ export default function Baby({ navigation, route }) {
               navigation={navigation}
             />
           ),
-          Family: () => <Family baby={baby} carers={carers} navigation={navigation} />,
+          Family: () => (
+            <Family baby={baby} carers={carers} navigation={navigation} onRefresh={onRefresh} />
+          ),
         })}
       />
     </>
@@ -188,7 +195,8 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
   );
 }
 
-function Family({ baby, carers, navigation }) {
+function Family({ baby, carers, navigation, onRefresh }) {
+  const [remark, setRemark] = useState(baby.remark);
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
   const { familyTies } = useMethods();
 
@@ -198,16 +206,28 @@ function Family({ baby, carers, navigation }) {
 
   function handleChangeAddress() {}
 
-  function handleChangeRemark() {}
+  function handleChangeRemark() {
+    http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
+      onRefresh();
+      closeRemark();
+    });
+  }
 
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
       <Modal
         title="添加备注信息"
         visible={remarkVisible}
-        content={<Input border placeholder="请输入宝宝的备注信息" />}
+        content={
+          <Input
+            value={remark}
+            onChangeText={setRemark}
+            border
+            placeholder="请输入宝宝的备注信息"
+          />
+        }
         onCancel={closeRemark}
-        onOk={closeRemark}
+        onOk={handleChangeRemark}
       />
 
       <Card
