@@ -32,7 +32,7 @@ export default function AddressForm({ onSubmit, initialValues = {} }) {
             <Card title="地址信息" noPadding>
               <Form>
                 <FormItem name="area" label="所在区域">
-                  <Cascader options={Pcas} />
+                  <Cascader options={Pcas} placeholder="请选择省/市/县（区）/乡（镇）" />
                 </FormItem>
                 <FormItem name="location" label="详细地址" noBorder>
                   <Input placeholder="请输入详细地址，精确到门牌号" />

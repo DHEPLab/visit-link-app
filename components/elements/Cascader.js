@@ -4,7 +4,7 @@ import { FlatList, Modal, TouchableOpacity } from 'react-native';
 import { useBoolState } from '../../utils';
 import { styled } from '../../utils/styled';
 
-export default function Cascader({ value, onChange, options }) {
+export default function Cascader({ value, onChange, options, placeholder }) {
   const [visible, open, close] = useBoolState();
   const [data, setData] = useState(options);
   const [values, setValues] = useState([]);
@@ -28,7 +28,7 @@ export default function Cascader({ value, onChange, options }) {
   return (
     <>
       <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
-        {value ? <Value>{value}</Value> : <Placeholder>请选择</Placeholder>}
+        {value ? <Value>{value}</Value> : <Placeholder>{placeholder}</Placeholder>}
       </TouchableOpacity>
       <Modal visible={visible} transparent={true}>
         <Container>
