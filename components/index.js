@@ -15,6 +15,7 @@ export { default as StaticField } from './elements/StaticField';
 export { default as TabBarIcon } from './elements/TabBarIcon';
 export { default as NoData } from './elements/NoData';
 export { default as Message } from './elements/Message';
+export { default as Modal } from './elements/Modal';
 
 export { default as GhostNavigatorHeader } from './navigator/Ghost';
 export { default as NavigatorHeader } from './navigator/Primary';

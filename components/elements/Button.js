@@ -14,8 +14,8 @@ export default function Button({ onPress, disabled, ...props }) {
 function RenderButton({ title, type, size, ghost, disabled }) {
   if (ghost) {
     return (
-      <GhostButton>
-        <Text>{title}</Text>
+      <GhostButton type={type}>
+        <Text type={type}>{title}</Text>
       </GhostButton>
     );
   }
@@ -40,9 +40,15 @@ function RenderButton({ title, type, size, ghost, disabled }) {
     case 'link':
       return <LinkButton>{title}</LinkButton>;
     case 'primary':
+      return (
+        <PrimaryButton>
+          <Text>{title}</Text>
+        </PrimaryButton>
+      );
+    case 'shade':
     default:
       return (
-        <PrimaryButton
+        <ShadeButton
           disabled={disabled}
           block
           size={size}
@@ -51,7 +57,7 @@ function RenderButton({ title, type, size, ghost, disabled }) {
           colors={['#F2709C', '#FF9472']}
         >
           <Text>{title}</Text>
-        </PrimaryButton>
+        </ShadeButton>
       );
   }
 }
@@ -61,6 +67,18 @@ const GhostButton = styled.View`
   border-radius: 25px;
   padding: 4px;
   min-width: 80px;
+  ${({ type }) =>
+    type === 'primary' &&
+    `
+    border-color: #FF794F;
+  `}
+`;
+
+const PrimaryButton = styled.View`
+  border-radius: 25px;
+  padding: 4px;
+  min-width: 80px;
+  background: #ff794f;
 `;
 
 const LinkButton = styled.Text`
@@ -86,7 +104,7 @@ const InfoButton = styled.View`
   border-radius: 270px;
 `;
 
-const PrimaryButton = styled(LinearGradient)`
+const ShadeButton = styled(LinearGradient)`
   width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
   padding: ${(props) => (props.size === 'large' ? '7px' : '4px')} 16px;
   margin-bottom: ${(props) => (props.size === 'large' ? '10px' : 0)};
@@ -100,6 +118,11 @@ const Text = styled.Text`
   text-align: center;
   color: #fff;
   font-weight: bold;
+  ${({ type }) =>
+    type === 'primary' &&
+    `
+    color: #FF794F;
+  `}
 `;
 
 const DeleteText = styled(Text)`

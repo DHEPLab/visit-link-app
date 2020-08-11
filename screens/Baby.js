@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
-import { useFetch, useManualFetchArray } from '../utils';
+import { useFetch, useManualFetchArray, useBoolState } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FeedingPattern } from '../constants/enums';
@@ -18,6 +18,8 @@ import {
   NoData,
   ApproveStatus,
   CarerItem,
+  Modal,
+  Input,
 } from '../components';
 import { useMethods } from './BabyForm/CreateBabyStep2';
 
@@ -187,6 +189,7 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
 }
 
 function Family({ baby, carers, navigation }) {
+  const [remarkVisible, openRemark, closeRemark] = useBoolState();
   const { familyTies } = useMethods();
 
   function handleChangeMaster() {}
@@ -199,10 +202,18 @@ function Family({ baby, carers, navigation }) {
 
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
+      <Modal
+        title="添加备注信息"
+        visible={remarkVisible}
+        content={<Input border placeholder="请输入宝宝的备注信息" />}
+        onCancel={closeRemark}
+        onOk={closeRemark}
+      />
+
       <Card
         title="备注信息"
         hideBody={!baby.remark}
-        right={<Button title={baby.remark ? '修改' : '添加'} onPress={handleChangeRemark} />}
+        right={<Button title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
       >
         <StaticField>{baby.remark}</StaticField>
       </Card>
