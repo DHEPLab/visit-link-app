@@ -26,6 +26,7 @@ import PickVisitTime from '../screens/PickVisitTime';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
+import EditAddress from '../screens/BabyForm/EditAddress';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -90,6 +91,11 @@ const screens = [
     name: 'EditBaby',
     title: '修改宝宝信息',
     component: EditBaby,
+  },
+  {
+    name: 'EditAddress',
+    title: '修改地址信息',
+    component: EditAddress,
   },
   {
     name: 'CreateCarer',

@@ -19,6 +19,7 @@ import {
   ApproveStatus,
   CarerItem,
 } from '../components';
+import { useMethods } from './BabyForm/CreateBabyStep2';
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
@@ -123,7 +124,7 @@ export default function Baby({ navigation, route }) {
               navigation={navigation}
             />
           ),
-          Family: () => <Family baby={baby} carers={carers} />,
+          Family: () => <Family baby={baby} carers={carers} navigation={navigation} />,
         })}
       />
     </>
@@ -185,18 +186,16 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
   );
 }
 
-function Family({ baby, carers }) {
+function Family({ baby, carers, navigation }) {
+  const { familyTies } = useMethods();
+
   function handleChangeMaster() {}
 
   function handleDelete() {}
 
-  function handleModify() {}
-
   function handleChangeAddress() {}
 
   function handleChangeRemark() {}
-
-  function handleCreateCarer() {}
 
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
@@ -207,14 +206,39 @@ function Family({ baby, carers }) {
       >
         <StaticField>{baby.remark}</StaticField>
       </Card>
-      <Card title="地址信息" right={<Button title="修改" onPress={handleChangeAddress} />}>
+
+      <Card
+        title="地址信息"
+        right={
+          <Button
+            title="修改"
+            onPress={() =>
+              navigation.navigate('EditAddress', {
+                from: 'Baby',
+                baby,
+              })
+            }
+          />
+        }
+      >
         <StaticField label="所在地区">{baby.area}</StaticField>
         <StaticField label="详细地址">{baby.location}</StaticField>
       </Card>
+
       <Card
         title="看护人信息"
         noPadding
-        right={<Button title="添加" onPress={handleCreateCarer} />}
+        right={
+          <Button
+            title="添加"
+            onPress={() =>
+              navigation.navigate('CreateCarer', {
+                from: 'Baby',
+                filterFamilyTies: familyTies(carers),
+              })
+            }
+          />
+        }
       >
         <CarersContainer>
           {carers.map((carer, index) => (
@@ -225,7 +249,14 @@ function Family({ baby, carers }) {
               noBorder={index === carers.length - 1}
               onChangeMaster={handleChangeMaster}
               onPressDelete={handleDelete}
-              onPressModify={handleModify}
+              onPressModify={() =>
+                navigation.navigate('EditCarer', {
+                  carer,
+                  carerIndex: index,
+                  from: 'Baby',
+                  filterFamilyTies: familyTies(carers, carer.familyTies),
+                })
+              }
             />
           ))}
         </CarersContainer>
