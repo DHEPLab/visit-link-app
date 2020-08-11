@@ -38,15 +38,25 @@ export default function Baby({ navigation, route }) {
   // on change address
   useEffect(() => {
     if (route.params.address) {
-      http.put(`/api/babies/${params.id}/address`, route.params.address).then(() => onRefresh());
+      http.put(`/api/babies/${params.id}/address`, route.params.address).then(onRefresh);
     }
   }, [route.params.address]);
   // on change baby basic info
   useEffect(() => {
     if (route.params.baby) {
-      http.put(`/api/babies/${params.id}`, route.params.baby).then(() => onRefresh());
+      http.put(`/api/babies/${params.id}`, route.params.baby).then(onRefresh);
     }
   }, [route.params.baby]);
+  useEffect(() => {
+    if (!route.params.carer) return;
+    route.params.carerIndex === -1
+      ? // create new carer
+        http.post(`/api/babies/${params.id}/carers`, params.carer).then(onRefresh)
+      : // edit old carer
+        http
+          .put(`/api/babies/${params.id}/carers/${params.carer.id}`, params.carer)
+          .then(onRefresh);
+  }, [route.params.carer]);
 
   function onChangeVisitTab(_started) {
     setStarted(_started);
@@ -272,6 +282,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
         right={
           <Button
             title="添加"
+            disabled={carers.length > 3}
             onPress={() =>
               navigation.navigate('CreateCarer', {
                 from: 'Baby',
