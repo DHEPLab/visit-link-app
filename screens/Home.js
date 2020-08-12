@@ -201,20 +201,22 @@ export default function Home({ navigation }) {
         </NoDataContainer>
       )}
 
-      <ButtonContainer>
-        <Button
-          disabled={downloadResource || finished}
-          size="large"
-          title="开始课堂"
-          onPress={() => {
-            if (!Visit.canBegin(status, visitTime)) {
-              ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
-              return;
-            }
-            startVisit(false);
-          }}
-        />
-      </ButtonContainer>
+      {visit.id && (
+        <ButtonContainer>
+          <Button
+            disabled={downloadResource || finished}
+            size="large"
+            title="开始课堂"
+            onPress={() => {
+              if (!Visit.canBegin(status, visitTime)) {
+                ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
+                return;
+              }
+              startVisit(false);
+            }}
+          />
+        </ButtonContainer>
+      )}
     </StyledScrollView>
   );
 }
