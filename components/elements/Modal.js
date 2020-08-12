@@ -13,6 +13,7 @@ export default function ElementModal({
   onOk,
   okText,
   cancelText,
+  disableOk,
 }) {
   return (
     <Modal visible={visible} transparent={true}>
@@ -25,7 +26,7 @@ export default function ElementModal({
             <CancelButtonContainer>
               <Button ghost type="primary" title={cancelText || '放弃'} onPress={onCancel} />
             </CancelButtonContainer>
-            <Button type="primary" title={okText || '提交'} onPress={onOk} />
+            <Button disabled={disableOk} type="primary" title={okText || '提交'} onPress={onOk} />
           </Footer>
         </Box>
       </Container>

@@ -41,7 +41,7 @@ function RenderButton({ title, type, size, ghost, disabled }) {
       return <LinkButton>{title}</LinkButton>;
     case 'primary':
       return (
-        <PrimaryButton>
+        <PrimaryButton disabled={disabled}>
           <Text>{title}</Text>
         </PrimaryButton>
       );
@@ -79,6 +79,7 @@ const PrimaryButton = styled.View`
   padding: 4px;
   min-width: 80px;
   background: #ff794f;
+  ${({ disabled }) => disabled && 'opacity: 0.5;'}
 `;
 
 const LinkButton = styled.Text`

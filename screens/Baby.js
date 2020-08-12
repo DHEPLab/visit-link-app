@@ -20,6 +20,7 @@ import {
   CarerItem,
   Modal,
   Input,
+  LargeButtonContainer,
 } from '../components';
 import { useMethods } from './BabyForm/CreateBabyStep2';
 
@@ -219,10 +220,12 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
 
 function Family({ baby, carers, navigation, onRefresh }) {
   const [remark, setRemark] = useState(baby.remark);
+  const [closeAccountReason, setCloseAccountReason] = useState();
   const [deleteId, setDeleteId] = useState();
 
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
   const [deleteVisible, openDelete, closeDelete] = useBoolState();
+  const [closeAccountVisible, openCloseAccount, closeCloseAccount] = useBoolState();
   const { familyTies } = useMethods();
 
   function handleChangeMaster(carer) {
@@ -242,6 +245,13 @@ function Family({ baby, carers, navigation, onRefresh }) {
     http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
       onRefresh();
       closeRemark();
+    });
+  }
+
+  function handleCloseAccount() {
+    http.put(`/api/babies/${baby.id}/close`, { reason: closeAccountReason }).then(() => {
+      onRefresh();
+      closeCloseAccount();
     });
   }
 
@@ -318,6 +328,28 @@ function Family({ baby, carers, navigation, onRefresh }) {
         </CarersContainer>
       </Card>
 
+      {baby.actionFromApp !== 'DELETE' && (
+        <LargeButtonContainer>
+          <Button type="weaken" title="注销宝宝" onPress={openCloseAccount} />
+        </LargeButtonContainer>
+      )}
+
+      <Modal
+        title="你是否要注销宝宝账户？"
+        visible={closeAccountVisible}
+        content={
+          <Input
+            value={closeAccountReason}
+            onChangeText={setCloseAccountReason}
+            border
+            placeholder="请输入宝宝的注销原因"
+          />
+        }
+        onCancel={closeCloseAccount}
+        onOk={handleCloseAccount}
+        okText="注销"
+        disableOk={!closeAccountReason}
+      />
       <Modal
         title="添加备注信息"
         visible={remarkVisible}
