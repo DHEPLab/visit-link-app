@@ -84,11 +84,18 @@ export default function Babies({ navigation }) {
           !refreshing &&
           !loading && (
             <NoDataContainer>
-              <NoData title="暂无匹配的宝宝信息" />
+              {name ? (
+                <NoData title="暂无匹配的宝宝信息" />
+              ) : (
+                <>
+                  <NoData title="尚未添加宝宝信息" />
+                  <Button title="添加宝宝" onPress={() => navigate('CreateBabyStep1')} />
+                </>
+              )}
             </NoDataContainer>
           )
         }
-        ListFooterComponent={!refreshing && <ListFooter loading={loading} />}
+        ListFooterComponent={!refreshing && contents.length > 0 && <ListFooter loading={loading} />}
         refreshControl={
           <RefreshControl
             colors={Colors.colors}
