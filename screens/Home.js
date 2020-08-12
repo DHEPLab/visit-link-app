@@ -145,10 +145,7 @@ export default function Home({ navigation }) {
               {Visit.formatDateTimeCN(visitTime)}
             </>
           ) : (
-            <>
-              您尚未创建任何家访：{'\n'}
-              快来创建家访吧！
-            </>
+            <>您没有家访安排，{'\n'}请创建新的家访：</>
           )}
         </Title>
         {downloadResource && (
@@ -190,7 +187,16 @@ export default function Home({ navigation }) {
         </CardContainer>
       ) : (
         <NoDataContainer>
-          <Button title="新建家访" size="large" />
+          <Button
+            title="新建家访"
+            disabled={downloadResource}
+            size="large"
+            onPress={() =>
+              navigation.navigate('CreateVisit', {
+                visitTime: `${Visit.formatDate(new Date())}T10:00`,
+              })
+            }
+          />
         </NoDataContainer>
       )}
 
