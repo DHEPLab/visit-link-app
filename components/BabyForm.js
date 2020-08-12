@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
+import moment from 'moment';
 import { Formik } from 'formik';
 import { Gender, BabyStage, FeedingPattern, AssistedFood } from '../constants/enums';
 
@@ -57,7 +58,10 @@ export default function BabyForm({ onSubmit, submitBtnText = '提交', initialVa
               </FormItem>
               {values.stage === 'EDC' && (
                 <FormItem name="edc" label="预产日期" noBorder>
-                  <DatePicker minimumDate={new Date()} />
+                  <DatePicker
+                    minimumDate={new Date()}
+                    maximumDate={moment().add(280, 'day').toDate()}
+                  />
                 </FormItem>
               )}
               {values.stage === 'BIRTH' && (
