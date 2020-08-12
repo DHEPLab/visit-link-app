@@ -1,7 +1,7 @@
 import React from 'react';
+import { Modal } from 'react-native';
 
 import { styled } from '../../utils/styled';
-import AutoHideStatusBarModal from './AutoHideStatusBarModal';
 import Button from './Button';
 
 export default function ElementModal({
@@ -16,7 +16,7 @@ export default function ElementModal({
   disableOk,
 }) {
   return (
-    <AutoHideStatusBarModal visible={visible}>
+    <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
       <Container>
         <Box>
           <Title>{title}</Title>
@@ -30,7 +30,7 @@ export default function ElementModal({
           </Footer>
         </Box>
       </Container>
-    </AutoHideStatusBarModal>
+    </Modal>
   );
 }
 
