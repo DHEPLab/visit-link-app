@@ -20,7 +20,7 @@ it('should no data', async () => {
   storage.useVisitStatus.mockImplementation(() => [{}]);
   const { queryByText } = render(<Home {...createTestProps()} />);
   await waitFor(() => {
-    expect(queryByText(/您尚未创建任何家访/)).not.toBeNull();
+    expect(queryByText(/您没有家访安排/)).not.toBeNull();
   });
 });
 
