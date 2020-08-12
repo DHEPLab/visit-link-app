@@ -171,8 +171,9 @@ export default function Home({ navigation }) {
           <Card
             title="课堂安排"
             right={
-              !finished &&
-              !downloadResource && <Button title="预览" onPress={() => startVisit(true)} />
+              !finished && (
+                <Button title="预览" disabled={downloadResource} onPress={() => startVisit(true)} />
+              )
             }
           >
             <LessonName>{lesson?.name}</LessonName>
@@ -200,16 +201,20 @@ export default function Home({ navigation }) {
         </NoDataContainer>
       )}
 
-      {Visit.canBegin(status, visitTime) && !downloadResource && (
-        <ButtonContainer>
-          <Button
-            size="large"
-            title="开始课堂"
-            disabled={finished}
-            onPress={() => startVisit(false)}
-          />
-        </ButtonContainer>
-      )}
+      <ButtonContainer>
+        <Button
+          disabled={downloadResource || finished}
+          size="large"
+          title="开始课堂"
+          onPress={() => {
+            if (!Visit.canBegin(status, visitTime)) {
+              ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
+              return;
+            }
+            startVisit(false);
+          }}
+        />
+      </ButtonContainer>
     </StyledScrollView>
   );
 }
