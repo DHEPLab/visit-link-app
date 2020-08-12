@@ -3,6 +3,7 @@ import { ToastAndroid } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
+import { setStatusBarStyle } from 'expo-status-bar';
 
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -26,6 +27,7 @@ export default function App(props) {
 
   // Load any resources or data that we need prior to rendering the app
   useEffect(() => {
+    setStatusBarStyle('light');
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHide();

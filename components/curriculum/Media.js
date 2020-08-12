@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Image, Modal } from 'react-native';
+import { Image } from 'react-native';
 import { Video } from 'expo-av';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as FileSystem from 'expo-file-system';
 
 import { styled, px2dp } from '../../utils/styled';
 import { useBoolState } from '../../utils';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import AutoHideStatusBarModal from '../elements/AutoHideStatusBarModal';
 
 export default function CurriculumMedia({ value }) {
   return (
@@ -60,9 +61,9 @@ function PictureMedia({ uri }) {
       <TouchableOpacity onPress={openModal} activeOpacity={0.8}>
         <StyledImage source={{ uri }} />
       </TouchableOpacity>
-      <Modal visible={visible}>
+      <AutoHideStatusBarModal visible={visible}>
         <ImageViewer renderIndicator={() => {}} onClick={closeModal} imageUrls={[{ url: uri }]} />
-      </Modal>
+      </AutoHideStatusBarModal>
     </>
   );
 }
