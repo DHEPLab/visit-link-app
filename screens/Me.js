@@ -85,7 +85,7 @@ export default function Me({ navigation }) {
         </CardsContainer>
       </ScrollView>
       <Logout>
-        <Button title="退出登录" type="logout" onPress={openAlert} />
+        <Button title="退出登录" type="weaken" onPress={openAlert} />
       </Logout>
     </>
   );

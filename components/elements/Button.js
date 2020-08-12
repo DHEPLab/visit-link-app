@@ -21,11 +21,11 @@ function RenderButton({ title, type, size, ghost, disabled }) {
   }
 
   switch (type) {
-    case 'logout':
+    case 'weaken':
       return (
-        <LogoutButton>
+        <WeakenButton>
           <Text>{title}</Text>
-        </LogoutButton>
+        </WeakenButton>
       );
     case 'info':
       return (
@@ -88,7 +88,7 @@ const LinkButton = styled.Text`
   /* text-decoration: underline; */
 `;
 
-const LogoutButton = styled.View`
+const WeakenButton = styled.View`
   width: 260px;
   align-self: center;
   padding: 7px;
