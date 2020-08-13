@@ -3,10 +3,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import Http from '../utils/http';
 import Visit from '../utils/visit';
-import storage from '../cache/storage';
-import sync from '../cache/sync';
-import http from '../utils/http';
+import Storage from '../cache/storage';
+import Resources from '../cache/resources';
 
 import { Colors } from '../constants';
 import { useBoolState } from '../utils';
@@ -14,26 +14,27 @@ import { styled } from '../utils/styled';
 import { Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
 
 export default function Home({ navigation }) {
-  const [visit, reloadVisit] = storage.useNextVisit();
+  const [visit, reloadVisit] = Storage.useNextVisit();
   const { visitTime, baby, lesson, status } = visit;
 
   const [refreshing, startRefresh, endRefresh] = useBoolState();
-  const [inTheSynchronous, startSynchronous, endSynchronous] = useBoolState();
+  const [fetching, startFetch, endFetch] = useBoolState();
 
-  const [downloadResource, setDownloadResource] = useState();
+  const [update, setUpdate] = useState({});
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
   async function refresh() {
     startRefresh();
     try {
+      setUpdate(await Resources.checkForUpdateAsync());
       await submit();
-      const data = await http.get('/api/visits/next');
-      storage.setNextVisit(data);
-      checkResourceUpdate();
+      Storage.setNextVisit(await Http.get('/api/visits/next'));
     } catch (error) {
       if (error.status === 404) {
-        storage.setNextVisit({});
+        Storage.setNextVisit({});
+      } else {
+        console.warn(error);
       }
     } finally {
       reloadVisit();
@@ -41,45 +42,30 @@ export default function Home({ navigation }) {
     }
   }
 
-  function checkResourceUpdate() {
-    storage.getLastUpdateAt().then((lastUpdateAt) => {
-      if (!lastUpdateAt) return setDownloadResource('一键下载');
-      http
-        .get('/api/resources/check-for-updates', {
-          lastUpdateAt: lastUpdateAt || '',
-        })
-        .then(({ updated }) => {
-          setDownloadResource(updated ? '一键更新' : null);
-        });
-    });
-  }
-
   async function submit() {
-    const _visitStatus = await storage.getVisitStatus();
-    const nextModuleIndex = await storage.getNextModule();
+    const _visitStatus = await Storage.getVisitStatus();
+    const nextModuleIndex = await Storage.getNextModule();
     const id = Object.keys(_visitStatus || {})[0];
     if (id) {
-      return http
-        .put(`/api/visits/${id}/status`, {
-          visitStatus: _visitStatus[id],
-          nextModuleIndex,
-        })
-        .then((_) => {
-          storage.setNextVisit({});
-          storage.cleanVisitStatus();
-          storage.setNextModule(0);
-        });
+      return Http.put(`/api/visits/${id}/status`, {
+        visitStatus: _visitStatus[id],
+        nextModuleIndex,
+      }).then((_) => {
+        Storage.setNextVisit({});
+        Storage.cleanVisitStatus();
+        Storage.setNextModule(0);
+      });
     }
   }
 
-  async function handleSynchronous() {
-    startSynchronous();
+  async function handleFetchUpdate() {
+    startFetch();
     try {
-      await sync();
-      setDownloadResource();
+      await Resources.fetchUpdateAsync();
+      setUpdate({});
       ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
     } finally {
-      endSynchronous();
+      endFetch();
     }
   }
 
@@ -89,11 +75,7 @@ export default function Home({ navigation }) {
         <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      <Spinner
-        visible={inTheSynchronous}
-        textContent={'Loading...'}
-        textStyle={{ color: '#FFF' }}
-      />
+      <Spinner visible={fetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
       <Header {...Colors.linearGradient}>
         <BottomRightBackground
           width={140}
@@ -110,9 +92,14 @@ export default function Home({ navigation }) {
             <>您没有家访安排，{'\n'}请创建新的家访：</>
           )}
         </Title>
-        {downloadResource && (
+        {update.isAvailable && (
           <SyncButton>
-            <Button onPress={handleSynchronous} ghost size="small" title={downloadResource} />
+            <Button
+              onPress={handleFetchUpdate}
+              ghost
+              size="small"
+              title={update.firstTime ? '一键下载' : '一键更新'}
+            />
           </SyncButton>
         )}
       </Header>
@@ -126,7 +113,7 @@ export default function Home({ navigation }) {
         <NoDataContainer>
           <Button
             title="新建家访"
-            disabled={downloadResource}
+            disabled={update.isAvailable}
             size="large"
             onPress={() =>
               navigation.navigate('CreateVisit', {
