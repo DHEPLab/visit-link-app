@@ -76,28 +76,26 @@ export default function Home({ navigation }) {
       }
     >
       <Spinner visible={fetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
+
       <Header {...Colors.linearGradient}>
         <BottomRightBackground
           width={140}
           height={134}
           source={require('../assets/images/curriculum-bg.png')}
         />
+
         <Title>
-          {visit.id ? (
-            <>
-              您的下一次家访：{'\n'}
-              {Visit.formatDateTimeCN(visitTime)}
-            </>
-          ) : (
-            <>您没有家访安排，{'\n'}请创建新的家访：</>
-          )}
+          {visit.id
+            ? `您的下一次家访：\n${Visit.formatDateTimeCN(visitTime)}`
+            : `您没有家访安排，\n请创建新的家访：`}
         </Title>
+
         {update.isAvailable && (
           <SyncButton>
             <Button
-              onPress={handleFetchUpdate}
               ghost
               size="small"
+              onPress={handleFetchUpdate}
               title={update.firstTime ? '一键下载' : '一键更新'}
             />
           </SyncButton>
