@@ -152,6 +152,7 @@ export default function Baby({ navigation, route }) {
               dataSource={visits}
               started={started}
               navigation={navigation}
+              approved={baby.approved}
             />
           ),
           Family: () => (
@@ -192,7 +193,7 @@ const Stage = styled.View`
   align-items: center;
 `;
 
-function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
+function Visits({ started, dataSource, onChange, navigation, onCreateVisit, approved }) {
   return (
     <VisitsContainer>
       <VisitTabs>
@@ -211,9 +212,11 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit }) {
           <VisitItem onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
         )}
       />
-      <FixedButtonContainer>
-        <Button size="large" title="新建家访" onPress={onCreateVisit} />
-      </FixedButtonContainer>
+      {approved && (
+        <FixedButtonContainer>
+          <Button size="large" title="新建家访" onPress={onCreateVisit} />
+        </FixedButtonContainer>
+      )}
     </VisitsContainer>
   );
 }
