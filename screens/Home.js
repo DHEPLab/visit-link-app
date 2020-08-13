@@ -13,6 +13,7 @@ import {
   StaticField,
   MiniBaby,
   BottomRightBackground,
+  LessonCard,
 } from '../components';
 
 import storage from '../cache/storage';
@@ -166,23 +167,7 @@ export default function Home({ navigation }) {
               <StaticField label="详细地址">{baby?.location}</StaticField>
             </StaticForm>
           </Card>
-          <Card
-            title="课堂安排"
-            right={
-              !Visit.statusDone(status) && (
-                <Button title="预览" disabled={downloadResource} onPress={() => startVisit(true)} />
-              )
-            }
-          >
-            <LessonName>{lesson?.name}</LessonName>
-            <StaticForm>
-              {lesson?.moduleNames?.map((name, index) => (
-                <StaticField key={name} label={`模块 ${index + 1}`}>
-                  {name}
-                </StaticField>
-              ))}
-            </StaticForm>
-          </Card>
+          <LessonCard lesson={lesson} status={status} navigation={navigation} />
         </CardContainer>
       ) : (
         <NoDataContainer>

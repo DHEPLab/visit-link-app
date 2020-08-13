@@ -15,6 +15,7 @@ import {
   LargeButtonContainer,
   Modal,
   Input,
+  LessonCard,
 } from '../components';
 
 export default function VisitScreen({ navigation, route }) {
@@ -113,22 +114,7 @@ export default function VisitScreen({ navigation, route }) {
           )}
         </Card>
 
-        <Card title="课程安排">
-          {lesson ? (
-            <>
-              <LessonName>{lesson.name}</LessonName>
-              <StaticForm>
-                {lesson.moduleNames.map((name, index) => (
-                  <StaticField key={name} label={`模块 ${index + 1}`}>
-                    {name}
-                  </StaticField>
-                ))}
-              </StaticForm>
-            </>
-          ) : (
-            <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
-          )}
-        </Card>
+        <LessonCard lesson={lesson} status={status} navigation={navigation} />
 
         {Visit.statusNotStart(status) && (
           <LargeButtonContainer>
@@ -163,12 +149,3 @@ const Container = styled.View`
 const MiniBabyContainer = styled.View`
   padding-bottom: 8px;
 `;
-
-const LessonName = styled.Text`
-  color: #525252;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 8px;
-`;
-
-const NoLesson = styled.Text``;
