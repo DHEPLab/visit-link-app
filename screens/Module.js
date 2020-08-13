@@ -20,6 +20,7 @@ export default function Module({ navigation, route }) {
   const components = caseComponents || (module.pageComponents && module.pageComponents[page]) || [];
   const lastComponent = components[components.length - 1] || {};
   const switchAtTheEnd = lastComponent.type === 'Switch';
+  const theLastPage = page === module.pageComponents?.length - 1;
 
   function nextStep() {
     if (caseComponents) {
@@ -27,7 +28,7 @@ export default function Module({ navigation, route }) {
       setFinishAction();
       // TODO Finish Action
     }
-    if (page === module.pageComponents?.length - 1) {
+    if (theLastPage) {
       return finish();
     }
     setPage(page + 1);
@@ -86,7 +87,7 @@ export default function Module({ navigation, route }) {
               ))}
             </>
           ) : (
-            <Button size="large" title="下一步" onPress={nextStep} />
+            <Button size="large" title={theLastPage ? '完成' : '下一步'} onPress={nextStep} />
           )}
           {page > 0 && <Button type="info" title="上一步" onPress={lastStep} />}
         </ButtonContainer>
