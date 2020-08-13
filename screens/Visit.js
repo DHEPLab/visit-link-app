@@ -11,7 +11,6 @@ import {
   Button,
   StaticField,
   StaticForm,
-  LargeButtonContainer,
   Modal,
   Input,
   LessonCard,
@@ -32,10 +31,6 @@ export default function VisitScreen({ navigation, route }) {
     if (!route.params.visitTime) return;
     http.put(`/api/visits/${params.id}`, { visitTime: params.visitTime }).then(() => refresh());
   }, [route.params?.visitTime]);
-
-  function handleContinue() {
-    navigation.navigate('LessonIntro', { id: lesson.id });
-  }
 
   function handleChangeVisitTime() {
     http.get(`/api/visits/${params.id}/date-range`).then((range) => {
@@ -92,12 +87,6 @@ export default function VisitScreen({ navigation, route }) {
         <StartLesson
           {...{ status, visitTime, navigation, visitId: visit.id, lessonId: visit?.lesson?.id }}
         />
-
-        {Visit.statusUndone(status) && (
-          <LargeButtonContainer>
-            <Button size="large" title="继续课堂" onPress={handleContinue} />
-          </LargeButtonContainer>
-        )}
       </Container>
     </ScrollView>
   );
@@ -105,8 +94,4 @@ export default function VisitScreen({ navigation, route }) {
 
 const Container = styled.View`
   padding: 20px 28px;
-`;
-
-const MiniBabyContainer = styled.View`
-  padding-bottom: 8px;
 `;

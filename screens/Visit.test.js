@@ -43,6 +43,7 @@ describe('<Visit />', () => {
   it('should display continue button', () => {
     useFetch.mockImplementation(() => [
       {
+        id: 1,
         status: 'UNDONE',
       },
     ]);

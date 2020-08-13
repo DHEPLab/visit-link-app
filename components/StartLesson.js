@@ -16,24 +16,41 @@ export default function StartLesson({ status, visitTime, navigation, lessonId, v
     navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
   }
 
+  function handleContinue() {
+    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
+  }
+
   return (
     <>
       {visitId && (
         <LargeButtonContainer>
-          <Button
-            disabled={downloadResource || Visit.statusDone(status)}
-            size="large"
-            title="开始课堂"
-            onPress={() => {
-              if (!Visit.canBegin(status, visitTime)) {
-                ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
-                return;
-              }
-              openStartVisit();
-            }}
-          />
+          {/* TODO Validate continue */}
+          {Visit.statusUndone(status) && (
+            <Button
+              disabled={downloadResource}
+              size="large"
+              title="继续课堂"
+              onPress={handleContinue}
+            />
+          )}
+
+          {Visit.statusNotStart(status) && (
+            <Button
+              disabled={downloadResource || Visit.statusDone(status)}
+              size="large"
+              title="开始课堂"
+              onPress={() => {
+                if (!Visit.canBegin(status, visitTime)) {
+                  ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
+                  return;
+                }
+                openStartVisit();
+              }}
+            />
+          )}
         </LargeButtonContainer>
       )}
+
       <Modal
         title="您确定要立即开始本次家访吗？"
         visible={startVisitVisible}

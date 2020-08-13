@@ -4,14 +4,14 @@ import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Visit from '../utils/visit';
-import { styled } from '../utils/styled';
-import { Colors } from '../constants';
-import { Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
-
 import storage from '../cache/storage';
 import sync from '../cache/sync';
 import http from '../utils/http';
+
+import { Colors } from '../constants';
 import { useBoolState } from '../utils';
+import { styled } from '../utils/styled';
+import { Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
 
 export default function Home({ navigation }) {
   const [visit, reloadVisit] = storage.useNextVisit();
@@ -169,17 +169,6 @@ const NoDataContainer = styled.View`
   justify-content: center;
 `;
 
-const MiniBabyContainer = styled.View`
-  padding-bottom: 8px;
-`;
-
-const LessonName = styled.Text`
-  color: #525252;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 8px;
-`;
-
 const StyledScrollView = styled(ScrollView)`
   flex: 1;
 `;
@@ -187,9 +176,4 @@ const StyledScrollView = styled(ScrollView)`
 const CardContainer = styled.View`
   margin: 0 28px;
   margin-top: -34px;
-`;
-
-const ButtonContainer = styled.View`
-  margin-top: 20px;
-  margin-bottom: 10px;
 `;
