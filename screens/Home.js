@@ -6,15 +6,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
-import {
-  Button,
-  Card,
-  StaticForm,
-  StaticField,
-  MiniBaby,
-  BottomRightBackground,
-  LessonCard,
-} from '../components';
+import { Button, BottomRightBackground, LessonCard, BabyCard } from '../components';
 
 import storage from '../cache/storage';
 import sync from '../cache/sync';
@@ -156,17 +148,7 @@ export default function Home({ navigation }) {
 
       {visit.id ? (
         <CardContainer>
-          <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
-            <MiniBabyContainer>
-              <MiniBaby hideStatus baby={baby} />
-            </MiniBabyContainer>
-            <StaticForm>
-              <StaticField label="主照料人">{baby?.carerName}</StaticField>
-              <StaticField label="联系电话">{baby?.carerPhone}</StaticField>
-              <StaticField label="所在区域">{baby?.area}</StaticField>
-              <StaticField label="详细地址">{baby?.location}</StaticField>
-            </StaticForm>
-          </Card>
+          <BabyCard baby={baby} />
           <LessonCard lesson={lesson} status={status} navigation={navigation} />
         </CardContainer>
       ) : (

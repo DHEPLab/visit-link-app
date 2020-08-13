@@ -33,3 +33,4 @@ export { default as ListFooter } from './ListFooter';
 export { default as BabyForm } from './BabyForm';
 export { default as AddressForm } from './AddressForm';
 export { default as LessonCard } from './LessonCard';
+export { default as BabyCard } from './BabyCard';

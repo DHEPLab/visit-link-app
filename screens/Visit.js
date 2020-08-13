@@ -7,7 +7,6 @@ import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { useFetch, useBoolState } from '../utils';
 import {
-  MiniBaby,
   Card,
   Button,
   StaticField,
@@ -16,6 +15,7 @@ import {
   Modal,
   Input,
   LessonCard,
+  BabyCard,
 } from '../components';
 
 export default function VisitScreen({ navigation, route }) {
@@ -98,22 +98,7 @@ export default function VisitScreen({ navigation, route }) {
           )}
         </Card>
 
-        <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
-          {baby && (
-            <>
-              <MiniBabyContainer>
-                <MiniBaby hideStatus baby={baby} />
-              </MiniBabyContainer>
-              <StaticForm>
-                <StaticField label="主照料人">{baby.carerName}</StaticField>
-                <StaticField label="联系电话">{baby.carerPhone}</StaticField>
-                <StaticField label="所在区域">{baby.area}</StaticField>
-                <StaticField label="详细地址">{baby.location}</StaticField>
-              </StaticForm>
-            </>
-          )}
-        </Card>
-
+        <BabyCard baby={baby} />
         <LessonCard lesson={lesson} status={status} navigation={navigation} />
 
         {Visit.statusNotStart(status) && (
