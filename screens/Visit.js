@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, ToastAndroid } from 'react-native';
 
 import { styled } from '../utils/styled';
 import VisitUtils from '../utils/visit';
@@ -22,6 +22,7 @@ export default function Visit({ navigation, route }) {
   const { visitTime, status, baby, lesson } = visit;
   const [remark, setRemark] = useState(visit.remark);
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
+  const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
   const notStarted = status === 'NOT_STARTED';
   const undone = status === 'UNDONE';
@@ -40,14 +41,7 @@ export default function Visit({ navigation, route }) {
     navigation.navigate('LessonIntro', { id: lesson.id });
   }
 
-  // function handleBegin() {
-  //   handleContinue();
-  //   // http.put(`/api/visits/${params.id}/begin`).then(handleContinue);
-  // }
-
-  // function handleDone() {
-  //   http.put(`/api/visits/${params.id}/done`).then(() => refresh());
-  // }
+  function handleStart() {}
 
   function handleChangeVisitTime() {
     http.get(`/api/visits/${params.id}/date-range`).then((range) => {
@@ -83,6 +77,15 @@ export default function Visit({ navigation, route }) {
           onCancel={closeRemark}
           onOk={handleChangeRemark}
           disableOk={!remark}
+        />
+        <Modal
+          title="您确定要立即开始本次家访吗？"
+          visible={startVisitVisible}
+          contentText={`本次拜访日程为：${VisitUtils.formatDateTimeCN(visitTime)}`}
+          okText="开始"
+          cancelText="放弃"
+          onCancel={closeStartVisit}
+          onOk={handleStart}
         />
 
         <Card
@@ -128,6 +131,22 @@ export default function Visit({ navigation, route }) {
             <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
           )}
         </Card>
+
+        {notStarted && (
+          <LargeButtonContainer>
+            <Button
+              size="large"
+              title="开始课堂"
+              onPress={() => {
+                if (!VisitUtils.canBegin(status, visitTime)) {
+                  ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
+                  return;
+                }
+                openStartVisit();
+              }}
+            />
+          </LargeButtonContainer>
+        )}
 
         {undone && (
           <LargeButtonContainer>
