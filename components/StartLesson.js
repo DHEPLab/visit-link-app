@@ -12,6 +12,7 @@ export default function StartLesson({ status, visitTime, navigation, lessonId, v
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
   function handleStart() {
+    closeStartVisit();
     navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
   }
 
