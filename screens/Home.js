@@ -67,21 +67,19 @@ export default function Home({ navigation }) {
 
   async function submit() {
     const _visitStatus = await storage.getVisitStatus();
-    if (_visitStatus) {
-      const nextModuleIndex = await storage.getNextModule();
-      const { id } = await storage.getNextVisit();
-      if (id) {
-        return http
-          .put(`/api/visits/${id}/status`, {
-            visitStatus: _visitStatus,
-            nextModuleIndex,
-          })
-          .then((_) => {
-            storage.setNextVisit({});
-            storage.setVisitStatus('');
-            storage.setNextModule(0);
-          });
-      }
+    const nextModuleIndex = await storage.getNextModule();
+    const id = Object.keys(_visitStatus || {})[0];
+    if (id) {
+      return http
+        .put(`/api/visits/${id}/status`, {
+          visitStatus: _visitStatus[id],
+          nextModuleIndex,
+        })
+        .then((_) => {
+          storage.setNextVisit({});
+          storage.cleanVisitStatus();
+          storage.setNextModule(0);
+        });
     }
   }
 
@@ -110,7 +108,11 @@ export default function Home({ navigation }) {
           {
             text: '开始',
             onPress: () => {
-              navigation.navigate('LessonIntro', { id: visit.lesson?.id, preview });
+              navigation.navigate('LessonIntro', {
+                id: visit.lesson?.id,
+                preview,
+                visitId: visit.id,
+              });
             },
           },
         ],

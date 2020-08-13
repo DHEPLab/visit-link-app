@@ -44,11 +44,12 @@ it('should set next module index', async () => {
 });
 
 it('should save visit status', async () => {
-  storage.setVisitStatus('UNDONE');
+  await storage.setVisitStatus(1, 'UNDONE');
+  await storage.setVisitStatus(2, 'DONE');
   const { result } = renderHook(() => storage.useVisitStatus());
   await waitFor(() => {
     const [status] = result.current;
-    expect(status).toBe('UNDONE');
+    expect(status).toStrictEqual({ 1: 'UNDONE', 2: 'DONE' });
   });
 });
 

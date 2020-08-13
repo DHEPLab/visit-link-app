@@ -24,9 +24,9 @@ export default function LessonModules({ navigation, route }) {
     return index < nextModule ? 'DONE' : 'UNDONE';
   }
 
-  function finish() {
+  async function finish() {
     if (!params.preview) {
-      storage.setVisitStatus('DONE');
+      await storage.setVisitStatus(route.params?.visitId, 'DONE');
     }
     navigation.navigate('Home');
   }

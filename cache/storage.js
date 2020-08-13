@@ -48,7 +48,7 @@ function getNextModule() {
 }
 
 function getVisitStatus() {
-  return getValue(`VISIT_STATUS`);
+  return getObject(`VISIT_STATUS`);
 }
 
 function useString(getFn, id) {
@@ -95,7 +95,20 @@ export default {
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
   setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
-  setVisitStatus: (status) => addValue('VISIT_STATUS', status),
+  setVisitStatus: (id, status) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let obj = await getVisitStatus();
+        obj = obj || {};
+        obj[id] = status;
+        await addObject('VISIT_STATUS', obj);
+        resolve();
+      } catch (e) {
+        reject();
+      }
+    });
+  },
+  cleanVisitStatus: () => addObject('VISIT_STATUS', {}),
   setLastUpdateAt: (datetime) =>
     addValue('LAST_UPDATE_AT', moment(datetime).format('YYYY-MM-DDTHH:mm:ss')),
   getLesson,
@@ -108,5 +121,5 @@ export default {
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),
   useNextModule: () => useNumber(getNextModule),
-  useVisitStatus: () => useString(getVisitStatus),
+  useVisitStatus: () => use(getVisitStatus),
 };
