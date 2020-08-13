@@ -22,15 +22,12 @@ import { useBoolState } from '../utils';
 
 export default function Home({ navigation }) {
   const [visit, reloadVisit] = storage.useNextVisit();
-  const [visitStatus, reloadVisitStatus] = storage.useVisitStatus();
   const { visitTime, baby, lesson, status } = visit;
 
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [inTheSynchronous, startSynchronous, endSynchronous] = useBoolState();
 
   const [downloadResource, setDownloadResource] = useState();
-
-  const finished = visitStatus === 'DONE';
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
@@ -47,7 +44,6 @@ export default function Home({ navigation }) {
       }
     } finally {
       reloadVisit();
-      reloadVisitStatus();
       endRefresh();
     }
   }
@@ -173,7 +169,7 @@ export default function Home({ navigation }) {
           <Card
             title="课堂安排"
             right={
-              !finished && (
+              !Visit.statusDone(status) && (
                 <Button title="预览" disabled={downloadResource} onPress={() => startVisit(true)} />
               )
             }
@@ -206,7 +202,7 @@ export default function Home({ navigation }) {
       {visit.id && (
         <ButtonContainer>
           <Button
-            disabled={downloadResource || finished}
+            disabled={downloadResource || Visit.statusDone(status)}
             size="large"
             title="开始课堂"
             onPress={() => {

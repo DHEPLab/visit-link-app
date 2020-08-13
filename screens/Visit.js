@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, ToastAndroid } from 'react-native';
 
+import http from '../utils/http';
+import Visit from '../utils/visit';
+
 import { styled } from '../utils/styled';
-import VisitUtils from '../utils/visit';
 import { useFetch, useBoolState } from '../utils';
 import {
   MiniBaby,
@@ -14,22 +16,16 @@ import {
   Modal,
   Input,
 } from '../components';
-import http from '../utils/http';
 
-export default function Visit({ navigation, route }) {
+export default function VisitScreen({ navigation, route }) {
   const { params } = route;
   const [visit, refresh] = useFetch(`/api/visits/${params.id}`);
   const { visitTime, status, baby, lesson } = visit;
+
   const [remark, setRemark] = useState(visit.remark);
+
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
-
-  const notStarted = status === 'NOT_STARTED';
-  const undone = status === 'UNDONE';
-  const done = status === 'DONE';
-  const expired = status === 'EXPIRED';
-
-  const remarkTitle = notStarted ? '备注' : undone ? '未完成原因' : '过期原因';
 
   useEffect(() => {
     if (route.params.visitTime) {
@@ -59,14 +55,14 @@ export default function Visit({ navigation, route }) {
   return (
     <ScrollView>
       <Container>
-        {!done && (
+        {!Visit.statusDone(status) && (
           <Card
-            title={remarkTitle}
+            title={Visit.remarkTitle(status)}
             right={<Button title="编辑" onPress={openRemark} />}
             hideBody={!visit.remark}
           >
             <StaticForm>
-              <StaticField label={remarkTitle}>{visit.remark}</StaticField>
+              <StaticField label={Visit.remarkTitle(status)}>{visit.remark}</StaticField>
             </StaticForm>
           </Card>
         )}
@@ -81,7 +77,7 @@ export default function Visit({ navigation, route }) {
         <Modal
           title="您确定要立即开始本次家访吗？"
           visible={startVisitVisible}
-          contentText={`本次拜访日程为：${VisitUtils.formatDateTimeCN(visitTime)}`}
+          contentText={`本次拜访日程为：${Visit.formatDateTimeCN(visitTime)}`}
           okText="开始"
           cancelText="放弃"
           onCancel={closeStartVisit}
@@ -90,11 +86,13 @@ export default function Visit({ navigation, route }) {
 
         <Card
           title="家访时间"
-          right={notStarted && <Button title="修改" onPress={handleChangeVisitTime} />}
+          right={
+            Visit.statusNotStart(status) && <Button title="修改" onPress={handleChangeVisitTime} />
+          }
         >
           {visitTime && (
             <StaticForm>
-              <StaticField label="家访时间">{VisitUtils.formatDateTimeCN(visitTime)}</StaticField>
+              <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
             </StaticForm>
           )}
         </Card>
@@ -132,13 +130,13 @@ export default function Visit({ navigation, route }) {
           )}
         </Card>
 
-        {notStarted && (
+        {Visit.statusNotStart(status) && (
           <LargeButtonContainer>
             <Button
               size="large"
               title="开始课堂"
               onPress={() => {
-                if (!VisitUtils.canBegin(status, visitTime)) {
+                if (!Visit.canBegin(status, visitTime)) {
                   ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
                   return;
                 }
@@ -148,7 +146,7 @@ export default function Visit({ navigation, route }) {
           </LargeButtonContainer>
         )}
 
-        {undone && (
+        {Visit.statusUndone(status) && (
           <LargeButtonContainer>
             <Button size="large" title="继续课堂" onPress={handleContinue} />
           </LargeButtonContainer>
