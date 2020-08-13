@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, ToastAndroid } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import http from '../utils/http';
 import Visit from '../utils/visit';
@@ -16,6 +16,7 @@ import {
   Input,
   LessonCard,
   BabyCard,
+  StartLesson,
 } from '../components';
 
 export default function VisitScreen({ navigation, route }) {
@@ -26,19 +27,15 @@ export default function VisitScreen({ navigation, route }) {
   const [remark, setRemark] = useState(visit.remark);
 
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
-  const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
   useEffect(() => {
-    if (route.params.visitTime) {
-      http.put(`/api/visits/${params.id}`, { visitTime: params.visitTime }).then(() => refresh());
-    }
+    if (!route.params.visitTime) return;
+    http.put(`/api/visits/${params.id}`, { visitTime: params.visitTime }).then(() => refresh());
   }, [route.params?.visitTime]);
 
   function handleContinue() {
     navigation.navigate('LessonIntro', { id: lesson.id });
   }
-
-  function handleStart() {}
 
   function handleChangeVisitTime() {
     http.get(`/api/visits/${params.id}/date-range`).then((range) => {
@@ -75,15 +72,6 @@ export default function VisitScreen({ navigation, route }) {
           onOk={handleChangeRemark}
           disableOk={!remark}
         />
-        <Modal
-          title="您确定要立即开始本次家访吗？"
-          visible={startVisitVisible}
-          contentText={`本次拜访日程为：${Visit.formatDateTimeCN(visitTime)}`}
-          okText="开始"
-          cancelText="放弃"
-          onCancel={closeStartVisit}
-          onOk={handleStart}
-        />
 
         <Card
           title="家访时间"
@@ -101,21 +89,9 @@ export default function VisitScreen({ navigation, route }) {
         <BabyCard baby={baby} />
         <LessonCard lesson={lesson} status={status} navigation={navigation} />
 
-        {Visit.statusNotStart(status) && (
-          <LargeButtonContainer>
-            <Button
-              size="large"
-              title="开始课堂"
-              onPress={() => {
-                if (!Visit.canBegin(status, visitTime)) {
-                  ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
-                  return;
-                }
-                openStartVisit();
-              }}
-            />
-          </LargeButtonContainer>
-        )}
+        <StartLesson
+          {...{ status, visitTime, navigation, visitId: visit.id, lessonId: visit?.lesson?.id }}
+        />
 
         {Visit.statusUndone(status) && (
           <LargeButtonContainer>

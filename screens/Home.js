@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Alert, ScrollView, RefreshControl, ToastAndroid } from 'react-native';
+import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
-import { Button, BottomRightBackground, LessonCard, BabyCard } from '../components';
+import { Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
 
 import storage from '../cache/storage';
 import sync from '../cache/sync';
@@ -83,35 +83,6 @@ export default function Home({ navigation }) {
     }
   }
 
-  function startVisit(preview = false) {
-    if (!preview) {
-      Alert.alert(
-        '确认',
-        '立即开始课堂？',
-        [
-          {
-            text: '稍后再说',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {
-            text: '开始',
-            onPress: () => {
-              navigation.navigate('LessonIntro', {
-                id: visit.lesson?.id,
-                preview,
-                visitId: visit.id,
-              });
-            },
-          },
-        ],
-        { cancelable: false }
-      );
-    } else {
-      navigation.navigate('LessonIntro', { id: visit.lesson?.id, preview });
-    }
-  }
-
   return (
     <StyledScrollView
       refreshControl={
@@ -166,22 +137,9 @@ export default function Home({ navigation }) {
         </NoDataContainer>
       )}
 
-      {visit.id && (
-        <ButtonContainer>
-          <Button
-            disabled={downloadResource || Visit.statusDone(status)}
-            size="large"
-            title="开始课堂"
-            onPress={() => {
-              if (!Visit.canBegin(status, visitTime)) {
-                ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
-                return;
-              }
-              startVisit(false);
-            }}
-          />
-        </ButtonContainer>
-      )}
+      <StartLesson
+        {...{ status, visitTime, navigation, visitId: visit.id, lessonId: visit?.lesson?.id }}
+      />
     </StyledScrollView>
   );
 }
