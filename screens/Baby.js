@@ -194,6 +194,14 @@ const Stage = styled.View`
 `;
 
 function Visits({ started, dataSource, onChange, navigation, onCreateVisit, approved }) {
+  function handlePressVisit(item) {
+    if (!approved && item.status === 'NOT_STARTED') {
+      ToastAndroid.show('请等待宝宝完成审核', ToastAndroid.SHORT);
+      return;
+    }
+    navigation.navigate('Visit', { id: item.id });
+  }
+
   return (
     <VisitsContainer>
       <VisitTabs>
@@ -208,9 +216,7 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit, appr
         ListEmptyComponent={<NoData title="没有相关结果" />}
         data={dataSource}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => (
-          <VisitItem onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
-        )}
+        renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
       />
       <FixedButtonContainer>
         <Button size="large" disabled={!approved} title="新建家访" onPress={onCreateVisit} />
