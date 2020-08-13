@@ -212,11 +212,9 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit, appr
           <VisitItem onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
         )}
       />
-      {approved && (
-        <FixedButtonContainer>
-          <Button size="large" title="新建家访" onPress={onCreateVisit} />
-        </FixedButtonContainer>
-      )}
+      <FixedButtonContainer>
+        <Button size="large" disabled={!approved} title="新建家访" onPress={onCreateVisit} />
+      </FixedButtonContainer>
     </VisitsContainer>
   );
 }
