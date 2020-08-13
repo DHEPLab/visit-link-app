@@ -8,9 +8,7 @@ import Button from './elements/Button';
 import StaticForm from './elements/StaticForm';
 import StaticField from './elements/StaticField';
 
-export default function LessonCard({ status, lesson, navigation }) {
-  const downloadResource = '';
-
+export default function LessonCard({ disabled, status, lesson, navigation }) {
   function startVisitPreview() {
     navigation.navigate('LessonIntro', { id: lesson.id, preview: true });
   }
@@ -20,7 +18,7 @@ export default function LessonCard({ status, lesson, navigation }) {
       title="课堂安排"
       right={
         Visit.statusNotStart(status) && (
-          <Button title="预览" disabled={downloadResource} onPress={startVisitPreview} />
+          <Button title="预览" disabled={disabled} onPress={startVisitPreview} />
         )
       }
     >

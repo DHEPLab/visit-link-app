@@ -7,8 +7,14 @@ import Button from './elements/Button';
 import Modal from './elements/Modal';
 import LargeButtonContainer from './LargeButtonContainer';
 
-export default function StartLesson({ status, visitTime, navigation, lessonId, visitId }) {
-  const downloadResource = '';
+export default function StartLesson({
+  disabled,
+  status,
+  visitTime,
+  navigation,
+  lessonId,
+  visitId,
+}) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
   function handleStart() {
@@ -26,17 +32,12 @@ export default function StartLesson({ status, visitTime, navigation, lessonId, v
         <LargeButtonContainer>
           {/* TODO Validate continue */}
           {Visit.statusUndone(status) && (
-            <Button
-              disabled={downloadResource}
-              size="large"
-              title="继续课堂"
-              onPress={handleContinue}
-            />
+            <Button disabled={disabled} size="large" title="继续课堂" onPress={handleContinue} />
           )}
 
           {Visit.statusNotStart(status) && (
             <Button
-              disabled={downloadResource || Visit.statusDone(status)}
+              disabled={disabled || Visit.statusDone(status)}
               size="large"
               title="开始课堂"
               onPress={() => {

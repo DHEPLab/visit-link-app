@@ -105,7 +105,12 @@ export default function Home({ navigation }) {
       {visit.id ? (
         <CardContainer>
           <BabyCard baby={baby} />
-          <LessonCard lesson={lesson} status={status} navigation={navigation} />
+          <LessonCard
+            disabled={update.isAvailable}
+            lesson={lesson}
+            status={status}
+            navigation={navigation}
+          />
         </CardContainer>
       ) : (
         <NoDataContainer>
@@ -123,7 +128,14 @@ export default function Home({ navigation }) {
       )}
 
       <StartLesson
-        {...{ status, visitTime, navigation, visitId: visit.id, lessonId: visit?.lesson?.id }}
+        {...{
+          disabled: update.isAvailable,
+          status,
+          visitTime,
+          navigation,
+          visitId: visit.id,
+          lessonId: visit?.lesson?.id,
+        }}
       />
     </StyledScrollView>
   );
