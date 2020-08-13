@@ -34,6 +34,14 @@ function validate(values) {
   return errors;
 }
 
+// the baby stage cannot be changed from birth to edc
+function FilteredBabyStage(stage) {
+  if (stage === 'BIRTH') {
+    return { BIRTH: BabyStage['BIRTH'] };
+  }
+  return BabyStage;
+}
+
 export default function BabyForm({ onSubmit, submitBtnText = '提交', initialValues = {} }) {
   return (
     <Formik
@@ -54,7 +62,7 @@ export default function BabyForm({ onSubmit, submitBtnText = '提交', initialVa
                 <SolidRadios enums={Gender} />
               </FormItem>
               <FormItem name="stage" label="成长阶段" noBorder={!values.stage}>
-                <SolidRadios enums={BabyStage} />
+                <SolidRadios enums={FilteredBabyStage(initialValues.stage)} />
               </FormItem>
               {values.stage === 'EDC' && (
                 <FormItem name="edc" label="预产日期" noBorder>
