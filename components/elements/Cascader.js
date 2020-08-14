@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, Modal, TouchableOpacity } from 'react-native';
+import { ScrollView, Modal, TouchableOpacity } from 'react-native';
 
 import { useBoolState } from '../../utils';
 import { styled } from '../../utils/styled';
@@ -30,19 +30,23 @@ export default function Cascader({ value, onChange, options, placeholder }) {
       <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
         {value ? <Value>{value}</Value> : <Placeholder>{placeholder}</Placeholder>}
       </TouchableOpacity>
-      <Modal visible={visible} transparent={true}>
+      <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
         <Container>
-          <StyledFlatList
-            data={data}
-            keyExtractor={(item) => item.code + ''}
-            renderItem={({ item }) => (
-              <TouchableOpacity activeOpacity={0.8} onPress={() => handlePressItem(item)}>
-                <Item>
-                  <Label>{item.name}</Label>
-                </Item>
-              </TouchableOpacity>
-            )}
-          />
+          <ScrollView>
+            <DataContainer>
+              {data.map((item) => (
+                <TouchableOpacity
+                  key={item.name}
+                  activeOpacity={0.8}
+                  onPress={() => handlePressItem(item)}
+                >
+                  <Item>
+                    <Label>{item.name}</Label>
+                  </Item>
+                </TouchableOpacity>
+              ))}
+            </DataContainer>
+          </ScrollView>
         </Container>
       </Modal>
     </>
@@ -68,15 +72,14 @@ const Container = styled.View`
   background: rgba(0, 0, 0, 0.5);
 `;
 
-const StyledFlatList = styled(FlatList)`
-  width: 100%;
-  padding: 6px 0;
-  background: #fff;
+const DataContainer = styled.View`
+  width: 300px;
+  background: #000;
 `;
 
 const Label = styled.Text`
   font-size: 12px;
-  padding: 4px;
+  padding: 6px 4px;
   padding-left: 10px;
 `;
 
