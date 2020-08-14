@@ -130,6 +130,7 @@ const StyledScrollView = styled(ScrollView)`
 
 const ModuleCard = styled.View`
   padding: 20px 24px;
+  padding-bottom: 5px;
   border-radius: 8px;
   background: #fff;
 `;
