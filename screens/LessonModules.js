@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
+import storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
 
-export default function LessonModules() {
-  const navigation = useNavigation();
+export default function LessonModules({ navigation, route }) {
+  const { params } = route;
+  const [lesson] = storage.useLesson(params?.id);
+  const [nextModule, reloadNextModule] = storage.useNextModule();
+  const canFinish = nextModule > lesson.modules?.length - 1;
+
+  useEffect(() => {
+    if (!params.preview && params.moduleId && params.finished) {
+      storage.setNextModule(nextModule + 1);
+      reloadNextModule();
+    }
+  }, [route.params?.moduleId]);
+
+  function status(index) {
+    return index < nextModule ? 'DONE' : 'UNDONE';
+  }
+
+  async function finish() {
+    if (!params.preview) {
+      await storage.setVisitStatus(route.params?.visitId, 'DONE');
+    }
+    navigation.navigate('Home');
+  }
+
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -21,15 +43,16 @@ export default function LessonModules() {
         <Hint>你需要在本次家访中完成{'\n'}如下全部模块：</Hint>
       </Header>
       <StyledScrollView>
-        {[0, 1, 2, 3].map((key) => (
-          <ModuleItem key={key} value={{ status: 'DONE', number: 'L' + key, name: '模块名称' }} />
+        {lesson.modules?.map((module, index) => (
+          <ModuleItem
+            key={module.id}
+            value={{ ...module, status: status(index) }}
+            disabled={!params.preview && index !== nextModule}
+            onPress={() => navigation.navigate('Module', { id: module.id, lessonId: params.id })}
+          />
         ))}
-        <ModuleItem
-          onPress={() => navigation.navigate('Module')}
-          value={{ status: 'UNDONE', number: 'H4.2', name: '照料人的心理健康' }}
-        />
         <ButtonContainer>
-          <Button size="large" title="完成家访" disabled={true} />
+          <Button size="large" title="完成家访" disabled={!canFinish} onPress={finish} />
         </ButtonContainer>
       </StyledScrollView>
     </>

@@ -1,18 +1,21 @@
-import React from 'react';
-import { Image } from 'react-native';
+import React, { useState } from 'react';
+import { Image, Modal } from 'react-native';
 import { Video } from 'expo-av';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import * as ScreenOrientation from 'expo-screen-orientation';
+import * as FileSystem from 'expo-file-system';
 
 import { styled, px2dp } from '../../utils/styled';
-
-const Host = 'https://healthy-future-dev.oss-cn-shanghai.aliyuncs.com';
+import { useBoolState } from '../../utils';
 
 export default function CurriculumMedia({ value }) {
   return (
     <Container>
-      {value.type === 'Video' ? (
-        <VideoMedia uri={`${Host}${value.file}`} />
+      {value.type === 'VIDEO' ? (
+        <VideoMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
       ) : (
-        <PictureMedia uri={`${Host}${value.file}`} />
+        <PictureMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
       )}
       <Title>{value.text}</Title>
     </Container>
@@ -20,27 +23,51 @@ export default function CurriculumMedia({ value }) {
 }
 
 function VideoMedia({ uri }) {
+  const [inFullscreen, switchToLandscape, switchToPortrait] = useBoolState();
+  // Use state to resolve unnecessary calculations when the screen direction changes
+  const [width] = useState(px2dp(272));
+  const [height] = useState(px2dp(136));
+
   return (
     <StyledVideo
       source={{ uri }}
       rate={1.0}
       volume={1.0}
       isMuted={false}
-      resizeMode="cover"
-      shouldPlay
-      isLooping
-      style={{ width: px2dp(272), height: px2dp(136) }}
+      useNativeControls
+      resizeMode={inFullscreen ? Video.RESIZE_MODE_CONTAIN : Video.RESIZE_MODE_COVER}
+      style={{ width, height }}
+      onFullscreenUpdate={async ({ fullscreenUpdate }) => {
+        switch (fullscreenUpdate) {
+          case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
+            switchToLandscape();
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+            break;
+          case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
+            switchToPortrait();
+            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+            break;
+        }
+      }}
     />
   );
 }
 
 function PictureMedia({ uri }) {
-  return <StyledImage source={{ uri }} />;
+  const [visible, openModal, closeModal] = useBoolState();
+  return (
+    <>
+      <TouchableOpacity onPress={openModal} activeOpacity={0.8}>
+        <StyledImage source={{ uri }} />
+      </TouchableOpacity>
+      <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
+        <ImageViewer renderIndicator={() => {}} onClick={closeModal} imageUrls={[{ url: uri }]} />
+      </Modal>
+    </>
+  );
 }
 
 const StyledVideo = styled(Video)`
-  width: 272px;
-  height: 136px;
   border-radius: 4px;
 `;
 

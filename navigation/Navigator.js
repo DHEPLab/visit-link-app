@@ -8,10 +8,15 @@ import { px2dp, styled } from '../utils/styled';
 
 import Babies from '../screens/Babies';
 import Baby from '../screens/Baby';
+import CreateBabyStep1 from '../screens/BabyForm/CreateBabyStep1';
+import CreateBabyStep2 from '../screens/BabyForm/CreateBabyStep2';
+import CreateBabyStep3 from '../screens/BabyForm/CreateBabyStep3';
+import EditCarer from '../screens/BabyForm/EditCarer';
+import EditBaby from '../screens/BabyForm/EditBaby';
+
 import ChangePassword from '../screens/ChangePassword';
 import Home from '../screens/Home';
 import Me from '../screens/Me';
-import Session from '../screens/Session';
 import SignIn from '../screens/SignIn';
 import Visit from '../screens/Visit';
 import Visits from '../screens/Visits';
@@ -21,6 +26,7 @@ import PickVisitTime from '../screens/PickVisitTime';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
+import EditAddress from '../screens/BabyForm/EditAddress';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -62,14 +68,44 @@ const screens = [
     headerShown: false,
   },
   {
-    name: 'Session',
-    title: '会话',
-    component: Session,
-  },
-  {
     name: 'Baby',
     component: Baby,
     headerShown: false,
+  },
+  {
+    name: 'CreateBabyStep1',
+    headerShown: false,
+    component: CreateBabyStep1,
+  },
+  {
+    name: 'CreateBabyStep2',
+    headerShown: false,
+    component: CreateBabyStep2,
+  },
+  {
+    name: 'EditCarer',
+    title: '编辑看护人',
+    component: EditCarer,
+  },
+  {
+    name: 'EditBaby',
+    title: '修改宝宝信息',
+    component: EditBaby,
+  },
+  {
+    name: 'EditAddress',
+    title: '修改地址信息',
+    component: EditAddress,
+  },
+  {
+    name: 'CreateCarer',
+    title: '添加看护人',
+    component: EditCarer,
+  },
+  {
+    name: 'CreateBabyStep3',
+    headerShown: false,
+    component: CreateBabyStep3,
   },
   {
     name: 'ChangePassword',

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Healthy Future",
+    "name": "Dev Healthy Future",
     "description": "RURAL EDUCATION ACTION PROGRAM",
     "slug": "healthy-future-app",
     "platforms": ["ios", "android"],
@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {
-        "package": "edu.stanford.fsi.reap.app"
+      "package": "edu.stanford.fsi.reap.app"
     },
     "releaseChannel": "dev"
   }

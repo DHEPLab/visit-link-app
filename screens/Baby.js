@@ -5,28 +5,68 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
-import { useFetch, useManualFetchArray } from '../utils';
+import { useFetch, useManualFetchArray, useBoolState } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { GenderIcon, BabyStage, FamilyTies, FeedingPattern } from '../constants/enums';
-import { VisitCard, GhostNavigatorHeader, Button, Card, StaticField, NoData } from '../components';
+import { GenderIcon, BabyStage, FeedingPattern } from '../constants/enums';
+import {
+  VisitItem,
+  GhostNavigatorHeader,
+  Button,
+  Card,
+  StaticField,
+  NoData,
+  ApproveStatus,
+  CarerItem,
+  Modal,
+  Input,
+  LargeButtonContainer,
+} from '../components';
+import { useMethods } from './BabyForm/CreateBabyStep2';
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(params?.tab === 'family' ? 1 : 0);
 
   const [started, setStarted] = useState(false);
-  const [baby] = useFetch(`/api/babies/${params.id}`);
-  const [carers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
+  const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`);
+  const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
   const [visits, refreshVisits] = useManualFetchArray(`/api/babies/${params.id}/visits`, {
     started: false,
   });
 
   useEffect(() => navigation.addListener('focus', () => refreshVisits({ started })), [navigation]);
+  // on change address
+  useEffect(() => {
+    if (route.params.address) {
+      http.put(`/api/babies/${params.id}/address`, route.params.address).then(onRefresh);
+    }
+  }, [route.params.address]);
+  // on change baby basic info
+  useEffect(() => {
+    if (route.params.baby) {
+      http.put(`/api/babies/${params.id}`, route.params.baby).then(onRefresh);
+    }
+  }, [route.params.baby]);
+  useEffect(() => {
+    if (!route.params.carer) return;
+    route.params.carerIndex === -1
+      ? // create new carer
+        http.post(`/api/babies/${params.id}/carers`, params.carer).then(onRefresh)
+      : // edit old carer
+        http
+          .put(`/api/babies/${params.id}/carers/${params.carer.id}`, params.carer)
+          .then(onRefresh);
+  }, [route.params.carer]);
 
   function onChangeVisitTab(_started) {
     setStarted(_started);
     refreshVisits({ started: _started });
+  }
+
+  function onRefresh() {
+    refreshBaby();
+    refreshCarers();
   }
 
   function handleCreateVisit() {
@@ -37,7 +77,7 @@ export default function Baby({ navigation, route }) {
           lockBaby: true,
           baby: {
             ...baby,
-            months: params.months,
+            months: baby.months,
             carerName: carers[0]?.name,
             carerPhone: carers[0]?.phone,
           },
@@ -53,19 +93,22 @@ export default function Baby({ navigation, route }) {
         <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
         <BabyContainer>
           <NameContainer>
-            <Name>{params.name}</Name>
-            <Identity>ID: {params.identity}</Identity>
+            <Name>{baby.name || params.name}</Name>
+            <IdentityContainer>
+              <ApproveStatus approved={baby.approved} />
+              <Identity>ID: {baby.identity || params.identity || '暂无'}</Identity>
+            </IdentityContainer>
           </NameContainer>
           <InfoContainer>
             <View>
               <Stage>
                 <MaterialCommunityIcons
-                  name={GenderIcon[params.gender]}
+                  name={GenderIcon[baby.gender || params.gender]}
                   size={px2dp(12)}
                   color="#fff"
                 />
                 <Age>
-                  {BabyStage[params.stage]} {params.months}个月
+                  {BabyStage[baby.stage || params.stage]} {baby.months || params.months}个月
                 </Age>
               </Stage>
               {baby.feedingPattern && (
@@ -75,7 +118,11 @@ export default function Baby({ navigation, route }) {
                 </FeedingPatternContainer>
               )}
             </View>
-            {/* <Button ghost title="修改资料" /> */}
+            <Button
+              ghost
+              title="修改资料"
+              onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby })}
+            />
           </InfoContainer>
         </BabyContainer>
       </Header>
@@ -100,22 +147,27 @@ export default function Baby({ navigation, route }) {
         renderScene={SceneMap({
           Visits: () => (
             <Visits
+              onCreateVisit={handleCreateVisit}
               onChange={onChangeVisitTab}
               dataSource={visits}
               started={started}
               navigation={navigation}
+              approved={baby.approved}
             />
           ),
-          Family: () => <Family baby={baby} carers={carers} />,
+          Family: () => (
+            <Family baby={baby} carers={carers} navigation={navigation} onRefresh={onRefresh} />
+          ),
         })}
       />
-
-      <FixedButtonContainer>
-        <Button size="large" title="新建家访" onPress={handleCreateVisit} />
-      </FixedButtonContainer>
     </>
   );
 }
+
+const IdentityContainer = styled.View`
+  align-items: flex-end;
+  opacity: 0.6;
+`;
 
 const FeedingPatternContainer = styled.View`
   flex-direction: row;
@@ -141,7 +193,15 @@ const Stage = styled.View`
   align-items: center;
 `;
 
-function Visits({ started, dataSource, onChange, navigation }) {
+function Visits({ started, dataSource, onChange, navigation, onCreateVisit, approved }) {
+  function handlePressVisit(item) {
+    if (!approved && item.status === 'NOT_STARTED') {
+      ToastAndroid.show('请等待宝宝完成审核', ToastAndroid.SHORT);
+      return;
+    }
+    navigation.navigate('Visit', { id: item.id });
+  }
+
   return (
     <VisitsContainer>
       <VisitTabs>
@@ -156,59 +216,184 @@ function Visits({ started, dataSource, onChange, navigation }) {
         ListEmptyComponent={<NoData title="没有相关结果" />}
         data={dataSource}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => (
-          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
-        )}
+        renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
       />
+      <FixedButtonContainer>
+        <Button size="large" disabled={!approved} title="新建家访" onPress={onCreateVisit} />
+      </FixedButtonContainer>
     </VisitsContainer>
   );
 }
 
-function Family({ baby, carers }) {
+function Family({ baby, carers, navigation, onRefresh }) {
+  const [remark, setRemark] = useState(baby.remark);
+  const [closeAccountReason, setCloseAccountReason] = useState();
+  const [deleteId, setDeleteId] = useState();
+
+  const [remarkVisible, openRemark, closeRemark] = useBoolState();
+  const [deleteVisible, openDelete, closeDelete] = useBoolState();
+  const [closeAccountVisible, openCloseAccount, closeCloseAccount] = useBoolState();
+  const { familyTies } = useMethods();
+
+  function handleChangeMaster(carer) {
+    http
+      .put(`/api/babies/${baby.id}/carers/${carer.id}`, {
+        ...carer,
+        master: true,
+      })
+      .then(onRefresh);
+  }
+
+  function handleDelete() {
+    http.delete(`/api/babies/${baby.id}/carers/${deleteId}`).then(onRefresh);
+  }
+
+  function handleChangeRemark() {
+    http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
+      onRefresh();
+      closeRemark();
+    });
+  }
+
+  function handleCloseAccount() {
+    http.put(`/api/babies/${baby.id}/close`, { reason: closeAccountReason }).then(() => {
+      onRefresh();
+      closeCloseAccount();
+    });
+  }
+
   return (
     <CardContainer contentContainerStyle={{ paddingVertical: 20 }}>
-      <Card title="备注信息">
+      <Card
+        title="备注信息"
+        hideBody={!baby.remark}
+        right={<Button title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
+      >
         <StaticField>{baby.remark}</StaticField>
       </Card>
-      <Card title="地址信息">
+
+      <Card
+        title="地址信息"
+        right={
+          <Button
+            title="修改"
+            onPress={() =>
+              navigation.navigate('EditAddress', {
+                from: 'Baby',
+                address: { area: baby.area, location: baby.location },
+              })
+            }
+          />
+        }
+      >
         <StaticField label="所在地区">{baby.area}</StaticField>
         <StaticField label="详细地址">{baby.location}</StaticField>
       </Card>
-      <Card title="看护人信息">
-        {carers.map((carer, index) => (
-          <Carer
-            key={carer.id}
-            carer={carer}
-            number={index + 1}
-            noBorder={index === carers.length - 1}
+
+      <Card
+        title="看护人信息"
+        noPadding
+        right={
+          <Button
+            title="添加"
+            disabled={carers.length > 3}
+            onPress={() =>
+              navigation.navigate('CreateCarer', {
+                from: 'Baby',
+                filterFamilyTies: familyTies(carers),
+              })
+            }
           />
-        ))}
+        }
+      >
+        <CarersContainer>
+          {carers.map((carer, index) => (
+            <CarerItem
+              key={carer.id}
+              value={carer}
+              number={index + 1}
+              noBorder={index === carers.length - 1}
+              onChangeMaster={() => handleChangeMaster(carer)}
+              onPressDelete={() => {
+                if (carer.master) {
+                  ToastAndroid.show('主看护人不可删除', ToastAndroid.LONG);
+                  return;
+                }
+                setDeleteId(carer.id);
+                openDelete();
+              }}
+              onPressModify={() =>
+                navigation.navigate('EditCarer', {
+                  carer,
+                  carerIndex: index,
+                  from: 'Baby',
+                  filterFamilyTies: familyTies(carers, carer.familyTies),
+                })
+              }
+            />
+          ))}
+        </CarersContainer>
       </Card>
+
+      {baby.actionFromApp !== 'DELETE' && (
+        <LargeButtonContainer>
+          <Button type="weaken" title="注销宝宝" onPress={openCloseAccount} />
+        </LargeButtonContainer>
+      )}
+
+      <Modal
+        title="你是否要注销宝宝账户？"
+        visible={closeAccountVisible}
+        content={
+          <Input
+            value={closeAccountReason}
+            onChangeText={setCloseAccountReason}
+            border
+            placeholder="请输入宝宝的注销原因"
+          />
+        }
+        onCancel={closeCloseAccount}
+        onOk={handleCloseAccount}
+        okText="注销"
+        disableOk={!closeAccountReason}
+      />
+      <Modal
+        title="添加备注信息"
+        visible={remarkVisible}
+        content={
+          <Input
+            value={remark}
+            onChangeText={setRemark}
+            border
+            placeholder="请输入宝宝的备注信息"
+          />
+        }
+        onCancel={closeRemark}
+        onOk={handleChangeRemark}
+      />
+      <Modal
+        title="删除此看护人"
+        visible={deleteVisible}
+        contentText="确认要删除此看护人？"
+        okText="删除"
+        cancelText="取消"
+        onCancel={closeDelete}
+        onOk={handleDelete}
+      />
     </CardContainer>
   );
 }
 
-function Carer({ number, carer, noBorder }) {
-  return (
-    <CarerItem noBorder={noBorder}>
-      <CarerOperation>
-        <CarerNumber>照料人 {number}</CarerNumber>
-        {carer.master && <MasterCarer>主照料人</MasterCarer>}
-      </CarerOperation>
-      <StaticField label="照料人姓名">{carer.name}</StaticField>
-      <StaticField label="亲属关系">{FamilyTies[carer.familyTies]}</StaticField>
-      <StaticField label="联系电话">{carer.phone}</StaticField>
-      <StaticField label="微信号码">{carer.wechat}</StaticField>
-    </CarerItem>
-  );
-}
+const CarersContainer = styled.View`
+  padding: 0 24px;
+`;
 
 const FixedButtonContainer = styled.View`
   position: absolute;
   bottom: 0;
-  width: 100%;
-  height: 48px;
+  width: 400px;
   display: flex;
+  padding-top: 10px;
   justify-content: center;
   align-items: center;
   background: rgba(255, 255, 255, 0.49);
@@ -249,6 +434,7 @@ const Name = styled(WhiteText)`
 `;
 
 const Identity = styled(WhiteText)`
+  margin-top: 4px;
   font-size: 10px;
 `;
 
@@ -264,6 +450,8 @@ const Header = styled(LinearGradient)`
 
 const VisitsContainer = styled.View`
   padding: 20px 28px;
+  position: relative;
+  flex: 1;
 `;
 
 const VisitTabs = styled.View`
@@ -284,33 +472,7 @@ const VisitTab = styled.Text`
   `}
 `;
 
-const CarerOperation = styled.View`
-  flex-direction: row;
-  margin-bottom: 12px;
-`;
-
-const CarerNumber = styled.Text`
-  font-size: 10px;
-  font-weight: bold;
-  width: 50px;
-`;
-
-const MasterCarer = styled.Text`
-  color: #8e8e93;
-  font-size: 10px;
-  margin-left: 12px;
-`;
-
 const CardContainer = styled(ScrollView)`
   padding: 0 28px;
-`;
-
-const CarerItem = styled.View`
-  ${({ noBorder }) =>
-    !noBorder &&
-    `
-  border-bottom-width: 1px;
-  border-color: #eeeeee;
-  margin-bottom: 10px;
-  `}
+  padding-bottom: 60px;
 `;

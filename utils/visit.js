@@ -60,6 +60,14 @@ function mergeDateAndTime(date, time) {
   return `${formatDate(date)}T${moment(time).format('HH:mm')}`;
 }
 
+function statusNotStart(status) {
+  return status === 'NOT_STARTED';
+}
+
+function statusUndone(status) {
+  return status === 'UNDONE';
+}
+
 export default {
   canBegin(status, visitTime) {
     if (status !== 'NOT_STARTED') return false;
@@ -72,4 +80,9 @@ export default {
   formatDateCN,
   mergeDateAndTime,
   defaultDatetime,
+  statusDone: (status) => status === 'DONE',
+  statusUndone,
+  statusNotStart,
+  remarkTitle: (status) =>
+    statusNotStart(status) ? '备注' : statusUndone(status) ? '未完成原因' : '过期原因',
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { FlatList } from 'react-native';
+import { FlatList, ToastAndroid } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -10,7 +10,7 @@ import Http from '../utils/http';
 import { useManualFetchArray, calenderMarkedDates } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
-import { Button, VisitCard, NoData } from '../components';
+import { Button, VisitItem, NoData } from '../components';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Visits({ navigation }) {
@@ -29,6 +29,14 @@ export default function Visits({ navigation }) {
       date: selected,
     }).then(setVisits);
   }, [selected, markedDates]);
+
+  function handlePressVisit(item) {
+    if (!item.babyApproved && item.status === 'NOT_STARTED') {
+      ToastAndroid.show('请等待宝宝完成审核', ToastAndroid.SHORT);
+      return;
+    }
+    navigation.navigate('Visit', { id: item.id });
+  }
 
   return (
     <>
@@ -86,9 +94,7 @@ export default function Visits({ navigation }) {
         ListEmptyComponent={<NoData title="该日期暂时没有家访安排" />}
         data={visits}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => (
-          <VisitCard onPress={() => navigation.navigate('Visit', { id: item.id })} value={item} />
-        )}
+        renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
       />
     </>
   );

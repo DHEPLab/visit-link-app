@@ -1,6 +1,7 @@
 const colors = ['#FF9472', '#F2709C'];
 
 export default {
+  primary: '#FF794F',
   colors,
   linearGradient: {
     start: [0, 0],

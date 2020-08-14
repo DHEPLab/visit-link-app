@@ -1,23 +1,73 @@
-import React from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
+import Http from '../utils/http';
 import Visit from '../utils/visit';
-import { styled } from '../utils/styled';
+import Storage from '../cache/storage';
+import Resources from '../cache/resources';
+
 import { Colors } from '../constants';
-import { useFetch } from '../utils';
-import {
-  Button,
-  LinearGradientHeader,
-  Card,
-  StaticForm,
-  StaticField,
-  BabyLine,
-  NoData,
-} from '../components';
+import { useBoolState } from '../utils';
+import { styled } from '../utils/styled';
+import { Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
 
 export default function Home({ navigation }) {
-  const [visit, refresh, refreshing] = useFetch('/api/visits/next');
+  const [visit, reloadVisit] = Storage.useNextVisit();
   const { visitTime, baby, lesson, status } = visit;
+
+  const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [fetching, startFetch, endFetch] = useBoolState();
+
+  const [update, setUpdate] = useState({});
+
+  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+
+  async function refresh() {
+    startRefresh();
+    try {
+      setUpdate(await Resources.checkForUpdateAsync());
+      await submit();
+      Storage.setNextVisit(await Http.get('/api/visits/next'));
+    } catch (error) {
+      if (error.status === 404) {
+        Storage.setNextVisit({});
+      } else {
+        console.warn(error);
+      }
+    } finally {
+      reloadVisit();
+      endRefresh();
+    }
+  }
+
+  async function submit() {
+    const _visitStatus = await Storage.getVisitStatus();
+    const nextModuleIndex = await Storage.getNextModule();
+    const id = Object.keys(_visitStatus || {})[0];
+    if (id) {
+      return Http.put(`/api/visits/${id}/status`, {
+        visitStatus: _visitStatus[id],
+        nextModuleIndex,
+      }).then((_) => {
+        Storage.setNextVisit({});
+        Storage.cleanVisitStatus();
+        Storage.setNextModule(0);
+      });
+    }
+  }
+
+  async function handleFetchUpdate() {
+    startFetch();
+    try {
+      await Resources.fetchUpdateAsync();
+      setUpdate({});
+      ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
+    } finally {
+      endFetch();
+    }
+  }
 
   return (
     <StyledScrollView
@@ -25,75 +75,95 @@ export default function Home({ navigation }) {
         <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
       }
     >
-      <LinearGradientHeader>
-        {visit.id && (
-          <>
-            您的下一次家访：{'\n'}
-            {Visit.formatDateTimeCN(visitTime)}
-          </>
+      <Spinner visible={fetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
+
+      <Header {...Colors.linearGradient}>
+        <BottomRightBackground
+          width={140}
+          height={134}
+          source={require('../assets/images/curriculum-bg.png')}
+        />
+
+        <Title>
+          {visit.id
+            ? `您的下一次家访：\n${Visit.formatDateTimeCN(visitTime)}`
+            : `您没有家访安排，\n请创建新的家访：`}
+        </Title>
+
+        {update.isAvailable && (
+          <SyncButton>
+            <Button
+              ghost
+              size="small"
+              onPress={handleFetchUpdate}
+              title={update.firstTime ? '一键下载' : '一键更新'}
+            />
+          </SyncButton>
         )}
-      </LinearGradientHeader>
+      </Header>
 
       {visit.id ? (
         <CardContainer>
-          <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
-            <BabyLineContainer>
-              <BabyLine {...baby} />
-            </BabyLineContainer>
-            <StaticForm>
-              <StaticField label="主照料人">{baby?.carerName}</StaticField>
-              <StaticField label="联系电话">{baby?.carerPhone}</StaticField>
-              <StaticField label="所在区域">{baby?.area}</StaticField>
-              <StaticField label="详细地址">{baby?.location}</StaticField>
-            </StaticForm>
-          </Card>
-          <Card
-            title="课堂安排"
-            right={<Button title="预览" onPress={() => navigation.navigate('LessonIntro')} />}
-          >
-            <LessonName>{lesson?.name}</LessonName>
-            <StaticForm>
-              {lesson?.moduleNames?.map((name, index) => (
-                <StaticField key={name} label={`模块 ${index + 1}`}>
-                  {name}
-                </StaticField>
-              ))}
-            </StaticForm>
-          </Card>
+          <BabyCard baby={baby} />
+          <LessonCard
+            disabled={update.isAvailable}
+            lesson={lesson}
+            status={status}
+            navigation={navigation}
+          />
         </CardContainer>
       ) : (
         <NoDataContainer>
-          <NoData title="暂无家访安排" />
+          <Button
+            title="新建家访"
+            disabled={update.isAvailable}
+            size="large"
+            onPress={() =>
+              navigation.navigate('CreateVisit', {
+                visitTime: `${Visit.formatDate(new Date())}T10:00`,
+              })
+            }
+          />
         </NoDataContainer>
       )}
 
-      {Visit.canBegin(status, visitTime) && (
-        <ButtonContainer>
-          <Button
-            size="large"
-            title="开始课堂"
-            onPress={() => navigation.navigate('LessonIntro')}
-          />
-        </ButtonContainer>
-      )}
+      <StartLesson
+        {...{
+          disabled: update.isAvailable,
+          status,
+          visitTime,
+          navigation,
+          visitId: visit.id,
+          lessonId: visit?.lesson?.id,
+        }}
+      />
     </StyledScrollView>
   );
 }
 
-const NoDataContainer = styled.View`
-  height: 300px;
-  justify-content: center;
+const SyncButton = styled.View`
+  position: absolute;
+  right: 20px;
+  top: 30px;
 `;
 
-const BabyLineContainer = styled.View`
-  padding-bottom: 8px;
+const Header = styled(LinearGradient)`
+  position: relative;
+  width: 100%;
+  height: 160px;
+  padding-top: 50px;
+  padding-left: 28px;
 `;
 
-const LessonName = styled.Text`
-  color: #525252;
-  font-size: 12px;
+const Title = styled.Text`
+  font-size: 20px;
+  color: #fff;
   font-weight: bold;
-  margin-bottom: 8px;
+`;
+
+const NoDataContainer = styled.View`
+  height: 100px;
+  justify-content: center;
 `;
 
 const StyledScrollView = styled(ScrollView)`
@@ -103,8 +173,4 @@ const StyledScrollView = styled(ScrollView)`
 const CardContainer = styled.View`
   margin: 0 28px;
   margin-top: -34px;
-`;
-const ButtonContainer = styled.View`
-  margin-top: 20px;
-  margin-bottom: 10px;
 `;

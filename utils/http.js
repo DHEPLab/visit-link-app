@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import Config from '../constants/Config';
+import { ToastAndroid } from 'react-native';
 
+// fetch timeout 15s
+const timeout = 15000;
 const Host = Config.apiHost;
 let Token;
 
@@ -30,6 +33,7 @@ function request(fetchPromise) {
         }
       })
       .catch((error) => {
+        ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
         reject(error);
         console.warn(JSON.stringify(error));
       });
@@ -65,6 +69,7 @@ export default {
           Authorization: `Bearer ${Token}`,
         },
         body: JSON.stringify(body),
+        timeout,
       })
     );
   },
@@ -78,6 +83,7 @@ export default {
           Authorization: `Bearer ${Token}`,
         },
         body: JSON.stringify(body),
+        timeout,
       })
     );
   },
@@ -89,6 +95,7 @@ export default {
           Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
+        timeout,
       })
     );
   },
@@ -100,6 +107,7 @@ export default {
           Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
+        timeout,
       })
     );
   },

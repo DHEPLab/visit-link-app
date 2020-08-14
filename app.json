@@ -20,7 +20,7 @@
       "supportsTablet": true
     },
     "android": {
-        "package": "edu.stanford.fsi.reap.app"
+      "package": "edu.stanford.fsi.reap.app"
     }
   }
 }

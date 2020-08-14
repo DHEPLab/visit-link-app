@@ -1,5 +1,5 @@
 export const signIn = ({ idToken }) => ({
-  type: 'SIGN_IN',
+  type: 'RESTORE_TOKEN',
   token: idToken,
 });
 
@@ -10,4 +10,9 @@ export const signOut = () => ({
 export const restoreToken = (token) => ({
   type: 'RESTORE_TOKEN',
   token,
+});
+
+export const netInfo = (state) => ({
+  type: 'NET_INFO',
+  payload: state,
 });

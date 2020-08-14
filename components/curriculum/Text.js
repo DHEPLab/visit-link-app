@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { WebView } from 'react-native-webview';
+import React from 'react';
+import AutoHeightWebView from 'react-native-autoheight-webview';
 
 import { styled } from '../../utils/styled';
 
@@ -28,13 +28,13 @@ export default function CurriculumText({ value }) {
 }
 
 function InstructionText({ html }) {
-  return <WebViewContainer body={html} />;
+  return <WebViewContainer html={html} />;
 }
 
 function ReferenceText({ html }) {
   return (
     <ReferenceContainer>
-      <WebViewContainer body={html} />
+      <WebViewContainer html={html} />
     </ReferenceContainer>
   );
 }
@@ -42,7 +42,7 @@ function ReferenceText({ html }) {
 function Script({ html }) {
   return (
     <ScriptContainer>
-      <WebViewContainer body={html} style={{ backgroundColor: '#ffede2' }} />
+      <WebViewContainer html={html} style={{ backgroundColor: '#ffede2' }} />
     </ScriptContainer>
   );
 }
@@ -64,29 +64,6 @@ const ReferenceContainer = styled.View`
   border-color: #ffede2;
 `;
 
-function WebViewContainer({ body, style = {} }) {
-  const [height, setHeight] = useState(0);
-
-  return (
-    <WebView
-      originWhitelist={['*']}
-      onNavigationStateChange={(state) => setHeight(Number(state.title) || 0)}
-      style={{ height, ...style }}
-      source={{
-        html: `
-        <html>
-          <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          </head>
-          <body>
-            ${body} 
-          </body>
-          <script>
-            window.location.hash = 1;
-            document.title = document.body.scrollHeight;
-          </script>
-        </html>`,
-      }}
-    />
-  );
+function WebViewContainer({ html, style = {} }) {
+  return <AutoHeightWebView style={{ width: 'auto' }} customStyle={style} source={{ html }} />;
 }

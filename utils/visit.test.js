@@ -38,3 +38,21 @@ it('should default datetime is range0', () => {
     '2020-07-28T10:00'
   );
 });
+
+it('should visit status done is truthy', () => {
+  expect(Visit.statusDone('DONE')).toBeTruthy();
+});
+
+it('should visit status undone is truthy', () => {
+  expect(Visit.statusUndone('UNDONE')).toBeTruthy();
+});
+
+it('should visit status not started is truthy', () => {
+  expect(Visit.statusNotStart('NOT_STARTED')).toBeTruthy();
+});
+
+it('should return visit remark title', () => {
+  expect(Visit.remarkTitle('NOT_STARTED')).toBe('备注');
+  expect(Visit.remarkTitle('EXPIRED')).toBe('过期原因');
+  expect(Visit.remarkTitle('UNDONE')).toBe('未完成原因');
+});

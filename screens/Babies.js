@@ -1,17 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { BabyCard, NoData } from '../components';
-import { useFetch } from '../utils';
+import { BabyItem, NoData, Button, ListFooter } from '../components';
+import { useBoolState } from '../utils';
 
-export default function Babies() {
-  const { navigate } = useNavigation();
-  const [babies, refresh, refreshing] = useFetch('/api/babies', {}, []);
+export default function Babies({ navigation }) {
+  const { navigate } = navigation;
+  const [search, setSearch] = useState({
+    page: 0,
+    size: 10,
+  });
+  const [totalPages, setTotalPages] = useState(0);
+  const [contents, setContents] = useState([]);
+  const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [loading, startLoad, endLoad] = useBoolState();
+  const [name, setName] = useState();
+
+  useEffect(() => {
+    if (search.page === 0) {
+      startRefresh();
+      setContents([]);
+    } else {
+      startLoad();
+    }
+
+    http
+      .get('/api/babies', search)
+      .then((data) => {
+        setTotalPages(data.totalPages);
+        setContents((c) => [...c, ...data.content]);
+      })
+      .finally(() => {
+        endRefresh();
+        endLoad();
+      });
+  }, [search]);
+
+  function refresh() {
+    setSearch((s) => ({
+      ...s,
+      page: 0,
+      name: name || '',
+    }));
+  }
+
+  function handleLoadMore() {
+    if (refreshing || loading) return;
+    if (totalPages === search.page + 1) return;
+    setSearch((s) => ({
+      ...s,
+      page: s.page + 1,
+    }));
+  }
 
   return (
     <>
@@ -19,21 +64,38 @@ export default function Babies() {
         <Search>
           <MaterialIcons name="search" size={px2dp(16)} color="#fff" />
           <TextInput
-            style={{ marginLeft: px2dp(4), color: '#fff' }}
+            style={{ marginLeft: px2dp(4), flex: 1, color: '#fff' }}
+            onChangeText={(text) => setName(text)}
+            onEndEditing={() => refresh()}
             placeholder="请您输入要搜索的宝宝姓名"
           />
         </Search>
       </Header>
-      <ListHeader>
-        {babies.length > 0 && <Title>宝宝列表</Title>}
-        {/* <Button title="添加宝宝" /> */}
-      </ListHeader>
+
+      {contents.length > 0 && (
+        <ListHeader>
+          <Title>宝宝列表</Title>
+          <Button onPress={() => navigate('CreateBabyStep1')} title="添加宝宝" />
+        </ListHeader>
+      )}
+
       <FlatList
         ListEmptyComponent={
-          <NoDataContainer>
-            <NoData title="尚未添加宝宝信息" />
-          </NoDataContainer>
+          !refreshing &&
+          !loading && (
+            <NoDataContainer>
+              {name ? (
+                <NoData title="暂无匹配的宝宝信息" />
+              ) : (
+                <>
+                  <NoData title="尚未添加宝宝信息" />
+                  <Button title="添加宝宝" onPress={() => navigate('CreateBabyStep1')} />
+                </>
+              )}
+            </NoDataContainer>
+          )
         }
+        ListFooterComponent={!refreshing && contents.length > 0 && <ListFooter loading={loading} />}
         refreshControl={
           <RefreshControl
             colors={Colors.colors}
@@ -41,9 +103,11 @@ export default function Babies() {
             refreshing={refreshing}
           />
         }
-        data={babies}
+        data={contents}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <BabyCard onPress={(baby) => navigate('Baby', baby)} {...item} />}
+        onEndReachedThreshold={0.4}
+        onEndReached={handleLoadMore}
+        renderItem={({ item }) => <BabyItem onPress={(baby) => navigate('Baby', baby)} {...item} />}
       />
     </>
   );
