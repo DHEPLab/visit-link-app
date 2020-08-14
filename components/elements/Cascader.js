@@ -12,10 +12,10 @@ export default function Cascader({ value, onChange, options, placeholder }) {
   function handlePressItem(item) {
     if (item.children && item.children.length > 0) {
       setData(item.children);
-      setValues((v) => [...v, item.name]);
+      setValues((v) => [...v, item]);
     } else {
+      onChange([...values, item].map((i) => i.name).join('/'));
       close();
-      onChange([...values, item.name].join('/'));
     }
   }
 
@@ -25,33 +25,92 @@ export default function Cascader({ value, onChange, options, placeholder }) {
     open();
   }
 
+  function backTo(item, index) {
+    if (index === -1) {
+      setValues([]);
+      setData(options);
+      return;
+    }
+    setValues((v) => {
+      const clone = [...v];
+      clone.splice(index + 1, 4);
+      return clone;
+    });
+    setData(item.children);
+  }
+
   return (
     <>
       <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
         {value ? <Value>{value}</Value> : <Placeholder>{placeholder}</Placeholder>}
       </TouchableOpacity>
       <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
-        <Container>
-          <ScrollView>
-            <DataContainer>
-              {data.map((item) => (
-                <TouchableOpacity
-                  key={item.name}
-                  activeOpacity={0.8}
-                  onPress={() => handlePressItem(item)}
-                >
-                  <Item>
-                    <Label>{item.name}</Label>
-                  </Item>
+        <Shadow>
+          <CardContainer>
+            <Header>
+              <Title>请选择</Title>
+            </Header>
+            <CurrentPick>
+              <TouchableOpacity activeOpacity={0.8} onPress={() => backTo(null, -1)}>
+                <Picked>当前选择：</Picked>
+              </TouchableOpacity>
+              {values.map((v, index) => (
+                <TouchableOpacity activeOpacity={0.8} onPress={() => backTo(v, index)}>
+                  <Picked key={v.name}>{`${v.name}/`}</Picked>
                 </TouchableOpacity>
               ))}
-            </DataContainer>
-          </ScrollView>
-        </Container>
+            </CurrentPick>
+            <ScrollView>
+              <DataContainer>
+                {data.map((item) => (
+                  <TouchableOpacity
+                    key={item.name}
+                    activeOpacity={0.8}
+                    onPress={() => handlePressItem(item)}
+                  >
+                    <Item>
+                      <Label>{item.name}</Label>
+                    </Item>
+                  </TouchableOpacity>
+                ))}
+              </DataContainer>
+            </ScrollView>
+          </CardContainer>
+        </Shadow>
       </Modal>
     </>
   );
 }
+
+const Header = styled.View`
+  height: 30px;
+  background: #ff794f;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CardContainer = styled.View`
+  margin-bottom: 50px;
+  width: 300px;
+  border-radius: 4px;
+  overflow: hidden;
+`;
+
+const Title = styled.Text`
+  font-size: 12px;
+  color: #fff;
+  font-weight: bold;
+`;
+
+const CurrentPick = styled.View`
+  background: #fff;
+  padding: 6px;
+  flex-direction: row;
+`;
+
+const Picked = styled.Text`
+  font-size: 10px;
+`;
 
 const Placeholder = styled.Text`
   color: #ff794f;
@@ -64,11 +123,10 @@ const Value = styled.Text`
   line-height: 16px;
 `;
 
-const Container = styled.View`
+const Shadow = styled.View`
   flex: 1;
-  padding: 50px 20px;
+  padding: 50px 0;
   align-items: center;
-  justify-content: center;
   background: rgba(0, 0, 0, 0.5);
 `;
 
