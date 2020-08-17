@@ -15,6 +15,7 @@ export default function StartLesson({
   navigation,
   lessonId,
   visitId,
+  nextModuleIndex,
 }) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
@@ -24,7 +25,13 @@ export default function StartLesson({
   }
 
   function handleContinue() {
-    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
+    navigation.navigate('LessonIntro', {
+      id: lessonId,
+      visitId,
+      preview: false,
+      continue: true,
+      nextModuleIndex,
+    });
   }
 
   return (

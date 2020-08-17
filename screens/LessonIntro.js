@@ -12,6 +12,9 @@ export default function LessonIntro({ navigation, route }) {
   useEffect(() => {
     if (!route.params.preview) {
       storage.setVisitStatus(route.params?.visitId, 'UNDONE');
+      if (route.params.continue) {
+        storage.setNextModule(route.params.nextModuleIndex);
+      }
     }
   }, []);
 

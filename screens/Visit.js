@@ -85,7 +85,14 @@ export default function VisitScreen({ navigation, route }) {
         <LessonCard lesson={lesson} status={status} navigation={navigation} />
 
         <StartLesson
-          {...{ status, visitTime, navigation, visitId: visit.id, lessonId: visit?.lesson?.id }}
+          {...{
+            status,
+            visitTime,
+            navigation,
+            visitId: visit.id,
+            lessonId: visit?.lesson?.id,
+            nextModuleIndex: visit?.nextModuleIndex,
+          }}
         />
       </Container>
     </ScrollView>
