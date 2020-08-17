@@ -42,7 +42,7 @@ function ReferenceText({ html }) {
 function Script({ html }) {
   return (
     <ScriptContainer>
-      <WebViewContainer html={html} style={{ backgroundColor: '#ffede2' }} />
+      <WebViewContainer html={html} customStyle="background-color: #ffede2" />
     </ScriptContainer>
   );
 }
@@ -64,6 +64,8 @@ const ReferenceContainer = styled.View`
   border-color: #ffede2;
 `;
 
-function WebViewContainer({ html, style = {} }) {
-  return <AutoHeightWebView style={{ width: 'auto' }} customStyle={style} source={{ html }} />;
+function WebViewContainer({ html, customStyle }) {
+  return (
+    <AutoHeightWebView style={{ width: 'auto' }} customStyle={customStyle} source={{ html }} />
+  );
 }
