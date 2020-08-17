@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(/^1[0-9]{10}$/, '请输入正确的手机号')
     .required('此项为必填'),
-  wechat: Yup.string().max(20, '最多20个字符'),
+  wechat: Yup.string().nullable(true).max(20, '最多20个字符'),
 });
 
 // The same baby cannot choose caregivers who have the same family ties
