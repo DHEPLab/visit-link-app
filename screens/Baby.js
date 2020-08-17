@@ -95,7 +95,7 @@ export default function Baby({ navigation, route }) {
           <NameContainer>
             <Name>{baby.name || params.name}</Name>
             <IdentityContainer>
-              <ApproveStatus approved={baby.approved} />
+              <ApproveStatus approved={baby.approved == null ? params.approved : baby.approved} />
               <Identity>ID: {baby.identity || params.identity || '暂无'}</Identity>
             </IdentityContainer>
           </NameContainer>
