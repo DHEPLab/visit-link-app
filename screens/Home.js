@@ -135,6 +135,7 @@ export default function Home({ navigation }) {
           navigation,
           visitId: visit.id,
           lessonId: visit?.lesson?.id,
+          from: 'Home',
         }}
       />
     </StyledScrollView>

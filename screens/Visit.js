@@ -5,7 +5,7 @@ import http from '../utils/http';
 import Visit from '../utils/visit';
 
 import { styled } from '../utils/styled';
-import { useFetch, useBoolState } from '../utils';
+import { useManualFetch, useBoolState } from '../utils';
 import {
   Card,
   Button,
@@ -20,12 +20,14 @@ import {
 
 export default function VisitScreen({ navigation, route }) {
   const { params } = route;
-  const [visit, refresh] = useFetch(`/api/visits/${params.id}`);
+  const [visit, refresh] = useManualFetch(`/api/visits/${params.id}`);
   const { visitTime, status, baby, lesson } = visit;
 
   const [remark, setRemark] = useState(visit.remark);
 
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
+
+  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
   useEffect(() => {
     if (!route.params.visitTime) return;
@@ -92,6 +94,7 @@ export default function VisitScreen({ navigation, route }) {
             visitId: visit.id,
             lessonId: visit?.lesson?.id,
             nextModuleIndex: visit?.nextModuleIndex,
+            from: 'Visit',
           }}
         />
       </Container>

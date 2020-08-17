@@ -16,12 +16,13 @@ export default function StartLesson({
   lessonId,
   visitId,
   nextModuleIndex,
+  from,
 }) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
   function handleStart() {
     closeStartVisit();
-    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
+    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false, from });
   }
 
   function handleContinue() {
@@ -31,6 +32,7 @@ export default function StartLesson({
       preview: false,
       continue: true,
       nextModuleIndex,
+      from,
     });
   }
 

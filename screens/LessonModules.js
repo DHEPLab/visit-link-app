@@ -2,20 +2,21 @@ import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import storage from '../cache/storage';
+import Http from '../utils/http';
+import Storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
 
 export default function LessonModules({ navigation, route }) {
   const { params } = route;
-  const [lesson] = storage.useLesson(params?.id);
-  const [nextModule, reloadNextModule] = storage.useNextModule();
+  const [lesson] = Storage.useLesson(params?.id);
+  const [nextModule, reloadNextModule] = Storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
 
   useEffect(() => {
     if (!params.preview && params.moduleId && params.finished) {
-      storage.setNextModule(nextModule + 1);
+      Storage.setNextModule(nextModule + 1);
       reloadNextModule();
     }
   }, [route.params?.moduleId]);
@@ -26,9 +27,20 @@ export default function LessonModules({ navigation, route }) {
 
   async function finish() {
     if (!params.preview) {
-      await storage.setVisitStatus(route.params?.visitId, 'DONE');
+      if (params.from === 'Visit') {
+        // from Visit screen, online mode, direct submit
+        await Http.put(`/api/visits/${params?.visitId}/status`, {
+          visitStatus: 'DONE',
+          nextModuleIndex: nextModule,
+        });
+        Storage.cleanVisitStatus();
+        Storage.setNextModule(0);
+      } else {
+        // from Home screen, offline mode, save visit status to storage
+        await Storage.setVisitStatus(params?.visitId, 'DONE');
+      }
     }
-    navigation.navigate('Home');
+    navigation.navigate(params.from);
   }
 
   return (
