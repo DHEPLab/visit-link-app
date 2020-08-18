@@ -16,3 +16,8 @@ export const netInfo = (state) => ({
   type: 'NET_INFO',
   payload: state,
 });
+
+export const lessonsUpdate = (payload) => ({
+  type: 'LESSONS_UPDATE',
+  payload,
+});

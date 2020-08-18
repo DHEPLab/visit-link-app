@@ -8,8 +8,9 @@ import Button from './elements/Button';
 import StaticForm from './elements/StaticForm';
 import StaticField from './elements/StaticField';
 
-export default function LessonCard({ disabled, status, lesson, navigation }) {
+export default function LessonCard({ validate, disabled, status, lesson, navigation }) {
   function startVisitPreview() {
+    if (validate && !validate()) return;
     navigation.navigate('LessonIntro', { id: lesson.id, preview: true });
   }
 

@@ -17,6 +17,7 @@ export default function StartLesson({
   visitId,
   nextModuleIndex,
   from,
+  validate,
 }) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
@@ -26,6 +27,7 @@ export default function StartLesson({
   }
 
   function handleContinue() {
+    if (validate && !validate()) return;
     navigation.navigate('LessonIntro', {
       id: lessonId,
       visitId,
@@ -55,6 +57,7 @@ export default function StartLesson({
                   ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
                   return;
                 }
+                if (validate && !validate()) return;
                 openStartVisit();
               }}
             />

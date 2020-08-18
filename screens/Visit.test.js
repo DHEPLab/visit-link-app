@@ -16,6 +16,17 @@ jest.mock('../utils', () => ({
   useManualFetch: jest.fn(),
 }));
 
+jest.mock('react-redux', () => ({
+  useDispatch: jest.fn(),
+  useSelector: () => ({
+    state: {
+      lessonsUpdate: {
+        isAvailable: false,
+      },
+    },
+  }),
+}));
+
 const createTestProps = () => ({
   navigation: {
     addListener: jest.fn(),

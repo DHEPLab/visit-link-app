@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Http from '../utils/http';
@@ -8,6 +9,7 @@ import Visit from '../utils/visit';
 import Storage from '../cache/storage';
 import Resources from '../cache/resources';
 
+import { lessonsUpdate } from '../actions';
 import { Colors } from '../constants';
 import { useBoolState } from '../utils';
 import { styled } from '../utils/styled';
@@ -20,14 +22,15 @@ export default function Home({ navigation }) {
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [fetching, startFetch, endFetch] = useBoolState();
 
-  const [update, setUpdate] = useState({});
+  const dispatch = useDispatch();
+  const update = useSelector((state) => state.lessonsUpdate);
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
   async function refresh() {
     startRefresh();
     try {
-      setUpdate(await Resources.checkForUpdateAsync());
+      dispatch(lessonsUpdate(await Resources.checkForUpdateAsync()));
       await submit();
       Storage.setNextVisit(await Http.get('/api/visits/next'));
     } catch (error) {
@@ -62,7 +65,7 @@ export default function Home({ navigation }) {
     startFetch();
     try {
       await Resources.fetchUpdateAsync();
-      setUpdate({});
+      dispatch(lessonsUpdate({}));
       ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
     } finally {
       endFetch();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, ToastAndroid } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import http from '../utils/http';
 import Visit from '../utils/visit';
@@ -26,6 +27,7 @@ export default function VisitScreen({ navigation, route }) {
   const [remark, setRemark] = useState(visit.remark);
 
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
+  const update = useSelector((state) => state.lessonsUpdate);
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
@@ -45,6 +47,14 @@ export default function VisitScreen({ navigation, route }) {
       closeRemark();
       refresh();
     });
+  }
+
+  function validate() {
+    if (update.isAvailable) {
+      ToastAndroid.show('请先到首页更新课程资源', ToastAndroid.LONG);
+      return false;
+    }
+    return true;
   }
 
   return (
@@ -84,7 +94,14 @@ export default function VisitScreen({ navigation, route }) {
         </Card>
 
         <BabyCard baby={baby} />
-        <LessonCard lesson={lesson} status={status} navigation={navigation} />
+        <LessonCard
+          {...{
+            lesson,
+            status,
+            navigation,
+            validate,
+          }}
+        />
 
         <StartLesson
           {...{
@@ -95,6 +112,7 @@ export default function VisitScreen({ navigation, route }) {
             lessonId: visit?.lesson?.id,
             nextModuleIndex: visit?.nextModuleIndex,
             from: 'Visit',
+            validate,
           }}
         />
       </Container>
