@@ -22,6 +22,7 @@ async function onResponseError(error) {
       msg = '网络异常，请稍后重试';
     case 500:
       break;
+    case 404:
     case 401:
       return;
     default:
