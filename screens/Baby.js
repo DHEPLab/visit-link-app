@@ -450,6 +450,7 @@ const Header = styled(LinearGradient)`
 
 const VisitsContainer = styled.View`
   padding: 20px 28px;
+  padding-bottom: 45px;
   position: relative;
   flex: 1;
 `;
