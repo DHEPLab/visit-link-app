@@ -1,4 +1,5 @@
 import React from 'react';
+import Constants from 'expo-constants';
 import { Alert, View, Image, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -87,9 +88,18 @@ export default function Me({ navigation }) {
       <Logout>
         <Button title="退出登录" type="weaken" onPress={openAlert} />
       </Logout>
+      <Version>版本号 v{Constants.manifest.version}</Version>
     </>
   );
 }
+
+const Version = styled.Text`
+  position: absolute;
+  bottom: 10px;
+  align-self: center;
+  color: #bbb;
+  font-size: 9px;
+`;
 
 const Logout = styled.View`
   position: absolute;
