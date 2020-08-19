@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 import Http from '../utils/http';
 import Visit from '../utils/visit';
@@ -23,28 +23,33 @@ export default function Home({ navigation }) {
   const [fetching, startFetch, endFetch] = useBoolState();
 
   const dispatch = useDispatch();
+  // lesson resources update state
   const update = useSelector((state) => state.lessonsUpdate);
 
-  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+  // refresh silent mode when focus navigation
+  useEffect(() => navigation.addListener('focus', () => refresh(true)), [navigation]);
 
-  async function refresh() {
-    startRefresh();
+  // silent mode prevents flickering when loading too fast
+  async function refresh(silent = false) {
+    !silent && startRefresh();
     try {
       dispatch(lessonsUpdate(await Resources.checkForUpdateAsync()));
+    } catch (e) {}
+    try {
       await submit();
+    } catch (e) {}
+    try {
       Storage.setNextVisit(await Http.get('/api/visits/next'));
-    } catch (error) {
-      if (error.status === 404) {
+    } catch (e) {
+      if (e.status === 404) {
         Storage.setNextVisit({});
-      } else {
-        console.warn(error);
       }
-    } finally {
-      reloadVisit();
-      endRefresh();
     }
+    reloadVisit();
+    !silent && endRefresh();
   }
 
+  // submit home visit data starting with offline mode
   async function submit() {
     const _visitStatus = await Storage.getVisitStatus();
     const nextModuleIndex = await Storage.getNextModule();
