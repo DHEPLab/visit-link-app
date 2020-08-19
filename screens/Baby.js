@@ -31,11 +31,27 @@ export default function Baby({ navigation, route }) {
   const [started, setStarted] = useState(false);
   const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`);
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
-  const [visits, refreshVisits] = useManualFetchArray(`/api/babies/${params.id}/visits`, {
-    started: false,
-  });
+  const [notStartedVisits, refreshNotStartedVisits] = useManualFetchArray(
+    `/api/babies/${params.id}/visits`,
+    {
+      started: false,
+    }
+  );
+  const [startedVisits, refreshStartedVisits] = useManualFetchArray(
+    `/api/babies/${params.id}/visits`,
+    {
+      started: true,
+    }
+  );
 
-  useEffect(() => navigation.addListener('focus', () => refreshVisits({ started })), [navigation]);
+  useEffect(
+    () =>
+      navigation.addListener('focus', () => {
+        refreshNotStartedVisits();
+        refreshStartedVisits();
+      }),
+    [navigation]
+  );
   // on change address
   useEffect(() => {
     if (route.params.address) {
@@ -58,11 +74,6 @@ export default function Baby({ navigation, route }) {
           .put(`/api/babies/${params.id}/carers/${params.carer.id}`, params.carer)
           .then(onRefresh);
   }, [route.params.carer]);
-
-  function onChangeVisitTab(_started) {
-    setStarted(_started);
-    refreshVisits({ started: _started });
-  }
 
   function onRefresh() {
     refreshBaby();
@@ -148,8 +159,9 @@ export default function Baby({ navigation, route }) {
           Visits: () => (
             <Visits
               onCreateVisit={handleCreateVisit}
-              onChange={onChangeVisitTab}
-              dataSource={visits}
+              onChange={setStarted}
+              notStartedVisits={notStartedVisits}
+              startedVisits={startedVisits}
               started={started}
               navigation={navigation}
               approved={baby.approved}
@@ -193,7 +205,15 @@ const Stage = styled.View`
   align-items: center;
 `;
 
-function Visits({ started, dataSource, onChange, navigation, onCreateVisit, approved }) {
+function Visits({
+  started,
+  startedVisits,
+  notStartedVisits,
+  onChange,
+  navigation,
+  onCreateVisit,
+  approved,
+}) {
   function handlePressVisit(item) {
     if (!approved && item.status === 'NOT_STARTED') {
       ToastAndroid.show('请等待宝宝完成审核', ToastAndroid.SHORT);
@@ -214,7 +234,7 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit, appr
       </VisitTabs>
       <FlatList
         ListEmptyComponent={<NoData title="没有相关结果" />}
-        data={dataSource}
+        data={started ? startedVisits : notStartedVisits}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
       />
