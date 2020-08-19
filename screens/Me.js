@@ -56,6 +56,9 @@ export default function Me({ navigation }) {
           <Card
             title="账户信息"
             right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
+            background={require('../assets/images/account.png')}
+            backgroundWidth={40}
+            backgroundHeight={50}
           >
             <StaticForm>
               <StaticField label="账户名称">{user.username}</StaticField>
@@ -63,7 +66,12 @@ export default function Me({ navigation }) {
             </StaticForm>
           </Card>
           {supervisor?.id && (
-            <Card title="督导信息">
+            <Card
+              title="督导信息"
+              background={require('../assets/images/supervisor.png')}
+              backgroundWidth={40}
+              backgroundHeight={50}
+            >
               <StaticForm>
                 <StaticField label="督导姓名">{supervisor?.realName}</StaticField>
                 <StaticField label="督导电话">{supervisor?.phone}</StaticField>
