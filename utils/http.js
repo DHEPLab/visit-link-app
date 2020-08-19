@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import Config from '../constants/Config';
 import { ToastAndroid } from 'react-native';
+
+import Config from '../constants/Config';
+import store from '../store';
+import { restoreToken } from '../actions';
 
 // fetch timeout 15s
 const timeout = 15000;
@@ -15,6 +18,12 @@ export function responseContentTypeJSON(response) {
   return response.headers.get('content-type') === 'application/json';
 }
 
+async function cleanToken() {
+  store.dispatch(restoreToken(null));
+  Token = '';
+  await AsyncStorage.removeItem('JWT_TOKEN');
+}
+
 async function onResponseError(error) {
   let msg = '服务异常，请稍后重试';
   switch (error.status) {
@@ -23,7 +32,9 @@ async function onResponseError(error) {
     case 500:
       break;
     case 404:
+      return;
     case 401:
+      cleanToken();
       return;
     default:
       const data = await error.json();

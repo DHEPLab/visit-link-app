@@ -1,26 +1,19 @@
 import React, { useEffect } from 'react';
-import { ToastAndroid } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
+import { ToastAndroid } from 'react-native';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
 
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import rootReducer from './reducers';
 import { restoreToken, netInfo } from './actions';
 
 import Http from './utils/http';
 import Navigator from './navigation/Navigator';
 import { Colors } from './constants';
 import { useBoolState } from './utils';
+import store from './store';
 import './config';
-
-const store = createStore(
-  rootReducer,
-  // Debugging Redux
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
 export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
