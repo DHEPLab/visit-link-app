@@ -1,6 +1,6 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { Alert, View, Image, RefreshControl, ScrollView } from 'react-native';
+import { View, Image, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Http from '../utils/http';
@@ -8,39 +8,25 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { useFetch, useBoolState } from '../utils';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Button, Card, StaticForm, StaticField, Message } from '../components';
+import { Modal, Button, Card, StaticForm, StaticField, Message } from '../components';
 import { signOut } from '../actions';
 
 export default function Me({ navigation }) {
-  const { navigate } = navigation;
   const dispatch = useDispatch();
+  const { navigate } = navigation;
   const [user, refresh, refreshing] = useFetch('/api/account/profile');
+
   const [visible, open] = useBoolState();
+  const [confirmVisible, openConfirm, closeConfirm] = useBoolState();
 
-  const chw = () => user.chw || {};
-  const supervisor = () => chw().supervisor || {};
+  const chw = user?.chw;
+  const supervisor = chw?.supervisor;
 
-  function openAlert() {
-    Alert.alert(
-      '您确定要退出登录吗？',
-      '您确定要退出登录吗？',
-      [
-        {
-          text: '稍后再说',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        {
-          text: '退出登录',
-          onPress: async () => {
-            await Http.signOut();
-            open();
-            dispatch(signOut());
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+  async function handleLogout() {
+    closeConfirm();
+    await Http.signOut();
+    open();
+    dispatch(signOut());
   }
 
   return (
@@ -56,7 +42,7 @@ export default function Me({ navigation }) {
           <HeaderTitle>个人中心</HeaderTitle>
           <NameContainer>
             <Name>{user.realName}</Name>
-            <Identity>ID: {chw().identity}</Identity>
+            <Identity>ID: {chw?.identity}</Identity>
           </NameContainer>
           <InfoContainer>
             <View>
@@ -65,6 +51,7 @@ export default function Me({ navigation }) {
             </View>
           </InfoContainer>
         </Header>
+
         <CardsContainer>
           <Card
             title="账户信息"
@@ -75,20 +62,31 @@ export default function Me({ navigation }) {
               <StaticField label="账户密码">******</StaticField>
             </StaticForm>
           </Card>
-          {supervisor().id && (
+          {supervisor?.id && (
             <Card title="督导信息">
               <StaticForm>
-                <StaticField label="督导姓名">{supervisor().realName}</StaticField>
-                <StaticField label="督导电话">{supervisor().phone}</StaticField>
+                <StaticField label="督导姓名">{supervisor?.realName}</StaticField>
+                <StaticField label="督导电话">{supervisor?.phone}</StaticField>
               </StaticForm>
             </Card>
           )}
         </CardsContainer>
       </ScrollView>
+
       <Logout>
-        <Button title="退出登录" type="weaken" onPress={openAlert} />
+        <Button title="退出登录" type="weaken" onPress={openConfirm} />
       </Logout>
       <Version>版本号 v{Constants.manifest.version}</Version>
+
+      <Modal
+        title="退出登录"
+        visible={confirmVisible}
+        contentText="您确定要退出登录吗？"
+        okText="退出登录"
+        cancelText="稍后再说"
+        onCancel={closeConfirm}
+        onOk={handleLogout}
+      />
     </>
   );
 }
