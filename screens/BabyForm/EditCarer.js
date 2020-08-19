@@ -1,4 +1,5 @@
 import React from 'react';
+import { ToastAndroid } from 'react-native';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { styled } from '../../utils/styled';
@@ -41,6 +42,11 @@ function filteredFamilyTies(familyTies) {
 export default function CreateCarer({ navigation, route }) {
   const { params } = route;
   function onSubmit(carer) {
+    if (params?.carer.master && !carer.master) {
+      ToastAndroid.show('请至少设置一个主看护人', ToastAndroid.LONG);
+      return;
+    }
+
     const carerIndex = params?.carerIndex == null ? -1 : params?.carerIndex;
     navigation.navigate(params.from, { carer, carerIndex });
   }
