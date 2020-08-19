@@ -28,6 +28,9 @@ function request(fetchPromise) {
         } else if (response.status === 404) {
           reject(response);
         } else {
+          if (response.status === 500 || response.status === 400) {
+            ToastAndroid.show('服务器异常，请稍后重试', ToastAndroid.SHORT);
+          }
           console.warn(response);
           reject(response);
         }
