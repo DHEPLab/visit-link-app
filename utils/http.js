@@ -11,7 +11,7 @@ AsyncStorage.getItem('JWT_TOKEN', (_, result) => {
   Token = result;
 });
 
-function responseContentTypeJSON(response) {
+export function responseContentTypeJSON(response) {
   return response.headers.get('content-type') === 'application/json';
 }
 
