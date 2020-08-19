@@ -15,6 +15,26 @@ function responseContentTypeJSON(response) {
   return response.headers.get('content-type') === 'application/json';
 }
 
+async function onResponseError(error) {
+  let msg = '服务异常，请稍后重试';
+  switch (error.status) {
+    case 502:
+      msg = '网络异常，请稍后重试';
+    case 500:
+      break;
+    case 401:
+      return;
+    default:
+      const data = await error.json();
+      if (data.violations) {
+        msg = '表单校验失败';
+      } else if (data.detail) {
+        msg = data.detail;
+      }
+  }
+  ToastAndroid.show(msg, ToastAndroid.LONG);
+}
+
 function request(fetchPromise) {
   return new Promise((resolve, reject) => {
     fetchPromise
@@ -25,13 +45,8 @@ function request(fetchPromise) {
               ? await response.json()
               : { text: await response.text() }
           );
-        } else if (response.status === 404) {
-          reject(response);
         } else {
-          if (response.status === 500 || response.status === 400) {
-            ToastAndroid.show('服务器异常，请稍后重试', ToastAndroid.SHORT);
-          }
-          console.warn(response);
+          onResponseError(response);
           reject(response);
         }
       })
