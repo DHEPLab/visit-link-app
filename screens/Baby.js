@@ -336,7 +336,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
               onChangeMaster={() => handleChangeMaster(carer)}
               onPressDelete={() => {
                 if (carer.master) {
-                  ToastAndroid.show('主看护人不可删除', ToastAndroid.LONG);
+                  ToastAndroid.show('需重新设置主看护人再进行此操作', ToastAndroid.LONG);
                   return;
                 }
                 setDeleteId(carer.id);
