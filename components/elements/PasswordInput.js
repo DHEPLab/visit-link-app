@@ -4,21 +4,27 @@ import { Image, TouchableOpacity } from 'react-native';
 import { styled } from '../../utils/styled';
 
 import SpecialInput from './SpecialInput';
+import Input from './Input';
 
-export default function PasswordInput(props) {
+export default function PasswordInput({ type, ...props }) {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const height = type === 'special' ? 38 : 26;
 
   return (
     <Container>
-      <SpecialInput secureTextEntry={secureTextEntry} {...props} />
+      {type === 'special' ? (
+        <SpecialInput secureTextEntry={secureTextEntry} {...props} />
+      ) : (
+        <Input secureTextEntry={secureTextEntry} {...props} />
+      )}
       {secureTextEntry ? (
-        <CloseEyesContainer>
+        <CloseEyesContainer height={height}>
           <TouchableOpacity onPress={() => setSecureTextEntry(false)}>
             <CloseEyes source={require('../../assets/images/close-eyes.png')} />
           </TouchableOpacity>
         </CloseEyesContainer>
       ) : (
-        <OpenEyesContainer>
+        <OpenEyesContainer height={height}>
           <TouchableOpacity onPress={() => setSecureTextEntry(true)}>
             <OpenEyes source={require('../../assets/images/open-eyes.png')} />
           </TouchableOpacity>
@@ -34,13 +40,13 @@ const Container = styled.View`
 
 const OpenEyesContainer = styled.View`
   position: absolute;
-  top: 11px;
+  top: ${({ height }) => height / 2 - 3}px;
   right: 16px;
 `;
 
 const CloseEyesContainer = styled.View`
   position: absolute;
-  top: 13px;
+  top: ${({ height }) => height / 2 - 1}px;
   right: 16px;
 `;
 

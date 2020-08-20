@@ -43,7 +43,11 @@ export default function SignIn() {
               <SpecialInput placeholder="请输入账户名称" />
             </FormItem>
             <FormItem name="password" center noBorder>
-              <PasswordInput placeholder="请输入账户密码" onEndEditing={handleSubmit} />
+              <PasswordInput
+                type="special"
+                placeholder="请输入账户密码"
+                onEndEditing={handleSubmit}
+              />
             </FormItem>
             <ForgetPassword>{/* <Button type="link" title="忘记密码" /> */}</ForgetPassword>
             {badCredentials && <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>}

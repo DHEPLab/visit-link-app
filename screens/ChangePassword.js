@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
-import { Form, FormItem, Input, Button, Alert, LargeButtonContainer } from '../components';
+import { Form, FormItem, PasswordInput, Button, Alert, LargeButtonContainer } from '../components';
 import { signOut } from '../actions';
 import { ToastAndroid, Keyboard } from 'react-native';
 
@@ -46,10 +46,10 @@ export default function ChangePassword() {
           <>
             <Form labelWidth={50} labelAlign="right">
               <FormItem name="oldPassword" label="旧密码">
-                <Input secureTextEntry />
+                <PasswordInput />
               </FormItem>
               <FormItem name="password" label="新密码">
-                <Input secureTextEntry />
+                <PasswordInput />
               </FormItem>
               <FormItem
                 name="confirmPassword"
@@ -61,7 +61,7 @@ export default function ChangePassword() {
                   }
                 }}
               >
-                <Input secureTextEntry onEndEditing={handleSubmit} />
+                <PasswordInput onEndEditing={handleSubmit} />
               </FormItem>
             </Form>
             <LargeButtonContainer>
