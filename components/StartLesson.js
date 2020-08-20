@@ -53,7 +53,7 @@ export default function StartLesson({
               size="large"
               title="开始课堂"
               onPress={() => {
-                if (!Visit.canBegin(status, visitTime)) {
+                if (!Visit.canIStart(status, visitTime)) {
                   ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
                   return;
                 }
