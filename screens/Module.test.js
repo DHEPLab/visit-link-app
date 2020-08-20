@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-native-testing-library';
 import storage from '../cache/storage';
-import Module from './Module';
+import Module, { useMethods } from './Module';
 
 jest.mock('../cache/storage', () => ({
   useModule: jest.fn(),
@@ -55,4 +55,21 @@ it('should render switch component', () => {
   const { queryByText } = render(<Module {...createTestProps()} />);
   expect(queryByText(/是/)).not.toBeNull();
   expect(queryByText(/否/)).not.toBeNull();
+});
+
+it('should complete the switch of components to continue at the level', () => {
+  let page = 1;
+  const setCaseComponents = jest.fn();
+  const setFinishAction = jest.fn();
+  const setPage = (fn) => (page = fn(page));
+  const { nextStep } = useMethods({
+    caseComponents: [1],
+    setCaseComponents,
+    setFinishAction,
+    setPage,
+  });
+  nextStep(false);
+  expect(setCaseComponents).toBeCalledWith();
+  expect(setFinishAction).toBeCalledWith();
+  expect(page).toBe(2);
 });
