@@ -8,7 +8,7 @@ import { signIn } from '../actions';
 import { useBoolState } from '../utils';
 import { Layout } from '../constants';
 import { styled } from '../utils/styled';
-import { FormItem, SpecialInput, Button, Message } from '../components';
+import { PasswordInput, FormItem, SpecialInput, Button, Message } from '../components';
 
 export default function SignIn() {
   const dispatch = useDispatch();
@@ -43,11 +43,7 @@ export default function SignIn() {
               <SpecialInput placeholder="请输入账户名称" />
             </FormItem>
             <FormItem name="password" center noBorder>
-              <SpecialInput
-                secureTextEntry
-                placeholder="请输入账户密码"
-                onEndEditing={handleSubmit}
-              />
+              <PasswordInput placeholder="请输入账户密码" onEndEditing={handleSubmit} />
             </FormItem>
             <ForgetPassword>{/* <Button type="link" title="忘记密码" /> */}</ForgetPassword>
             {badCredentials && <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>}
