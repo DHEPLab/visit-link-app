@@ -9,13 +9,23 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
 
-export function useMethods() {
-  function onCase(_case, setCaseComponents, setFinishAction) {
+export function useMethods({
+  navigation,
+  params,
+  module,
+  page,
+  setPage,
+  caseComponents,
+  setCaseComponents,
+  finishAction,
+  setFinishAction,
+}) {
+  function onCase(_case) {
     setCaseComponents(_case.components);
     setFinishAction(_case.finishAction);
   }
 
-  function finish(navigation, params) {
+  function finish() {
     navigation.navigate('LessonModules', {
       id: params.lessonId,
       moduleId: params.id,
@@ -23,27 +33,19 @@ export function useMethods() {
     });
   }
 
-  function nextStep(
-    navigation,
-    params,
-    caseComponents,
-    setCaseComponents,
-    setFinishAction,
-    theLastPage,
-    setPage
-  ) {
+  function nextStep(theLastPage) {
     if (caseComponents) {
       setCaseComponents();
       setFinishAction();
       // TODO Finish Action
     }
     if (theLastPage) {
-      return finish(navigation, params);
+      return finish();
     }
     setPage((page) => page + 1);
   }
 
-  function lastStep(caseComponents, setCaseComponents, setFinishAction, setPage) {
+  function lastStep() {
     if (caseComponents) {
       setCaseComponents();
       setFinishAction();
@@ -52,15 +54,20 @@ export function useMethods() {
     }
   }
 
+  function computed() {
+    const components =
+      caseComponents || (module.pageComponents && module.pageComponents[page]) || [];
+    const lastComponent = components[components.length - 1] || {};
+    const switchAtTheEnd = lastComponent.type === 'Switch';
+    const theLastPage = page === module.pageComponents?.length - 1;
+    return { components, lastComponent, switchAtTheEnd, theLastPage };
+  }
+
   return {
     onCase,
-    theComponents: (caseComponents, module, page) =>
-      caseComponents || (module.pageComponents && module.pageComponents[page]) || [],
-    theLastComponent: (components) => components[components.length - 1] || {},
-    theSwitchAtTheEnd: (lastComponent) => lastComponent.type === 'Switch',
-    isTheLastPage: (page, module) => page === module.pageComponents?.length - 1,
     nextStep,
     lastStep,
+    computed,
   };
 }
 
@@ -72,19 +79,18 @@ export default function Module({ navigation, route }) {
   const [caseComponents, setCaseComponents] = useState();
   const [finishAction, setFinishAction] = useState();
 
-  const {
-    onCase,
-    theComponents,
-    theLastComponent,
-    theSwitchAtTheEnd,
-    isTheLastPage,
-    nextStep,
-  } = useMethods();
-
-  const components = theComponents(caseComponents, module, page);
-  const lastComponent = theLastComponent(components);
-  const switchAtTheEnd = theSwitchAtTheEnd(lastComponent);
-  const theLastPage = isTheLastPage(page, module);
+  const { onCase, computed, lastStep, nextStep } = useMethods({
+    navigation,
+    params,
+    module,
+    page,
+    setPage,
+    caseComponents,
+    setCaseComponents,
+    finishAction,
+    setFinishAction,
+  });
+  const { components, lastComponent, switchAtTheEnd, theLastPage } = computed();
 
   return (
     <>
@@ -112,7 +118,7 @@ export default function Module({ navigation, route }) {
                   key={_case.key}
                   size="large"
                   title={_case.text}
-                  onPress={() => onCase(_case, setCaseComponents, setFinishAction)}
+                  onPress={() => onCase(_case)}
                 />
               ))}
             </>
@@ -120,26 +126,10 @@ export default function Module({ navigation, route }) {
             <Button
               size="large"
               title={theLastPage ? '完成' : '下一步'}
-              onPress={() =>
-                nextStep(
-                  navigation,
-                  params,
-                  caseComponents,
-                  setCaseComponents,
-                  setFinishAction,
-                  theLastPage,
-                  setPage
-                )
-              }
+              onPress={() => nextStep(theLastPage)}
             />
           )}
-          {page > 0 && (
-            <Button
-              type="info"
-              title="上一步"
-              onPress={() => lastStep(caseComponents, setCaseComponents, setFinishAction, setPage)}
-            />
-          )}
+          {page > 0 && <Button type="info" title="上一步" onPress={() => lastStep()} />}
         </ButtonContainer>
       </StyledScrollView>
     </>
