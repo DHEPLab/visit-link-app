@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Image, TouchableOpacity } from 'react-native';
 
-import { styled } from '../../utils/styled';
+import { styled, px2dp } from '../../utils/styled';
 
 import SpecialInput from './SpecialInput';
 import Input from './Input';
 
 export default function PasswordInput({ type, ...props }) {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const height = type === 'special' ? 38 : 26;
+  const height = type === 'special' ? 26 : 18;
 
   return (
     <Container>
@@ -18,13 +18,13 @@ export default function PasswordInput({ type, ...props }) {
         <Input secureTextEntry={secureTextEntry} {...props} />
       )}
       {secureTextEntry ? (
-        <CloseEyesContainer height={height}>
+        <CloseEyesContainer height={px2dp(height)}>
           <TouchableOpacity onPress={() => setSecureTextEntry(false)}>
             <CloseEyes source={require('../../assets/images/close-eyes.png')} />
           </TouchableOpacity>
         </CloseEyesContainer>
       ) : (
-        <OpenEyesContainer height={height}>
+        <OpenEyesContainer height={px2dp(height)}>
           <TouchableOpacity onPress={() => setSecureTextEntry(true)}>
             <OpenEyes source={require('../../assets/images/open-eyes.png')} />
           </TouchableOpacity>
