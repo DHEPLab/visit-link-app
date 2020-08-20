@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import NetInfo from '@react-native-community/netinfo';
+import * as WebBrowser from 'expo-web-browser';
 
 import Http from '../utils/http';
 import Storage from '../cache/storage';
@@ -39,6 +41,12 @@ export default function LessonModules({ navigation, route }) {
         // from Home screen, offline mode, save visit status to storage
         await Storage.setVisitStatus(params?.visitId, 'DONE');
       }
+    }
+
+    // if net connected and have a questionnaire, open a browser
+    const net = await NetInfo.fetch();
+    if (net.isConnected && lesson.questionnaireAddress) {
+      await WebBrowser.openBrowserAsync(lesson.questionnaireAddress);
     }
     navigation.navigate(params.from);
   }

@@ -72,6 +72,8 @@ export default function Home({ navigation }) {
       await Resources.fetchUpdateAsync();
       dispatch(lessonsUpdate({ isAvailable: false }));
       ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
+    } catch (e) {
+      ToastAndroid.show('下载最新课程资源失败！', ToastAndroid.SHORT);
     } finally {
       endFetch();
     }
