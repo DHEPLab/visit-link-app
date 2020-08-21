@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-native-testing-library';
-import { useFetch } from '../utils';
+import { useFetch, useManualFetch } from '../utils';
 import http from '../utils/http';
 
 import Visit from './Visit';
@@ -13,6 +13,18 @@ jest.mock('../utils/http', () => ({
 jest.mock('../utils', () => ({
   ...jest.requireActual('../utils'),
   useFetch: jest.fn(),
+  useManualFetch: jest.fn(),
+}));
+
+jest.mock('react-redux', () => ({
+  useDispatch: jest.fn(),
+  useSelector: () => ({
+    state: {
+      lessonsUpdate: {
+        isAvailable: false,
+      },
+    },
+  }),
 }));
 
 const createTestProps = () => ({
@@ -41,7 +53,7 @@ describe('<Visit />', () => {
   });
 
   it('should display continue button', () => {
-    useFetch.mockImplementation(() => [
+    useManualFetch.mockImplementation(() => [
       {
         id: 1,
         status: 'UNDONE',
@@ -53,7 +65,7 @@ describe('<Visit />', () => {
   });
 
   it('should display expire remark', () => {
-    useFetch.mockImplementation(() => [
+    useManualFetch.mockImplementation(() => [
       {
         status: 'EXPIRED',
       },
@@ -63,7 +75,7 @@ describe('<Visit />', () => {
   });
 
   it('should readonly', () => {
-    useFetch.mockImplementation(() => [
+    useManualFetch.mockImplementation(() => [
       {
         status: 'DONE',
       },

@@ -31,11 +31,27 @@ export default function Baby({ navigation, route }) {
   const [started, setStarted] = useState(false);
   const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`);
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
-  const [visits, refreshVisits] = useManualFetchArray(`/api/babies/${params.id}/visits`, {
-    started: false,
-  });
+  const [notStartedVisits, refreshNotStartedVisits] = useManualFetchArray(
+    `/api/babies/${params.id}/visits`,
+    {
+      started: false,
+    }
+  );
+  const [startedVisits, refreshStartedVisits] = useManualFetchArray(
+    `/api/babies/${params.id}/visits`,
+    {
+      started: true,
+    }
+  );
 
-  useEffect(() => navigation.addListener('focus', () => refreshVisits({ started })), [navigation]);
+  useEffect(
+    () =>
+      navigation.addListener('focus', () => {
+        refreshNotStartedVisits();
+        refreshStartedVisits();
+      }),
+    [navigation]
+  );
   // on change address
   useEffect(() => {
     if (route.params.address) {
@@ -58,11 +74,6 @@ export default function Baby({ navigation, route }) {
           .put(`/api/babies/${params.id}/carers/${params.carer.id}`, params.carer)
           .then(onRefresh);
   }, [route.params.carer]);
-
-  function onChangeVisitTab(_started) {
-    setStarted(_started);
-    refreshVisits({ started: _started });
-  }
 
   function onRefresh() {
     refreshBaby();
@@ -95,7 +106,7 @@ export default function Baby({ navigation, route }) {
           <NameContainer>
             <Name>{baby.name || params.name}</Name>
             <IdentityContainer>
-              <ApproveStatus approved={baby.approved} />
+              <ApproveStatus approved={baby.approved == null ? params.approved : baby.approved} />
               <Identity>ID: {baby.identity || params.identity || '暂无'}</Identity>
             </IdentityContainer>
           </NameContainer>
@@ -148,8 +159,9 @@ export default function Baby({ navigation, route }) {
           Visits: () => (
             <Visits
               onCreateVisit={handleCreateVisit}
-              onChange={onChangeVisitTab}
-              dataSource={visits}
+              onChange={setStarted}
+              notStartedVisits={notStartedVisits}
+              startedVisits={startedVisits}
               started={started}
               navigation={navigation}
               approved={baby.approved}
@@ -193,7 +205,15 @@ const Stage = styled.View`
   align-items: center;
 `;
 
-function Visits({ started, dataSource, onChange, navigation, onCreateVisit, approved }) {
+function Visits({
+  started,
+  startedVisits,
+  notStartedVisits,
+  onChange,
+  navigation,
+  onCreateVisit,
+  approved,
+}) {
   function handlePressVisit(item) {
     if (!approved && item.status === 'NOT_STARTED') {
       ToastAndroid.show('请等待宝宝完成审核', ToastAndroid.SHORT);
@@ -214,7 +234,7 @@ function Visits({ started, dataSource, onChange, navigation, onCreateVisit, appr
       </VisitTabs>
       <FlatList
         ListEmptyComponent={<NoData title="没有相关结果" />}
-        data={dataSource}
+        data={started ? startedVisits : notStartedVisits}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
       />
@@ -316,7 +336,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
               onChangeMaster={() => handleChangeMaster(carer)}
               onPressDelete={() => {
                 if (carer.master) {
-                  ToastAndroid.show('主看护人不可删除', ToastAndroid.LONG);
+                  ToastAndroid.show('需重新设置主看护人再进行此操作', ToastAndroid.LONG);
                   return;
                 }
                 setDeleteId(carer.id);
@@ -450,6 +470,7 @@ const Header = styled(LinearGradient)`
 
 const VisitsContainer = styled.View`
   padding: 20px 28px;
+  padding-bottom: 45px;
   position: relative;
   flex: 1;
 `;

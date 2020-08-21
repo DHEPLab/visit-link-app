@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 
 import Http from '../utils/http';
 import { styled } from '../utils/styled';
-import { Form, FormItem, Input, Button, Alert } from '../components';
+import { Form, FormItem, PasswordInput, Button, Alert, LargeButtonContainer } from '../components';
 import { signOut } from '../actions';
-import { ToastAndroid } from 'react-native';
+import { ToastAndroid, Keyboard } from 'react-native';
 
 const validationSchema = Yup.object().shape({
   oldPassword: Yup.string().required('旧密码不能为空'),
@@ -18,6 +18,8 @@ export default function ChangePassword() {
   const dispatch = useDispatch();
 
   function onSubmit({ oldPassword, password }) {
+    // fix huawei unable to display toast when soft keyborard pops up
+    Keyboard.dismiss();
     Http.put('/api/account/password', {
       oldPassword,
       password,
@@ -44,10 +46,10 @@ export default function ChangePassword() {
           <>
             <Form labelWidth={50} labelAlign="right">
               <FormItem name="oldPassword" label="旧密码">
-                <Input secureTextEntry />
+                <PasswordInput />
               </FormItem>
               <FormItem name="password" label="新密码">
-                <Input secureTextEntry />
+                <PasswordInput />
               </FormItem>
               <FormItem
                 name="confirmPassword"
@@ -59,13 +61,12 @@ export default function ChangePassword() {
                   }
                 }}
               >
-                <Input secureTextEntry />
+                <PasswordInput onEndEditing={handleSubmit} />
               </FormItem>
             </Form>
-            {/* <Alert>密码必须至少8个字符，而且同时包含字母和数字。</Alert> */}
-            <ButtonContainer>
+            <LargeButtonContainer>
               <Button size="large" onPress={handleSubmit} title="提交" />
-            </ButtonContainer>
+            </LargeButtonContainer>
           </>
         )}
       </Formik>
@@ -75,8 +76,4 @@ export default function ChangePassword() {
 
 const Container = styled.View`
   padding: 6px 28px;
-`;
-
-const ButtonContainer = styled.View`
-  margin-top: 26px;
 `;

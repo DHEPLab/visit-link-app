@@ -79,8 +79,8 @@ function useNumber(getFn, id) {
 
 function use(getFn, id) {
   const [value, setValue] = useState({});
-  function load() {
-    getFn(id).then((data) => {
+  function load(_id) {
+    getFn(_id || id).then((data) => {
       setValue(data || {});
     });
   }

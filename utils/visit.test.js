@@ -1,8 +1,15 @@
 import Visit from './visit';
 
-it('should can begin visit', () => {
-  jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-07'));
-  expect(Visit.canBegin('NOT_STARTED', '2020-07-07T10:00:00')).toBeTruthy();
+it(`should i can start the home visit from 8 o 'clock to 20 o 'clock on the day of the home visit`, () => {
+  const visitTime = '2020-07-07T10:00:00';
+  jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-07T07:59:00'));
+  expect(Visit.canIStart('DONE', visitTime)).toBeFalsy();
+  jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-07T20:00:00'));
+  expect(Visit.canIStart('NOT_STARTED', visitTime)).toBeFalsy();
+  jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-07T08:00:00'));
+  expect(Visit.canIStart('NOT_STARTED', visitTime)).toBeTruthy();
+  jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-07T19:59:59'));
+  expect(Visit.canIStart('NOT_STARTED', visitTime)).toBeTruthy();
 });
 
 it('should format visit time cn', () => {

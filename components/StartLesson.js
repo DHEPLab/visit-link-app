@@ -15,16 +15,27 @@ export default function StartLesson({
   navigation,
   lessonId,
   visitId,
+  nextModuleIndex,
+  from,
+  validate,
 }) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
 
   function handleStart() {
     closeStartVisit();
-    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
+    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false, from });
   }
 
   function handleContinue() {
-    navigation.navigate('LessonIntro', { id: lessonId, visitId, preview: false });
+    if (validate && !validate()) return;
+    navigation.navigate('LessonIntro', {
+      id: lessonId,
+      visitId,
+      preview: false,
+      continue: true,
+      nextModuleIndex,
+      from,
+    });
   }
 
   return (
@@ -42,10 +53,11 @@ export default function StartLesson({
               size="large"
               title="开始课堂"
               onPress={() => {
-                if (!Visit.canBegin(status, visitTime)) {
+                if (!Visit.canIStart(status, visitTime)) {
                   ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
                   return;
                 }
+                if (validate && !validate()) return;
                 openStartVisit();
               }}
             />

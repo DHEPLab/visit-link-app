@@ -69,9 +69,15 @@ function statusUndone(status) {
 }
 
 export default {
-  canBegin(status, visitTime) {
+  // I can start the home visit from 8 o 'clock to 20 o 'clock on the day of the home visit
+  canIStart(status, visitTime) {
     if (status !== 'NOT_STARTED') return false;
-    return moment(formatDate(moment())).isSame(formatDate(moment(visitTime)));
+    const now = moment();
+    return (
+      moment(formatDate(now)).isSame(formatDate(moment(visitTime))) &&
+      now.hour() >= 8 &&
+      now.hour() < 20
+    );
   },
   formatDate,
   formatDateTime,

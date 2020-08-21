@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import Config from '../constants/Config';
 import { ToastAndroid } from 'react-native';
+
+import Config from '../constants/Config';
+import store from '../store';
+import { restoreToken } from '../actions';
 
 // fetch timeout 15s
 const timeout = 15000;
@@ -11,8 +14,37 @@ AsyncStorage.getItem('JWT_TOKEN', (_, result) => {
   Token = result;
 });
 
-function responseContentTypeJSON(response) {
+export function responseContentTypeJSON(response) {
   return response.headers.get('content-type') === 'application/json';
+}
+
+async function cleanToken() {
+  store.dispatch(restoreToken(null));
+  Token = '';
+  await AsyncStorage.removeItem('JWT_TOKEN');
+}
+
+async function onResponseError(error) {
+  let msg = '服务异常，请稍后重试';
+  switch (error.status) {
+    case 502:
+      msg = '网络异常，请稍后重试';
+    case 500:
+      break;
+    case 404:
+      return;
+    case 401:
+      cleanToken();
+      return;
+    default:
+      const data = await error.json();
+      if (data.violations) {
+        msg = '表单校验失败';
+      } else if (data.detail) {
+        msg = data.detail;
+      }
+  }
+  ToastAndroid.show(msg, ToastAndroid.LONG);
 }
 
 function request(fetchPromise) {
@@ -25,10 +57,8 @@ function request(fetchPromise) {
               ? await response.json()
               : { text: await response.text() }
           );
-        } else if (response.status === 404) {
-          reject(response);
         } else {
-          console.warn(response);
+          onResponseError(response);
           reject(response);
         }
       })

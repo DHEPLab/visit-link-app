@@ -5,7 +5,14 @@ import { ScrollView } from 'react-native';
 import http from '../utils/http';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
-import { MiniBaby, Card, Button, StaticField, StaticForm } from '../components';
+import {
+  MiniBaby,
+  Card,
+  Button,
+  StaticField,
+  StaticForm,
+  LargeButtonContainer,
+} from '../components';
 
 export default function CreateVisit({ navigation, route }) {
   const { params } = route;
@@ -49,74 +56,77 @@ export default function CreateVisit({ navigation, route }) {
   }
 
   return (
-    <Container>
-      <Card
-        title="家访时间"
-        hideBody={!visitTime}
-        right={<Button title="修改" onPress={handleChangeVisitTime} hideBody={!visitTime} />}
-      >
-        {visitTime && (
-          <StaticForm>
-            <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
-          </StaticForm>
-        )}
-      </Card>
-      <Card
-        title="家访对象"
-        hideBody={!baby}
-        right={
-          !params?.lockBaby && (
-            <Button
-              title="选择"
-              onPress={() =>
-                navigation.navigate('PickBaby', {
-                  visitDate: visitTime && Visit.formatDate(visitTime),
-                })
-              }
-            />
-          )
-        }
-        background={require('../assets/images/baby-bg.png')}
-      >
-        {baby && (
-          <>
-            <MiniBabyContainer>
-              <MiniBaby hideStatus baby={baby} />
-            </MiniBabyContainer>
+    <ScrollView>
+      <Container>
+        <Card
+          title="家访时间"
+          hideBody={!visitTime}
+          right={<Button title="修改" onPress={handleChangeVisitTime} hideBody={!visitTime} />}
+        >
+          {visitTime && (
             <StaticForm>
-              <StaticField label="主照料人">{baby.carerName}</StaticField>
-              <StaticField label="联系电话">{baby.carerPhone}</StaticField>
-              <StaticField label="所在区域">{baby.area}</StaticField>
-              <StaticField label="详细地址">{baby.location}</StaticField>
+              <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
             </StaticForm>
-          </>
-        )}
-      </Card>
-      <Card title="课程安排">
-        {lesson ? (
-          <>
-            <LessonName>{lesson.name}</LessonName>
-            <StaticForm>
-              {lesson.moduleNames?.map((name, index) => (
-                <StaticField key={name} label={`模块 ${index + 1}`}>
-                  {name}
-                </StaticField>
-              ))}
-            </StaticForm>
-          </>
-        ) : (
-          <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
-        )}
-      </Card>
-      <ButtonContainer>
-        <Button
-          onPress={handleSubmit}
-          title="提交"
-          size="large"
-          disabled={!visitTime || !baby || !lesson}
-        />
-      </ButtonContainer>
-    </Container>
+          )}
+        </Card>
+        <Card
+          title="家访对象"
+          hideBody={!baby}
+          right={
+            !params?.lockBaby && (
+              <Button
+                title="选择"
+                onPress={() =>
+                  navigation.navigate('PickBaby', {
+                    visitDate: visitTime && Visit.formatDate(visitTime),
+                  })
+                }
+              />
+            )
+          }
+          background={require('../assets/images/baby-bg.png')}
+        >
+          {baby && (
+            <>
+              <MiniBabyContainer>
+                <MiniBaby hideStatus baby={baby} />
+              </MiniBabyContainer>
+              <StaticForm>
+                <StaticField label="主照料人">{baby.carerName}</StaticField>
+                <StaticField label="联系电话">{baby.carerPhone}</StaticField>
+                <StaticField label="所在区域">{baby.area}</StaticField>
+                <StaticField label="详细地址">{baby.location}</StaticField>
+              </StaticForm>
+            </>
+          )}
+        </Card>
+        <Card title="课程安排">
+          {lesson ? (
+            <>
+              <LessonName>{lesson.name}</LessonName>
+              <StaticForm>
+                {lesson.moduleNames?.map((name, index) => (
+                  <StaticField key={name} label={`模块 ${index + 1}`}>
+                    {name}
+                  </StaticField>
+                ))}
+              </StaticForm>
+            </>
+          ) : (
+            <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
+          )}
+        </Card>
+
+        <LargeButtonContainer>
+          <Button
+            onPress={handleSubmit}
+            title="提交"
+            size="large"
+            disabled={!visitTime || !baby || !lesson}
+          />
+        </LargeButtonContainer>
+      </Container>
+    </ScrollView>
   );
 }
 
@@ -125,13 +135,10 @@ const NoLesson = styled.Text`
   color: #8e8e93;
 `;
 
-const Container = styled(ScrollView)`
+const Container = styled.View`
   padding: 20px 28px;
+  padding-bottom: 0;
   height: 100%;
-`;
-
-const ButtonContainer = styled.View`
-  padding-top: 30px;
 `;
 
 const MiniBabyContainer = styled.View`

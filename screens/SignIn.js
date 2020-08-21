@@ -1,28 +1,35 @@
 import React from 'react';
+import { ToastAndroid } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 
 import Http from '../utils/http';
+import { signIn } from '../actions';
 import { useBoolState } from '../utils';
 import { Layout } from '../constants';
 import { styled } from '../utils/styled';
-import { FormItem, SpecialInput, Button, Message } from '../components';
-import { signIn } from '../actions';
+import { PasswordInput, FormItem, SpecialInput, Button, Message } from '../components';
 
 export default function SignIn() {
   const dispatch = useDispatch();
+  const [visible, openSuccessMessage] = useBoolState();
   const [badCredentials, onBadCredentials, resetBadCredentials] = useBoolState();
-  const [visible, open] = useBoolState();
 
   function onSubmit(values) {
     resetBadCredentials();
     Http.post('/api/authenticate', values)
       .then((data) => {
         Http.auth(data.idToken);
-        open();
+        openSuccessMessage();
         dispatch(signIn(data));
       })
-      .catch(onBadCredentials);
+      .catch((error) => {
+        if (error.status === 401) {
+          onBadCredentials();
+          return;
+        }
+        ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.LONG);
+      });
   }
 
   return (
@@ -36,11 +43,13 @@ export default function SignIn() {
               <SpecialInput placeholder="请输入账户名称" />
             </FormItem>
             <FormItem name="password" center noBorder>
-              <SpecialInput secureTextEntry placeholder="请输入账户密码" />
+              <PasswordInput
+                type="special"
+                placeholder="请输入账户密码"
+                onEndEditing={handleSubmit}
+              />
             </FormItem>
-            <ForgetPassword>
-              <Button type="link" title="忘记密码" />
-            </ForgetPassword>
+            <ForgetPassword>{/* <Button type="link" title="忘记密码" /> */}</ForgetPassword>
             {badCredentials && <BadCredentials>您输入的账号名称/账号密码可能有误</BadCredentials>}
             <Button
               disabled={!values.username || !values.password}

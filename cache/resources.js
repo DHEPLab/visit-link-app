@@ -22,6 +22,7 @@ async function fetchUpdateAsync() {
     storage.setLastUpdateAt(new Date());
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 

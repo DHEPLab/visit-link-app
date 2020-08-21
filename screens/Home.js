@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScrollView, RefreshControl, ToastAndroid } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Http from '../utils/http';
 import Visit from '../utils/visit';
 import Storage from '../cache/storage';
 import Resources from '../cache/resources';
 
+import { lessonsUpdate } from '../actions';
 import { Colors } from '../constants';
 import { useBoolState } from '../utils';
 import { styled } from '../utils/styled';
@@ -20,28 +22,34 @@ export default function Home({ navigation }) {
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [fetching, startFetch, endFetch] = useBoolState();
 
-  const [update, setUpdate] = useState({});
+  const dispatch = useDispatch();
+  // lesson resources update state
+  const update = useSelector((state) => state.lessonsUpdate);
 
-  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+  // refresh silent mode when focus navigation
+  useEffect(() => navigation.addListener('focus', () => refresh(true)), [navigation]);
 
-  async function refresh() {
-    startRefresh();
+  // silent mode prevents flickering when loading too fast
+  async function refresh(silent = false) {
+    !silent && startRefresh();
     try {
-      setUpdate(await Resources.checkForUpdateAsync());
+      dispatch(lessonsUpdate(await Resources.checkForUpdateAsync()));
+    } catch (e) {}
+    try {
       await submit();
+    } catch (e) {}
+    try {
       Storage.setNextVisit(await Http.get('/api/visits/next'));
-    } catch (error) {
-      if (error.status === 404) {
+    } catch (e) {
+      if (e.status === 404) {
         Storage.setNextVisit({});
-      } else {
-        console.warn(error);
       }
-    } finally {
-      reloadVisit();
-      endRefresh();
     }
+    reloadVisit();
+    !silent && endRefresh();
   }
 
+  // submit home visit data starting with offline mode
   async function submit() {
     const _visitStatus = await Storage.getVisitStatus();
     const nextModuleIndex = await Storage.getNextModule();
@@ -62,8 +70,10 @@ export default function Home({ navigation }) {
     startFetch();
     try {
       await Resources.fetchUpdateAsync();
-      setUpdate({});
+      dispatch(lessonsUpdate({ isAvailable: false }));
       ToastAndroid.show('下载最新课程资源完成！', ToastAndroid.SHORT);
+    } catch (e) {
+      ToastAndroid.show('下载最新课程资源失败！', ToastAndroid.SHORT);
     } finally {
       endFetch();
     }
@@ -135,6 +145,7 @@ export default function Home({ navigation }) {
           navigation,
           visitId: visit.id,
           lessonId: visit?.lesson?.id,
+          from: 'Home',
         }}
       />
     </StyledScrollView>

@@ -3,8 +3,8 @@
     "name": "Dev Healthy Future",
     "description": "RURAL EDUCATION ACTION PROGRAM",
     "slug": "healthy-future-app",
-    "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "platforms": ["android"],
+    "version": "1.0.0-dev",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "hf",
@@ -16,9 +16,6 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "package": "edu.stanford.fsi.reap.app"
     },
