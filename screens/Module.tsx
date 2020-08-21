@@ -13,29 +13,40 @@ import { Button } from '../components';
 
 export function useMethods({ navigation, params, module, path, setPath }) {
   function onCase(switchComponentIndex: number, caseIndex: number, _case: Case) {
-    setPath((path: any[]) =>
-      // fold too many layers and expand when you use them
-      path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
-    );
-    // if (!_case.finishAction || _case.finishAction.length != 2) {
-    //   setCaseComponents(_case.components);
-    //   return;
-    // }
-    // const [action, target] = _case.finishAction;
-    // if (action === 'Redirect_End') {
-    //   navigation.navigate('Module', { id: target, from: params.id });
-    // }
-    // if (action === 'Redirect_Continue') {
-    //   navigation.navigate('Module', {
-    //     id: target,
-    //     from: params.id,
-    //     fromPage: page + 1,
-    //     finishAction: 'Redirect_Continue',
-    //   });
-    // }
+    if (!_case.finishAction || _case.finishAction.length != 2) {
+      setPath((path: any[]) =>
+        // fold too many layers and expand when you use them
+        path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
+      );
+      return;
+    }
+
+    const [action, target] = _case.finishAction;
+    if (action === 'Redirect_End') {
+      navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
+      return;
+    }
+
+    if (action === 'Redirect_Continue') {
+      navigation.navigate('Module', {
+        id: target,
+        from: params.id,
+        fromPath: path,
+      });
+    }
   }
 
   function finish() {
+    if (params.from && params.fromPath) {
+      navigation.navigate('Module', {
+        id: params.from,
+        path: params.fromPath,
+        from: null,
+        fromPath: null,
+      });
+      return;
+    }
+
     navigation.navigate('LessonModules', {
       id: params.lessonId,
       moduleId: params.id,
@@ -59,23 +70,24 @@ export function useMethods({ navigation, params, module, path, setPath }) {
   }
 
   function nextStep(path: any[]) {
-    const contextPath = [...path];
-    if (path.length > 1) {
+    const _path = [...path];
+    const contextPath = [..._path];
+    if (_path.length > 1) {
       contextPath.pop();
     }
 
-    if (totalPage(contextPath) > path[path.length - 1] + 1) {
-      setPath(pageNumberPlusOne(path));
+    if (totalPage(contextPath) > _path[_path.length - 1] + 1) {
+      setPath(pageNumberPlusOne(_path));
     } else {
       // stop condition, complete module
-      if (path.length === 1) {
+      if (_path.length === 1) {
         return finish();
       }
       // go back level
-      path.pop();
-      path.pop();
+      _path.pop();
+      _path.pop();
       // recursive check
-      nextStep(path);
+      nextStep(_path);
     }
   }
 
@@ -135,6 +147,7 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     nextStep,
     previousStep,
     computed,
+    finish,
   };
 }
 
@@ -144,12 +157,6 @@ export default function Module({ navigation, route }) {
   const [path, setPath] = useState([0]);
   const [module, reloadModule] = storage.useModule(params.id);
 
-  useEffect(() => {
-    if (route.params.id) {
-      reloadModule(route.params.id);
-    }
-  }, [route.params]);
-
   const { onCase, computed, previousStep, nextStep } = useMethods({
     navigation,
     params,
@@ -158,6 +165,17 @@ export default function Module({ navigation, route }) {
     setPath,
   });
   const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed();
+
+  useEffect(() => {
+    // when jump to another module
+    if (route.params.id) {
+      reloadModule(route.params.id);
+    }
+    // when go back from another module and continue on the previous path
+    if (route.params.path) {
+      nextStep(route.params.path);
+    }
+  }, [route.params]);
 
   return (
     <>

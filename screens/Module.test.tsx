@@ -169,62 +169,58 @@ it('should change path on change case', () => {
   expect(components).toStrictEqual([new Component('Text', 111)]);
 });
 
-// it('should after completing the switch case, continue at the level', () => {
-//   const setCaseComponents = jest.fn();
-//   const { onCase } = useMethods({
-//     navigation: null,
-//     params: { id: 1 },
-//     page: 1,
-//     module: null,
-//     setPage: null,
-//     caseComponents: null,
-//     setCaseComponents,
-//   });
-//   onCase({
-//     components: [1],
-//   });
-//   expect(setCaseComponents).toBeCalledWith([1]);
-// });
+it('should after completing the switch case, jump to another module and end this content module', () => {
+  const navigation = {
+    navigate: jest.fn(),
+  };
+  const { onCase } = useMethods({
+    navigation,
+    params: { id: 1 },
+    path: null,
+    setPath: null,
+    module: null,
+  });
+  const _case = new Case(11, 'Level 1 Case 1', ['Redirect_End', 2], []).setPageComponents([
+    [new Component('Text', 111)],
+  ]);
+  onCase(0, 0, _case);
+  expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: null });
+});
 
-// it('should after completing the switch case, jump to another module and end this content module', () => {
-//   const navigation = {
-//     navigate: jest.fn(),
-//   };
-//   const { onCase } = useMethods({
-//     navigation,
-//     params: { id: 1 },
-//     page: 1,
-//     module: null,
-//     setPage: null,
-//     caseComponents: null,
-//     setCaseComponents: null,
-//   });
-//   onCase({
-//     finishAction: ['Redirect_End', 2],
-//   });
-//   expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1 });
-// });
+it('should after completing the switch case, jump to another module and continue this content module', () => {
+  const navigation = {
+    navigate: jest.fn(),
+  };
+  const { onCase } = useMethods({
+    navigation,
+    params: { id: 1 },
+    path: [1],
+    setPath: null,
+    module: null,
+  });
+  const _case = new Case(11, 'Level 1 Case 1', ['Redirect_Continue', 2], []).setPageComponents([
+    [new Component('Text', 111)],
+  ]);
+  onCase(0, 0, _case);
+  expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: [1] });
+});
 
-// it('should after completing the switch case, jump to another module and continue this content module', () => {
-//   const navigation = {
-//     navigate: jest.fn(),
-//   };
-//   const { onCase } = useMethods({
-//     navigation,
-//     params: { id: 1 },
-//     page: 1,
-//     module: null,
-//     setPage: null,
-//     caseComponents: null,
-//     setCaseComponents: null,
-//   });
-//   onCase({
-//     finishAction: ['Redirect_Continue', 2],
-//   });
-//   expect(navigation.navigate).toBeCalledWith('Module', {
-//     id: 2,
-//     from: 1,
-//     fromPage: 2,
-//     finishAction: 'Redirect_Continue',
-//   });
-// });
+it('should go back to the from module and continue on the previous path', () => {
+  const navigation = {
+    navigate: jest.fn(),
+  };
+  const { finish } = useMethods({
+    navigation,
+    params: { id: 2, from: 1, fromPath: [1] },
+    path: null,
+    setPath: null,
+    module: null,
+  });
+  finish();
+  expect(navigation.navigate).toBeCalledWith('Module', {
+    id: 1,
+    path: [1],
+    from: null,
+    fromPath: null,
+  });
+});
