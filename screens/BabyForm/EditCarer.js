@@ -42,7 +42,7 @@ function filteredFamilyTies(familyTies) {
 export default function CreateCarer({ navigation, route }) {
   const { params } = route;
   function onSubmit(carer) {
-    if (params?.carer.master && !carer.master) {
+    if (params?.carer?.master && !carer.master) {
       ToastAndroid.show('请至少设置一个主看护人', ToastAndroid.LONG);
       return;
     }
