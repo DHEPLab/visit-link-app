@@ -29,6 +29,11 @@ export class Case {
     this.finishAction = finishAction;
     this.components = components;
   }
+
+  setPageComponents(pageComponents: Component[][]): Case {
+    this.pageComponents = pageComponents;
+    return this;
+  }
 }
 
 export class SwitchValue {
@@ -55,14 +60,6 @@ export class Component {
     this.key = key;
     this.value = value;
   }
-
-  isTypePageFooter() {
-    return 'PageFooter' === this.type;
-  }
-
-  isTypeSwitch() {
-    return 'Switch' === this.type;
-  }
 }
 
 function pageable(components: Component[]): Component[][] {
@@ -70,7 +67,7 @@ function pageable(components: Component[]): Component[][] {
   let pageNumber = 0;
   components.forEach((component: Component) => {
     if (!page[pageNumber]) page[pageNumber] = [];
-    if (component.isTypeSwitch() && component.value) {
+    if (component.type === 'Switch' && component.value) {
       const switchValue = component.value as SwitchValue;
       switchValue.cases.forEach((_case) => {
         _case.pageComponents = pageable(_case.components);
@@ -80,7 +77,7 @@ function pageable(components: Component[]): Component[][] {
 
     page[pageNumber].push(component);
 
-    if (component.isTypePageFooter() || component.isTypeSwitch()) {
+    if (component.type === 'PageFooter' || component.type === 'Switch') {
       pageNumber++;
     }
   });

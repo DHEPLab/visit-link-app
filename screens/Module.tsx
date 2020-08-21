@@ -1,41 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import lodash from 'lodash';
 
 import Text from '../components/curriculum/Text';
 import Media from '../components/curriculum/Media';
 import storage from '../cache/storage';
+import { Case } from '../utils/module';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
 
-export function useMethods({
-  navigation,
-  params,
-  module,
-  page,
-  setPage,
-  caseComponents,
-  setCaseComponents,
-}) {
-  function onCase(_case) {
-    if (!_case.finishAction || _case.finishAction.length != 2) {
-      setCaseComponents(_case.components);
-      return;
-    }
-
-    const [action, target] = _case.finishAction;
-    if (action === 'Redirect_End') {
-      navigation.navigate('Module', { id: target, from: params.id });
-    }
-    if (action === 'Redirect_Continue') {
-      navigation.navigate('Module', {
-        id: target,
-        from: params.id,
-        fromPage: page + 1,
-        finishAction: 'Redirect_Continue',
-      });
-    }
+export function useMethods({ navigation, params, module, path, setPath }) {
+  function onCase(switchComponentIndex: number, caseIndex: number, _case: Case) {
+    setPath((path) =>
+      // path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
+      path.concat([switchComponentIndex, 'value', 'cases', caseIndex, 'pageComponents', 0])
+    );
+    // if (!_case.finishAction || _case.finishAction.length != 2) {
+    //   setCaseComponents(_case.components);
+    //   return;
+    // }
+    // const [action, target] = _case.finishAction;
+    // if (action === 'Redirect_End') {
+    //   navigation.navigate('Module', { id: target, from: params.id });
+    // }
+    // if (action === 'Redirect_Continue') {
+    //   navigation.navigate('Module', {
+    //     id: target,
+    //     from: params.id,
+    //     fromPage: page + 1,
+    //     finishAction: 'Redirect_Continue',
+    //   });
+    // }
   }
 
   function finish() {
@@ -46,31 +43,22 @@ export function useMethods({
     });
   }
 
-  function nextStep(theLastPage) {
-    if (caseComponents) {
-      setCaseComponents();
-    }
-
-    if (theLastPage) {
-      return finish();
-    }
-    setPage((page) => page + 1);
+  function nextStep() {
+    setPath((path) => path.map((item) => item + 1));
   }
 
   function lastStep() {
-    if (caseComponents) {
-      setCaseComponents();
-    } else {
-      setPage((page) => page - 1);
-    }
+    setPath((path) => {
+      path[0] -= 1;
+      return path;
+    });
   }
 
   function computed() {
-    const components =
-      caseComponents || (module.pageComponents && module.pageComponents[page]) || [];
+    const components = lodash.get(module?.pageComponents, path, []);
     const lastComponent = components[components.length - 1] || {};
     const switchAtTheEnd = lastComponent.type === 'Switch';
-    const theLastPage = page === module.pageComponents?.length - 1;
+    const theLastPage = path[0] === module.pageComponents?.length - 1;
     return { components, lastComponent, switchAtTheEnd, theLastPage };
   }
 
@@ -84,8 +72,8 @@ export function useMethods({
 
 export default function Module({ navigation, route }) {
   const { params } = route;
-  const [page, setPage] = useState(0);
-  const [caseComponents, setCaseComponents] = useState();
+  // the path of the page components to get current page
+  const [path, setPath] = useState([0]);
   const [module, reloadModule] = storage.useModule(params.id);
 
   useEffect(() => {
@@ -98,11 +86,10 @@ export default function Module({ navigation, route }) {
     navigation,
     params,
     module,
-    page,
-    setPage,
-    caseComponents,
-    setCaseComponents,
+    path,
+    setPath,
   });
+  console.log(path);
   const { components, lastComponent, switchAtTheEnd, theLastPage } = computed();
 
   return (
@@ -126,12 +113,12 @@ export default function Module({ navigation, route }) {
         <ButtonContainer>
           {switchAtTheEnd ? (
             <>
-              {lastComponent?.value?.cases?.map((_case) => (
+              {lastComponent?.value?.cases?.map((_case: Case, index: number) => (
                 <Button
                   key={_case.key}
                   size="large"
                   title={_case.text}
-                  onPress={() => onCase(_case)}
+                  onPress={() => onCase(components.length - 1, index, _case)}
                 />
               ))}
             </>
@@ -139,10 +126,10 @@ export default function Module({ navigation, route }) {
             <Button
               size="large"
               title={theLastPage ? '完成' : '下一步'}
-              onPress={() => nextStep(theLastPage)}
+              onPress={() => nextStep()}
             />
           )}
-          {page > 0 && <Button type="info" title="上一步" onPress={() => lastStep()} />}
+          {path[0] > 0 && <Button type="info" title="上一步" onPress={() => lastStep()} />}
         </ButtonContainer>
       </StyledScrollView>
     </>
