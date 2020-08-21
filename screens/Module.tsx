@@ -13,7 +13,7 @@ import { Button } from '../components';
 
 export function useMethods({ navigation, params, module, path, setPath }) {
   function onCase(switchComponentIndex: number, caseIndex: number, _case: Case) {
-    setPath((path) =>
+    setPath((path: any[]) =>
       // fold too many layers and expand when you use them
       path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
     );
@@ -43,21 +43,49 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     });
   }
 
-  function nextStep() {
-    setPath((path) => path.map((item) => item + 1));
+  function totalPage(contextPath: any[]) {
+    if (contextPath.length === 1) {
+      return module.pageComponents.length;
+    }
+    return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
+  }
+
+  function pageNumberPlusOne(path: any[]) {
+    return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
+  }
+
+  function nextStep(path: any[]) {
+    const contextPath = [...path];
+    if (path.length > 1) {
+      contextPath.pop();
+    }
+
+    if (totalPage(contextPath) > path[path.length - 1] + 1) {
+      setPath(pageNumberPlusOne(path));
+    } else {
+      // stop condition, complete module
+      if (path.length === 1) {
+        return finish();
+      }
+      // go back level
+      path.pop();
+      path.pop();
+      // recursive check
+      nextStep(path);
+    }
   }
 
   function lastStep() {
-    setPath((path) => {
+    setPath((path: any[]) => {
       path[0] -= 1;
       return path;
     });
   }
 
   // unfold layers for support lodash get method
-  function unfoldPath(path) {
+  function unfoldPath(path: any[]) {
     const array = [];
-    path.forEach((p) => {
+    path.forEach((p: string | number) => {
       if (typeof p === 'string') {
         array.push(...p.split('.'));
       } else {
@@ -138,7 +166,7 @@ export default function Module({ navigation, route }) {
             <Button
               size="large"
               title={theLastPage ? '完成' : '下一步'}
-              onPress={() => nextStep()}
+              onPress={() => nextStep(path)}
             />
           )}
           {path[0] > 0 && <Button type="info" title="上一步" onPress={() => lastStep()} />}
