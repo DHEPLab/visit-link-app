@@ -61,6 +61,12 @@ it('should render switch component', () => {
 it('should after completing the switch case, continue at the level', () => {
   const setCaseComponents = jest.fn();
   const { onCase } = useMethods({
+    navigation: null,
+    params: { id: 1 },
+    page: 1,
+    module: null,
+    setPage: null,
+    caseComponents: null,
     setCaseComponents,
   });
   onCase({
@@ -76,6 +82,11 @@ it('should after completing the switch case, jump to another module and end this
   const { onCase } = useMethods({
     navigation,
     params: { id: 1 },
+    page: 1,
+    module: null,
+    setPage: null,
+    caseComponents: null,
+    setCaseComponents: null,
   });
   onCase({
     finishAction: ['Redirect_End', 2],
@@ -91,6 +102,10 @@ it('should after completing the switch case, jump to another module and continue
     navigation,
     params: { id: 1 },
     page: 1,
+    module: null,
+    setPage: null,
+    caseComponents: null,
+    setCaseComponents: null,
   });
   onCase({
     finishAction: ['Redirect_Continue', 2],
