@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -17,12 +17,25 @@ export function useMethods({
   setPage,
   caseComponents,
   setCaseComponents,
-  finishAction,
-  setFinishAction,
 }) {
   function onCase(_case) {
-    setCaseComponents(_case.components);
-    setFinishAction(_case.finishAction);
+    if (!_case.finishAction || _case.finishAction.length != 2) {
+      setCaseComponents(_case.components);
+      return;
+    }
+
+    const [action, target] = _case.finishAction;
+    if (action === 'Redirect_End') {
+      navigation.navigate('Module', { id: target, from: params.id });
+    }
+    if (action === 'Redirect_Continue') {
+      navigation.navigate('Module', {
+        id: target,
+        from: params.id,
+        fromPage: page + 1,
+        finishAction: 'Redirect_Continue',
+      });
+    }
   }
 
   function finish() {
@@ -36,9 +49,8 @@ export function useMethods({
   function nextStep(theLastPage) {
     if (caseComponents) {
       setCaseComponents();
-      setFinishAction();
-      // TODO Finish Action
     }
+
     if (theLastPage) {
       return finish();
     }
@@ -48,7 +60,6 @@ export function useMethods({
   function lastStep() {
     if (caseComponents) {
       setCaseComponents();
-      setFinishAction();
     } else {
       setPage((page) => page - 1);
     }
@@ -73,11 +84,15 @@ export function useMethods({
 
 export default function Module({ navigation, route }) {
   const { params } = route;
-  const [module] = storage.useModule(params.id);
   const [page, setPage] = useState(0);
-
   const [caseComponents, setCaseComponents] = useState();
-  const [finishAction, setFinishAction] = useState();
+  const [module, reloadModule] = storage.useModule(params.id);
+
+  useEffect(() => {
+    if (route.params.id) {
+      reloadModule(route.params.id);
+    }
+  }, [route.params]);
 
   const { onCase, computed, lastStep, nextStep } = useMethods({
     navigation,
@@ -87,8 +102,6 @@ export default function Module({ navigation, route }) {
     setPage,
     caseComponents,
     setCaseComponents,
-    finishAction,
-    setFinishAction,
   });
   const { components, lastComponent, switchAtTheEnd, theLastPage } = computed();
 
