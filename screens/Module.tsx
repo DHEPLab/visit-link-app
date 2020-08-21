@@ -54,6 +54,10 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
   }
 
+  function pageNumberMinusOne(path: any[]) {
+    return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
+  }
+
   function nextStep(path: any[]) {
     const contextPath = [...path];
     if (path.length > 1) {
@@ -75,11 +79,28 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     }
   }
 
-  function lastStep() {
-    setPath((path: any[]) => {
-      path[0] -= 1;
-      return path;
-    });
+  function lastStep(path: any[]) {
+    if (path[path.length - 1] > 0) {
+      setPath(pageNumberMinusOne(path));
+    } else {
+      // stop condition, do nothing
+      if (path.length === 1) {
+        return;
+      }
+      // go back level
+      const _path = [...path];
+      _path.pop();
+      _path.pop();
+      setPath(_path);
+    }
+  }
+
+  function canPreviousStep(path: any[]) {
+    if (path[path.length - 1] > 0) {
+      return true;
+    } else {
+      return path.length !== 1;
+    }
   }
 
   // unfold layers for support lodash get method
@@ -100,7 +121,13 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     const lastComponent = components[components.length - 1] || {};
     const switchAtTheEnd = lastComponent.type === 'Switch';
     const theLastPage = path[0] === module.pageComponents?.length - 1;
-    return { components, lastComponent, switchAtTheEnd, theLastPage };
+    return {
+      components,
+      lastComponent,
+      switchAtTheEnd,
+      theLastPage,
+      canPreviousStep: canPreviousStep(path),
+    };
   }
 
   return {
@@ -130,7 +157,7 @@ export default function Module({ navigation, route }) {
     path,
     setPath,
   });
-  const { components, lastComponent, switchAtTheEnd, theLastPage } = computed();
+  const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed();
 
   return (
     <>
@@ -169,7 +196,7 @@ export default function Module({ navigation, route }) {
               onPress={() => nextStep(path)}
             />
           )}
-          {path[0] > 0 && <Button type="info" title="上一步" onPress={() => lastStep()} />}
+          {canPreviousStep && <Button type="info" title="上一步" onPress={() => lastStep(path)} />}
         </ButtonContainer>
       </StyledScrollView>
     </>

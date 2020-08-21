@@ -90,16 +90,54 @@ it('should turn to the next page and current in case page components', () => {
 
 it('should turn to the previous page', () => {
   let path = [1];
-  const setPath = (fn) => (path = fn(path));
-  const { lastStep } = useMethods({
+  const setPath = (_path) => (path = _path);
+  let methods = useMethods({
     navigation: null,
     params: { id: 1 },
     path,
     setPath,
     module: null,
   });
-  lastStep();
+  methods.lastStep(path);
   expect(path).toStrictEqual([0]);
+});
+
+it('should turn to the previous page and current in case page components', () => {
+  const navigation = {
+    navigate: jest.fn(),
+  };
+  const params = {
+    id: 1,
+    lessonId: 2,
+  };
+  let path = [1, '0.value.cases.0.pageComponents', 1];
+  const _case = new Case(11, 'Level 1 Case 1', ['Continue'], []).setPageComponents([
+    [new Component('Text', 111)],
+    [new Component('Text', 112)],
+  ]);
+  const module = {
+    pageComponents: [[1], [new Component('Switch', 1, new SwitchValue(new TextValue(), [_case]))]],
+  };
+  const setPath = (_path) => (path = _path);
+  let methods = useMethods({
+    navigation,
+    params,
+    path,
+    setPath,
+    module,
+  });
+  methods.lastStep(path);
+  expect(path).toStrictEqual([1, '0.value.cases.0.pageComponents', 0]);
+
+  methods = useMethods({
+    navigation,
+    params,
+    path,
+    setPath,
+    module,
+  });
+  methods.lastStep(path);
+  expect(path).toStrictEqual([1]);
 });
 
 it('should change path on change case', () => {
