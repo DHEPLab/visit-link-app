@@ -14,8 +14,8 @@ import { Button } from '../components';
 export function useMethods({ navigation, params, module, path, setPath }) {
   function onCase(switchComponentIndex: number, caseIndex: number, _case: Case) {
     setPath((path) =>
-      // path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
-      path.concat([switchComponentIndex, 'value', 'cases', caseIndex, 'pageComponents', 0])
+      // fold too many layers and expand when you use them
+      path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
     );
     // if (!_case.finishAction || _case.finishAction.length != 2) {
     //   setCaseComponents(_case.components);
@@ -54,8 +54,21 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     });
   }
 
+  // unfold layers for support lodash get method
+  function unfoldPath(path) {
+    const array = [];
+    path.forEach((p) => {
+      if (typeof p === 'string') {
+        array.push(...p.split('.'));
+      } else {
+        array.push(p);
+      }
+    });
+    return array;
+  }
+
   function computed() {
-    const components = lodash.get(module?.pageComponents, path, []);
+    const components = lodash.get(module?.pageComponents, unfoldPath(path), []);
     const lastComponent = components[components.length - 1] || {};
     const switchAtTheEnd = lastComponent.type === 'Switch';
     const theLastPage = path[0] === module.pageComponents?.length - 1;
@@ -89,7 +102,6 @@ export default function Module({ navigation, route }) {
     path,
     setPath,
   });
-  console.log(path);
   const { components, lastComponent, switchAtTheEnd, theLastPage } = computed();
 
   return (

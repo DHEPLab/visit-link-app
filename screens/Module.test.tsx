@@ -34,6 +34,20 @@ it('should turn to the next page', () => {
   expect(path).toStrictEqual([1]);
 });
 
+// it('should turn to the next page and current in case page components', () => {
+//   let path = [0, 0, 'value', 'cases', 0, 'pageComponents', 0];
+//   const setPath = (fn) => (path = fn(path));
+//   const { nextStep } = useMethods({
+//     navigation: null,
+//     params: { id: 1 },
+//     path,
+//     setPath,
+//     module: null,
+//   });
+//   nextStep();
+//   expect(path).toStrictEqual([1]);
+// });
+
 it('should turn to the previous page', () => {
   let path = [1];
   const setPath = (fn) => (path = fn(path));
@@ -65,7 +79,7 @@ it('should change path on change case', () => {
     module,
   });
   onCase(0, 0, _case);
-  expect(path).toStrictEqual([0, 0, 'value', 'cases', 0, 'pageComponents', 0]);
+  expect(path).toStrictEqual([0, '0.value.cases.0.pageComponents', 0]);
   const { computed } = useMethods({
     navigation: null,
     params: { id: 1 },
