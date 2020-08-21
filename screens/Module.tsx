@@ -79,7 +79,7 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     }
   }
 
-  function lastStep(path: any[]) {
+  function previousStep(path: any[]) {
     if (path[path.length - 1] > 0) {
       setPath(pageNumberMinusOne(path));
     } else {
@@ -133,7 +133,7 @@ export function useMethods({ navigation, params, module, path, setPath }) {
   return {
     onCase,
     nextStep,
-    lastStep,
+    previousStep,
     computed,
   };
 }
@@ -150,7 +150,7 @@ export default function Module({ navigation, route }) {
     }
   }, [route.params]);
 
-  const { onCase, computed, lastStep, nextStep } = useMethods({
+  const { onCase, computed, previousStep, nextStep } = useMethods({
     navigation,
     params,
     module,
@@ -196,7 +196,9 @@ export default function Module({ navigation, route }) {
               onPress={() => nextStep(path)}
             />
           )}
-          {canPreviousStep && <Button type="info" title="上一步" onPress={() => lastStep(path)} />}
+          {canPreviousStep && (
+            <Button type="info" title="上一步" onPress={() => previousStep(path)} />
+          )}
         </ButtonContainer>
       </StyledScrollView>
     </>

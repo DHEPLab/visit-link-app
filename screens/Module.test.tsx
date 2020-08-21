@@ -98,7 +98,7 @@ it('should turn to the previous page', () => {
     setPath,
     module: null,
   });
-  methods.lastStep(path);
+  methods.previousStep(path);
   expect(path).toStrictEqual([0]);
 });
 
@@ -126,7 +126,7 @@ it('should turn to the previous page and current in case page components', () =>
     setPath,
     module,
   });
-  methods.lastStep(path);
+  methods.previousStep(path);
   expect(path).toStrictEqual([1, '0.value.cases.0.pageComponents', 0]);
 
   methods = useMethods({
@@ -136,7 +136,7 @@ it('should turn to the previous page and current in case page components', () =>
     setPath,
     module,
   });
-  methods.lastStep(path);
+  methods.previousStep(path);
   expect(path).toStrictEqual([1]);
 });
 
