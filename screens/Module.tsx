@@ -170,6 +170,7 @@ export default function Module({ navigation, route }) {
     // when jump to another module
     if (route.params.id) {
       reloadModule(route.params.id);
+      setPath([0]);
     }
     // when go back from another module and continue on the previous path
     if (route.params.path) {
