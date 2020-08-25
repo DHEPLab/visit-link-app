@@ -63,3 +63,16 @@ it('should return visit remark title', () => {
   expect(Visit.remarkTitle('EXPIRED')).toBe('过期原因');
   expect(Visit.remarkTitle('UNDONE')).toBe('未完成原因');
 });
+
+it('should disable visit button when now is after select day', () => {
+  expect(Visit.disabledVisitButton(new Date('2020-05-10'), '2020-05-09')).toBeTruthy();
+});
+
+it('should enable visit button when now is not after select day', () => {
+  expect(Visit.disabledVisitButton(new Date('2020-05-10'), '2020-05-10')).toBeFalsy();
+  expect(Visit.disabledVisitButton(new Date('2020-05-10'), '2020-05-11')).toBeFalsy();
+});
+
+it("should disable visit button when now is after 21 o'clock", () => {
+  expect(Visit.disabledVisitButton(new Date('2020-05-10T21:00:00'), '2020-05-10')).toBeTruthy();
+});

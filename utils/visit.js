@@ -79,6 +79,12 @@ export default {
       now.hour() < 20
     );
   },
+  disabledVisitButton(now, selected) {
+    if (moment(formatDate(now)).isSame(selected)) {
+      return moment(now).hour() > 20;
+    }
+    return moment(formatDate(now)).isAfter(selected);
+  },
   formatDate,
   formatDateTime,
   formatTimeCN,
