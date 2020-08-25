@@ -1,5 +1,8 @@
 import moment from 'moment';
 
+// (hours)
+const dailyDeadlineForVisit = 20;
+
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
 
@@ -18,6 +21,14 @@ function defaultDatetime(range, visitTime) {
 
   // return range start with default time 10:00 AM
   return range[0] + 'T10:00';
+}
+
+function defaultStartingRange() {
+  const now = moment();
+  if (now.hour() > dailyDeadlineForVisit) {
+    now.date(now.date() + 1);
+  }
+  return formatDate(now);
 }
 
 function meridiem(momentInstance) {
@@ -76,12 +87,12 @@ export default {
     return (
       moment(formatDate(now)).isSame(formatDate(moment(visitTime))) &&
       now.hour() >= 8 &&
-      now.hour() < 20
+      now.hour() < dailyDeadlineForVisit
     );
   },
   disabledVisitButton(now, selected) {
     if (moment(formatDate(now)).isSame(selected)) {
-      return moment(now).hour() > 20;
+      return moment(now).hour() > dailyDeadlineForVisit;
     }
     return moment(formatDate(now)).isAfter(selected);
   },
@@ -95,6 +106,7 @@ export default {
   statusDone: (status) => status === 'DONE',
   statusUndone,
   statusNotStart,
+  defaultStartingRange,
   remarkTitle: (status) =>
     statusNotStart(status) ? '备注' : statusUndone(status) ? '未完成原因' : '过期原因',
 };
