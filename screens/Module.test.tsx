@@ -169,40 +169,46 @@ it('should change path on change case', () => {
   expect(components).toStrictEqual([new Component('Text', 111)]);
 });
 
-it.skip('should after completing the switch case, jump to another module and end this content module', () => {
+it('should after completing the switch case page, jump to another module and end this content module', () => {
+  const path = [0, '0.value.cases.0', 'pageComponents', 0];
   const navigation = {
     navigate: jest.fn(),
   };
-  const { onCase } = useMethods({
-    navigation,
-    params: { id: 1 },
-    path: null,
-    setPath: null,
-    module: null,
-  });
   const _case = new Case(11, 'Level 1 Case 1', ['Redirect_End', 2], []).setPageComponents([
     [new Component('Text', 111)],
   ]);
-  onCase(0, 0);
+  const { nextStep } = useMethods({
+    navigation,
+    params: { id: 1 },
+    path,
+    setPath: null,
+    module: {
+      pageComponents: [[new Component('Switch', 1, new SwitchValue(new TextValue(), [_case]))]],
+    },
+  });
+  nextStep(path);
   expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: null });
 });
 
-it.skip('should after completing the switch case, jump to another module and continue this content module', () => {
+it('should after completing the switch case page, jump to another module and continue this content module', () => {
+  const path = [0, '0.value.cases.0', 'pageComponents', 0];
   const navigation = {
     navigate: jest.fn(),
   };
-  const { onCase } = useMethods({
-    navigation,
-    params: { id: 1 },
-    path: [1],
-    setPath: null,
-    module: null,
-  });
   const _case = new Case(11, 'Level 1 Case 1', ['Redirect_Continue', 2], []).setPageComponents([
     [new Component('Text', 111)],
   ]);
-  onCase(0, 0);
-  expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: [1] });
+  const { nextStep } = useMethods({
+    navigation,
+    params: { id: 1 },
+    path,
+    setPath: null,
+    module: {
+      pageComponents: [[new Component('Switch', 1, new SwitchValue(new TextValue(), [_case]))]],
+    },
+  });
+  nextStep(path);
+  expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: path });
 });
 
 it('should go back to the from module and continue on the previous path', () => {

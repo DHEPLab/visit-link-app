@@ -13,27 +13,10 @@ import { Button } from '../components';
 
 export function useMethods({ navigation, params, module, path, setPath }) {
   function onCase(switchComponentIndex: number, caseIndex: number) {
-    // if (!_case.finishAction || _case.finishAction.length != 2) {
     setPath((path: any[]) =>
       // fold too many layers and expand when you use them
       path.concat([`${switchComponentIndex}.value.cases.${caseIndex}`, 'pageComponents', 0])
     );
-    // return;
-    // }
-
-    // const [action, target] = _case.finishAction;
-    // if (action === 'Redirect_End') {
-    //   navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
-    //   return;
-    // }
-
-    // if (action === 'Redirect_Continue') {
-    //   navigation.navigate('Module', {
-    //     id: target,
-    //     from: params.id,
-    //     fromPath: path,
-    //   });
-    // }
   }
 
   function finish() {
@@ -61,6 +44,13 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
   }
 
+  function getFinishAction(casesPath: any[]) {
+    if (casesPath.length === 1) {
+      return [];
+    }
+    return lodash.get(module?.pageComponents, unfoldPath([...casesPath, 'finishAction']));
+  }
+
   function pageNumberPlusOne(path: any[]) {
     return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
   }
@@ -69,10 +59,36 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
   }
 
+  function jumpToAnotherModule(finishAction: any[]) {
+    const [action, target] = finishAction;
+    if (action === 'Redirect_End') {
+      navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
+      return;
+    }
+
+    if (action === 'Redirect_Continue') {
+      navigation.navigate('Module', {
+        id: target,
+        from: params.id,
+        fromPath: path,
+      });
+    }
+  }
+
   function nextStep(path: any[]) {
     const _path = [...path];
     const contextPath = [..._path];
-    if (_path.length > 1) {
+    const casesPath = [..._path];
+    if (casesPath.length > 2) {
+      casesPath.pop(); // pop ${casePageComponentsIndex} path
+      casesPath.pop(); // pop 'pageComponents' path
+      const finishAction = getFinishAction(casesPath);
+      if (finishAction && finishAction.length == 2) {
+        return jumpToAnotherModule(finishAction);
+      }
+    }
+
+    if (contextPath.length > 1) {
       contextPath.pop();
     }
 
