@@ -30,15 +30,17 @@ const Text = styled.Text`
 const Number = styled(Text)`
   margin-right: 12px;
 `;
-const Name = styled(Text)``;
+const Name = styled(Text)`
+  flex: 1;
+  flex-wrap: wrap;
+`;
 
 const Container = styled.View`
-  height: 42px;
+  padding: 14px 12px;
   border-radius: 8px;
   background: #fff;
   margin-bottom: 8px;
   flex-direction: row;
   align-items: center;
-  padding-left: 12px;
   opacity: ${({ opacity }) => opacity};
 `;

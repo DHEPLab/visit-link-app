@@ -290,6 +290,7 @@ const Description = styled.Text`
 const Name = styled(Description)`
   font-weight: bold;
   margin-top: 12px;
+  width: 280px;
 `;
 
 const Header = styled(LinearGradient)`
