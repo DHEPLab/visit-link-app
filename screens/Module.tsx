@@ -12,28 +12,28 @@ import { Colors } from '../constants';
 import { Button } from '../components';
 
 export function useMethods({ navigation, params, module, path, setPath }) {
-  function onCase(switchComponentIndex: number, caseIndex: number, _case: Case) {
-    if (!_case.finishAction || _case.finishAction.length != 2) {
-      setPath((path: any[]) =>
-        // fold too many layers and expand when you use them
-        path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
-      );
-      return;
-    }
+  function onCase(switchComponentIndex: number, caseIndex: number) {
+    // if (!_case.finishAction || _case.finishAction.length != 2) {
+    setPath((path: any[]) =>
+      // fold too many layers and expand when you use them
+      path.concat([`${switchComponentIndex}.value.cases.${caseIndex}`, 'pageComponents', 0])
+    );
+    // return;
+    // }
 
-    const [action, target] = _case.finishAction;
-    if (action === 'Redirect_End') {
-      navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
-      return;
-    }
+    // const [action, target] = _case.finishAction;
+    // if (action === 'Redirect_End') {
+    //   navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
+    //   return;
+    // }
 
-    if (action === 'Redirect_Continue') {
-      navigation.navigate('Module', {
-        id: target,
-        from: params.id,
-        fromPath: path,
-      });
-    }
+    // if (action === 'Redirect_Continue') {
+    //   navigation.navigate('Module', {
+    //     id: target,
+    //     from: params.id,
+    //     fromPath: path,
+    //   });
+    // }
   }
 
   function finish() {
@@ -84,8 +84,9 @@ export function useMethods({ navigation, params, module, path, setPath }) {
         return finish();
       }
       // go back level
-      _path.pop();
-      _path.pop();
+      _path.pop(); // pop ${casePageComponentsIndex} path
+      _path.pop(); // pop 'pageComponents' path
+      _path.pop(); // pop ${switchComponentIndex}.value.cases.${caseIndex} path
       // recursive check
       nextStep(_path);
     }
@@ -101,8 +102,9 @@ export function useMethods({ navigation, params, module, path, setPath }) {
       }
       // go back level
       const _path = [...path];
-      _path.pop();
-      _path.pop();
+      _path.pop(); // pop ${casePageComponentsIndex} path
+      _path.pop(); // pop 'pageComponents' path
+      _path.pop(); // pop ${switchComponentIndex}.value.cases.${caseIndex} path
       setPath(_path);
     }
   }
@@ -204,7 +206,7 @@ export default function Module({ navigation, route }) {
                   key={_case.key}
                   size="large"
                   title={_case.text}
-                  onPress={() => onCase(components.length - 1, index, _case)}
+                  onPress={() => onCase(components.length - 1, index)}
                 />
               ))}
             </>
