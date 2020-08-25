@@ -12,6 +12,7 @@ it('should gets the component of the current page', () => {
     path,
     setPath: null,
     module,
+    reloadModule: null,
   });
   const { components, lastComponent, theLastPage, switchAtTheEnd } = computed();
   expect(components).toStrictEqual([1, 2]);
@@ -31,6 +32,7 @@ it('should turn to the next page', () => {
     module: {
       pageComponents: [1, 2],
     },
+    reloadModule: null,
   });
   nextStep(path);
   expect(path).toStrictEqual([1]);
@@ -59,6 +61,7 @@ it('should turn to the next page and current in case page components', () => {
     path,
     setPath,
     module,
+    reloadModule: null,
   });
   methods.nextStep(path);
   expect(path).toStrictEqual([0, '0.value.cases.0', 'pageComponents', 1]);
@@ -69,6 +72,7 @@ it('should turn to the next page and current in case page components', () => {
     path,
     setPath,
     module,
+    reloadModule: null,
   });
   methods.nextStep(path);
   expect(path).toStrictEqual([1]);
@@ -79,6 +83,7 @@ it('should turn to the next page and current in case page components', () => {
     path,
     setPath,
     module,
+    reloadModule: null,
   });
   methods.nextStep(path);
   expect(navigation.navigate).toBeCalledWith('LessonModules', {
@@ -97,6 +102,7 @@ it('should turn to the previous page', () => {
     path,
     setPath,
     module: null,
+    reloadModule: null,
   });
   methods.previousStep(path);
   expect(path).toStrictEqual([0]);
@@ -125,6 +131,7 @@ it('should turn to the previous page and current in case page components', () =>
     path,
     setPath,
     module,
+    reloadModule: null,
   });
   methods.previousStep(path);
   expect(path).toStrictEqual([1, '0.value.cases.0', 'pageComponents', 0]);
@@ -135,6 +142,7 @@ it('should turn to the previous page and current in case page components', () =>
     path,
     setPath,
     module,
+    reloadModule: null,
   });
   methods.previousStep(path);
   expect(path).toStrictEqual([1]);
@@ -149,14 +157,15 @@ it('should change path on change case', () => {
   const module = {
     pageComponents: [[new Component('Switch', 1, new SwitchValue(new TextValue(), [_case]))]],
   };
-  const { onCase } = useMethods({
+  const { handleCase } = useMethods({
     navigation: null,
     params: { id: 1 },
     path,
     setPath,
     module,
+    reloadModule: null,
   });
-  onCase(0, 0);
+  handleCase(0, 0);
   expect(path).toStrictEqual([0, '0.value.cases.0', 'pageComponents', 0]);
   const { computed } = useMethods({
     navigation: null,
@@ -164,6 +173,7 @@ it('should change path on change case', () => {
     path,
     setPath,
     module,
+    reloadModule: null,
   });
   const { components } = computed();
   expect(components).toStrictEqual([new Component('Text', 111)]);
@@ -185,9 +195,12 @@ it('should after completing the switch case page, jump to another module and end
     module: {
       pageComponents: [[new Component('Switch', 1, new SwitchValue(new TextValue(), [_case]))]],
     },
+    reloadModule: null,
   });
   nextStep(path);
-  expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: null });
+  expect(navigation.navigate).toBeCalledWith('Module', {
+    id: 2,
+  });
 });
 
 it('should after completing the switch case page, jump to another module and continue this content module', () => {
@@ -206,9 +219,49 @@ it('should after completing the switch case page, jump to another module and con
     module: {
       pageComponents: [[new Component('Switch', 1, new SwitchValue(new TextValue(), [_case]))]],
     },
+    reloadModule: null,
   });
   nextStep(path);
-  expect(navigation.navigate).toBeCalledWith('Module', { id: 2, from: 1, fromPath: path });
+  expect(navigation.navigate).toBeCalledWith('Module', {
+    id: 2,
+    path: null,
+    moduleStack: [1],
+    pathStack: [path],
+  });
+});
+
+it('should reload module when route params change', () => {
+  const setPath = jest.fn();
+  const reloadModule = jest.fn();
+  const { handleChangeRouteParams } = useMethods({
+    navigation: null,
+    params: { id: 1 },
+    path: null,
+    setPath,
+    module: null,
+    reloadModule,
+  });
+  handleChangeRouteParams({ id: 2 });
+  expect(reloadModule).toBeCalledWith(2);
+  expect(setPath).toBeCalledWith([0]);
+});
+
+it('should continue on the previous path', () => {
+  const setPath = jest.fn();
+  const reloadModule = jest.fn();
+  const { handleChangeRouteParams } = useMethods({
+    navigation: null,
+    params: { id: 1 },
+    path: null,
+    setPath,
+    module: {
+      pageComponents: [[1], [2], [3]],
+    },
+    reloadModule,
+  });
+  handleChangeRouteParams({ id: 2, path: [1] });
+  expect(reloadModule).toBeCalledWith(2);
+  expect(setPath).toBeCalledWith([2]);
 });
 
 it('should go back to the from module and continue on the previous path', () => {
@@ -217,16 +270,17 @@ it('should go back to the from module and continue on the previous path', () => 
   };
   const { finish } = useMethods({
     navigation,
-    params: { id: 2, from: 1, fromPath: [1] },
+    params: { id: 2, moduleStack: [1], pathStack: [[1]] },
     path: null,
     setPath: null,
     module: null,
+    reloadModule: null,
   });
   finish();
   expect(navigation.navigate).toBeCalledWith('Module', {
     id: 1,
     path: [1],
-    from: null,
-    fromPath: null,
+    moduleStack: [],
+    pathStack: [],
   });
 });

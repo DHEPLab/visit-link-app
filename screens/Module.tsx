@@ -11,8 +11,8 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
 
-export function useMethods({ navigation, params, module, path, setPath }) {
-  function onCase(switchComponentIndex: number, caseIndex: number) {
+export function useMethods({ navigation, params, module, path, setPath, reloadModule }) {
+  function handleCase(switchComponentIndex: number, caseIndex: number) {
     setPath((path: any[]) =>
       // fold too many layers and expand when you use them
       path.concat([`${switchComponentIndex}.value.cases.${caseIndex}`, 'pageComponents', 0])
@@ -20,16 +20,23 @@ export function useMethods({ navigation, params, module, path, setPath }) {
   }
 
   function finish() {
-    if (params.from && params.fromPath) {
+    // if there are elements in the module statck, push out
+    if (params?.moduleStack?.length > 0 && params?.pathStack?.length > 0) {
+      const moduleStack = [...params.moduleStack];
+      const pathStack = [...params.pathStack];
+      const id = moduleStack.shift();
+      const path = pathStack.shift();
+      // go back to the module screen at the top of the stack
       navigation.navigate('Module', {
-        id: params.from,
-        path: params.fromPath,
-        from: null,
-        fromPath: null,
+        id,
+        path,
+        moduleStack,
+        pathStack,
       });
       return;
     }
 
+    // go back to the lesson modules page and finished current module
     navigation.navigate('LessonModules', {
       id: params.lessonId,
       moduleId: params.id,
@@ -37,40 +44,26 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     });
   }
 
-  function totalPage(contextPath: any[]) {
-    if (contextPath.length === 1) {
-      return module.pageComponents.length;
-    }
-    return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
-  }
-
-  function getFinishAction(casesPath: any[]) {
-    if (casesPath.length === 1) {
-      return [];
-    }
-    return lodash.get(module?.pageComponents, unfoldPath([...casesPath, 'finishAction']));
-  }
-
-  function pageNumberPlusOne(path: any[]) {
-    return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
-  }
-
-  function pageNumberMinusOne(path: any[]) {
-    return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
-  }
-
   function jumpToAnotherModule(finishAction: any[]) {
     const [action, target] = finishAction;
     if (action === 'Redirect_End') {
-      navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
+      navigation.navigate('Module', { id: target });
       return;
     }
 
     if (action === 'Redirect_Continue') {
+      // deep copy module, path stack
+      const moduleStack = (params.moduleStack && [...params.moduleStack]) || [];
+      const pathStack = (params.pathStack && [...params.pathStack]) || [];
+      // into the stack
+      moduleStack.unshift(params.id);
+      pathStack.unshift(path);
+
       navigation.navigate('Module', {
         id: target,
-        from: params.id,
-        fromPath: path,
+        path: null,
+        moduleStack,
+        pathStack,
       });
     }
   }
@@ -125,6 +118,28 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     }
   }
 
+  function totalPage(contextPath: any[]) {
+    if (contextPath.length === 1) {
+      return module.pageComponents.length;
+    }
+    return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
+  }
+
+  function getFinishAction(casesPath: any[]) {
+    if (casesPath.length === 1) {
+      return [];
+    }
+    return lodash.get(module?.pageComponents, unfoldPath([...casesPath, 'finishAction']));
+  }
+
+  function pageNumberPlusOne(path: any[]) {
+    return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
+  }
+
+  function pageNumberMinusOne(path: any[]) {
+    return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
+  }
+
   function canPreviousStep(path: any[]) {
     if (path[path.length - 1] > 0) {
       return true;
@@ -134,6 +149,7 @@ export function useMethods({ navigation, params, module, path, setPath }) {
   }
 
   // unfold layers for support lodash get method
+  // 0.value.cases.0 -> [0, 'value', 'cases', 0]
   function unfoldPath(path: any[]) {
     const array = [];
     path.forEach((p: string | number) => {
@@ -160,41 +176,46 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     };
   }
 
+  function handleChangeRouteParams(params: any) {
+    // when jump to another module
+    if (params.id) {
+      reloadModule(params.id);
+      // when go back from another module and continue on the previous path
+      if (params.path) {
+        nextStep(params.path);
+      } else {
+        setPath([0]);
+      }
+    }
+  }
+
   return {
-    onCase,
+    handleCase,
     nextStep,
     previousStep,
     computed,
     finish,
+    handleChangeRouteParams,
   };
 }
 
-export default function Module({ navigation, route }) {
+export default function ModuleScreen({ navigation, route }) {
   const { params } = route;
   // the path of the page components to get current page
   const [path, setPath] = useState([0]);
   const [module, reloadModule] = storage.useModule(params.id);
 
-  const { onCase, computed, previousStep, nextStep } = useMethods({
+  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods({
     navigation,
     params,
     module,
     path,
     setPath,
+    reloadModule,
   });
   const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed();
 
-  useEffect(() => {
-    // when jump to another module
-    if (route.params.id) {
-      reloadModule(route.params.id);
-      setPath([0]);
-    }
-    // when go back from another module and continue on the previous path
-    if (route.params.path) {
-      nextStep(route.params.path);
-    }
-  }, [route.params]);
+  useEffect(() => handleChangeRouteParams(route.params), [route.params]);
 
   return (
     <>
@@ -222,7 +243,7 @@ export default function Module({ navigation, route }) {
                   key={_case.key}
                   size="large"
                   title={_case.text}
-                  onPress={() => onCase(components.length - 1, index)}
+                  onPress={() => handleCase(components.length - 1, index)}
                 />
               ))}
             </>
