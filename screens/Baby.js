@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
-import { useFetch, useManualFetchArray, useBoolState } from '../utils';
+import { useFetch, useManualFetch, useBoolState } from '../utils';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { GenderIcon, BabyStage, FeedingPattern } from '../constants/enums';
@@ -31,24 +31,12 @@ export default function Baby({ navigation, route }) {
   const [started, setStarted] = useState(false);
   const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`);
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
-  const [notStartedVisits, refreshNotStartedVisits] = useManualFetchArray(
-    `/api/babies/${params.id}/visits`,
-    {
-      started: false,
-    }
-  );
-  const [startedVisits, refreshStartedVisits] = useManualFetchArray(
-    `/api/babies/${params.id}/visits`,
-    {
-      started: true,
-    }
-  );
+  const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`);
 
   useEffect(
     () =>
       navigation.addListener('focus', () => {
-        refreshNotStartedVisits();
-        refreshStartedVisits();
+        refreshBabyVisits();
       }),
     [navigation]
   );
@@ -139,6 +127,7 @@ export default function Baby({ navigation, route }) {
       </Header>
 
       <TabView
+        onIndexChange={setIndex}
         navigationState={{
           index,
           routes: [
@@ -146,13 +135,19 @@ export default function Baby({ navigation, route }) {
             { key: 'Family', title: '家庭信息' },
           ],
         }}
-        onIndexChange={setIndex}
         renderTabBar={(props) => (
           <TabBar
             {...props}
-            labelStyle={{ color: '#FF794F' }}
             indicatorStyle={{ backgroundColor: '#FF794F' }}
             style={{ backgroundColor: '#fff' }}
+            renderLabel={({ route, focused }) => (
+              <TabBarLabelContainer>
+                <TabBarLabel focused={focused}>{route.title}</TabBarLabel>
+                {route.key === 'Visits' && babyVisits.numberOfNoRemark > 0 && (
+                  <NumberOfNoRemark>{babyVisits.numberOfNoRemark}</NumberOfNoRemark>
+                )}
+              </TabBarLabelContainer>
+            )}
           />
         )}
         renderScene={SceneMap({
@@ -160,8 +155,9 @@ export default function Baby({ navigation, route }) {
             <Visits
               onCreateVisit={handleCreateVisit}
               onChange={setStarted}
-              notStartedVisits={notStartedVisits}
-              startedVisits={startedVisits}
+              notStartedVisits={babyVisits.notStarted}
+              startedVisits={babyVisits.started}
+              numberOfNoRemark={babyVisits.numberOfNoRemark}
               started={started}
               navigation={navigation}
               approved={baby.approved}
@@ -175,6 +171,17 @@ export default function Baby({ navigation, route }) {
     </>
   );
 }
+
+const TabBarLabelContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TabBarLabel = styled.Text`
+  font-size: 12px;
+  color: #ff794f;
+  font-weight: ${({ focused }) => (focused ? 'bold' : 'normal')};
+`;
 
 const IdentityContainer = styled.View`
   align-items: flex-end;
@@ -209,6 +216,7 @@ function Visits({
   started,
   startedVisits,
   notStartedVisits,
+  numberOfNoRemark,
   onChange,
   navigation,
   onCreateVisit,
@@ -222,6 +230,10 @@ function Visits({
     navigation.navigate('Visit', { id: item.id });
   }
 
+  function redDot(item) {
+    return (item.status === 'EXPIRED' || item.status === 'UNDONE') && item.remark == null;
+  }
+
   return (
     <VisitsContainer>
       <VisitTabs>
@@ -229,14 +241,21 @@ function Visits({
           <VisitTab active={!started}>计划中的家访</VisitTab>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onChange(true)} activeOpacity={0.8}>
-          <VisitTab active={started}>已完成家访</VisitTab>
+          <TitleContainer>
+            <VisitTab active={started}>已完成家访</VisitTab>
+            {numberOfNoRemark > 0 && (
+              <NumberOfNoRemark active={started}>{numberOfNoRemark}</NumberOfNoRemark>
+            )}
+          </TitleContainer>
         </TouchableOpacity>
       </VisitTabs>
       <FlatList
         ListEmptyComponent={<NoData title="没有相关结果" />}
         data={started ? startedVisits : notStartedVisits}
         keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
+        renderItem={({ item }) => (
+          <VisitItem onPress={() => handlePressVisit(item)} value={item} redDot={redDot(item)} />
+        )}
       />
       <FixedButtonContainer>
         <Button size="large" disabled={!approved} title="新建家访" onPress={onCreateVisit} />
@@ -244,6 +263,29 @@ function Visits({
     </VisitsContainer>
   );
 }
+
+const TitleContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-left: 16px;
+`;
+
+const NumberOfNoRemark = styled.Text`
+  font-size: 8px;
+  color: #565656;
+  padding: 0 3px;
+  height: 12px;
+  line-height: 12px;
+  border-radius: 5px;
+  background: #d8d8d8;
+  margin-left: 4px;
+  font-weight: bold;
+  ${({ active }) =>
+    active &&
+    `
+    margin-bottom: 2px;
+  `}
+`;
 
 function Family({ baby, carers, navigation, onRefresh }) {
   const [remark, setRemark] = useState(baby.remark);
@@ -482,7 +524,6 @@ const VisitTabs = styled.View`
 
 const VisitTab = styled.Text`
   font-size: 12px;
-  margin-right: 16px;
   color: #525252;
   ${({ active }) =>
     active &&

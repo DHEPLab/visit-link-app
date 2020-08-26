@@ -10,7 +10,7 @@ import { VisitStatus } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function VisitItem({ onPress, value }) {
+export default function VisitItem({ onPress, value, redDot }) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <Container>
@@ -26,11 +26,20 @@ export default function VisitItem({ onPress, value }) {
             <StaticField label="家访时间">{Visit.formatDateTimeCN(value.visitTime)}</StaticField>
           </StaticForm>
         </FormContainer>
+        {redDot && <RedDot />}
         <MaterialIcons name="keyboard-arrow-right" size={px2dp(14)} color="#FF794F" />
       </Container>
     </TouchableOpacity>
   );
 }
+
+const RedDot = styled.View`
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+  background: rgba(221, 0, 0, 1);
+`;
 
 const Container = styled.View`
   background: #fff;
