@@ -107,7 +107,11 @@ export default function Baby({ navigation, route }) {
                   color="#fff"
                 />
                 <Age>
-                  {BabyStage[baby.stage || params.stage]} {baby.months || params.months}个月
+                  {params.pastEdc
+                    ? '宝宝预产期已到'
+                    : `${BabyStage[baby.stage || params.stage]} ${
+                        baby.months || params.months
+                      }个月`}
                 </Age>
               </Stage>
               {baby.feedingPattern && (
