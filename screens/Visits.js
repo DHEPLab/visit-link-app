@@ -86,7 +86,11 @@ export default function Visits({ navigation }) {
         <Button
           title="新建家访"
           disabled={Visit.disabledVisitButton(now, selected)}
-          onPress={() => navigation.navigate('CreateVisit', { visitTime: `${selected}T10:00` })}
+          onPress={() =>
+            navigation.navigate('CreateVisit', {
+              visitTime: Visit.defaultVisitTime(new Date(), selected),
+            })
+          }
         />
       </ButtonContainer>
 

@@ -131,7 +131,7 @@ export default function Home({ navigation }) {
             size="large"
             onPress={() =>
               navigation.navigate('CreateVisit', {
-                visitTime: `${Visit.formatDate(new Date())}T10:00`,
+                visitTime: Visit.defaultVisitTime(new Date()),
               })
             }
           />

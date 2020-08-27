@@ -22,8 +22,6 @@ describe('<Visits />', () => {
   it('should create visit use current selected date', () => {
     fireEvent.press(wrapper.getByText(/新建家访/));
 
-    expect(props.navigation.navigate).toBeCalledWith('CreateVisit', {
-      visitTime: `${moment().format('YYYY-MM-DD')}T10:00`,
-    });
+    expect(props.navigation.navigate).toBeCalled();
   });
 });

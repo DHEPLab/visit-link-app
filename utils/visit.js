@@ -19,8 +19,12 @@ function defaultDatetime(range, visitTime) {
     return visitTime;
   }
 
-  // return range start with default time 10:00 AM
-  return range[0] + 'T10:00';
+  if (moment(formatDate(visitTime)).isSame(range[0])) {
+    return visitTime;
+  }
+
+  // return range start with default time 08:00 AM
+  return range[0] + 'T08:00';
 }
 
 function defaultStartingRange() {
@@ -100,6 +104,12 @@ export default {
       return moment(now).hour() > dailyDeadlineForVisit;
     }
     return moment(formatDate(now)).isAfter(selected);
+  },
+  defaultVisitTime(now, selected) {
+    if (!selected || moment(formatDate(now)).isSame(selected)) {
+      return formatDateTime(now);
+    }
+    return `${selected}T08:00`;
   },
   formatDate,
   formatDateTime,
