@@ -11,6 +11,7 @@ export default function CreateBabyStep1({ navigation }) {
   useEffect(
     () =>
       navigation.addListener('beforeRemove', (e) => {
+        if (e.data.action.type !== 'GO_BACK') return;
         e.preventDefault();
         open();
         setAction(e.data.action);

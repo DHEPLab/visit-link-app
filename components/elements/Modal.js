@@ -38,7 +38,7 @@ export default function ElementModal({
 }
 
 const ContentText = styled.Text`
-  color: 10px;
+  font-size: 10px;
   color: #4a4a4a;
   text-align: left;
   width: 100%;
