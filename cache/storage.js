@@ -47,8 +47,8 @@ function getNextModule() {
   return getValue(`NEXT_MODULE`);
 }
 
-function getVisitStatus() {
-  return getObject(`VISIT_STATUS`);
+function getUncommittedVisitStatus() {
+  return getObject(`UNCOMMITTED_VISIT_STATUS`);
 }
 
 function useString(getFn, id) {
@@ -95,31 +95,31 @@ export default {
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
   setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
-  setVisitStatus: (id, status) => {
+  setUncommittedVisitStatus: (id, status, startTime) => {
     return new Promise(async (resolve, reject) => {
       try {
-        let obj = await getVisitStatus();
+        let obj = await getUncommittedVisitStatus();
         obj = obj || {};
-        obj[id] = status;
-        await addObject('VISIT_STATUS', obj);
+        obj[id] = { status, startTime: startTime || obj[id]?.startTime };
+        await addObject('UNCOMMITTED_VISIT_STATUS', obj);
         resolve();
       } catch (e) {
         reject();
       }
     });
   },
-  cleanVisitStatus: () => addObject('VISIT_STATUS', {}),
+  committedVisitStatus: () => addObject('UNCOMMITTED_VISIT_STATUS', {}),
   setLastUpdateAt: (datetime) =>
     addValue('LAST_UPDATE_AT', moment(datetime).format('YYYY-MM-DDTHH:mm:ss')),
   getLesson,
   getModule,
   getNextVisit,
   getNextModule,
-  getVisitStatus,
+  getUncommittedVisitStatus,
   getLastUpdateAt: () => getValue('LAST_UPDATE_AT'),
   useLesson: (id) => use(getLesson, id),
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),
   useNextModule: () => useNumber(getNextModule),
-  useVisitStatus: () => use(getVisitStatus),
+  useUncommittedVisitStatus: () => use(getUncommittedVisitStatus),
 };
