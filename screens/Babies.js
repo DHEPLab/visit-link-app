@@ -6,8 +6,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { BabyItem, NoData, Button, ListFooter } from '../components';
+import { BabyItem, NoData, Button, ListFooter, Modal } from '../components';
 import { useBoolState } from '../utils';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Babies({ navigation }) {
   const { navigate } = navigation;
@@ -18,6 +19,7 @@ export default function Babies({ navigation }) {
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
   const [refreshing, startRefresh, endRefresh] = useBoolState();
+  const [tooltip, openTooltip, closeTooltip] = useBoolState();
   const [loading, startLoad, endLoad] = useBoolState();
   const [name, setName] = useState();
 
@@ -74,10 +76,24 @@ export default function Babies({ navigation }) {
 
       {contents.length > 0 && (
         <ListHeader>
-          <Title>宝宝列表</Title>
+          <TitleContainer>
+            <Title>宝宝列表</Title>
+            <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
+              <Tooltip>请注意</Tooltip>
+            </TouchableOpacity>
+          </TitleContainer>
           <Button onPress={() => navigate('CreateBabyStep1')} title="添加宝宝" />
         </ListHeader>
       )}
+
+      <Modal
+        hideCancel
+        visible={tooltip}
+        onOk={closeTooltip}
+        okText="知道了"
+        title="提示"
+        contentText="预产日期已过时请联系并确认是否已出生，若已出生则修改宝宝为已出生并填写准确的出生日期，若尚未出生请修改并延长预产日期。注意：当宝宝成长阶段由待产期调为已出生后不可改回待产期。"
+      />
 
       <FlatList
         ListEmptyComponent={
@@ -129,7 +145,15 @@ const Title = styled.Text`
   font-size: 12px;
   color: #525252;
   font-weight: bold;
+  margin-bottom: 2px;
 `;
+
+const Tooltip = styled.Text`
+  font-size: 8px;
+  color: #8e8e93;
+`;
+
+const TitleContainer = styled.View``;
 
 const Header = styled(LinearGradient)`
   width: 100%;

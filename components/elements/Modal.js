@@ -14,6 +14,7 @@ export default function ElementModal({
   okText,
   cancelText,
   disableOk,
+  hideCancel,
 }) {
   return (
     <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
@@ -23,9 +24,11 @@ export default function ElementModal({
           {content}
           {contentText && <ContentText>{contentText}</ContentText>}
           <Footer>
-            <CancelButtonContainer>
-              <Button ghost type="primary" title={cancelText || '放弃'} onPress={onCancel} />
-            </CancelButtonContainer>
+            {!hideCancel && (
+              <CancelButtonContainer>
+                <Button ghost type="primary" title={cancelText || '放弃'} onPress={onCancel} />
+              </CancelButtonContainer>
+            )}
             <Button disabled={disableOk} type="primary" title={okText || '提交'} onPress={onOk} />
           </Footer>
         </Box>
