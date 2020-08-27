@@ -86,11 +86,24 @@ export default function VisitScreen({ navigation, route }) {
             Visit.statusNotStart(status) && <Button title="修改" onPress={handleChangeVisitTime} />
           }
         >
-          {visitTime && (
-            <StaticForm>
+          <StaticForm>
+            {(Visit.statusNotStart(status) || Visit.statusExpired(status)) && visitTime && (
               <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
-            </StaticForm>
-          )}
+            )}
+            {Visit.statusUndone(status) && visitTime && (
+              <StaticField label="开始时间">{Visit.formatDateTimeCN(visit.startTime)}</StaticField>
+            )}
+            {Visit.statusDone(status) && visitTime && (
+              <>
+                <StaticField label="开始时间">
+                  {Visit.formatDateTimeCN(visit.startTime)}
+                </StaticField>
+                <StaticField label="结束时间">
+                  {Visit.formatDateTimeCN(visit.completeTime)}
+                </StaticField>
+              </>
+            )}
+          </StaticForm>
         </Card>
 
         <BabyCard baby={baby} />

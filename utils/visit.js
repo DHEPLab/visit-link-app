@@ -64,6 +64,7 @@ function formatDateTime(datetime) {
 }
 
 function formatDateTimeCN(datetime) {
+  if (!datetime) return '';
   return moment(datetime).format('YYYY年MM月DD日/') + formatTimeCN(datetime);
 }
 
@@ -77,6 +78,10 @@ function statusNotStart(status) {
 
 function statusUndone(status) {
   return status === 'UNDONE';
+}
+
+function statusExpired(status) {
+  return status === 'EXPIRED';
 }
 
 export default {
@@ -106,6 +111,7 @@ export default {
   statusDone: (status) => status === 'DONE',
   statusUndone,
   statusNotStart,
+  statusExpired,
   defaultStartingRange,
   remarkTitle: (status) =>
     statusNotStart(status) ? '备注' : statusUndone(status) ? '未完成原因' : '过期原因',
