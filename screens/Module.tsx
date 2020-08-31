@@ -68,11 +68,11 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
     }
   }
 
-  function nextStep(path: any[]) {
+  function nextStep(path: any[], skipFinishAction: boolean = false) {
     const _path = [...path];
     const contextPath = [..._path];
     const casesPath = [..._path];
-    if (casesPath.length > 2) {
+    if (!skipFinishAction && casesPath.length > 2) {
       casesPath.pop(); // pop ${casePageComponentsIndex} path
       casesPath.pop(); // pop 'pageComponents' path
       const finishAction = getFinishAction(casesPath);
@@ -97,7 +97,7 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
       _path.pop(); // pop 'pageComponents' path
       _path.pop(); // pop ${switchComponentIndex}.value.cases.${caseIndex} path
       // recursive check
-      nextStep(_path);
+      nextStep(_path, true);
     }
   }
 
