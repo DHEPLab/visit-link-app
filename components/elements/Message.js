@@ -2,20 +2,30 @@ import React from 'react';
 import { Modal, Image } from 'react-native';
 
 import { styled } from '../../utils/styled';
+import Button from './Button';
 
-export default function Message({ visible, title, content }) {
+export default function Message({ visible, title, content, buttonText, onButtonPress }) {
   return (
-    <Modal visible={visible} transparent={true}>
+    <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
       <Container>
         <Box>
           <StyledImage source={require('../../assets/images/success.png')} />
           <Title>{title}</Title>
           {content && <Content>{content}</Content>}
+          {buttonText && (
+            <ButtonContainer>
+              <Button ghost title={buttonText} type="primary" onPress={onButtonPress} />
+            </ButtonContainer>
+          )}
         </Box>
       </Container>
     </Modal>
   );
 }
+
+const ButtonContainer = styled.View`
+  margin-top: 10px;
+`;
 
 const StyledImage = styled(Image)`
   width: 32px;

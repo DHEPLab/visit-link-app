@@ -21,6 +21,7 @@ import {
   Modal,
   Input,
   LargeButtonContainer,
+  Message,
 } from '../components';
 import { useMethods } from './BabyForm/CreateBabyStep2';
 
@@ -33,6 +34,8 @@ export default function Baby({ navigation, route }) {
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, []);
   const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`);
 
+  const [messageVisble, openMessage, closeMessage] = useBoolState();
+
   useEffect(
     () =>
       navigation.addListener('focus', () => {
@@ -43,25 +46,30 @@ export default function Baby({ navigation, route }) {
   // on change address
   useEffect(() => {
     if (route.params.address) {
-      http.put(`/api/babies/${params.id}/address`, route.params.address).then(onRefresh);
+      http.put(`/api/babies/${params.id}/address`, route.params.address).then(onSubmitSuccess);
     }
   }, [route.params.address]);
   // on change baby basic info
   useEffect(() => {
     if (route.params.baby) {
-      http.put(`/api/babies/${params.id}`, route.params.baby).then(onRefresh);
+      http.put(`/api/babies/${params.id}`, route.params.baby).then(onSubmitSuccess);
     }
   }, [route.params.baby]);
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1
       ? // create new carer
-        http.post(`/api/babies/${params.id}/carers`, params.carer).then(onRefresh)
+        http.post(`/api/babies/${params.id}/carers`, params.carer).then(onSubmitSuccess)
       : // edit old carer
         http
           .put(`/api/babies/${params.id}/carers/${params.carer.id}`, params.carer)
-          .then(onRefresh);
+          .then(onSubmitSuccess);
   }, [route.params.carer]);
+
+  function onSubmitSuccess() {
+    onRefresh();
+    openMessage();
+  }
 
   function onRefresh() {
     refreshBaby();
@@ -88,6 +96,13 @@ export default function Baby({ navigation, route }) {
   return (
     <>
       <Header {...Colors.linearGradient}>
+        <Message
+          visible={messageVisble}
+          buttonText="知道了"
+          onButtonPress={closeMessage}
+          title="提交成功"
+          content="宝宝信息修改需要经过您的督导员审核，如需尽快审核，请直接联系您的督导员。"
+        />
         <GhostNavigatorHeader navigation={navigation} title="宝宝详情" />
         <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
         <BabyContainer>
