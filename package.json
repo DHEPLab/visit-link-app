@@ -2,10 +2,10 @@
   "name": "healthy-future",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "publish:dev": "expo publish --release-channel dev",
+    "start": "expo start --config app.local.json",
     "export:dev": "expo export --config app.dev.json -p https://dev.healthyfutures.cloud/expo --output-dir dist.dev",
     "export:stg": "expo export --config app.stg.json -p https://stg.healthyfutures.cloud/expo --output-dir dist.stg",
+    "export:prod": "expo export --config app.prod.json -p https://www.healthyfutures.cloud/expo --output-dir dist.prod",
     "android": "expo start --android",
     "eject": "expo eject",
     "test": "jest --watch",
