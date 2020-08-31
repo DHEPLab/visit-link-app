@@ -35,6 +35,7 @@ export default function Baby({ navigation, route }) {
   const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`);
 
   const [messageVisble, openMessage, closeMessage] = useBoolState();
+  const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
 
   useEffect(
     () =>
@@ -90,7 +91,7 @@ export default function Baby({ navigation, route }) {
           },
         })
       )
-      .catch((_) => ToastAndroid.show('没有匹配的课堂，无法新建家访', ToastAndroid.LONG));
+      .catch((_) => openErrorMessage());
   }
 
   return (
@@ -102,6 +103,14 @@ export default function Baby({ navigation, route }) {
           onButtonPress={closeMessage}
           title="提交成功"
           content="宝宝信息修改需要经过您的督导员审核，如需尽快审核，请直接联系您的督导员。"
+        />
+        <Message
+          error
+          visible={errorMessageVisble}
+          buttonText="知道了"
+          onButtonPress={closeErrorMessage}
+          title="无法新建家访"
+          content="没有匹配的课堂，无法创建家访"
         />
         <GhostNavigatorHeader navigation={navigation} title="宝宝详情" />
         <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
