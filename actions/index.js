@@ -21,3 +21,17 @@ export const lessonsUpdate = (payload) => ({
   type: 'LESSONS_UPDATE',
   payload,
 });
+
+export const openGlobalSubmitErrorMessage = () => ({
+  type: 'OPEN_GLOBAL_SUBMIT_ERROR_MESSAGE',
+  payload: {
+    visible: true,
+  },
+});
+
+export const closeGlobalSubmitErrorMessage = () => ({
+  type: 'CLOSE_GLOBAL_SUBMIT_ERROR_MESSAGE',
+  payload: {
+    visible: false,
+  },
+});
