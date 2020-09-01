@@ -45,7 +45,6 @@ export default function CreateBabyStep3({ navigation, route }) {
         visible={visible}
         title="提交成功"
         content="稍后可在列表中查看结果，新建宝宝需要督导员审核，如需尽快审核，请直接联系您的督导员。"
-        buttonText="知道了"
       />
     </>
   );
