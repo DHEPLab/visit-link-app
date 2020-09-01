@@ -11,42 +11,32 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
 
-export function useMethods({ navigation, params, module, path, setPath }) {
-  function onCase(switchComponentIndex: number, caseIndex: number, _case: Case) {
-    if (!_case.finishAction || _case.finishAction.length != 2) {
-      setPath((path: any[]) =>
-        // fold too many layers and expand when you use them
-        path.concat([`${switchComponentIndex}.value.cases.${caseIndex}.pageComponents`, 0])
-      );
-      return;
-    }
-
-    const [action, target] = _case.finishAction;
-    if (action === 'Redirect_End') {
-      navigation.navigate('Module', { id: target, from: params.id, fromPath: null });
-      return;
-    }
-
-    if (action === 'Redirect_Continue') {
-      navigation.navigate('Module', {
-        id: target,
-        from: params.id,
-        fromPath: path,
-      });
-    }
+export function useMethods({ navigation, params, module, path, setPath, reloadModule }) {
+  function handleCase(switchComponentIndex: number, caseIndex: number) {
+    setPath((path: any[]) =>
+      // fold too many layers and expand when you use them
+      path.concat([`${switchComponentIndex}.value.cases.${caseIndex}`, 'pageComponents', 0])
+    );
   }
 
   function finish() {
-    if (params.from && params.fromPath) {
+    // if there are elements in the module statck, push out
+    if (params?.moduleStack?.length > 0 && params?.pathStack?.length > 0) {
+      const moduleStack = [...params.moduleStack];
+      const pathStack = [...params.pathStack];
+      const id = moduleStack.shift();
+      const path = pathStack.shift();
+      // go back to the module screen at the top of the stack
       navigation.navigate('Module', {
-        id: params.from,
-        path: params.fromPath,
-        from: null,
-        fromPath: null,
+        id,
+        path,
+        moduleStack,
+        pathStack,
       });
       return;
     }
 
+    // go back to the lesson modules page and finished current module
     navigation.navigate('LessonModules', {
       id: params.lessonId,
       moduleId: params.id,
@@ -54,25 +44,44 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     });
   }
 
-  function totalPage(contextPath: any[]) {
-    if (contextPath.length === 1) {
-      return module.pageComponents.length;
+  function jumpToAnotherModule(finishAction: any[]) {
+    const [action, target] = finishAction;
+    if (action === 'Redirect_End') {
+      navigation.navigate('Module', { id: target });
+      return;
     }
-    return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
+
+    if (action === 'Redirect_Continue') {
+      // deep copy module, path stack
+      const moduleStack = (params.moduleStack && [...params.moduleStack]) || [];
+      const pathStack = (params.pathStack && [...params.pathStack]) || [];
+      // into the stack
+      moduleStack.unshift(params.id);
+      pathStack.unshift(path);
+
+      navigation.navigate('Module', {
+        id: target,
+        path: null,
+        moduleStack,
+        pathStack,
+      });
+    }
   }
 
-  function pageNumberPlusOne(path: any[]) {
-    return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
-  }
-
-  function pageNumberMinusOne(path: any[]) {
-    return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
-  }
-
-  function nextStep(path: any[]) {
+  function nextStep(path: any[], skipFinishAction: boolean = false) {
     const _path = [...path];
     const contextPath = [..._path];
-    if (_path.length > 1) {
+    const casesPath = [..._path];
+    if (!skipFinishAction && casesPath.length > 2) {
+      casesPath.pop(); // pop ${casePageComponentsIndex} path
+      casesPath.pop(); // pop 'pageComponents' path
+      const finishAction = getFinishAction(casesPath);
+      if (finishAction && finishAction.length == 2) {
+        return jumpToAnotherModule(finishAction);
+      }
+    }
+
+    if (contextPath.length > 1) {
       contextPath.pop();
     }
 
@@ -84,10 +93,11 @@ export function useMethods({ navigation, params, module, path, setPath }) {
         return finish();
       }
       // go back level
-      _path.pop();
-      _path.pop();
+      _path.pop(); // pop ${casePageComponentsIndex} path
+      _path.pop(); // pop 'pageComponents' path
+      _path.pop(); // pop ${switchComponentIndex}.value.cases.${caseIndex} path
       // recursive check
-      nextStep(_path);
+      nextStep(_path, true);
     }
   }
 
@@ -101,10 +111,33 @@ export function useMethods({ navigation, params, module, path, setPath }) {
       }
       // go back level
       const _path = [...path];
-      _path.pop();
-      _path.pop();
+      _path.pop(); // pop ${casePageComponentsIndex} path
+      _path.pop(); // pop 'pageComponents' path
+      _path.pop(); // pop ${switchComponentIndex}.value.cases.${caseIndex} path
       setPath(_path);
     }
+  }
+
+  function totalPage(contextPath: any[]) {
+    if (contextPath.length === 1) {
+      return module.pageComponents.length;
+    }
+    return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
+  }
+
+  function getFinishAction(casesPath: any[]) {
+    if (casesPath.length === 1) {
+      return [];
+    }
+    return lodash.get(module?.pageComponents, unfoldPath([...casesPath, 'finishAction']));
+  }
+
+  function pageNumberPlusOne(path: any[]) {
+    return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
+  }
+
+  function pageNumberMinusOne(path: any[]) {
+    return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
   }
 
   function canPreviousStep(path: any[]) {
@@ -116,6 +149,7 @@ export function useMethods({ navigation, params, module, path, setPath }) {
   }
 
   // unfold layers for support lodash get method
+  // 0.value.cases.0 -> [0, 'value', 'cases', 0]
   function unfoldPath(path: any[]) {
     const array = [];
     path.forEach((p: string | number) => {
@@ -142,40 +176,46 @@ export function useMethods({ navigation, params, module, path, setPath }) {
     };
   }
 
+  function handleChangeRouteParams(params: any) {
+    // when jump to another module
+    if (params.id) {
+      reloadModule(params.id);
+      // when go back from another module and continue on the previous path
+      if (params.path) {
+        nextStep(params.path);
+      } else {
+        setPath([0]);
+      }
+    }
+  }
+
   return {
-    onCase,
+    handleCase,
     nextStep,
     previousStep,
     computed,
     finish,
+    handleChangeRouteParams,
   };
 }
 
-export default function Module({ navigation, route }) {
+export default function ModuleScreen({ navigation, route }) {
   const { params } = route;
   // the path of the page components to get current page
   const [path, setPath] = useState([0]);
   const [module, reloadModule] = storage.useModule(params.id);
 
-  const { onCase, computed, previousStep, nextStep } = useMethods({
+  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods({
     navigation,
     params,
     module,
     path,
     setPath,
+    reloadModule,
   });
   const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed();
 
-  useEffect(() => {
-    // when jump to another module
-    if (route.params.id) {
-      reloadModule(route.params.id);
-    }
-    // when go back from another module and continue on the previous path
-    if (route.params.path) {
-      nextStep(route.params.path);
-    }
-  }, [route.params]);
+  useEffect(() => handleChangeRouteParams(route.params), [route.params]);
 
   return (
     <>
@@ -203,7 +243,7 @@ export default function Module({ navigation, route }) {
                   key={_case.key}
                   size="large"
                   title={_case.text}
-                  onPress={() => onCase(components.length - 1, index, _case)}
+                  onPress={() => handleCase(components.length - 1, index)}
                 />
               ))}
             </>
@@ -271,6 +311,7 @@ const Description = styled.Text`
 const Name = styled(Description)`
   font-weight: bold;
   margin-top: 12px;
+  width: 280px;
 `;
 
 const Header = styled(LinearGradient)`

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import Visits from '../utils/visit';
 import storage from '../cache/storage';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
@@ -11,7 +12,11 @@ export default function LessonIntro({ navigation, route }) {
 
   useEffect(() => {
     if (!route.params.preview) {
-      storage.setVisitStatus(route.params?.visitId, 'UNDONE');
+      storage.setUncommittedVisitStatus(
+        route.params?.visitId,
+        'UNDONE',
+        Visits.formatDateTime(new Date())
+      );
       if (route.params.continue) {
         storage.setNextModule(route.params.nextModuleIndex);
       }

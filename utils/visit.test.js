@@ -40,9 +40,14 @@ it('should default datetime is visit time', () => {
   expect(Visit.defaultDatetime(['2020-07-11'], '2020-07-12')).toBe('2020-07-12');
 });
 
+it('should change the default visit time starting range to tomorrow', () => {
+  jest.spyOn(Date, 'now').mockImplementation(() => new Date('2020-07-31T21:00:00'));
+  expect(Visit.defaultStartingRange()).toBe('2020-08-01');
+});
+
 it('should default datetime is range0', () => {
   expect(Visit.defaultDatetime(['2020-07-28', '2020-08-13'], '2020-07-26')).toBe(
-    '2020-07-28T10:00'
+    '2020-07-28T08:00'
   );
 });
 
@@ -62,4 +67,17 @@ it('should return visit remark title', () => {
   expect(Visit.remarkTitle('NOT_STARTED')).toBe('备注');
   expect(Visit.remarkTitle('EXPIRED')).toBe('过期原因');
   expect(Visit.remarkTitle('UNDONE')).toBe('未完成原因');
+});
+
+it('should disable visit button when now is after select day', () => {
+  expect(Visit.disabledVisitButton(new Date('2020-05-10'), '2020-05-09')).toBeTruthy();
+});
+
+it('should enable visit button when now is not after select day', () => {
+  expect(Visit.disabledVisitButton(new Date('2020-05-10'), '2020-05-10')).toBeFalsy();
+  expect(Visit.disabledVisitButton(new Date('2020-05-10'), '2020-05-11')).toBeFalsy();
+});
+
+it("should disable visit button when now is after 21 o'clock", () => {
+  expect(Visit.disabledVisitButton(new Date('2020-05-10T21:00:00'), '2020-05-10')).toBeTruthy();
 });

@@ -2,11 +2,11 @@ import * as FileSystem from 'expo-file-system';
 
 import Config from '../constants/Config';
 
-const { ossHost } = Config;
+const { apiHost } = Config;
 
 export function downloadFromOSS(filename) {
   return FileSystem.downloadAsync(
-    `${ossHost}${filename}`,
+    `${apiHost}/api/files${filename}`,
     `${FileSystem.documentDirectory}${filename}`
   );
 }

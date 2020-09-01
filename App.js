@@ -15,6 +15,8 @@ import { useBoolState } from './utils';
 import store from './store';
 import './config';
 
+import { Message } from './components';
+
 export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
 
@@ -64,6 +66,13 @@ export default function App(props) {
     <Provider store={store}>
       <NavigationContainer theme={Colors.theme}>
         <Navigator />
+        <Message
+          error
+          visible={false}
+          title="提交失败"
+          content="网络发生错误，请稍后重试"
+          buttonText="知道了"
+        />
       </NavigationContainer>
     </Provider>
   );

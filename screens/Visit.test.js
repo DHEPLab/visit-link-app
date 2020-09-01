@@ -82,7 +82,7 @@ describe('<Visit />', () => {
     ]);
     const { queryByText } = render(<Visit {...createTestProps()} />);
     expect(queryByText(/修改/)).toBeNull();
-    expect(queryByText(/开始课堂/)).toBeNull();
+    expect(queryByText('开始课堂')).toBeNull();
   });
 
   it('should change visit time', () => {

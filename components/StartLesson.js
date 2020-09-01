@@ -1,11 +1,11 @@
 import React from 'react';
-import { ToastAndroid } from 'react-native';
 
 import { useBoolState } from '../utils';
 
 import Visit from '../utils/visit';
 import Button from './elements/Button';
 import Modal from './elements/Modal';
+import Message from './elements/Message';
 import LargeButtonContainer from './LargeButtonContainer';
 
 export default function StartLesson({
@@ -20,6 +20,7 @@ export default function StartLesson({
   validate,
 }) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
+  const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
 
   function handleStart() {
     closeStartVisit();
@@ -54,7 +55,7 @@ export default function StartLesson({
               title="开始课堂"
               onPress={() => {
                 if (!Visit.canIStart(status, visitTime)) {
-                  ToastAndroid.show('时间未到，无法开始', ToastAndroid.SHORT);
+                  openErrorMessage();
                   return;
                 }
                 if (validate && !validate()) return;
@@ -64,6 +65,15 @@ export default function StartLesson({
           )}
         </LargeButtonContainer>
       )}
+
+      <Message
+        error
+        visible={errorMessageVisble}
+        buttonText="知道了"
+        onButtonPress={closeErrorMessage}
+        title="无法开始课堂"
+        content="时间未到，无法开始课堂"
+      />
 
       <Modal
         title="您确定要立即开始本次家访吗？"

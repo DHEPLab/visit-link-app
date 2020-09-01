@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { waitFor } from 'react-native-testing-library';
 
+import Visits from '../utils/visit';
 import storage from './storage';
 
 it('should add lesson to storage and useLesson', async () => {
@@ -44,12 +45,19 @@ it('should set next module index', async () => {
 });
 
 it('should save visit status', async () => {
-  await storage.setVisitStatus(1, 'UNDONE');
-  await storage.setVisitStatus(2, 'DONE');
-  const { result } = renderHook(() => storage.useVisitStatus());
+  await storage.setUncommittedVisitStatus(
+    1,
+    'UNDONE',
+    Visits.formatDateTime(new Date('2020-01-01T10:00'))
+  );
+  await storage.setUncommittedVisitStatus(2, 'DONE');
+  const { result } = renderHook(() => storage.useUncommittedVisitStatus());
   await waitFor(() => {
     const [status] = result.current;
-    expect(status).toStrictEqual({ 1: 'UNDONE', 2: 'DONE' });
+    expect(status).toStrictEqual({
+      1: { status: 'UNDONE', startTime: '2020-01-01T10:00' },
+      2: { status: 'DONE' },
+    });
   });
 });
 

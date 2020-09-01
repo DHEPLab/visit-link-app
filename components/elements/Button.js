@@ -72,6 +72,11 @@ const GhostButton = styled.View`
     `
     border-color: #FF794F;
   `}
+  ${({ type }) =>
+    type === 'error' &&
+    `
+    border-color: #FF2E2E;
+  `}
 `;
 
 const PrimaryButton = styled.View`
@@ -123,6 +128,11 @@ const Text = styled.Text`
     type === 'primary' &&
     `
     color: #FF794F;
+  `}
+  ${({ type }) =>
+    type === 'error' &&
+    `
+    color: #FF2E2E;
   `}
 `;
 

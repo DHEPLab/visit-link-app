@@ -10,6 +10,7 @@ web-build/
 web-report/
 dist/
 dist.*/
+.scannerwork/**/*
 
 # macOS
 .DS_Store

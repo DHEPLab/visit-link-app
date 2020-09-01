@@ -28,8 +28,10 @@ export default function ChangePassword() {
         await Http.signOut();
         dispatch(signOut());
       })
-      .catch((_) => {
-        ToastAndroid.showWithGravity('旧密码错误', ToastAndroid.LONG, ToastAndroid.TOP);
+      .catch((err) => {
+        if (err.status === 400) {
+          ToastAndroid.showWithGravity('旧密码错误', ToastAndroid.LONG, ToastAndroid.TOP);
+        }
       });
   }
 

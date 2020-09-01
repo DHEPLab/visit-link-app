@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { ScrollView } from 'react-native';
 
 import http from '../utils/http';
@@ -45,7 +44,7 @@ export default function CreateVisit({ navigation, route }) {
   }
 
   async function handleChangeVisitTime() {
-    let range = [Visit.formatDate(moment())];
+    let range = [Visit.defaultStartingRange()];
     if (baby?.id) {
       range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
     }

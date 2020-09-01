@@ -30,16 +30,18 @@ export default function LessonModules({ navigation, route }) {
   async function finish() {
     if (!params.preview) {
       if (params.from === 'Visit') {
+        const uncommitted = await Storage.getUncommittedVisitStatus();
         // from Visit screen, online mode, direct submit
         await Http.put(`/api/visits/${params?.visitId}/status`, {
           visitStatus: 'DONE',
+          startTime: uncommitted[params?.visitId].startTime,
           nextModuleIndex: nextModule,
         });
-        Storage.cleanVisitStatus();
+        Storage.committedVisitStatus();
         Storage.setNextModule(0);
       } else {
         // from Home screen, offline mode, save visit status to storage
-        await Storage.setVisitStatus(params?.visitId, 'DONE');
+        await Storage.setUncommittedVisitStatus(params?.visitId, 'DONE');
       }
     }
 

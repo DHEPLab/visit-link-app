@@ -1,5 +1,8 @@
 import moment from 'moment';
 
+// (hours)
+const dailyDeadlineForVisit = 20;
+
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
 
@@ -16,8 +19,20 @@ function defaultDatetime(range, visitTime) {
     return visitTime;
   }
 
-  // return range start with default time 10:00 AM
-  return range[0] + 'T10:00';
+  if (moment(formatDate(visitTime)).isSame(range[0])) {
+    return visitTime;
+  }
+
+  // return range start with default time 08:00 AM
+  return range[0] + 'T08:00';
+}
+
+function defaultStartingRange() {
+  const now = moment();
+  if (now.hour() > dailyDeadlineForVisit) {
+    now.date(now.date() + 1);
+  }
+  return formatDate(now);
 }
 
 function meridiem(momentInstance) {
@@ -53,6 +68,7 @@ function formatDateTime(datetime) {
 }
 
 function formatDateTimeCN(datetime) {
+  if (!datetime) return '';
   return moment(datetime).format('YYYY年MM月DD日/') + formatTimeCN(datetime);
 }
 
@@ -68,6 +84,10 @@ function statusUndone(status) {
   return status === 'UNDONE';
 }
 
+function statusExpired(status) {
+  return status === 'EXPIRED';
+}
+
 export default {
   // I can start the home visit from 8 o 'clock to 20 o 'clock on the day of the home visit
   canIStart(status, visitTime) {
@@ -76,8 +96,20 @@ export default {
     return (
       moment(formatDate(now)).isSame(formatDate(moment(visitTime))) &&
       now.hour() >= 8 &&
-      now.hour() < 20
+      now.hour() < dailyDeadlineForVisit
     );
+  },
+  disabledVisitButton(now, selected) {
+    if (moment(formatDate(now)).isSame(selected)) {
+      return moment(now).hour() > dailyDeadlineForVisit;
+    }
+    return moment(formatDate(now)).isAfter(selected);
+  },
+  defaultVisitTime(now, selected) {
+    if (!selected || moment(formatDate(now)).isSame(selected)) {
+      return formatDateTime(now);
+    }
+    return `${selected}T08:00`;
   },
   formatDate,
   formatDateTime,
@@ -89,6 +121,8 @@ export default {
   statusDone: (status) => status === 'DONE',
   statusUndone,
   statusNotStart,
+  statusExpired,
+  defaultStartingRange,
   remarkTitle: (status) =>
     statusNotStart(status) ? '备注' : statusUndone(status) ? '未完成原因' : '过期原因',
 };

@@ -51,16 +51,17 @@ export default function Home({ navigation }) {
 
   // submit home visit data starting with offline mode
   async function submit() {
-    const _visitStatus = await Storage.getVisitStatus();
+    const uncommitted = await Storage.getUncommittedVisitStatus();
     const nextModuleIndex = await Storage.getNextModule();
-    const id = Object.keys(_visitStatus || {})[0];
+    const id = Object.keys(uncommitted || {})[0];
     if (id) {
       return Http.put(`/api/visits/${id}/status`, {
-        visitStatus: _visitStatus[id],
+        visitStatus: uncommitted[id].status,
+        startTime: uncommitted[id].startTime,
         nextModuleIndex,
       }).then((_) => {
         Storage.setNextVisit({});
-        Storage.cleanVisitStatus();
+        Storage.committedVisitStatus();
         Storage.setNextModule(0);
       });
     }
@@ -130,7 +131,7 @@ export default function Home({ navigation }) {
             size="large"
             onPress={() =>
               navigation.navigate('CreateVisit', {
-                visitTime: `${Visit.formatDate(new Date())}T10:00`,
+                visitTime: Visit.defaultVisitTime(new Date()),
               })
             }
           />
