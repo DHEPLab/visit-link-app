@@ -3,7 +3,7 @@ import { ToastAndroid } from 'react-native';
 
 import Config from '../constants/Config';
 import store from '../store';
-import { restoreToken } from '../actions';
+import { restoreToken, openGlobalSubmitErrorMessage } from '../actions';
 
 // fetch timeout 15s
 const timeout = 15000;
@@ -47,7 +47,7 @@ async function onResponseError(error) {
   ToastAndroid.show(msg, ToastAndroid.LONG);
 }
 
-function request(fetchPromise) {
+function request(fetchPromise, method) {
   return new Promise((resolve, reject) => {
     fetchPromise
       .then(async (response) => {
@@ -63,7 +63,8 @@ function request(fetchPromise) {
         }
       })
       .catch((error) => {
-        ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
+        if (method === 'GET') return ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
+        store.dispatch(openGlobalSubmitErrorMessage());
         reject(error);
         console.warn(JSON.stringify(error));
       });
@@ -100,7 +101,8 @@ export default {
         },
         body: JSON.stringify(body),
         timeout,
-      })
+      }),
+      'POST'
     );
   },
   put(url, body) {
@@ -114,7 +116,8 @@ export default {
         },
         body: JSON.stringify(body),
         timeout,
-      })
+      }),
+      'PUT'
     );
   },
   get(url, params) {
@@ -126,7 +129,8 @@ export default {
           Authorization: `Bearer ${Token}`,
         },
         timeout,
-      })
+      }),
+      'GET'
     );
   },
   delete(url) {
@@ -138,7 +142,8 @@ export default {
           Authorization: `Bearer ${Token}`,
         },
         timeout,
-      })
+      }),
+      'DELETE'
     );
   },
 };

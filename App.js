@@ -5,8 +5,8 @@ import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
 
-import { Provider } from 'react-redux';
-import { restoreToken, netInfo } from './actions';
+import { Provider, useSelector, useDispatch } from 'react-redux';
+import { restoreToken, netInfo, closeGlobalSubmitErrorMessage } from './actions';
 
 import Http from './utils/http';
 import Navigator from './navigation/Navigator';
@@ -66,14 +66,24 @@ export default function App(props) {
     <Provider store={store}>
       <NavigationContainer theme={Colors.theme}>
         <Navigator />
-        <Message
-          error
-          visible={false}
-          title="提交失败"
-          content="网络发生错误，请稍后重试"
-          buttonText="知道了"
-        />
+        <GlobalErrorMessage />
       </NavigationContainer>
     </Provider>
+  );
+}
+
+function GlobalErrorMessage() {
+  const { visible } = useSelector((state) => state.message);
+  const dispatch = useDispatch();
+
+  return (
+    <Message
+      error
+      visible={visible}
+      title="提交失败"
+      content="网络发生错误，请稍后重试"
+      buttonText="知道了"
+      onButtonPress={() => dispatch(closeGlobalSubmitErrorMessage())}
+    />
   );
 }
