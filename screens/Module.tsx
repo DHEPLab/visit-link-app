@@ -11,15 +11,15 @@ import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { Button } from '../components';
 
-export function useMethods({ navigation, params, module, path, setPath, reloadModule }) {
-  function handleCase(switchComponentIndex: number, caseIndex: number) {
+export function useMethods() {
+  function handleCase(setPath: Function, switchComponentIndex: number, caseIndex: number) {
     setPath((path: any[]) =>
       // fold too many layers and expand when you use them
       path.concat([`${switchComponentIndex}.value.cases.${caseIndex}`, 'pageComponents', 0])
     );
   }
 
-  function finish() {
+  function finish(navigate: Function, params: any) {
     // if there are elements in the module statck, push out
     if (params?.moduleStack?.length > 0 && params?.pathStack?.length > 0) {
       const moduleStack = [...params.moduleStack];
@@ -27,7 +27,7 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
       const id = moduleStack.shift();
       const path = pathStack.shift();
       // go back to the module screen at the top of the stack
-      navigation.navigate('Module', {
+      navigate('Module', {
         id,
         path,
         moduleStack,
@@ -37,17 +37,22 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
     }
 
     // go back to the lesson modules page and finished current module
-    navigation.navigate('LessonModules', {
+    navigate('LessonModules', {
       id: params.lessonId,
       moduleId: params.id,
       finished: true,
     });
   }
 
-  function jumpToAnotherModule(finishAction: any[]) {
+  function jumpToAnotherModule(
+    navigate: Function,
+    params: any,
+    path: Array<string | number>,
+    finishAction: Array<string | number>
+  ) {
     const [action, target] = finishAction;
     if (action === 'Redirect_End') {
-      navigation.navigate('Module', { id: target });
+      navigate('Module', { id: target });
       return;
     }
 
@@ -59,7 +64,7 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
       moduleStack.unshift(params.id);
       pathStack.unshift(path);
 
-      navigation.navigate('Module', {
+      navigate('Module', {
         id: target,
         path: null,
         moduleStack,
@@ -68,16 +73,23 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
     }
   }
 
-  function nextStep(path: any[], skipFinishAction: boolean = false) {
+  function nextStep(
+    navigate: Function,
+    params: any,
+    module: any,
+    path: Array<any>,
+    setPath: Function,
+    skipFinishAction: boolean = false
+  ) {
     const _path = [...path];
     const contextPath = [..._path];
     const casesPath = [..._path];
     if (!skipFinishAction && casesPath.length > 2) {
       casesPath.pop(); // pop ${casePageComponentsIndex} path
       casesPath.pop(); // pop 'pageComponents' path
-      const finishAction = getFinishAction(casesPath);
+      const finishAction = getFinishAction(module, casesPath);
       if (finishAction && finishAction.length == 2) {
-        return jumpToAnotherModule(finishAction);
+        return jumpToAnotherModule(navigate, params, path, finishAction);
       }
     }
 
@@ -85,23 +97,23 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
       contextPath.pop();
     }
 
-    if (totalPage(contextPath) > _path[_path.length - 1] + 1) {
+    if (totalPage(module, contextPath) > _path[_path.length - 1] + 1) {
       setPath(pageNumberPlusOne(_path));
     } else {
       // stop condition, complete module
       if (_path.length === 1) {
-        return finish();
+        return finish(navigate, params);
       }
       // go back level
       _path.pop(); // pop ${casePageComponentsIndex} path
       _path.pop(); // pop 'pageComponents' path
       _path.pop(); // pop ${switchComponentIndex}.value.cases.${caseIndex} path
       // recursive check
-      nextStep(_path, true);
+      nextStep(navigate, params, module, _path, setPath, true);
     }
   }
 
-  function previousStep(path: any[]) {
+  function previousStep(path: Array<any>, setPath: Function) {
     if (path[path.length - 1] > 0) {
       setPath(pageNumberMinusOne(path));
     } else {
@@ -118,25 +130,25 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
     }
   }
 
-  function totalPage(contextPath: any[]) {
+  function totalPage(module: any, contextPath: Array<string | number>) {
     if (contextPath.length === 1) {
       return module.pageComponents.length;
     }
     return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
   }
 
-  function getFinishAction(casesPath: any[]) {
+  function getFinishAction(module: any, casesPath: Array<string | number>) {
     if (casesPath.length === 1) {
       return [];
     }
     return lodash.get(module?.pageComponents, unfoldPath([...casesPath, 'finishAction']));
   }
 
-  function pageNumberPlusOne(path: any[]) {
+  function pageNumberPlusOne(path: Array<string | number>) {
     return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
   }
 
-  function pageNumberMinusOne(path: any[]) {
+  function pageNumberMinusOne(path: Array<string | number>) {
     return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
   }
 
@@ -150,7 +162,7 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
 
   // unfold layers for support lodash get method
   // 0.value.cases.0 -> [0, 'value', 'cases', 0]
-  function unfoldPath(path: any[]) {
+  function unfoldPath(path: Array<string | number>) {
     const array = [];
     path.forEach((p: string | number) => {
       if (typeof p === 'string') {
@@ -162,7 +174,7 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
     return array;
   }
 
-  function computed() {
+  function computed(module: any, path: Array<string | number>) {
     const components = lodash.get(module?.pageComponents, unfoldPath(path), []);
     const lastComponent = components[components.length - 1] || {};
     const switchAtTheEnd = lastComponent.type === 'Switch';
@@ -176,16 +188,23 @@ export function useMethods({ navigation, params, module, path, setPath, reloadMo
     };
   }
 
-  function handleChangeRouteParams(params: any) {
-    // when jump to another module
-    if (params.id) {
+  function handleChangeRouteParams(
+    navigate: Function,
+    params: any,
+    setPath: Function,
+    reloadModule: Function,
+    setModule: Function
+  ) {
+    if (!params?.id) return;
+    // when go back from another module and continue on the previous path
+    if (params.path) {
+      return storage.getModule(params.id).then((module: any) => {
+        setModule(module);
+        nextStep(navigate, params, module, params.path, setPath, true);
+      });
+    } else {
       reloadModule(params.id);
-      // when go back from another module and continue on the previous path
-      if (params.path) {
-        nextStep(params.path);
-      } else {
-        setPath([0]);
-      }
+      setPath([0]);
     }
   }
 
@@ -203,19 +222,17 @@ export default function ModuleScreen({ navigation, route }) {
   const { params } = route;
   // the path of the page components to get current page
   const [path, setPath] = useState([0]);
-  const [module, reloadModule] = storage.useModule(params.id);
+  const [module, reloadModule, setModule] = storage.useModule(params.id);
 
-  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods({
-    navigation,
-    params,
+  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods();
+  const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed(
     module,
-    path,
-    setPath,
-    reloadModule,
-  });
-  const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed();
+    path
+  );
 
-  useEffect(() => handleChangeRouteParams(route.params), [route.params]);
+  useEffect(() => {
+    handleChangeRouteParams(navigation.navigate, route.params, setPath, reloadModule, setModule);
+  }, [route.params]);
 
   return (
     <>
@@ -229,7 +246,7 @@ export default function ModuleScreen({ navigation, route }) {
 
       <StyledScrollView>
         <ModuleCard>
-          {components.map((component) => (
+          {components.map((component: any) => (
             <ModuleComponent key={component.key} component={component} />
           ))}
           {switchAtTheEnd && <Text value={lastComponent?.value?.question} />}
@@ -243,7 +260,7 @@ export default function ModuleScreen({ navigation, route }) {
                   key={_case.key}
                   size="large"
                   title={_case.text}
-                  onPress={() => handleCase(components.length - 1, index)}
+                  onPress={() => handleCase(setPath, components.length - 1, index)}
                 />
               ))}
             </>
@@ -251,11 +268,11 @@ export default function ModuleScreen({ navigation, route }) {
             <Button
               size="large"
               title={theLastPage ? '完成' : '下一步'}
-              onPress={() => nextStep(path)}
+              onPress={() => nextStep(navigation.navigate, params, module, path, setPath)}
             />
           )}
           {canPreviousStep && (
-            <Button type="info" title="上一步" onPress={() => previousStep(path)} />
+            <Button type="info" title="上一步" onPress={() => previousStep(path, setPath)} />
           )}
         </ButtonContainer>
       </StyledScrollView>
@@ -264,7 +281,7 @@ export default function ModuleScreen({ navigation, route }) {
 }
 
 function ModuleComponent({ component }) {
-  let As;
+  let As: any;
   switch (component.type) {
     case 'Text':
       As = Text;

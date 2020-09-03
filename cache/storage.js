@@ -51,19 +51,6 @@ function getUncommittedVisitStatus() {
   return getObject(`UNCOMMITTED_VISIT_STATUS`);
 }
 
-function useString(getFn, id) {
-  const [value, setValue] = useState('');
-  function load() {
-    getFn(id).then((data) => {
-      setValue(data || '');
-    });
-  }
-  useEffect(() => {
-    load();
-  }, []);
-  return [value, load];
-}
-
 function useNumber(getFn, id) {
   const [value, setValue] = useState(0);
   function load() {
@@ -87,7 +74,7 @@ function use(getFn, id) {
   useEffect(() => {
     load();
   }, []);
-  return [value, load];
+  return [value, load, setValue];
 }
 
 export default {
