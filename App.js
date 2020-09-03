@@ -4,6 +4,7 @@ import { ToastAndroid } from 'react-native';
 import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
+import { Asset } from 'expo-asset';
 
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import { restoreToken, netInfo, closeGlobalSubmitErrorMessage } from './actions';
@@ -37,6 +38,8 @@ export default function App(props) {
           return ToastAndroid.show('当前处于离线模式', ToastAndroid.LONG);
         }
 
+        // pre download offline assets
+        Asset.fromModule(require('./assets/images/error-message.png')).downloadAsync();
         try {
           // Check whether the token is valid
           token && (await Http.get('/api/account/profile'));
