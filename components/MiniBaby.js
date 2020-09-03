@@ -35,7 +35,9 @@ export default function MiniBaby({
           color={genderColor(gender)}
         />
       </Gender>
-      <Age>{pastEdc ? '宝宝预产期已到' : months && `${BabyStage[stage]} ${months}个月`}</Age>
+      <Age>
+        {pastEdc ? <Alert>宝宝预产期已到</Alert> : months && `${BabyStage[stage]} ${months}个月`}
+      </Age>
       <Identity>ID:{identity || '未填写'}</Identity>
     </Baby>
   );
@@ -49,6 +51,10 @@ const Age = styled.Text`
   color: #525252;
   font-size: 8px;
   margin-right: 16px;
+`;
+
+const Alert = styled.Text`
+  color: #ff2e2e;
 `;
 
 const Baby = styled.View`

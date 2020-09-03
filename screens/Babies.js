@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
@@ -79,7 +79,10 @@ export default function Babies({ navigation }) {
           <TitleContainer>
             <Title>宝宝列表</Title>
             <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
-              <Tooltip>请注意</Tooltip>
+              <TooltipContainer>
+                <Tooltip>请注意</Tooltip>
+                <AntDesign name="infocirlceo" size={px2dp(8)} color="#ff794f" />
+              </TooltipContainer>
             </TouchableOpacity>
           </TitleContainer>
           <Button onPress={() => navigate('CreateBabyStep1')} title="添加宝宝" />
@@ -150,7 +153,13 @@ const Title = styled.Text`
 
 const Tooltip = styled.Text`
   font-size: 8px;
-  color: #8e8e93;
+  color: #ff794f;
+  margin-right: 2px;
+`;
+
+const TooltipContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 const TitleContainer = styled.View``;
