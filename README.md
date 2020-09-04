@@ -65,3 +65,7 @@ Launches the test runner in the interactive watch mode.
 ### `yarn test:ci`
 
 Launches the test runner in the CI mode and display the coverage rate.
+
+## Reference
+
+[Build Standalone Expo .apk and .ipa with Turtle CLI](https://www.robincussol.com/build-standalone-expo-apk-ipa-with-turtle-cli/)
