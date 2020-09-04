@@ -12,7 +12,7 @@ const environments = {
     apiHost: 'https://stg.healthyfutures.cloud',
   },
   prod: {
-    apiHost: 'https://www.healthyfutures.cloud',
+    apiHost: 'https://healthyfutures.cloud',
   },
 };
 

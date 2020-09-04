@@ -9,6 +9,6 @@ yarn global add expo-cli@3.23.1
 yarn
 yarn test:ci
 yarn export:dev
-yarn export:stg
+yarn export:prod
 
 echo 'Build Done.'
