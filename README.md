@@ -34,21 +34,30 @@ Launches the test runner in the CI mode and display the coverage rate.
 
 ## Build Android Apk
 
-> `scripts/build/apk-dev.sh`
-
 [Turtle](https://github.com/expo/turtle) CLI is a command line interface for building Expo standalone apps. You can use it both on your CI and your private computer.
+
+```
+$ EXPO_ANDROID_KEYSTORE_PASSWORD="" \
+EXPO_ANDROID_KEY_PASSWORD="" \
+turtle build:android \
+  --type apk \
+  --keystore-path ../healthy-app-prod.jks \
+  --keystore-alias "keyalias" \
+  --allow-non-https-public-url \
+  --public-url https://healthyfutures.cloud/expo/android-index.json
+```
 
 ## Pipeline
 
-### stage build
+### Stage build
 
 ```
 $ ansible/build.sh
 ```
 
-### stage deploy
+### Stage deploy
 
 ```
 $ ansible/package.sh
-$ ansible/deploy.sh
+$ DEPLOY_GROUP=prod ansible/deploy.sh
 ```
