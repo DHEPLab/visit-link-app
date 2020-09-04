@@ -4,8 +4,17 @@ import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
 
 import Http from '../utils/http';
+import { useBoolState } from '../utils';
 import { styled } from '../utils/styled';
-import { Form, FormItem, PasswordInput, Button, Alert, LargeButtonContainer } from '../components';
+import {
+  Message,
+  Form,
+  FormItem,
+  PasswordInput,
+  Button,
+  Alert,
+  LargeButtonContainer,
+} from '../components';
 import { signOut } from '../actions';
 import { ToastAndroid, Keyboard } from 'react-native';
 
@@ -16,6 +25,7 @@ const validationSchema = Yup.object().shape({
 
 export default function ChangePassword() {
   const dispatch = useDispatch();
+  const [visible, openMessage] = useBoolState();
 
   function onSubmit({ oldPassword, password }) {
     // fix huawei unable to display toast when soft keyborard pops up
@@ -24,9 +34,12 @@ export default function ChangePassword() {
       oldPassword,
       password,
     })
-      .then(async () => {
-        await Http.signOut();
-        dispatch(signOut());
+      .then(() => {
+        openMessage();
+        setTimeout(async () => {
+          await Http.signOut();
+          dispatch(signOut());
+        }, 500);
       })
       .catch((err) => {
         if (err.status === 400) {
@@ -38,6 +51,7 @@ export default function ChangePassword() {
   return (
     <Container>
       <Alert>请您牢记修改的账户密码，提交后将不再显示。</Alert>
+      <Message visible={visible} title="密码修改成功，请您重新登录" />
       <Formik
         initialValues={{}}
         validateOnChange={false}
