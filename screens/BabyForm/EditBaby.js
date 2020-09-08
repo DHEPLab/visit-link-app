@@ -1,12 +1,16 @@
 import React from 'react';
+
+import http from '../../utils/http';
 import { BabyForm } from '../../components';
 import { styled } from '../../utils/styled';
 
 export default function EditBaby({ navigation, route }) {
   const { params } = route;
-  function onSubmit(values) {
+  async function onSubmit(values) {
+    if (!params.id) return;
+    await http.put(`/api/babies/${params.id}`, values);
     navigation.navigate(params.from, {
-      baby: values,
+      success: Math.random(),
     });
   }
 

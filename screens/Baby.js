@@ -44,18 +44,11 @@ export default function Baby({ navigation, route }) {
       }),
     [navigation]
   );
-  // on change address
   useEffect(() => {
-    if (route.params.address) {
-      http.put(`/api/babies/${params.id}/address`, route.params.address).then(onSubmitSuccess);
-    }
-  }, [route.params.address]);
-  // on change baby basic info
-  useEffect(() => {
-    if (route.params.baby) {
-      http.put(`/api/babies/${params.id}`, route.params.baby).then(onSubmitSuccess);
-    }
-  }, [route.params.baby]);
+    if (!route.params.success) return;
+    onSubmitSuccess();
+  }, [route.params.success]);
+
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1
@@ -148,7 +141,7 @@ export default function Baby({ navigation, route }) {
             <Button
               ghost
               title="修改资料"
-              onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby })}
+              onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby, id: params.id })}
             />
           </InfoContainer>
         </BabyContainer>
@@ -369,6 +362,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
             title="修改"
             onPress={() =>
               navigation.navigate('EditAddress', {
+                id: baby.id,
                 from: 'Baby',
                 address: { area: baby.area, location: baby.location },
               })
