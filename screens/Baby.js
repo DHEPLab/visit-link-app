@@ -49,17 +49,6 @@ export default function Baby({ navigation, route }) {
     onSubmitSuccess();
   }, [route.params.success]);
 
-  useEffect(() => {
-    if (!route.params.carer) return;
-    route.params.carerIndex === -1
-      ? // create new carer
-        http.post(`/api/babies/${params.id}/carers`, params.carer).then(onSubmitSuccess)
-      : // edit old carer
-        http
-          .put(`/api/babies/${params.id}/carers/${params.carer.id}`, params.carer)
-          .then(onSubmitSuccess);
-  }, [route.params.carer]);
-
   function onSubmitSuccess() {
     onRefresh();
     openMessage();
@@ -384,6 +373,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
             onPress={() =>
               navigation.navigate('CreateCarer', {
                 from: 'Baby',
+                babyId: baby.id,
                 filterFamilyTies: familyTies(carers),
               })
             }
@@ -408,6 +398,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
               }}
               onPressModify={() =>
                 navigation.navigate('EditCarer', {
+                  babyId: baby.id,
                   carer,
                   carerIndex: index,
                   from: 'Baby',

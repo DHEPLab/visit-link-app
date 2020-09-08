@@ -15,6 +15,7 @@ import {
   CheckBox,
 } from '../../components';
 import { FamilyTies } from '../../constants/enums';
+import http from '../../utils/http';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -41,14 +42,25 @@ function filteredFamilyTies(familyTies) {
 
 export default function CreateCarer({ navigation, route }) {
   const { params } = route;
-  function onSubmit(carer) {
+  async function onSubmit(carer) {
     if (params?.carer?.master && !carer.master) {
       ToastAndroid.show('请至少设置一个主看护人', ToastAndroid.LONG);
       return;
     }
 
     const carerIndex = params?.carerIndex == null ? -1 : params?.carerIndex;
-    navigation.navigate(params.from, { carer, carerIndex });
+
+    if (!params.babyId) {
+      navigation.navigate(params.from, { carer, carerIndex });
+      return;
+    }
+
+    carerIndex === -1
+      ? // create new carer
+        await http.post(`/api/babies/${params.babyId}/carers`, carer)
+      : // edit old carer
+        await http.put(`/api/babies/${params.babyId}/carers/${carer.id}`, carer);
+    navigation.navigate(params.from, { success: Math.random() });
   }
 
   return (
