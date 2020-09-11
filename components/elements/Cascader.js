@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ScrollView, Modal, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { useBoolState } from '../../utils';
-import { styled } from '../../utils/styled';
+import { px2dp, styled } from '../../utils/styled';
 
 export default function Cascader({ value, onChange, options, placeholder }) {
   const [visible, open, close] = useBoolState();
@@ -49,6 +50,11 @@ export default function Cascader({ value, onChange, options, placeholder }) {
           <CardContainer>
             <Header>
               <Title>请选择</Title>
+              <CloseButton>
+                <TouchableOpacity onPress={close} activeOpacity={0.8}>
+                  <MaterialIcons name="close" size={px2dp(16)} color="white" />
+                </TouchableOpacity>
+              </CloseButton>
             </Header>
             <CurrentPick>
               <TouchableOpacity activeOpacity={0.8} onPress={() => backTo(null, -1)}>
@@ -81,6 +87,11 @@ export default function Cascader({ value, onChange, options, placeholder }) {
     </>
   );
 }
+
+const CloseButton = styled.View`
+  position: absolute;
+  right: 10px;
+`;
 
 const Header = styled.View`
   height: 30px;
