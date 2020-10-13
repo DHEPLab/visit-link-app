@@ -6,7 +6,7 @@ import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
 export default function MiniBaby({
-  baby: { approved, name, gender, stage, months, identity, pastEdc },
+  baby: { approved, name, gender, stage, days, identity, pastEdc },
   hideStatus,
 }) {
   function genderColor(value) {
@@ -36,7 +36,7 @@ export default function MiniBaby({
         />
       </Gender>
       <Age>
-        {pastEdc ? <Alert>宝宝预产期已到</Alert> : months && `${BabyStage[stage]} ${months}个月`}
+        {pastEdc ? <Alert>宝宝预产期已到</Alert> : days && `${BabyStage[stage]} ${days} 天`}
       </Age>
       <Identity>ID:{identity || '未填写'}</Identity>
     </Baby>
