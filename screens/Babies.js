@@ -23,7 +23,11 @@ export default function Babies({ navigation }) {
   const [loading, startLoad, endLoad] = useBoolState();
   const [name, setName] = useState();
 
+  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+
   useEffect(() => {
+    // fix repeat load when first load
+    if (search.name == null) return;
     if (search.page === 0) {
       startRefresh();
       setContents([]);
@@ -44,6 +48,7 @@ export default function Babies({ navigation }) {
   }, [search]);
 
   function refresh() {
+    if (refreshing) return;
     setSearch((s) => ({
       ...s,
       page: 0,
