@@ -1,22 +1,40 @@
 # Healthy Future App
 
-[RURAL EDUCATION ACTION PROGRAM](https://reap.fsi.stanford.edu/). Policy change and research to help China's invisible poor.
+## 适用平台
 
-## Platform
+推荐分辨率 12000x1920
 
-Only supports Android HD, Android 9 Pie or higher
+仅支持 Android Pad，Android 9 Pie 或更高（其他版本未测试，测试机型号 HUAWEI MediaPad M5 lite 8"）
 
-Recommended resolution 1200x1920
+## 本地开发
 
-## Expo
+NodeJS 版本 v12 LTS
 
-[Expo](http://expo.io/) is a framework and a platform for universal React applications. It is a set of tools and services built around React Native and native platforms that help you develop, build, deploy, and quickly iterate on iOS, Android, and web apps from the same JavaScript/TypeScript codebase.
+[准备 Android 模拟器](https://docs.expo.io/workflow/android-studio-emulator/)
 
-### Automatic Updates
+```
+$ yarn global add expo-cli
+$ yarn
+$ yarn start
+```
 
-By default, Expo will check for updates automatically when your app is launched and will try to fetch the latest published version. If a new bundle is available, Expo will attempt to download it before launching the experience. If there is no network connection available, or it has not finished downloading in 30 seconds, Expo will fall back to loading a cached version of your app, and continue trying to fetch the update in the background (at which point it will be saved into the cache for the next app load).
+点击 Expo Development Tools 中的 Run on Android device/emulator，也可以使用官方 [Expo Client App](https://expo.io/tools#client) 扫码预览
 
-## Build Android Apk
+推荐使用 [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
+
+## 外部依赖
+
+healthy-future-backend，请求地址在 `constants/Config.js`
+
+## 部署脚本
+
+```
+$ ansible/build.sh
+$ ansible/package.sh
+$ DEPLOY_GROUP=prod ansible/deploy.sh
+```
+
+## 打包 Android Apk
 
 [Turtle](https://github.com/expo/turtle) CLI is a command line interface for building Expo standalone apps. You can use it both on your CI and your private computer.
 
@@ -31,41 +49,7 @@ turtle build:android \
   --public-url https://healthyfutures.cloud/expo/android-index.json
 ```
 
-## Pipeline
-
-### Stage build
-
-```
-$ ansible/build.sh
-```
-
-### Stage deploy
-
-```
-$ ansible/package.sh
-$ DEPLOY_GROUP=prod ansible/deploy.sh
-```
-
-## Available Scripts
-
-### `yarn start`
-
-Starts a local server for your app and gives you a URL to it
-
-### `yarn export:<env>`
-
-Env: dev, stg, prod
-
-Exports the static files of the app for hosting it on a web server.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.
-
-### `yarn test:ci`
-
-Launches the test runner in the CI mode and display the coverage rate.
-
 ## Reference
 
-[Build Standalone Expo .apk and .ipa with Turtle CLI](https://www.robincussol.com/build-standalone-expo-apk-ipa-with-turtle-cli/)
+- [Expo](https://docs.expo.io/)
+- [Build Standalone Expo .apk and .ipa with Turtle CLI](https://www.robincussol.com/build-standalone-expo-apk-ipa-with-turtle-cli/)
