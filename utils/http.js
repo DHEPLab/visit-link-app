@@ -15,7 +15,8 @@ AsyncStorage.getItem('JWT_TOKEN', (_, result) => {
 });
 
 export function responseContentTypeJSON(response) {
-  return response.headers.get('content-type') === 'application/json';
+  return response.headers.get('content-type') === 'application/json' ||
+    response.headers.get('content-type') === 'application/problem+json';
 }
 
 async function cleanToken() {
@@ -24,9 +25,9 @@ async function cleanToken() {
   await AsyncStorage.removeItem('JWT_TOKEN');
 }
 
-async function onResponseError(error) {
+async function onResponseError(status, data) {
   let msg = '服务异常，请稍后重试';
-  switch (error.status) {
+  switch (status) {
     case 502:
       msg = '网络异常，请稍后重试';
     case 500:
@@ -37,7 +38,6 @@ async function onResponseError(error) {
       cleanToken();
       return;
     default:
-      const data = await error.json();
       if (data.violations) {
         msg = '表单校验失败';
       } else if (data.detail) {
@@ -47,19 +47,18 @@ async function onResponseError(error) {
   ToastAndroid.show(msg, ToastAndroid.LONG);
 }
 
-function request(fetchPromise, method) {
+function request(fetchPromise, method, silence) {
   return new Promise((resolve, reject) => {
     fetchPromise
       .then(async (response) => {
+        const data = responseContentTypeJSON(response)
+          ? await response.json()
+          : { text: await response.text() }
         if (response.ok) {
-          resolve(
-            responseContentTypeJSON(response)
-              ? await response.json()
-              : { text: await response.text() }
-          );
+          resolve(data);
         } else {
-          onResponseError(response);
-          reject(response);
+          !silence && onResponseError(response.status, data);
+          reject(data);
         }
       })
       .catch((error) => {
@@ -131,6 +130,20 @@ export default {
         timeout,
       }),
       'GET'
+    );
+  },
+  silenceGet(url, params) {
+    return request(
+      fetch(`${Host}${url}?${objToQueryString(params)}`, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        timeout,
+      }),
+      'GET',
+      true
     );
   },
   delete(url) {

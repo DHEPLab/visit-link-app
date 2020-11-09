@@ -36,6 +36,7 @@ export default function Baby({ navigation, route }) {
 
   const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
+  const [errorMessage, setErrorMessage] = useState();
 
   useEffect(
     () =>
@@ -61,7 +62,7 @@ export default function Baby({ navigation, route }) {
 
   function handleCreateVisit() {
     http
-      .get(`/api/babies/${baby.id}/lesson`)
+      .silenceGet(`/api/babies/${baby.id}/lesson`)
       .then((_) =>
         navigation.navigate('CreateVisit', {
           lockBaby: true,
@@ -73,7 +74,10 @@ export default function Baby({ navigation, route }) {
           },
         })
       )
-      .catch((_) => openErrorMessage());
+      .catch((error) => {
+        setErrorMessage(error.detail)
+        openErrorMessage()
+      });
   }
 
   return (
@@ -92,7 +96,7 @@ export default function Baby({ navigation, route }) {
           buttonText="知道了"
           onButtonPress={closeErrorMessage}
           title="无法新建家访"
-          content="没有匹配的课堂，无法创建家访"
+          content={errorMessage}
         />
         <GhostNavigatorHeader navigation={navigation} title="宝宝详情" />
         <BackgroundImage source={require('../assets/images/baby-header-bg.png')} />
