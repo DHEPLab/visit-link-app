@@ -48,8 +48,9 @@ const Back = styled(TouchableOpacity)`
   position: absolute;
   flex-direction: row;
   align-items: center;
-  top: 30px;
-  left: 24px;
+  top: 18px;
+  left: 12px;
+  padding: 12px;
   z-index: 99;
 `;
 
