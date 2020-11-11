@@ -125,4 +125,8 @@ export default {
   defaultStartingRange,
   remarkTitle: (status) =>
     statusNotStart(status) ? '备注' : statusUndone(status) ? '未完成原因' : '过期原因',
+  visitTimeMayConflict(vt1, vt2) {
+    const diff = moment(vt1).diff(moment(vt2), 'minutes')
+    return Math.abs(diff) <= 60
+  }
 };

@@ -3,12 +3,13 @@ import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import Http from '../utils/http'
 import Visit from '../utils/visit';
 import { Colors } from '../constants';
 import { styled, px2dp } from '../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useFetchArray, useBoolState, calenderMarkedDates } from '../utils';
-import { StaticField, StaticForm, LargeButtonContainer, Button } from '../components';
+import { StaticField, StaticForm, LargeButtonContainer, Button, Modal } from '../components';
 
 export default function PickVisitTime({ navigation, route }) {
   const { params } = route;
@@ -19,15 +20,28 @@ export default function PickVisitTime({ navigation, route }) {
 
   const [mode, setMode] = useState('time');
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
+  const [conflictVisible, openConflict, closeConflict] = useBoolState();
 
   const defaultDatetime = Visit.defaultDatetime(range, visitTime);
   const [date, setDate] = useState(Visit.formatDate(defaultDatetime));
   const [time, setTime] = useState(moment(defaultDatetime).toDate());
 
-  function handleSubmit() {
-    navigation.navigate(from, {
-      visitTime: Visit.mergeDateAndTime(date, time),
-    });
+  async function handleSubmit() {
+    const data = await Http.get('/api/visits', { date });
+    const visitTime = Visit.mergeDateAndTime(date, time);
+    const conflict = data.filter(visit => Visit.statusNotStart(visit.status))
+                         .map(visit => Visit.visitTimeMayConflict(visit.visitTime, visitTime))
+                         .reduce((previous, current) => previous || current, false);
+    if (conflict) {
+      return openConflict();
+    }
+    submit();
+  }
+
+  function submit() {
+    closeConflict();
+    const visitTime = Visit.mergeDateAndTime(date, time);
+    navigation.navigate(from, { visitTime });
   }
 
   function onPressTime() {
@@ -95,6 +109,16 @@ export default function PickVisitTime({ navigation, route }) {
           onChange={onChangeTime}
         />
       )}
+
+      <Modal
+        title="家访时间冲突"
+        visible={conflictVisible}
+        contentText="您所选的时间段有邻近的家访安排，可能会时间冲突，确定选择该时间吗？"
+        okText="确定"
+        cancelText="取消"
+        onCancel={closeConflict}
+        onOk={submit}
+      />
 
       <LargeButtonContainer>
         <Button size="large" title="提交" onPress={handleSubmit} />

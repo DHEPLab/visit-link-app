@@ -81,3 +81,13 @@ it('should enable visit button when now is not after select day', () => {
 it("should disable visit button when now is after 21 o'clock", () => {
   expect(Visit.disabledVisitButton(new Date('2020-05-10T21:00:00'), '2020-05-10')).toBeTruthy();
 });
+
+it('should visit time conflict', () => {
+  expect(Visit.visitTimeMayConflict('2020-11-11T10:00', '2020-11-11T11:00')).toBeTruthy()
+  expect(Visit.visitTimeMayConflict('2020-11-11T11:00', '2020-11-11T10:00')).toBeTruthy()
+})
+
+it('should visit time not conflict', () => {
+  expect(Visit.visitTimeMayConflict('2020-11-11T10:00', '2020-11-11T11:01')).toBeFalsy()
+  expect(Visit.visitTimeMayConflict('2020-11-11T11:00', '2020-11-11T09:59')).toBeFalsy()
+})
