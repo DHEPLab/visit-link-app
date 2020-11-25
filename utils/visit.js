@@ -1,8 +1,5 @@
 import moment from 'moment';
 
-// (hours)
-const dailyDeadlineForVisit = 20;
-
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
 
@@ -29,9 +26,6 @@ function defaultDatetime(range, visitTime) {
 
 function defaultStartingRange() {
   const now = moment();
-  if (now.hour() > dailyDeadlineForVisit) {
-    now.date(now.date() + 1);
-  }
   return formatDate(now);
 }
 
@@ -89,20 +83,14 @@ function statusExpired(status) {
 }
 
 export default {
-  // I can start the home visit from 8 o 'clock to 20 o 'clock on the day of the home visit
   canIStart(status, visitTime) {
     if (status !== 'NOT_STARTED') return false;
     const now = moment();
     return (
-      moment(formatDate(now)).isSame(formatDate(moment(visitTime))) &&
-      now.hour() >= 8 &&
-      now.hour() < dailyDeadlineForVisit
+      moment(formatDate(now)).isSame(formatDate(moment(visitTime)))
     );
   },
   disabledVisitButton(now, selected) {
-    if (moment(formatDate(now)).isSame(selected)) {
-      return moment(now).hour() > dailyDeadlineForVisit;
-    }
     return moment(formatDate(now)).isAfter(selected);
   },
   defaultVisitTime(now, selected) {
