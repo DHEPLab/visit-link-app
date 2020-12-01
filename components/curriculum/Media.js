@@ -26,7 +26,7 @@ function VideoMedia({ uri }) {
   const [inFullscreen, switchToLandscape, switchToPortrait] = useBoolState();
   // Use state to resolve unnecessary calculations when the screen direction changes
   const [width] = useState(px2dp(272));
-  const [height] = useState(px2dp(136));
+  const [height] = useState(px2dp(170));
 
   return (
     <StyledVideo
@@ -58,7 +58,7 @@ function PictureMedia({ uri }) {
   return (
     <>
       <TouchableOpacity onPress={openModal} activeOpacity={0.8}>
-        <StyledImage source={{ uri }} />
+        <StyledImage source={{ uri }} resizeMode="contain" />
       </TouchableOpacity>
       <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
         <ImageViewer renderIndicator={() => {}} onClick={closeModal} imageUrls={[{ url: uri }]} />
@@ -73,7 +73,7 @@ const StyledVideo = styled(Video)`
 
 const StyledImage = styled(Image)`
   width: 272px;
-  height: 136px;
+  height: 170px;
   border-radius: 4px;
 `;
 
