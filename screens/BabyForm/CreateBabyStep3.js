@@ -10,8 +10,10 @@ export default function CreateBabyStep3({ navigation, route }) {
   const { params } = route;
   const { baby, carers } = params;
   const [visible, openMessage, closeMessage] = useBoolState();
+  const [submitting, startSubmit, endSubmit] = useBoolState();
 
   function onSubmit(values) {
+    startSubmit();
     http
       .post('/api/babies', {
         baby: {
@@ -34,13 +36,16 @@ export default function CreateBabyStep3({ navigation, route }) {
           });
           navigation.navigate('Baby', { ...data, tab: 'family' });
         }, 1000);
+      })
+      .finally(() => {
+        endSubmit();
       });
   }
 
   return (
     <>
       <CreateBabyNavigator active={3} navigation={navigation} />
-      <AddressForm onSubmit={onSubmit} />
+      <AddressForm onSubmit={onSubmit} submitting={submitting} />
       <Message
         visible={visible}
         title="提交成功"

@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
   location: Yup.string().max(200, '最多200个字符').required('此项为必填'),
 });
 
-export default function AddressForm({ onSubmit, initialValues = {} }) {
+export default function AddressForm({ onSubmit, initialValues = {}, submitting }) {
   return (
     <Container>
       <Formik
@@ -40,7 +40,7 @@ export default function AddressForm({ onSubmit, initialValues = {} }) {
               </Form>
             </Card>
             <LargeButtonContainer>
-              <Button size="large" title="提交" onPress={handleSubmit} />
+              <Button size="large" title="提交" disabled={submitting} onPress={handleSubmit} />
             </LargeButtonContainer>
           </>
         )}
