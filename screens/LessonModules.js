@@ -28,8 +28,10 @@ export default function LessonModules({ navigation, route }) {
   }
 
   async function finish() {
+    const net = await NetInfo.fetch();
+
     if (!params.preview) {
-      if (params.from === 'Visit') {
+      if (net.isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
         // from Visit screen, online mode, direct submit
         await Http.put(`/api/visits/${params?.visitId}/status`, {
@@ -46,10 +48,10 @@ export default function LessonModules({ navigation, route }) {
     }
 
     // if net connected and have a questionnaire, open a browser
-    const net = await NetInfo.fetch();
     if (net.isConnected && lesson.questionnaireAddress) {
       await WebBrowser.openBrowserAsync(lesson.questionnaireAddress);
     }
+
     navigation.navigate(params.from);
   }
 
