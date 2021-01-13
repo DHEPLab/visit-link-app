@@ -9,7 +9,7 @@ import { useFetch } from '../utils';
 export default function PickBaby({ navigation, route }) {
   const [babies, refresh, refreshing] = useFetch('/api/babies/available-for-visit', {
     visitDate: route.params.visitDate,
-  });
+  }, []);
 
   function pick(baby) {
     navigation.navigate('CreateVisit', { baby });
