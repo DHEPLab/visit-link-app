@@ -254,7 +254,7 @@ function Visits({
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onChange(true)} activeOpacity={0.8}>
           <TitleContainer>
-            <VisitTab active={started}>已完成家访</VisitTab>
+            <VisitTab active={started}>已完成/未完成/已过期家访</VisitTab>
             {numberOfNoRemark > 0 && (
               <NumberOfNoRemark active={started}>{numberOfNoRemark}</NumberOfNoRemark>
             )}
