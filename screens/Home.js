@@ -13,7 +13,7 @@ import { lessonsUpdate } from '../actions';
 import { Colors } from '../constants';
 import { useBoolState } from '../utils';
 import { styled } from '../utils/styled';
-import { Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
+import { Message, Button, BottomRightBackground, LessonCard, BabyCard, StartLesson } from '../components';
 
 export default function Home({ navigation }) {
   const [visit, reloadVisit] = Storage.useNextVisit();
@@ -21,6 +21,7 @@ export default function Home({ navigation }) {
 
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [fetching, startFetch, endFetch] = useBoolState();
+  const [submitErrorMessageVisible, openSubmitErrorMessage, closeSubmitErrorMessage] = useBoolState(false);
 
   const dispatch = useDispatch();
   // lesson resources update state
@@ -55,7 +56,7 @@ export default function Home({ navigation }) {
     const nextModuleIndex = await Storage.getNextModule();
     const id = Object.keys(uncommitted || {})[0];
     if (id) {
-      return Http.put(`/api/visits/${id}/status`, {
+      return Http.silencePut(`/api/visits/${id}/status`, {
         visitStatus: uncommitted[id].status,
         startTime: uncommitted[id].startTime,
         nextModuleIndex,
@@ -63,7 +64,7 @@ export default function Home({ navigation }) {
         Storage.setNextVisit({});
         Storage.committedVisitStatus();
         Storage.setNextModule(0);
-      });
+      }).catch(_ => openSubmitErrorMessage());
     }
   }
 
@@ -87,6 +88,15 @@ export default function Home({ navigation }) {
       }
     >
       <Spinner visible={fetching} textContent={'Loading...'} textStyle={{ color: '#FFF' }} />
+
+      <Message
+        info
+        visible={submitErrorMessageVisible}
+        title="等待同步"
+        content="您有尚未同步的上课记录，恢复网络连接后将自动同步"
+        buttonText="知道了"
+        onButtonPress={closeSubmitErrorMessage}
+      />
 
       <Header {...Colors.linearGradient}>
         <BottomRightBackground

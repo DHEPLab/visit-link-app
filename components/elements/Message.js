@@ -4,16 +4,17 @@ import { Modal, Image } from 'react-native';
 import { styled } from '../../utils/styled';
 import Button from './Button';
 
-export default function Message({ error, visible, title, content, buttonText, onButtonPress }) {
+export default function Message({ error, info, visible, title, content, buttonText, onButtonPress }) {
   return (
     <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
       <Container>
         <Box>
-          {error ? (
+          {info && <StyledImage source={require('../../assets/images/info-message.png')} />}
+          {!info && (error ? (
             <StyledImage source={require('../../assets/images/error-message.png')} />
           ) : (
             <StyledImage source={require('../../assets/images/success.png')} />
-          )}
+          ))}
           <Title error={error}>{title}</Title>
           {content && <Content>{content}</Content>}
           {buttonText && (

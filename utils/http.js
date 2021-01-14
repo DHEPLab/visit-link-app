@@ -62,8 +62,13 @@ function request(fetchPromise, method, silence) {
         }
       })
       .catch((error) => {
-        if (method === 'GET') return ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
-        store.dispatch(openGlobalSubmitErrorMessage());
+        if (!silence) {
+          if (method === 'GET') {
+            ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
+          } else {
+            store.dispatch(openGlobalSubmitErrorMessage());
+          }
+        } 
         reject(error);
         console.warn(JSON.stringify(error));
       });
@@ -117,6 +122,22 @@ export default {
         timeout,
       }),
       'PUT'
+    );
+  },
+  silencePut(url, body) {
+    return request(
+      fetch(`${Host}${url}`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        body: JSON.stringify(body),
+        timeout,
+      }),
+      'PUT',
+      true
     );
   },
   get(url, params) {
