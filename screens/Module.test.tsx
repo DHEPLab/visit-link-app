@@ -39,6 +39,7 @@ it('should turn to the next page and current in case page components', () => {
   const navigate = jest.fn();
   const params = {
     id: 1,
+    originId: 1,
     lessonId: 2,
   };
   let path = [0, '0.value.cases.0', 'pageComponents', 0];
@@ -58,7 +59,7 @@ it('should turn to the next page and current in case page components', () => {
   nextStep(navigate, params, module, path, setPath);
   expect(navigate).toBeCalledWith('LessonModules', {
     id: 2,
-    moduleId: 1,
+    originModuleId: 1,
     finished: true,
   });
 });

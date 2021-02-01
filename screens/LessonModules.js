@@ -17,11 +17,15 @@ export default function LessonModules({ navigation, route }) {
   const canFinish = nextModule > lesson.modules?.length - 1;
 
   useEffect(() => {
-    if (!params.preview && params.moduleId && params.finished) {
+    /*
+      使用原始 originModuleId, 因为 moduleId 会在跳转到其他模块时发生改变；
+      正确监听 originModuleId 的改变以完成当前模块
+    */
+    if (!params.preview && params.originModuleId && params.finished) {
       Storage.setNextModule(nextModule + 1);
       reloadNextModule();
     }
-  }, [route.params?.moduleId]);
+  }, [route.params?.originModuleId]);
 
   function status(index) {
     return index < nextModule ? 'DONE' : 'UNDONE';
@@ -72,7 +76,7 @@ export default function LessonModules({ navigation, route }) {
             key={module.id}
             value={{ ...module, status: status(index) }}
             disabled={!params.preview && index !== nextModule}
-            onPress={() => navigation.navigate('Module', { id: module.id, lessonId: params.id })}
+            onPress={() => navigation.navigate('Module', { id: module.id, originId: module.id, lessonId: params.id })}
           />
         ))}
         <ButtonContainer>

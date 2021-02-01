@@ -32,6 +32,7 @@ export function useMethods() {
         path,
         moduleStack,
         pathStack,
+        originId: params.originId
       });
       return;
     }
@@ -39,7 +40,7 @@ export function useMethods() {
     // go back to the lesson modules page and finished current module
     navigate('LessonModules', {
       id: params.lessonId,
-      moduleId: params.id,
+      originModuleId: params.originId,
       finished: true,
     });
   }
@@ -69,6 +70,7 @@ export function useMethods() {
         path: null,
         moduleStack,
         pathStack,
+        originId: params.originId
       });
     }
   }

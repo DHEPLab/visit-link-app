@@ -53,7 +53,7 @@ it('should finish current module', async () => {
   storage.useNextModule.mockImplementation(() => [1, reloadNextModule]);
   const props = createTestProps();
   const { rerender } = render(<LessonModules {...props} />);
-  props.route.params.moduleId = 11;
+  props.route.params.originModuleId = 11;
   props.route.params.finished = true;
   rerender(<LessonModules {...props} />);
   expect(reloadNextModule).toBeCalled();
