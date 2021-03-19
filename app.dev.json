@@ -4,7 +4,7 @@
     "description": "RURAL EDUCATION ACTION PROGRAM",
     "slug": "healthy-future-app",
     "platforms": ["android"],
-    "version": "1.0.0-dev",
+    "version": "2.0.0-dev",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "hf",
@@ -17,7 +17,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "android": {
-      "package": "edu.stanford.fsi.reap.app"
+      "package": "edu.stanford.fsi.reap.appdev"
     },
     "releaseChannel": "dev"
   }
