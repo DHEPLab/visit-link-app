@@ -7,7 +7,6 @@ export default function Checkbox({ label, value, onChange }) {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={() => onChange(!value)}>
       <Container>
-        <Label>{label}</Label>
         <Box
           source={
             value
@@ -15,6 +14,7 @@ export default function Checkbox({ label, value, onChange }) {
               : require('../../assets/images/unchecked.png')
           }
         />
+        <Label>{label}</Label>
       </Container>
     </TouchableOpacity>
   );
@@ -29,6 +29,7 @@ const Label = styled.Text`
   color: #8e8e93;
   font-size: 10px;
   margin-right: 8px;
+  margin-left: 8px;
 `;
 
 const Box = styled(Image)`

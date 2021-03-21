@@ -26,6 +26,7 @@ import PickVisitTime from '../screens/PickVisitTime';
 import LessonIntro from '../screens/LessonIntro';
 import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
+import Question from '../screens/Question';
 import EditAddress from '../screens/BabyForm/EditAddress';
 
 const Tab = createBottomTabNavigator();
@@ -55,6 +56,11 @@ const screens = [
   {
     name: 'Module',
     component: Module,
+    headerShown: false,
+  },
+  {
+    name: 'Question',
+    component: Question,
     headerShown: false,
   },
   {

@@ -43,6 +43,7 @@ const Box = styled.View`
 
 const Label = styled.Text`
   margin-left: 8px;
+  margin-right: 8px;
   color: #8e8e93;
   font-size: 10px;
 `;

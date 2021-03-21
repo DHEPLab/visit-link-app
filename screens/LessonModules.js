@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import NetInfo from '@react-native-community/netinfo';
@@ -9,12 +9,14 @@ import Storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
+import QuestionnaireItem from '../components/QuestionnaireItem'
 
 export default function LessonModules({ navigation, route }) {
   const { params } = route;
   const [lesson] = Storage.useLesson(params?.id);
   const [nextModule, reloadNextModule] = Storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
+  const [questionnaire, setQuestionnaire] = useState()
 
   useEffect(() => {
     /*
@@ -26,6 +28,10 @@ export default function LessonModules({ navigation, route }) {
       reloadNextModule();
     }
   }, [route.params?.originModuleId]);
+
+  useEffect(() => {
+    queryQuestionnaire(lesson.questionnaireAddress)
+  }, [lesson]);
 
   function status(index) {
     return index < nextModule ? 'DONE' : 'UNDONE';
@@ -59,6 +65,21 @@ export default function LessonModules({ navigation, route }) {
     navigation.navigate(params.from);
   }
 
+  async function queryQuestionnaire(id) {
+    const result = await Http.get(`/api/visits/questionnaire/${id}`);
+    setQuestionnaire(result.data)
+  }
+
+  function toQuestion () {
+    let answers = {}
+    questionnaire.questions.forEach((e, i) => {
+      const result = e.type === "Text" ? "" : undefined
+      const question = `${i+1}.${e.value.title}`
+      Object.assign(answers, {[question]: result})
+    })
+    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire, answers})
+  }
+
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -79,6 +100,11 @@ export default function LessonModules({ navigation, route }) {
             onPress={() => navigation.navigate('Module', { id: module.id, originId: module.id, lessonId: params.id })}
           />
         ))}
+        {questionnaire && <QuestionnaireItem
+            name={questionnaire.name}
+            disabled={false}
+            onPress={() => toQuestion()}
+          />}
         <ButtonContainer>
           <Button size="large" title="完成家访" disabled={!canFinish} onPress={finish} />
         </ButtonContainer>
