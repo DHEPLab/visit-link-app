@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import { styled } from '../utils/styled';
 import FormItem from '../components/elements/FormItem';
+import InputFormItem from '../components/elements/InputFormItem';
 import { Colors } from '../constants';
 import { Button, Input } from '../components';
 import RadioGroup from '../components/elements/RadioGroup';
@@ -16,15 +17,15 @@ export default function QuestionScreen({ navigation, route }) {
   function onSubmit(values) {
     const resultList = Object.values(values).map((n, i) => {
       const type = data.questions[i].type
-      if(type==='Radio') {
+      if(type ==='Radio') {
         const check = Object.values(n)[0]
-        return {name: Object.keys(n)[0], answer: check?.check + ',' + check?.input || ''}
-      } else if(type==='Checkbox') {
+        return {titleNo: (i + 1), name: Object.keys(n)[0], answer: check?.check + (check?.input ? ',' + check?.input : '') || ''}
+      } else if(type === 'Checkbox') {
         const checkArray = Object.values(n)[0]
-        const res = checkArray.map(e => e?.check + ',' + e?.input || '').join('/n')
-        return {name: Object.keys(n)[0], answer: res}
+        const res = checkArray.map(e => e?.check + (e.input ? ',' + e.input : '')).join('/n')
+        return {titleNo: (i + 1), name: Object.keys(n)[0], answer: res}
       } else {
-        return {name: Object.keys(n)[0], answer: Object.values(n)[0]}
+        return {titleNo: (i + 1), name: Object.keys(n)[0], answer: Object.values(n)[0]}
       }
     })
     storage.setAnswers({lessonId: lessonId, answers: resultList});
@@ -51,9 +52,9 @@ export default function QuestionScreen({ navigation, route }) {
                 <View key={index}>
                   <QuestionTitle>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
                   {question.type === 'Text' ? <QuestionInputCard>
-                      <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
+                      <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder>
                         <Input placeholder="请输入" />
-                      </FormItem>
+                      </InputFormItem>
                     </QuestionInputCard>:
                     <QuestionRadioCard>
                       <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
