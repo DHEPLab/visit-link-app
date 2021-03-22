@@ -7,7 +7,7 @@ import { styled } from '../utils/styled';
 export default function QuestionnaireItem({ name , onPress, disabled }) {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} disabled={disabled}>
-      <Container opacity={1}>
+      <Container opacity={disabled ? 0.4 : 1}>
         <Status title="问卷" borderColor="#FF794F" color="#F2709C" />
         <Name>{name}</Name>
       </Container>

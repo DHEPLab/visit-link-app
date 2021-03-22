@@ -97,7 +97,7 @@ export default function LessonModules({ navigation, route }) {
         ))}
         {questionnaire && <QuestionnaireItem
             name={questionnaire.name}
-            disabled={false}
+            disabled={!params.preview && lesson.modules.length !== nextModule}
             onPress={() => toQuestion()}
           />}
         <ButtonContainer>
