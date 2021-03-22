@@ -71,13 +71,7 @@ export default function LessonModules({ navigation, route }) {
   }
 
   function toQuestion () {
-    let answers = {}
-    questionnaire.questions.forEach((e, i) => {
-      const result = e.type === "Text" ? "" : undefined
-      const question = `${i+1}.${e.value.title}`
-      Object.assign(answers, {[question]: result})
-    })
-    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire, answers})
+    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire})
   }
 
   return (
