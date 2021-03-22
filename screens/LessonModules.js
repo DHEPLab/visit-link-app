@@ -39,7 +39,7 @@ export default function LessonModules({ navigation, route }) {
 
   async function finish() {
     const net = await NetInfo.fetch();
-
+    const { answers } = await Storage.getAnswers(lesson.id)
     if (!params.preview) {
       if (net.isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
@@ -48,6 +48,7 @@ export default function LessonModules({ navigation, route }) {
           visitStatus: 'DONE',
           startTime: uncommitted[params?.visitId].startTime,
           nextModuleIndex: nextModule,
+          questionnaireRecords: answers
         });
         Storage.committedVisitStatus();
         Storage.setNextModule(0);
@@ -71,7 +72,7 @@ export default function LessonModules({ navigation, route }) {
   }
 
   function toQuestion () {
-    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire})
+    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire, lessonId: lesson.id})
   }
 
   return (

@@ -3,31 +3,32 @@ import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import { styled } from '../utils/styled';
-import Form from '../components/elements/Form.js';
 import FormItem from '../components/elements/FormItem';
 import { Colors } from '../constants';
 import { Button, Input } from '../components';
 import RadioGroup from '../components/elements/RadioGroup';
-import Http from '../utils/http';
+import CheckBoxGroup from '../components/elements/CheckBoxGroup';
+import storage from '../cache/storage';
 
 export default function QuestionScreen({ navigation, route }) {
   const { params } = route;
-  const {data, answers} = params;
-
+  const {data, lessonId} = params;
   function onSubmit(values) {
-    // TODO这里需要组装成{name: key, answer: value}
-    Http
-      .post('/api/record', {
-        baby: {
-          ...values
-        }
-      })
-      .then((data) => {
-        setTimeout(() => {
-          navigation.navigate('LessonModules', {});
-        }, 1000);
-      })
-      .finally(() => {});
+    const resultList = Object.values(values).map((n, i) => {
+      const type = data.questions[i].type
+      if(type==='Radio') {
+        const check = Object.values(n)[0]
+        return {name: Object.keys(n)[0], answer: check?.check + ',' + check?.input || ''}
+      } else if(type==='Checkbox') {
+        const checkArray = Object.values(n)[0]
+        const res = checkArray.map(e => e?.check + ',' + e?.input || '').join('/n')
+        return {name: Object.keys(n)[0], answer: res}
+      } else {
+        return {name: Object.keys(n)[0], answer: Object.values(n)[0]}
+      }
+    })
+    storage.setAnswers({lessonId: lessonId, answers: resultList});
+    navigation.navigate('LessonModules', {});
   }
 
   return (
@@ -38,44 +39,44 @@ export default function QuestionScreen({ navigation, route }) {
         </Escape>
         <Name>{data.name}</Name>
       </Header>
-
-      <StyledScrollView>
-        <Formik
-          initialValues={answers}
-          validateOnChange={false}
-          onSubmit={onSubmit}
-        >
-          {({ handleSubmit }) => (
-            <Form>
-              <ModuleCard>
-                {data.questions && data.questions.map((question: any, index: number) => 
-                  <View key={index}>
-                    <QuestionTitle>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
-                    {question.type === 'Text' ? <QuestionInputCard>
-                        <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
-                          <Input placeholder="请输入" />
-                        </FormItem>
-                      </QuestionInputCard>:
-                      <QuestionRadioCard>
-                        <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
-                          <RadioGroup options={question?.value?.options} />
-                        </FormItem>
-                      </QuestionRadioCard>
-                      }
-                  </View>
-                )}
-              </ModuleCard>
-              <ButtonContainer>
-                <Button
-                  size="large"
-                  title="完成"
-                  onPress={handleSubmit}
-                />
-              </ButtonContainer>
-            </Form>
-          )}
-        </Formik>
-      </StyledScrollView>
+      <Formik
+        initialValues={({})}
+        validateOnChange={false}
+        onSubmit={onSubmit}
+      >
+        {({ handleSubmit }) => (
+          <StyledScrollView>
+            <ModuleCard>
+              {data.questions && data.questions.map((question: any, index: number) => 
+                <View key={index}>
+                  <QuestionTitle>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
+                  {question.type === 'Text' ? <QuestionInputCard>
+                      <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
+                        <Input placeholder="请输入" />
+                      </FormItem>
+                    </QuestionInputCard>:
+                    <QuestionRadioCard>
+                      <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
+                      {question.type === 'Radio' ?
+                            <RadioGroup options={question?.value?.options} />:
+                            <CheckBoxGroup options={question?.value?.options} />
+                          }
+                      </FormItem>
+                    </QuestionRadioCard>
+                    }
+                </View>
+              )}
+            </ModuleCard>
+            <ButtonContainer>
+              <Button
+                size="large"
+                title="完成"
+                onPress={handleSubmit}
+              />
+            </ButtonContainer>
+          </StyledScrollView>
+        )}
+      </Formik>
     </>
   );
 }
