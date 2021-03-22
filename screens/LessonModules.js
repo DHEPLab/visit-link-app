@@ -30,7 +30,7 @@ export default function LessonModules({ navigation, route }) {
   }, [route.params?.originModuleId]);
 
   useEffect(() => {
-    queryQuestionnaire(lesson.questionnaireAddress)
+    queryQuestionnaire()
   }, [lesson]);
 
   function status(index) {
@@ -65,9 +65,9 @@ export default function LessonModules({ navigation, route }) {
     navigation.navigate(params.from);
   }
 
-  async function queryQuestionnaire(id) {
-    const result = await Http.get(`/api/visits/questionnaire/${id}`);
-    setQuestionnaire(result.data)
+  async function queryQuestionnaire() {
+    const { questionnaire } = lesson;
+    setQuestionnaire(questionnaire)
   }
 
   function toQuestion () {
