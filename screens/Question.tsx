@@ -7,8 +7,7 @@ import Form from '../components/elements/Form.js';
 import FormItem from '../components/elements/FormItem';
 import { Colors } from '../constants';
 import { Button, Input } from '../components';
-import Radio from '../components/elements/Radio';
-import CheckBox from '../components/elements/CheckBox';
+import RadioGroup from '../components/elements/RadioGroup';
 import Http from '../utils/http';
 
 export default function QuestionScreen({ navigation, route }) {
@@ -58,16 +57,9 @@ export default function QuestionScreen({ navigation, route }) {
                         </FormItem>
                       </QuestionInputCard>:
                       <QuestionRadioCard>
-                        {/* <FormItem name={`${index+1}.${question?.value?.title}`} noBorder> */}
-                          {question?.value?.options && question?.value?.options.map((n: any, i: number) => 
-                          (<View key={i}>
-                            {question.type === 'Radio' ?
-                              <Radio label={n.label} default={false} onchange={() => {}}/>:
-                              <CheckBox label={n.label} default={false} onchange={() => {}}/>
-                            }
-                            {n.needEnter && <Input placeholder="请输入" />}
-                          </View>))}
-                        {/* </FormItem> */}
+                        <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
+                          <RadioGroup options={question?.value?.options} />
+                        </FormItem>
                       </QuestionRadioCard>
                       }
                   </View>
