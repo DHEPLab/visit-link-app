@@ -11,10 +11,17 @@ export default function RadioGroup({ value, onChange, options = [] }) {
           <TouchableOpacity
             key={option.label}
             activeOpacity={0.8}
-            onPress={() => onChange({ target: { value: option.label } })}
+            onPress={() => onChange({ target: { value: {check: option.label, input: value?.input} } })}
           >
-            <Radio active={option.label === value}>{option.label}</Radio>
-            {option.needEnter && <Input />}
+            <Line>
+              <Box checked={option.label === value?.check}>{option.label === value?.check && <Checked />}</Box>
+              <Label>{option.label}</Label>
+              {option.needEnter && <Input
+                placeholder="请输入"
+                value={value?.input}
+                onChangeText={text => onChange({ target: { value: {check: option.label, input: text} } })}
+              />}
+            </Line>
           </TouchableOpacity>
         );
       })}
@@ -28,21 +35,37 @@ const Container = styled.View`
   margin-bottom: -10px;
 `;
 
-const Radio = styled.Text`
+const Box = styled.View`
+  width: 12px;
+  height: 12px;
+  border-width: 1px;
+  border-color: #eee;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  ${({ checked }) =>
+    checked &&
+    `
+    background: #FFEDE2;
+    border-color: #FFC3A0;
+  `}
+`;
+
+const Checked = styled.View`
+  width: 6px;
+  height: 6px;
+  background: #ff794f;
+  border-radius: 6px;
+`;
+
+const Label = styled.Text`
+  margin-left: 8px;
+  margin-right: 8px;
   color: #8e8e93;
   font-size: 10px;
-  margin-right: 12px;
-  padding: 1px 14px;
-  border-radius: 4px;
-  border-width: 1px;
-  border-color: #eeeeee;
-  margin-bottom: 10px;
+`;
 
-  ${({ active }) =>
-    active &&
-    `
-    color: #FF794F;
-    border-color: #FFC3A0;
-    background: rgba(255,195,160,0.3);
-  `}
+const Line = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
