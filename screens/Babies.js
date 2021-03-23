@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import Storage from '../cache/storage';
 
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
 import { Colors } from '../constants';
-import { BabyItem, NoData, Button, ListFooter, Modal } from '../components';
+import { BabyItem, NoData, Button, ListFooter, Message, Modal } from '../components';
 import { useBoolState } from '../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -21,6 +22,7 @@ export default function Babies({ navigation }) {
   const [refreshing, startRefresh, endRefresh] = useBoolState();
   const [tooltip, openTooltip, closeTooltip] = useBoolState();
   const [loading, startLoad, endLoad] = useBoolState();
+  const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [name, setName] = useState();
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
@@ -46,6 +48,17 @@ export default function Babies({ navigation }) {
         endLoad();
       });
   }, [search]);
+
+  function backupBabyAndCaregivers () {
+    http
+      .get('/api/babies', { page: 0, size: 1000 })
+      .then((data) => {
+        Storage.setBabies(data.content)
+      })
+      .finally(() => {
+        openMessage();
+      });
+  }
 
   function refresh() {
     if (refreshing) return;
@@ -79,9 +92,22 @@ export default function Babies({ navigation }) {
         </Search>
       </Header>
 
+      <Message
+        visible={messageVisble}
+        buttonText="知道了"
+        onButtonPress={closeMessage}
+        title="备份成功"
+        content=" "
+      />
+
       {contents.length > 0 && (
         <ListHeader>
           <TitleContainer>
+            <TouchableOpacity activeOpacity={0.8} onPress={backupBabyAndCaregivers}>
+              <TooltipContainer>
+                <PromptWords>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWords>
+              </TooltipContainer>
+            </TouchableOpacity>
             <Title>宝宝列表</Title>
             <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
               <TooltipContainer>
@@ -154,6 +180,18 @@ const Title = styled.Text`
   color: #525252;
   font-weight: bold;
   margin-bottom: 2px;
+`;
+
+const PromptWords = styled.Text`
+  font-size: 10px;
+  color: #8e8e93;
+  margin-bottom: 20px;
+`;
+
+const Link = styled.Text`
+  font-size: 10px;
+  color: #1717F3;
+  margin-right: 2px;
 `;
 
 const Tooltip = styled.Text`
