@@ -54,7 +54,6 @@ export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
 }
 
 const Container = styled.View`
-  flex-direction: row;
   flex-wrap: wrap;
   margin-bottom: -10px;
 `;

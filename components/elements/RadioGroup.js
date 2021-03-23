@@ -4,6 +4,20 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Input from './Input'
 
 export default function RadioGroup({ value, onChange, options = [] }) {
+
+  function checkChange (label, input, from) {
+    if (from === 'input') {
+      onChange({ target: { value: {check: label, input: input} } })
+    } else {
+      const isBefore = value === label
+      if (isBefore) {
+        onChange({ target: { value: {check: label, input: input} } })
+      } else {
+        onChange({ target: { value: {check: label, input: ''} } })
+      }
+    }
+  }
+
   return (
     <Container>
       {options.map((option) => {
@@ -11,7 +25,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
           <TouchableOpacity
             key={option.label}
             activeOpacity={0.8}
-            onPress={() => onChange({ target: { value: {check: option.label, input: value?.input} } })}
+            onPress={() => checkChange(option.label, value?.input, 'text')}
           >
             <Line>
               <Box checked={option.label === value?.check}>{option.label === value?.check && <Checked />}</Box>
@@ -19,7 +33,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
               {option.needEnter && <Input
                 placeholder="请输入"
                 value={value?.input}
-                onChangeText={text => onChange({ target: { value: {check: option.label, input: text} } })}
+                onChangeText={text => checkChange(option.label, text, 'input')}
               />}
             </Line>
           </TouchableOpacity>
@@ -30,8 +44,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
 }
 
 const Container = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
   margin-bottom: -10px;
 `;
 
