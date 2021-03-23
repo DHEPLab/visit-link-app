@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '../../utils/styled';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Input from './Input'
+import { TextInput } from 'react-native';
 
 export default function RadioGroup({ value, onChange, options = [] }) {
 
@@ -25,12 +25,13 @@ export default function RadioGroup({ value, onChange, options = [] }) {
             <Line>
               <Box checked={option.label === value?.check}>{option.label === value?.check && <Checked />}</Box>
               <Label>{option.label}</Label>
-              {option.needEnter && <Input
-                placeholder="请输入"
-                value={value?.input}
-                onChangeText={text => checkChange(option.label, text, 'input')}
-              />}
             </Line>
+            {option.needEnter && <StyledTextInput
+              placeholder="请输入"
+              value={value?.input}
+              border={true}
+              onChangeText={text => checkChange(option.label, text, 'input')}
+            />}
           </TouchableOpacity>
         );
       })}
@@ -75,7 +76,22 @@ const Label = styled.Text`
 `;
 
 const Line = styled.View`
-  height: 15px;
+  height: 25px;
   flex-direction: row;
   align-items: center;
+`;
+
+const StyledTextInput = styled(TextInput)`
+  margin-top: -3px;
+  width: 90%;
+  margin-left: 18px;
+  font-size: 10px;
+  ${({ border }) =>
+    border &&
+    `
+    height: 20px;
+    border-radius: 13px;
+    padding-left: 12px;
+    border: 1px solid #FFEDE2;
+  `}
 `;

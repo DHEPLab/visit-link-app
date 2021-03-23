@@ -2,7 +2,7 @@ import React from 'react';
 import { styled } from '../../utils/styled';
 import { Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Input from './Input'
+import { TextInput } from 'react-native';
 
 export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
 
@@ -40,12 +40,13 @@ export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
                 }
               />
               <Label>{option.label}</Label>
-              {option.needEnter && <Input
-                placeholder="请输入"
-                value={item?.input}
-                onChangeText={text => checkChange(option.label, text, 'input')}
-              />}
             </Line>
+            {option.needEnter && <StyledTextInput
+              placeholder="请输入"
+              value={item?.input}
+              border={true}
+              onChangeText={text => checkChange(option.label, text, 'input')}
+            />}
           </TouchableOpacity>
         )}
       )}
@@ -54,7 +55,6 @@ export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
 }
 
 const Container = styled.View`
-  flex-wrap: wrap;
   margin-bottom: -10px;
   margin-top: -10px;
 `;
@@ -73,6 +73,21 @@ const Label = styled.Text`
 
 const Line = styled.View`
   flex-direction: row;
-  height: 15px;
+  height: 25px;
   align-items: center;
+`;
+
+const StyledTextInput = styled(TextInput)`
+  margin-top: -3px;
+  width: 90%;
+  margin-left: 18px;
+  font-size: 10px;
+  ${({ border }) =>
+    border &&
+    `
+    height: 20px;
+    border-radius: 13px;
+    padding-left: 12px;
+    border: 1px solid #FFEDE2;
+  `}
 `;
