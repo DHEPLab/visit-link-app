@@ -41,6 +41,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
 const Container = styled.View`
   flex-direction: column;
   margin-bottom: -10px;
+  margin-top: -10px;
 `;
 
 const Box = styled.View`
@@ -74,6 +75,7 @@ const Label = styled.Text`
 `;
 
 const Line = styled.View`
+  height: 15px;
   flex-direction: row;
   align-items: center;
 `;

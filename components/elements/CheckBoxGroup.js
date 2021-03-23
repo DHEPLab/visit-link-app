@@ -56,6 +56,7 @@ export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
 const Container = styled.View`
   flex-wrap: wrap;
   margin-bottom: -10px;
+  margin-top: -10px;
 `;
 
 const Box = styled(Image)`
@@ -72,5 +73,6 @@ const Label = styled.Text`
 
 const Line = styled.View`
   flex-direction: row;
+  height: 15px;
   align-items: center;
 `;
