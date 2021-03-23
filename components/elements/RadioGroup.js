@@ -6,15 +6,10 @@ import Input from './Input'
 export default function RadioGroup({ value, onChange, options = [] }) {
 
   function checkChange (label, input, from) {
-    if (from === 'input') {
+    if (from === 'input' || value === label) {
       onChange({ target: { value: {check: label, input: input} } })
     } else {
-      const isBefore = value === label
-      if (isBefore) {
-        onChange({ target: { value: {check: label, input: input} } })
-      } else {
-        onChange({ target: { value: {check: label, input: ''} } })
-      }
+      onChange({ target: { value: {check: label, input: ''} } })
     }
   }
 
