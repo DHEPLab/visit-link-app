@@ -61,7 +61,7 @@ export default function Cascader({ value, onChange, options, placeholder }) {
                 <Picked>当前选择：</Picked>
               </TouchableOpacity>
               {values.map((v, index) => (
-                <TouchableOpacity activeOpacity={0.8} onPress={() => backTo(v, index)}>
+                <TouchableOpacity activeOpacity={0.8} key={v.name} onPress={() => backTo(v, index)}>
                   <Picked key={v.name}>{`${v.name}/`}</Picked>
                 </TouchableOpacity>
               ))}

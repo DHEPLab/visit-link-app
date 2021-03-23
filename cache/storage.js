@@ -47,6 +47,10 @@ function getBabies() {
   return getObject(`BABIES`);
 }
 
+function getOfflineBabies() {
+  return getObject('OFFLINEBABIES');
+}
+
 function getAnswers(id) {
   return getObject(`ANSWER_LESSON_${id}`);
 }
@@ -89,6 +93,7 @@ export default {
   addLesson: (lesson) => addObject(`LESSON_${lesson.id}`, lesson),
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   setBabies: (babies) => addObject('BABIES', babies),
+  setOfflineBabies: (babies) => addObject('OFFLINEBABIES', babies),
   setAnswers: (answer) => addObject(`ANSWER_LESSON_${answer.lessonId}`, answer),
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
   setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
@@ -112,6 +117,7 @@ export default {
   getModule,
   getNextVisit,
   getBabies,
+  getOfflineBabies,
   getAnswers,
   getNextModule,
   getUncommittedVisitStatus,
@@ -120,6 +126,7 @@ export default {
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),
   useBabies: () => use(getBabies),
+  useBabies: () => use(getOfflineBabies),
   useAnswers: (id) => use(getAnswers, id),
   useNextModule: () => useNumber(getNextModule),
   useUncommittedVisitStatus: () => use(getUncommittedVisitStatus),

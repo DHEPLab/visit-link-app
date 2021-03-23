@@ -2,9 +2,11 @@ import React from 'react';
 import { CommonActions } from '@react-navigation/native';
 
 import { CreateBabyNavigator, AddressForm, Message } from '../../components';
+import NetInfo from '@react-native-community/netinfo';
 
 import http from '../../utils/http';
 import { useBoolState } from '../../utils';
+import storage from '../../cache/storage';
 
 export default function CreateBabyStep3({ navigation, route }) {
   const { params } = route;
@@ -12,34 +14,40 @@ export default function CreateBabyStep3({ navigation, route }) {
   const [visible, openMessage, closeMessage] = useBoolState();
   const [submitting, startSubmit, endSubmit] = useBoolState();
 
-  function onSubmit(values) {
+  async function onSubmit(values) {
     startSubmit();
-    http
-      .post('/api/babies', {
-        baby: {
-          ...baby,
-          ...values,
-        },
-        carers,
-      })
-      .then((data) => {
-        openMessage();
-        setTimeout(() => {
-          closeMessage();
-          navigation.dispatch((state) => {
-            // clear all routing records except the home screen
-            const [home] = state.routes;
-            return CommonActions.reset({
-              index: 0,
-              routes: [home],
+    const net = await NetInfo.fetch();
+    if (!net.isConnected) { // 离线
+      const baby = { ...baby, ...values }
+      storage.setOfflineBabies([...storage.getOfflineBabies(), baby])
+    } else {
+      http
+        .post('/api/babies', {
+          baby: {
+            ...baby,
+            ...values,
+          },
+          carers,
+        })
+        .then((data) => {
+          openMessage();
+          setTimeout(() => {
+            closeMessage();
+            navigation.dispatch((state) => {
+              // clear all routing records except the home screen
+              const [home] = state.routes;
+              return CommonActions.reset({
+                index: 0,
+                routes: [home],
+              });
             });
-          });
-          navigation.navigate('Baby', { ...data, tab: 'family' });
-        }, 1000);
-      })
-      .finally(() => {
-        endSubmit();
-      });
+            navigation.navigate('Baby', { ...data, tab: 'family' });
+          }, 1000);
+        })
+        .finally(() => {
+          endSubmit();
+        });
+    }
   }
 
   return (
