@@ -192,7 +192,7 @@ export default function Baby({ navigation, route }) {
             />
           ),
           Family: () => (
-            <Family baby={baby} carers={carers} navigation={navigation} onRefresh={onRefresh} />
+            <Family baby={baby} carers={carers} connect={connect} navigation={navigation} onRefresh={onRefresh} />
           ),
         })}
       />
@@ -317,7 +317,7 @@ const NumberOfNoRemark = styled.Text`
   `}
 `;
 
-function Family({ baby, carers, navigation, onRefresh }) {
+function Family({ baby, carers, connect, navigation, onRefresh }) {
   const [remark, setRemark] = useState(baby.remark);
   const [closeAccountReason, setCloseAccountReason] = useState();
   const [deleteId, setDeleteId] = useState();
@@ -359,7 +359,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
       <Card
         title="备注信息"
         hideBody={!baby.remark}
-        right={<Button disabled={!baby.identity} title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
+        right={<Button disabled={!connect ||!baby.identity} title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
       >
         <StaticField>{baby.remark}</StaticField>
       </Card>
@@ -369,7 +369,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
         right={
           <Button
             title="修改"
-            disabled={!baby.identity}
+            disabled={!connect || !baby.identity}
             onPress={() =>
               navigation.navigate('EditAddress', {
                 id: baby.id,
@@ -390,7 +390,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
         right={
           <Button
             title="添加"
-            disabled={!baby.identity || carers.length > 3}
+            disabled={!connect || !baby.identity || carers.length > 3}
             onPress={() =>
               navigation.navigate('CreateCarer', {
                 from: 'Baby',
@@ -407,7 +407,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
               key={carer.id}
               value={carer}
               number={index + 1}
-              disabled={!baby.identity}
+              disabled={!connect || !baby.identity}
               noBorder={index === carers.length - 1}
               onChangeMaster={() => handleChangeMaster(carer)}
               onPressDelete={() => {
@@ -434,7 +434,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
 
       {baby.actionFromApp !== 'DELETE' && (
         <LargeButtonContainer>
-          <Button type="weaken" title="注销宝宝" onPress={openCloseAccount} />
+          <Button type="weaken" title="注销宝宝" disabled={!connect || !baby.identity} onPress={openCloseAccount} />
         </LargeButtonContainer>
       )}
 
