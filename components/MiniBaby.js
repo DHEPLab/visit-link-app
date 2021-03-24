@@ -7,7 +7,7 @@ import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
 export default function MiniBaby({
-  baby: { approved, name, gender, stage, days, identity, pastEdc },
+  baby: { id, approved, name, gender, stage, days, identity, pastEdc },
   hideStatus,
 }) {
   function genderColor(value) {
@@ -25,7 +25,7 @@ export default function MiniBaby({
     <Baby>
       {!hideStatus && (
         <StatusContainer>
-          {identity?
+          {id?
           <ApproveStatus gray approved={approved} />:
           <WaitingSubmit gray approved={approved} />
           }

@@ -19,7 +19,20 @@ export default function CreateBabyStep3({ navigation, route }) {
     const net = await NetInfo.fetch();
     if (!net.isConnected) {
       const babyInfo = { ...baby, ...values }
-      const offlineBaby = { baby: babyInfo, carers}
+      const carer = carers.find(e => e.master === true)
+      const offlineBaby = {
+        ...babyInfo,
+        allCarerList: carers,
+        baby: babyInfo,
+        carers,
+        carerName: carer.name,
+        carerPhone: carer.phone,
+        months: 1,
+        days: 0,
+        identity: null,
+        location: values.location,
+        approved: false,
+        pastEdc: false}
       const oldBabies = await storage.getOfflineBabies();
       await storage.setOfflineBabies([...(oldBabies || []), offlineBaby])
       openMessage();

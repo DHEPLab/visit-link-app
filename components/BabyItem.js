@@ -20,7 +20,7 @@ export default function BabyItem({ id, carerName, carerPhone, onPress, ...props 
       }
     >
       <Card>
-        <MiniBaby baby={props} />
+        <MiniBaby baby={({...props, id})} />
         <Carer>
           <StaticForm>
             <StaticField label="主要看护人">{carerName || '无'}</StaticField>
