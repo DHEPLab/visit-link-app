@@ -3,7 +3,7 @@ import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import NetInfo from '@react-native-community/netinfo';
-import Storage from '../cache/storage';
+import storage from '../cache/storage';
 
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
@@ -56,29 +56,26 @@ export default function Babies({ navigation }) {
     http
       .get('/api/babies', { page: 0, size: 1000 })
       .then((data) => {
-        Storage.setBabies(data.content)
+        storage.setBabies(data.content)
       })
       .finally(() => {
         openMessage();
       });
   }
 
-  function refresh() {
+  async function refresh() {
     if (refreshing) return;
 
-    NetInfo.fetch().then(({ isConnected }) => {
-      if (!isConnected) {
-        isNotConnect()
-        Storage.getBabies().then(res => {
-          if (res && res.length !== 0) {
-            setTotalPages(res.length);
-            setContents(res);
-          }
-        })
-      } else {
-        isConnect()
-      }
-    })
+    const { isConnected } = await NetInfo.fetch()
+    if (!isConnected) {
+      isNotConnect()
+      const data = await storage.getBabies()
+      const offlineBabies = await storage.getOfflineBabies()
+      setTotalPages(((data || []).length) + (offlineBabies || []).length);
+      setContents([...(data || []), ...(offlineBabies || [])]);
+    } else {
+      isConnect()
+    }
 
     setSearch((s) => ({
       ...s,
