@@ -32,6 +32,7 @@ export default function Babies({ navigation }) {
   useEffect(() => {
     // fix repeat load when first load
     if (search.name == null) return;
+    if (!connect) return;
     if (search.page === 0) {
       startRefresh();
       setContents([]);
@@ -68,6 +69,12 @@ export default function Babies({ navigation }) {
     NetInfo.fetch().then(({ isConnected }) => {
       if (!isConnected) {
         isNotConnect()
+        Storage.getBabies().then(res => {
+          if (res && res.length !== 0) {
+            setTotalPages(res.length);
+            setContents(res);
+          }
+        })
       } else {
         isConnect()
       }
