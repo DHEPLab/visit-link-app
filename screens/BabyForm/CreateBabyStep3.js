@@ -17,9 +17,11 @@ export default function CreateBabyStep3({ navigation, route }) {
   async function onSubmit(values) {
     startSubmit();
     const net = await NetInfo.fetch();
-    if (!net.isConnected) { // 离线
-      const baby = { ...baby, ...values }
-      storage.setOfflineBabies([...storage.getOfflineBabies(), baby])
+    if (!net.isConnected) {
+      const babyInfo = { ...baby, ...values }
+      const offlineBaby = { baby: babyInfo, carers}
+      const oldBabies = await storage.getOfflineBabies();
+      await storage.setOfflineBabies([...(oldBabies || []), offlineBaby])
       openMessage();
       setTimeout(() => {
         closeMessage();
@@ -31,7 +33,7 @@ export default function CreateBabyStep3({ navigation, route }) {
             routes: [home]
           });
         });
-        navigation.navigate('Baby', { ...baby, tab: 'family' });
+        navigation.navigate('Babies', {});
       }, 1000);
     } else {
       http

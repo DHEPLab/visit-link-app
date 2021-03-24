@@ -126,7 +126,7 @@ export default {
   useModule: (id) => use(getModule, id),
   useNextVisit: () => use(getNextVisit),
   useBabies: () => use(getBabies),
-  useBabies: () => use(getOfflineBabies),
+  useOfflineBabies: () => use(getOfflineBabies),
   useAnswers: (id) => use(getAnswers, id),
   useNextModule: () => useNumber(getNextModule),
   useUncommittedVisitStatus: () => use(getUncommittedVisitStatus),
