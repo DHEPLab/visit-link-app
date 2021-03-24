@@ -2,6 +2,7 @@ import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import ApproveStatus from '../components/ApproveStatus';
+import WaitingSubmit from '../components/WaitingSubmit';
 import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
@@ -24,7 +25,10 @@ export default function MiniBaby({
     <Baby>
       {!hideStatus && (
         <StatusContainer>
-          <ApproveStatus gray approved={approved} />
+          {identity?
+          <ApproveStatus gray approved={approved} />:
+          <WaitingSubmit gray approved={approved} />
+          }
         </StatusContainer>
       )}
       <Name>{name}</Name>
