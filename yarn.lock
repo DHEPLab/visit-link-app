@@ -4276,6 +4276,11 @@ function-bind@^1.1.1:
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+fundebug-reactnative@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/fundebug-reactnative/-/fundebug-reactnative-0.1.1.tgz#6a3f5ee9aa10ffd718501b6e28a1349e1f7f0d62"
+  integrity sha512-1zaf4djn8pJAdurO9UdS1dWlqhf3yqUCqKpjXRPphGxUhTafB1BZ52PMe72Ml+/qcj8bFmXrOPW5tCoqG4/ozQ==
+
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"
