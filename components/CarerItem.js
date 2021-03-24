@@ -10,6 +10,7 @@ import Radio from './elements/Radio';
 export default function CarerItem({
   number,
   value,
+  disabled,
   noBorder,
   onPressDelete,
   onChangeMaster,
@@ -25,9 +26,9 @@ export default function CarerItem({
           onChange={onChangeMaster}
         />
         <Operation>
-          <Button type="delete" title="删除" onPress={onPressDelete} />
+          <Button type="delete" disabled={disabled} title="删除" onPress={onPressDelete} />
           <Separator />
-          <Button type="link" title="修改" onPress={onPressModify} />
+          <Button type="link" disabled={disabled} title="修改" onPress={onPressModify} />
         </Operation>
       </Header>
       <StaticForm>

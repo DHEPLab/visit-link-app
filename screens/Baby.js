@@ -129,11 +129,12 @@ export default function Baby({ navigation, route }) {
                 </FeedingPatternContainer>
               )}
             </View>
-            <Button
-              ghost
-              title="修改资料"
-              onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby, id: params.id })}
-            />
+            {baby.identity && 
+              <Button
+                ghost
+                title="修改资料"
+                onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby, id: params.id })}
+              />}
           </InfoContainer>
         </BabyContainer>
       </Header>
@@ -341,7 +342,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
       <Card
         title="备注信息"
         hideBody={!baby.remark}
-        right={<Button title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
+        right={<Button disabled={!baby.identity} title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
       >
         <StaticField>{baby.remark}</StaticField>
       </Card>
@@ -351,6 +352,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
         right={
           <Button
             title="修改"
+            disabled={!baby.identity}
             onPress={() =>
               navigation.navigate('EditAddress', {
                 id: baby.id,
@@ -371,7 +373,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
         right={
           <Button
             title="添加"
-            disabled={carers.length > 3}
+            disabled={!baby.identity || carers.length > 3}
             onPress={() =>
               navigation.navigate('CreateCarer', {
                 from: 'Baby',
@@ -388,6 +390,7 @@ function Family({ baby, carers, navigation, onRefresh }) {
               key={carer.id}
               value={carer}
               number={index + 1}
+              disabled={!baby.identity}
               noBorder={index === carers.length - 1}
               onChangeMaster={() => handleChangeMaster(carer)}
               onPressDelete={() => {
