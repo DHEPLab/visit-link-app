@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import NetInfo from '@react-native-community/netinfo';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
@@ -36,12 +38,14 @@ export default function Baby({ navigation, route }) {
 
   const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
+  const [connect, isConnect, isNotConnect] = useBoolState();
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(
     () =>
       navigation.addListener('focus', () => {
         refreshBabyVisits();
+        refreshConnect();
       }),
     [navigation]
   );
@@ -58,6 +62,16 @@ export default function Baby({ navigation, route }) {
   function onRefresh() {
     refreshBaby();
     refreshCarers();
+  }
+
+  function refreshConnect () {
+    NetInfo.fetch().then(({ isConnected }) => {
+      if (!isConnected) {
+        isNotConnect()
+      } else {
+        isConnect()
+      }
+    })
   }
 
   function handleCreateVisit() {
@@ -166,6 +180,7 @@ export default function Baby({ navigation, route }) {
         renderScene={SceneMap({
           Visits: () => (
             <Visits
+              connect={connect}
               onCreateVisit={handleCreateVisit}
               onChange={setStarted}
               notStartedVisits={babyVisits.notStarted}
@@ -227,6 +242,7 @@ const Stage = styled.View`
 
 function Visits({
   started,
+  connect,
   startedVisits,
   notStartedVisits,
   numberOfNoRemark,
@@ -249,6 +265,7 @@ function Visits({
 
   return (
     <VisitsContainer>
+      {!connect && <PromptWords><AntDesign name="infocirlceo" size={px2dp(8)} color="#ACA9A9" />当前系统处于离线模式</PromptWords>}
       <VisitTabs>
         <TouchableOpacity onPress={() => onChange(false)} activeOpacity={0.8}>
           <VisitTab active={!started}>计划中的家访</VisitTab>
@@ -555,4 +572,10 @@ const VisitTab = styled.Text`
 const CardContainer = styled(ScrollView)`
   padding: 0 28px;
   padding-bottom: 60px;
+`;
+
+const PromptWords = styled.Text`
+  font-size: 10px;
+  color: #8e8e93;
+  margin-bottom: 2px;
 `;

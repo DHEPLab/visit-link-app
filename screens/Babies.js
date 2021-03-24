@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import NetInfo from '@react-native-community/netinfo';
 import Storage from '../cache/storage';
 
 import http from '../utils/http';
@@ -23,6 +24,7 @@ export default function Babies({ navigation }) {
   const [tooltip, openTooltip, closeTooltip] = useBoolState();
   const [loading, startLoad, endLoad] = useBoolState();
   const [messageVisble, openMessage, closeMessage] = useBoolState();
+  const [connect, isConnect, isNotConnect] = useBoolState();
   const [name, setName] = useState();
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
@@ -62,6 +64,15 @@ export default function Babies({ navigation }) {
 
   function refresh() {
     if (refreshing) return;
+
+    NetInfo.fetch().then(({ isConnected }) => {
+      if (!isConnected) {
+        isNotConnect()
+      } else {
+        isConnect()
+      }
+    })
+
     setSearch((s) => ({
       ...s,
       page: 0,
@@ -103,11 +114,14 @@ export default function Babies({ navigation }) {
       {contents.length > 0 && (
         <ListHeader>
           <TitleContainer>
-            <TouchableOpacity activeOpacity={0.8} onPress={backupBabyAndCaregivers}>
-              <TooltipContainer>
-                <PromptWords>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWords>
-              </TooltipContainer>
-            </TouchableOpacity>
+            {connect?
+              <TouchableOpacity activeOpacity={0.8} onPress={backupBabyAndCaregivers}>
+                <TooltipContainer>
+                  <PromptWords>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWords>
+                </TooltipContainer>
+              </TouchableOpacity>:
+              <PromptWords><AntDesign name="infocirlceo" size={px2dp(8)} color="#ACA9A9" />当前系统处于离线模式</PromptWords>
+            }
             <Title>宝宝列表</Title>
             <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
               <TooltipContainer>
