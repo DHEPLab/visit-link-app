@@ -60,8 +60,10 @@ export default function Baby({ navigation, route }) {
   }
 
   function onRefresh() {
-    refreshBaby();
-    refreshCarers();
+    if (connect) {
+      refreshBaby();
+      refreshCarers();
+    }
   }
 
   function refreshConnect () {
