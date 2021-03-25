@@ -40,7 +40,7 @@ export default function MiniBaby({
         />
       </Gender>
       <Age>
-        {pastEdc ? <Alert>宝宝预产期已到</Alert> : days && `${BabyStage[stage]} ${days} 天`}
+        {days !== -1 && (pastEdc ? <Alert>宝宝预产期已到</Alert> : days && `${BabyStage[stage]} ${days} 天`)}
       </Age>
       <Identity>ID:{identity || '未填写'}</Identity>
     </Baby>
