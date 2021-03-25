@@ -7,6 +7,7 @@ import Http from '../utils/http';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 import { useFetch, useBoolState } from '../utils';
+import Storage from '../cache/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Modal, Button, Card, StaticForm, StaticField, Message } from '../components';
 import { signOut } from '../actions';
@@ -25,6 +26,7 @@ export default function Me({ navigation }) {
   async function handleLogout() {
     closeConfirm();
     await Http.signOut();
+    Storage.setNextVisit({});
     open();
     dispatch(signOut());
   }
