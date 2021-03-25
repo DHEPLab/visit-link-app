@@ -72,7 +72,7 @@ export default function Babies({ navigation }) {
       const data = await storage.getBabies()
       const offlineBabies = await storage.getOfflineBabies()
       setTotalPages(((data || []).length) + (offlineBabies || []).length);
-      setContents([...(data || []), ...(offlineBabies || [])]);
+      setContents([...(offlineBabies || []), ...(data || [])]);
     } else {
       isConnect()
     }
