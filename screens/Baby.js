@@ -32,7 +32,7 @@ export default function Baby({ navigation, route }) {
   const [index, setIndex] = useState(params?.tab === 'family' ? 1 : 0);
 
   const [started, setStarted] = useState(false);
-  const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`, params);
+  const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`, {}, params);
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, params?.allCarerList || []);
   const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`);
 
