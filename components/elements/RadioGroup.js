@@ -27,7 +27,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
               <Label>{option.label}</Label>
             </Line>
             {option.needEnter && <StyledTextInput
-              placeholder="请输入"
+              placeholder="请输入内容"
               value={option?.input}
               border={true}
               onChangeText={text => checkChange(option.label, text, 'input')}

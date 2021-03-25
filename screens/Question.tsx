@@ -53,7 +53,7 @@ export default function QuestionScreen({ navigation, route }) {
                   <QuestionTitle>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
                   {question.type === 'Text' ? <QuestionInputCard>
                       <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder>
-                        <Input placeholder="请输入" />
+                        <Input placeholder="请输入内容" />
                       </InputFormItem>
                     </QuestionInputCard>:
                     <QuestionRadioCard>
