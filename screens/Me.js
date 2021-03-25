@@ -26,9 +26,15 @@ export default function Me({ navigation }) {
   async function handleLogout() {
     closeConfirm();
     await Http.signOut();
-    Storage.setNextVisit({});
+    clearCache()
     open();
     dispatch(signOut());
+  }
+
+  function clearCache () {
+    Storage.setNextVisit({});
+    Storage.setBabies([])
+    Storage.setOfflineBabies([])
   }
 
   return (
