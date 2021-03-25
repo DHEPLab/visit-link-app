@@ -9,6 +9,7 @@ import fundebug from 'fundebug-reactnative'
 
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import { restoreToken, netInfo, closeGlobalSubmitErrorMessage } from './actions';
+import { uploadOfflineBabies } from './cache/uploadData'
 
 import Http from './utils/http';
 import Navigator from './navigation/Navigator';
@@ -42,6 +43,7 @@ export default function App(props) {
         if (!net.isConnected) {
           return ToastAndroid.show('当前处于离线模式', ToastAndroid.LONG);
         }
+        uploadOfflineBabies()
 
         // pre download offline assets
         Asset.fromModule(require('./assets/images/error-message.png')).downloadAsync();
