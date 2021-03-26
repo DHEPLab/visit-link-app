@@ -26,6 +26,7 @@ import {
   Message,
 } from '../components';
 import { useMethods } from './BabyForm/CreateBabyStep2';
+import storage from '../cache/storage';
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
@@ -97,20 +98,23 @@ export default function Baby({ navigation, route }) {
           openErrorMessage()
         });
     } else {
-      // if (baby?.nextShouldVisitDTO) {
-        navigation.navigate('CreateVisit', {
-          lockBaby: true,
-          baby: {
-            ...baby,
-            months: baby.months,
-            carerName: carers[0]?.name,
-            carerPhone: carers[0]?.phone
-          }
-        })
-      // } else {
-      //   setErrorMessage('没有匹配的课堂，无法创建家访!')
-      //   openErrorMessage()
-      // }
+      storage.getNextShouldVisit(baby.id).then(nextVisit => {
+        if (nextVisit) {
+          navigation.navigate('CreateVisit', {
+            lockBaby: true,
+            baby: {
+              ...baby,
+              nextShouldVisitDTO: nextVisit,
+              months: baby.months,
+              carerName: carers[0]?.name,
+              carerPhone: carers[0]?.phone
+            }
+          })
+        } else {
+          setErrorMessage('没有匹配的课堂，无法创建家访')
+          openErrorMessage()
+        }
+      })
     }
   }
 

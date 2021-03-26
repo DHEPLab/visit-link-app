@@ -39,6 +39,10 @@ function getModule(id) {
   return getObject(`MODULE_${id}`);
 }
 
+function getNextShouldVisit(id) {
+  return getObject(`NEXT_VISIT_${id}`);
+}
+
 function getNextVisit() {
   return getObject(`NEXT_VISIT`);
 }
@@ -92,6 +96,7 @@ function use(getFn, id) {
 export default {
   addLesson: (lesson) => addObject(`LESSON_${lesson.id}`, lesson),
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
+  addNextShouldVisit: (id, visit) => addObject(`NEXT_VISIT_${id}`, visit),
   setBabies: (babies) => addObject('BABIES', babies),
   setOfflineBabies: (babies) => addObject('OFFLINEBABIES', babies),
   setAnswers: (answer) => addObject(`ANSWER_LESSON_${answer.lessonId}`, answer),
@@ -115,6 +120,7 @@ export default {
     addValue('LAST_UPDATE_AT', moment(datetime).format('YYYY-MM-DDTHH:mm:ss')),
   getLesson,
   getModule,
+  getNextShouldVisit,
   getNextVisit,
   getBabies,
   getOfflineBabies,
@@ -124,6 +130,7 @@ export default {
   getLastUpdateAt: () => getValue('LAST_UPDATE_AT'),
   useLesson: (id) => use(getLesson, id),
   useModule: (id) => use(getModule, id),
+  useNextShouldVisit: (id) => use(getNextShouldVisit, id),
   useNextVisit: () => use(getNextVisit),
   useBabies: () => use(getBabies),
   useOfflineBabies: () => use(getOfflineBabies),

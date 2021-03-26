@@ -57,6 +57,11 @@ export default function Babies({ navigation }) {
     http
       .get('/api/babies', { page: 0, size: 1000 })
       .then((data) => {
+        (data?.content || []).forEach(element => {
+          if (element?.nextShouldVisitDTO?.lesson) {
+            storage.addNextShouldVisit(element.id, element.nextShouldVisitDTO)
+          }
+        })
         storage.setBabies(data.content)
       })
       .finally(() => {
