@@ -22,22 +22,18 @@ export default function CreateVisit({ navigation, route }) {
   const [lesson, setLesson] = useState();
   const [connect, isConnect, isNotConnect] = useBoolState();
 
-  useEffect(
-    () =>
-      navigation.addListener('focus', () => {
-        refreshConnect();
-      }),
-    [navigation]
-  );
-
   useEffect(() => {
     if (params?.baby) {
       const { baby } = params;
-      if (connect) {
-        http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
-      } else {
-        setLesson(baby?.nextShouldVisitDTO?.lesson || null)
-      }
+      NetInfo.fetch().then(({ isConnected }) => {
+        if (!isConnected) {
+          isNotConnect()
+          setLesson(baby?.nextShouldVisitDTO?.lesson || null)
+        } else {
+          isConnect()
+          http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+        }
+      })
       setBaby(baby);
     }
   }, [params?.baby]);
@@ -56,16 +52,6 @@ export default function CreateVisit({ navigation, route }) {
         lessonId: lesson.id,
       })
       .then(navigation.goBack);
-  }
-
-  function refreshConnect () {
-    NetInfo.fetch().then(({ isConnected }) => {
-      if (!isConnected) {
-        isNotConnect()
-      } else {
-        isConnect()
-      }
-    })
   }
 
   async function handleChangeVisitTime() {
