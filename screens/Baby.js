@@ -97,7 +97,7 @@ export default function Baby({ navigation, route }) {
           openErrorMessage()
         });
     } else {
-      if (baby?.nextShouldVisitDTO) {
+      // if (baby?.nextShouldVisitDTO) {
         navigation.navigate('CreateVisit', {
           lockBaby: true,
           baby: {
@@ -107,10 +107,10 @@ export default function Baby({ navigation, route }) {
             carerPhone: carers[0]?.phone
           }
         })
-      } else {
-        setErrorMessage('没有匹配的课堂，无法创建家访!')
-        openErrorMessage()
-      }
+      // } else {
+      //   setErrorMessage('没有匹配的课堂，无法创建家访!')
+      //   openErrorMessage()
+      // }
     }
   }
 
