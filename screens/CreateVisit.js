@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 import http from '../utils/http';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
+import { useBoolState } from '../utils';
 import {
   MiniBaby,
   Card,
@@ -18,11 +20,24 @@ export default function CreateVisit({ navigation, route }) {
   const [visitTime, setVisitTime] = useState();
   const [baby, setBaby] = useState();
   const [lesson, setLesson] = useState();
+  const [connect, isConnect, isNotConnect] = useBoolState();
+
+  useEffect(
+    () =>
+      navigation.addListener('focus', () => {
+        refreshConnect();
+      }),
+    [navigation]
+  );
 
   useEffect(() => {
     if (params?.baby) {
       const { baby } = params;
-      http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+      if (connect) {
+        http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+      } else {
+        setLesson(baby?.nextShouldVisitDTO?.lesson || null)
+      }
       setBaby(baby);
     }
   }, [params?.baby]);
@@ -41,6 +56,16 @@ export default function CreateVisit({ navigation, route }) {
         lessonId: lesson.id,
       })
       .then(navigation.goBack);
+  }
+
+  function refreshConnect () {
+    NetInfo.fetch().then(({ isConnected }) => {
+      if (!isConnected) {
+        isNotConnect()
+      } else {
+        isConnect()
+      }
+    })
   }
 
   async function handleChangeVisitTime() {
