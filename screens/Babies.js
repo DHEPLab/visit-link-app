@@ -76,8 +76,8 @@ export default function Babies({ navigation }) {
       setContents([...(offlineBabies || []), ...(data || [])]);
     } else {
       isConnect()
-      uploadOfflineBabies()
     }
+    uploadOfflineBabies()
 
     setSearch((s) => ({
       ...s,
