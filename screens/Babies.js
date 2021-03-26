@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import NetInfo from '@react-native-community/netinfo';
 import storage from '../cache/storage';
+import { uploadOfflineBabies } from '../cache/uploadData'
 
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
@@ -75,6 +76,7 @@ export default function Babies({ navigation }) {
       setContents([...(offlineBabies || []), ...(data || [])]);
     } else {
       isConnect()
+      uploadOfflineBabies()
     }
 
     setSearch((s) => ({
