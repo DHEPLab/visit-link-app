@@ -97,7 +97,7 @@ export default function Baby({ navigation, route }) {
           openErrorMessage()
         });
     } else {
-      if (baby?.nextShouldVisitDTO?.lesson) {
+      if (baby?.nextShouldVisitDTO) {
         navigation.navigate('CreateVisit', {
           lockBaby: true,
           baby: {
