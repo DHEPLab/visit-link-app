@@ -108,7 +108,7 @@ export default function Baby({ navigation, route }) {
           }
         })
       } else {
-        setErrorMessage('没有匹配的课堂，无法创建家访')
+        setErrorMessage('没有匹配的课堂，无法创建家访!')
         openErrorMessage()
       }
     }
