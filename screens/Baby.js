@@ -78,23 +78,40 @@ export default function Baby({ navigation, route }) {
   }
 
   function handleCreateVisit() {
-    http
-      .silenceGet(`/api/babies/${baby.id}/lesson`)
-      .then((_) =>
+    if (connect) {
+      http
+        .silenceGet(`/api/babies/${baby.id}/lesson`)
+        .then((_) =>
+          navigation.navigate('CreateVisit', {
+            lockBaby: true,
+            baby: {
+              ...baby,
+              months: baby.months,
+              carerName: carers[0]?.name,
+              carerPhone: carers[0]?.phone,
+            },
+          })
+        )
+        .catch((error) => {
+          setErrorMessage(error.detail)
+          openErrorMessage()
+        });
+    } else {
+      if (baby?.nextShouldVisitDTO?.lesson) {
         navigation.navigate('CreateVisit', {
           lockBaby: true,
           baby: {
             ...baby,
             months: baby.months,
             carerName: carers[0]?.name,
-            carerPhone: carers[0]?.phone,
-          },
+            carerPhone: carers[0]?.phone
+          }
         })
-      )
-      .catch((error) => {
-        setErrorMessage(error.detail)
+      } else {
+        setErrorMessage('没有匹配的课堂，无法创建家访')
         openErrorMessage()
-      });
+      }
+    }
   }
 
   return (
