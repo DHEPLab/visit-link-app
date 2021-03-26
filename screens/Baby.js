@@ -362,7 +362,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
       <Card
         title="备注信息"
         hideBody={!baby.remark}
-        right={<Button disabled={!connect ||!baby.identity} title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
+        right={<Button disabled={!connect ||!baby.id} title={baby.remark ? '修改' : '添加'} onPress={openRemark} />}
       >
         <StaticField>{baby.remark}</StaticField>
       </Card>
@@ -372,7 +372,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
         right={
           <Button
             title="修改"
-            disabled={!connect || !baby.identity}
+            disabled={!connect || !baby.id}
             onPress={() =>
               navigation.navigate('EditAddress', {
                 id: baby.id,
@@ -393,7 +393,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
         right={
           <Button
             title="添加"
-            disabled={!connect || !baby.identity || carers.length > 3}
+            disabled={!connect || !baby.id || carers.length > 3}
             onPress={() =>
               navigation.navigate('CreateCarer', {
                 from: 'Baby',
@@ -410,7 +410,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
               key={carer.id}
               value={carer}
               number={index + 1}
-              disabled={!connect || !baby.identity}
+              disabled={!connect || !baby.id}
               noBorder={index === carers.length - 1}
               onChangeMaster={() => handleChangeMaster(carer)}
               onPressDelete={() => {
@@ -437,7 +437,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
 
       {baby.actionFromApp !== 'DELETE' && (
         <LargeButtonContainer>
-          <Button type="weaken" title="注销宝宝" disabled={!connect || !baby.identity} onPress={openCloseAccount} />
+          <Button type="weaken" title="注销宝宝" disabled={!connect || !baby.id} onPress={openCloseAccount} />
         </LargeButtonContainer>
       )}
 
