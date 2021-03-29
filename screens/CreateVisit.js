@@ -14,6 +14,7 @@ import {
   StaticForm,
   LargeButtonContainer,
 } from '../components';
+import storage from '../cache/storage';
 
 export default function CreateVisit({ navigation, route }) {
   const { params } = route;
@@ -57,7 +58,14 @@ export default function CreateVisit({ navigation, route }) {
   async function handleChangeVisitTime() {
     let range = [Visit.defaultStartingRange()];
     if (baby?.id) {
-      range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
+      if (connect) {
+        range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
+      } else {
+        const {visitDateRange} = await storage.getNextShouldVisit(baby.id)
+        if (visitDateRange) {
+          range = visitDateRange
+        }
+      }
     }
     navigation.navigate('PickVisitTime', {
       visitTime: Visit.formatDateTime(visitTime),
