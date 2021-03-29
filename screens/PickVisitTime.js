@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Http from '../utils/http'
@@ -22,22 +22,15 @@ export default function PickVisitTime({ navigation, route }) {
   const [mode, setMode] = useState('time');
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
   const [conflictVisible, openConflict, closeConflict] = useBoolState();
-  const [connect, isConnect, isNotConnect] = useBoolState();
 
   const defaultDatetime = Visit.defaultDatetime(range, visitTime);
   const [date, setDate] = useState(Visit.formatDate(defaultDatetime));
   const [time, setTime] = useState(moment(defaultDatetime).toDate());
 
-  useEffect(
-    () =>
-      navigation.addListener('focus', () => {
-        refreshConnect();
-      }),
-    [navigation]
-  );
+  const { isConnected } = useSelector((state) => state.net);
 
   async function handleSubmit() {
-    if (connect) {
+    if (isConnected) {
       const data = await Http.get('/api/visits', { date });
       const visitTime = Visit.mergeDateAndTime(date, time);
       const conflict = data.filter(visit => Visit.statusNotStart(visit.status))
@@ -67,17 +60,6 @@ export default function PickVisitTime({ navigation, route }) {
     if (nativeEvent.timestamp) {
       setTime(new Date(nativeEvent.timestamp));
     }
-  }
-
-  function refreshConnect () {
-    NetInfo.fetch().then(({ isConnected }) => {
-      if (!isConnected) {
-        isNotConnect()
-        loadOfflineVisit();
-      } else {
-        isConnect()
-      }
-    })
   }
 
   return (

@@ -3,6 +3,17 @@ import { render, fireEvent, waitFor } from 'react-native-testing-library';
 import PickVisitTime from './PickVisitTime';
 import http from '../utils/http'
 
+jest.mock('react-redux', () => ({
+  useDispatch: jest.fn(),
+  useSelector: () => ({
+    state: {
+      net: {
+        isConnected: true
+      },
+    },
+  }),
+}));
+
 jest.mock('../utils', () => ({
   ...jest.requireActual('../utils'),
   useFetchArray: () => [[]],

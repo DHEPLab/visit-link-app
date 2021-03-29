@@ -22,6 +22,7 @@ export default function CreateVisit({ navigation, route }) {
   const [baby, setBaby] = useState();
   const [lesson, setLesson] = useState();
   const [connect, isConnect, isNotConnect] = useBoolState();
+  const [dateRange, setDateRange] = useState([]);
 
   useEffect(() => {
     if (params?.baby) {
@@ -45,6 +46,10 @@ export default function CreateVisit({ navigation, route }) {
     }
   }, [params?.visitTime]);
 
+  useEffect(() => {
+    renderDateRange()
+  }, [baby]);
+
   function handleSubmit() {
     http
       .post('/api/visits', {
@@ -65,7 +70,7 @@ export default function CreateVisit({ navigation, route }) {
     }).then(navigation.goBack);
   }
 
-  async function handleChangeVisitTime() {
+  async function renderDateRange () {
     let range = [Visit.defaultStartingRange()];
     if (baby?.id) {
       if (connect) {
@@ -77,6 +82,12 @@ export default function CreateVisit({ navigation, route }) {
         }
       }
     }
+    setDateRange(range)
+    return range
+  }
+
+  async function handleChangeVisitTime() {
+    let range = renderDateRange();
     navigation.navigate('PickVisitTime', {
       visitTime: Visit.formatDateTime(visitTime),
       range,
@@ -97,6 +108,8 @@ export default function CreateVisit({ navigation, route }) {
             </StaticForm>
           )}
         </Card>
+        <PromptWords>当前阶段宝宝的下一次家访课堂为"{lesson?.name}"，最早开始时间为{dateRange[0]}，</PromptWords>
+        <PromptWords>{dateRange[1]}之后宝宝将进入下一阶段则会错过当前阶段的课堂。</PromptWords>
         <Card
           title="家访对象"
           hideBody={!baby}
@@ -193,4 +206,10 @@ const LessonName = styled.Text`
   font-size: 12px;
   font-weight: bold;
   margin-bottom: 8px;
+`;
+
+const PromptWords = styled.Text`
+  font-size: 10px;
+  color: #8e8e93;
+  margin-bottom: 5px;
 `;
