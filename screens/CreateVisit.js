@@ -143,6 +143,16 @@ export default function CreateVisit({ navigation, route }) {
             disabled={!visitTime || !baby || !lesson}
           />
         </LargeButtonContainer>
+        <OfflineBookingLine>
+          <Button
+            onPress={handleSubmit}
+            title="离线预约"
+            size="large"
+            ghost
+            type="primary"
+            disabled={!visitTime || !baby || !lesson}
+          />
+        </OfflineBookingLine>
       </Container>
     </ScrollView>
   );
@@ -151,6 +161,11 @@ export default function CreateVisit({ navigation, route }) {
 const NoLesson = styled.Text`
   font-size: 10px;
   color: #8e8e93;
+`;
+
+const OfflineBookingLine = styled.View`
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const Container = styled.View`

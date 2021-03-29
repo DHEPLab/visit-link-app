@@ -14,7 +14,7 @@ export default function Button({ onPress, disabled, ...props }) {
 function RenderButton({ title, type, size, ghost, disabled }) {
   if (ghost) {
     return (
-      <GhostButton type={type}>
+      <GhostButton type={type} size={size}>
         <Text type={type}>{title}</Text>
       </GhostButton>
     );
@@ -66,6 +66,7 @@ const GhostButton = styled.View`
   border: 1px solid #fff;
   border-radius: 25px;
   padding: 4px;
+  width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
   min-width: 80px;
   ${({ type }) =>
     type === 'primary' &&
