@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 import storage from '../cache/storage';
 import { uploadOfflineBabies } from '../cache/uploadData'
 
@@ -27,6 +27,7 @@ export default function Babies({ navigation }) {
   const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [connect, isConnect, isNotConnect] = useBoolState();
   const [name, setName] = useState();
+  const { isConnected } = useSelector((state) => state.net);
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
@@ -72,7 +73,6 @@ export default function Babies({ navigation }) {
   async function refresh() {
     if (refreshing) return;
 
-    const { isConnected } = await NetInfo.fetch()
     if (!isConnected) {
       isNotConnect()
       const data = await storage.getBabies()

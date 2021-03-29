@@ -2,7 +2,7 @@ import React from 'react';
 import { CommonActions } from '@react-navigation/native';
 
 import { CreateBabyNavigator, AddressForm, Message } from '../../components';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 
 import http from '../../utils/http';
 import { useBoolState } from '../../utils';
@@ -13,11 +13,11 @@ export default function CreateBabyStep3({ navigation, route }) {
   const { baby, carers } = params;
   const [visible, openMessage, closeMessage] = useBoolState();
   const [submitting, startSubmit, endSubmit] = useBoolState();
+  const { isConnected } = useSelector((state) => state.net);
 
   async function onSubmit(values) {
     startSubmit();
-    const net = await NetInfo.fetch();
-    if (!net.isConnected) {
+    if (!isConnected) {
       const babyInfo = { ...baby, ...values }
       const carer = carers.find(e => e.master === true)
       const offlineBaby = {

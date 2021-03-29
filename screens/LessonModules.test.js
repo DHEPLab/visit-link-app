@@ -4,6 +4,17 @@ import storage from '../cache/storage';
 
 import LessonModules from './LessonModules';
 
+jest.mock('react-redux', () => ({
+  useDispatch: jest.fn(),
+  useSelector: () => ({
+    state: {
+      net: {
+        isConnected: true
+      },
+    },
+  }),
+}));
+
 jest.mock('../cache/storage', () => ({
   useLesson: jest.fn(),
   useNextModule: jest.fn(),

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 
 import http from '../utils/http';
 import Visit from '../utils/visit';
 import { styled } from '../utils/styled';
-import { useBoolState } from '../utils';
 import {
   MiniBaby,
   Card,
@@ -21,21 +20,17 @@ export default function CreateVisit({ navigation, route }) {
   const [visitTime, setVisitTime] = useState();
   const [baby, setBaby] = useState();
   const [lesson, setLesson] = useState();
-  const [connect, isConnect, isNotConnect] = useBoolState();
   const [dateRange, setDateRange] = useState([]);
+  const { isConnected } = useSelector((state) => state.net);
 
   useEffect(() => {
     if (params?.baby) {
       const { baby } = params;
-      NetInfo.fetch().then(({ isConnected }) => {
-        if (!isConnected) {
-          isNotConnect()
-          setLesson(baby?.nextShouldVisitDTO?.lesson || null)
-        } else {
-          isConnect()
-          http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
-        }
-      })
+      if (!isConnected) {
+        setLesson(baby?.nextShouldVisitDTO?.lesson || null)
+      } else {
+        http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
+      }
       setBaby(baby);
     }
   }, [params?.baby]);
@@ -73,7 +68,7 @@ export default function CreateVisit({ navigation, route }) {
   async function renderDateRange () {
     let range = [Visit.defaultStartingRange()];
     if (baby?.id) {
-      if (connect) {
+      if (isConnected) {
         range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
       } else {
         const {visitDateRange} = await storage.getNextShouldVisit(baby.id)
@@ -163,10 +158,10 @@ export default function CreateVisit({ navigation, route }) {
             onPress={handleSubmit}
             title="提交"
             size="large"
-            disabled={!connect || !visitTime || !baby || !lesson}
+            disabled={!isConnected || !visitTime || !baby || !lesson}
           />
         </LargeButtonContainer>
-        {!connect && <OfflineBookingLine>
+        {!isConnected && <OfflineBookingLine>
           <Button
             onPress={handleSaveOfflineBooking}
             title="离线预约"

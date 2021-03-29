@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 import * as WebBrowser from 'expo-web-browser';
 
 import Http from '../utils/http';
@@ -17,6 +17,7 @@ export default function LessonModules({ navigation, route }) {
   const [nextModule, reloadNextModule] = Storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
   const [questionnaire, setQuestionnaire] = useState()
+  const { isConnected } = useSelector((state) => state.net);
 
   useEffect(() => {
     /*
@@ -38,10 +39,9 @@ export default function LessonModules({ navigation, route }) {
   }
 
   async function finish() {
-    const net = await NetInfo.fetch();
     const { answers } = await Storage.getAnswers(lesson.id)
     if (!params.preview) {
-      if (net.isConnected) {
+      if (isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
         // from Visit screen, online mode, direct submit
         await Http.put(`/api/visits/${params?.visitId}/status`, {
@@ -59,7 +59,7 @@ export default function LessonModules({ navigation, route }) {
     }
 
     // if net connected and have a questionnaire, open a browser
-    if (net.isConnected && lesson.questionnaireAddress) {
+    if (isConnected && lesson.questionnaireAddress) {
       await WebBrowser.openBrowserAsync(lesson.questionnaireAddress);
     }
 
