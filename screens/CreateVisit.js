@@ -60,6 +60,8 @@ export default function CreateVisit({ navigation, route }) {
       visitTime: Visit.formatDateTime(visitTime),
       babyId: baby.id,
       lessonId: lesson.id,
+      status: 'NOT_SUBMIT',
+      lessonName: lesson.name
     }).then(navigation.goBack);
   }
 

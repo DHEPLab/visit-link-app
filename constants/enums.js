@@ -17,6 +17,7 @@ export const GenderIcon = {
 };
 
 export const VisitStatus = {
+  NOT_SUBMIT: '待提交',
   NOT_STARTED: '待开始',
   UNDONE: '未完成',
   EXPIRED: '已过期',

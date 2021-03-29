@@ -41,6 +41,7 @@ export default function Baby({ navigation, route }) {
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
   const [connect, isConnect, isNotConnect] = useBoolState();
   const [errorMessage, setErrorMessage] = useState();
+  const [offlineVisit, setOfflineVisit] = useState({});
 
   useEffect(
     () =>
@@ -72,10 +73,18 @@ export default function Baby({ navigation, route }) {
     NetInfo.fetch().then(({ isConnected }) => {
       if (!isConnected) {
         isNotConnect()
+        loadOfflineVisit();
       } else {
         isConnect()
       }
     })
+  }
+
+  async function loadOfflineVisit () {
+    if (params.id) {
+      const data = await storage.getOfflineVisit(params.id)
+      setOfflineVisit(data)
+    }
   }
 
   function handleCreateVisit() {
@@ -98,31 +107,29 @@ export default function Baby({ navigation, route }) {
           openErrorMessage()
         });
     } else {
-      storage.getOfflineVisit(baby.id).then(offlineVisit => {
-        if (offlineVisit) {
-          setErrorMessage('已创建离线家访，不可重复创建')
-          openErrorMessage()
-          return false;
-        } else {
-          storage.getNextShouldVisit(baby.id).then(nextVisit => {
-            if (nextVisit) {
-              navigation.navigate('CreateVisit', {
-                lockBaby: true,
-                baby: {
-                  ...baby,
-                  nextShouldVisitDTO: nextVisit,
-                  months: baby.months,
-                  carerName: carers[0]?.name,
-                  carerPhone: carers[0]?.phone
-                }
-              })
-            } else {
-              setErrorMessage('没有匹配的课堂，无法创建家访')
-              openErrorMessage()
-            }
-          })
-        }
-      })
+      if (offlineVisit) {
+        setErrorMessage('已创建离线家访，不可重复创建')
+        openErrorMessage()
+        return false;
+      } else {
+        storage.getNextShouldVisit(baby.id).then(nextVisit => {
+          if (nextVisit) {
+            navigation.navigate('CreateVisit', {
+              lockBaby: true,
+              baby: {
+                ...baby,
+                nextShouldVisitDTO: nextVisit,
+                months: baby.months,
+                carerName: carers[0]?.name,
+                carerPhone: carers[0]?.phone
+              }
+            })
+          } else {
+            setErrorMessage('没有匹配的课堂，无法创建家访')
+            openErrorMessage()
+          }
+        })
+      }
     }
   }
 
@@ -215,7 +222,7 @@ export default function Baby({ navigation, route }) {
               connect={connect}
               onCreateVisit={handleCreateVisit}
               onChange={setStarted}
-              notStartedVisits={babyVisits.notStarted}
+              notStartedVisits={connect ? babyVisits.notStarted : [offlineVisit]}
               startedVisits={babyVisits.started}
               numberOfNoRemark={babyVisits.numberOfNoRemark}
               started={started}
