@@ -55,6 +55,14 @@ export default function CreateVisit({ navigation, route }) {
       .then(navigation.goBack);
   }
 
+  function handleSaveOfflineBooking() {
+    storage.addOfflineVisit(baby.id, {
+      visitTime: Visit.formatDateTime(visitTime),
+      babyId: baby.id,
+      lessonId: lesson.id,
+    }).then(navigation.goBack);
+  }
+
   async function handleChangeVisitTime() {
     let range = [Visit.defaultStartingRange()];
     if (baby?.id) {
@@ -140,19 +148,19 @@ export default function CreateVisit({ navigation, route }) {
             onPress={handleSubmit}
             title="提交"
             size="large"
-            disabled={!visitTime || !baby || !lesson}
+            disabled={!connect || !visitTime || !baby || !lesson}
           />
         </LargeButtonContainer>
-        <OfflineBookingLine>
+        {!connect && <OfflineBookingLine>
           <Button
-            onPress={handleSubmit}
+            onPress={handleSaveOfflineBooking}
             title="离线预约"
             size="large"
             ghost
             type="primary"
             disabled={!visitTime || !baby || !lesson}
           />
-        </OfflineBookingLine>
+        </OfflineBookingLine>}
       </Container>
     </ScrollView>
   );

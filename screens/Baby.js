@@ -98,21 +98,29 @@ export default function Baby({ navigation, route }) {
           openErrorMessage()
         });
     } else {
-      storage.getNextShouldVisit(baby.id).then(nextVisit => {
-        if (nextVisit) {
-          navigation.navigate('CreateVisit', {
-            lockBaby: true,
-            baby: {
-              ...baby,
-              nextShouldVisitDTO: nextVisit,
-              months: baby.months,
-              carerName: carers[0]?.name,
-              carerPhone: carers[0]?.phone
+      storage.getOfflineVisit(baby.id).then(offlineVisit => {
+        if (offlineVisit) {
+          setErrorMessage('已创建离线家访，不可重复创建')
+          openErrorMessage()
+          return false;
+        } else {
+          storage.getNextShouldVisit(baby.id).then(nextVisit => {
+            if (nextVisit) {
+              navigation.navigate('CreateVisit', {
+                lockBaby: true,
+                baby: {
+                  ...baby,
+                  nextShouldVisitDTO: nextVisit,
+                  months: baby.months,
+                  carerName: carers[0]?.name,
+                  carerPhone: carers[0]?.phone
+                }
+              })
+            } else {
+              setErrorMessage('没有匹配的课堂，无法创建家访')
+              openErrorMessage()
             }
           })
-        } else {
-          setErrorMessage('没有匹配的课堂，无法创建家访')
-          openErrorMessage()
         }
       })
     }
