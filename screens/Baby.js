@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
@@ -39,7 +39,7 @@ export default function Baby({ navigation, route }) {
 
   const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
-  const [connect, isConnect, isNotConnect] = useBoolState();
+  const { isConnected } = useSelector((state) => state.net);
   const [errorMessage, setErrorMessage] = useState();
   const [offlineVisit, setOfflineVisit] = useState({});
 
@@ -47,7 +47,9 @@ export default function Baby({ navigation, route }) {
     () =>
       navigation.addListener('focus', () => {
         refreshBabyVisits();
-        refreshConnect();
+        if (!isConnected) {
+          loadOfflineVisit()
+        }
       }),
     [navigation]
   );
@@ -63,21 +65,10 @@ export default function Baby({ navigation, route }) {
   }
 
   function onRefresh() {
-    if (connect) {
+    if (isConnected) {
       refreshBaby();
       refreshCarers();
     }
-  }
-
-  function refreshConnect () {
-    NetInfo.fetch().then(({ isConnected }) => {
-      if (!isConnected) {
-        isNotConnect()
-        loadOfflineVisit();
-      } else {
-        isConnect()
-      }
-    })
   }
 
   async function loadOfflineVisit () {
@@ -88,7 +79,7 @@ export default function Baby({ navigation, route }) {
   }
 
   function handleCreateVisit() {
-    if (connect) {
+    if (isConnected) {
       http
         .silenceGet(`/api/babies/${baby.id}/lesson`)
         .then((_) =>
@@ -219,10 +210,10 @@ export default function Baby({ navigation, route }) {
         renderScene={SceneMap({
           Visits: () => (
             <Visits
-              connect={connect}
+              connect={isConnected}
               onCreateVisit={handleCreateVisit}
               onChange={setStarted}
-              notStartedVisits={connect ? babyVisits.notStarted : [offlineVisit]}
+              notStartedVisits={isConnected ? babyVisits.notStarted : [offlineVisit]}
               startedVisits={babyVisits.started}
               numberOfNoRemark={babyVisits.numberOfNoRemark}
               started={started}
@@ -231,7 +222,7 @@ export default function Baby({ navigation, route }) {
             />
           ),
           Family: () => (
-            <Family baby={baby} carers={carers} connect={connect} navigation={navigation} onRefresh={onRefresh} />
+            <Family baby={baby} carers={carers} connect={isConnected} navigation={navigation} onRefresh={onRefresh} />
           ),
         })}
       />
