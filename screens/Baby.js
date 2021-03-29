@@ -215,6 +215,7 @@ export default function Baby({ navigation, route }) {
               onChange={setStarted}
               notStartedVisits={babyVisits.notStarted}
               startedVisits={babyVisits.started}
+              offlineVisit={offlineVisit}
               numberOfNoRemark={babyVisits.numberOfNoRemark}
               started={started}
               navigation={navigation}
@@ -274,6 +275,7 @@ function Visits({
   started,
   connect,
   startedVisits,
+  offlineVisit,
   notStartedVisits,
   numberOfNoRemark,
   onChange,
@@ -309,6 +311,7 @@ function Visits({
           </TitleContainer>
         </TouchableOpacity>
       </VisitTabs>
+      {!started && offlineVisit?.babyId && <VisitItem onPress={() => {}} value={offlineVisit} redDot={redDot(offlineVisit)} />}
       <FlatList
         ListEmptyComponent={<NoData title="没有相关结果" />}
         data={started ? startedVisits : notStartedVisits}
