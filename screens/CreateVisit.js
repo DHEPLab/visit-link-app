@@ -55,14 +55,17 @@ export default function CreateVisit({ navigation, route }) {
       .then(navigation.goBack);
   }
 
-  function handleSaveOfflineBooking() {
-    storage.addOfflineVisit(baby.id, {
+  async function handleSaveOfflineBooking() {
+    const visit = {
       visitTime: Visit.formatDateTime(visitTime),
       babyId: baby.id,
       lessonId: lesson.id,
       status: 'NOT_SUBMIT',
       lessonName: lesson.name
-    }).then(navigation.goBack);
+    }
+    const oldVisits = await storage.getOfflineVisits();
+    storage.setOfflineVisits([...(oldVisits || []), visit])
+    storage.addOfflineVisit(baby.id, visit).then(navigation.goBack);
   }
 
   async function renderDateRange () {

@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import storage from '../cache/storage';
-import { uploadOfflineBabies } from '../cache/uploadData'
+import { uploadOfflineBabies, uploadOfflineVisits } from '../cache/uploadData'
 
 import http from '../utils/http';
 import { styled, px2dp } from '../utils/styled';
@@ -82,6 +82,7 @@ export default function Babies({ navigation }) {
     } else {
       isConnect()
       uploadOfflineBabies()
+      uploadOfflineVisits()
     }
 
     setSearch((s) => ({

@@ -15,3 +15,31 @@ export function uploadOfflineBabies () {
     });
   })
 }
+
+export function uploadOfflineVisits () {
+  storage.getOfflineVisits().then((offlineVisits) => {
+    offlineVisits.forEach((offlineVisit, index) => {
+      http.post('/api/visits', offlineVisit)
+        .then(() => {
+          if (index === (offlineVisits.length-1)) {
+            clearVisitsStorage(offlineVisits)
+          }
+        })
+        .catch(res => {
+          // addVisitError(offlineVisit.babyId, res)
+        })
+        .finally(() => {})
+      })
+    })
+  }
+
+  function clearVisitsStorage (list) {
+    storage.setOfflineVisits([])
+    list.forEach((offlineVisit) => {
+      storage.setOfflineVisit(offlineVisit.babyId, {})
+    })
+  }
+
+function addVisitError(id, msg) {
+  storage.setCreateVisitError(id, msg)
+}
