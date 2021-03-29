@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import NetInfo from '@react-native-community/netinfo';
+import { useSelector } from 'react-redux';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
@@ -35,19 +35,21 @@ export default function Baby({ navigation, route }) {
   const [started, setStarted] = useState(false);
   const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`, {}, params);
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, params?.allCarerList || []);
-  const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`);
+  const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`, {}, {});
 
   const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
-  const [connect, isConnect, isNotConnect] = useBoolState();
+  const { isConnected } = useSelector((state) => state.net);
   const [errorMessage, setErrorMessage] = useState();
   const [offlineVisit, setOfflineVisit] = useState({});
 
   useEffect(
     () =>
       navigation.addListener('focus', () => {
-        // refreshBabyVisits();
-        refreshConnect();
+        refreshBabyVisits();
+        if (!isConnected) {
+          loadOfflineVisit()
+        }
       }),
     [navigation]
   );
@@ -63,32 +65,21 @@ export default function Baby({ navigation, route }) {
   }
 
   function onRefresh() {
-    if (connect) {
+    if (isConnected) {
       refreshBaby();
       refreshCarers();
     }
   }
 
-  function refreshConnect () {
-    NetInfo.fetch().then(({ isConnected }) => {
-      if (!isConnected) {
-        isNotConnect()
-        loadOfflineVisit();
-      } else {
-        isConnect()
-      }
-    })
-  }
-
   async function loadOfflineVisit () {
-    if (params.id) {
-      const data = await storage.getOfflineVisit(params.id)
+    if (params?.id) {
+      const data = await storage.getOfflineVisit(params?.id)
       setOfflineVisit(data)
     }
   }
 
   function handleCreateVisit() {
-    if (connect) {
+    if (isConnected) {
       http
         .silenceGet(`/api/babies/${baby.id}/lesson`)
         .then((_) =>
@@ -209,8 +200,8 @@ export default function Baby({ navigation, route }) {
             renderLabel={({ route, focused }) => (
               <TabBarLabelContainer>
                 <TabBarLabel focused={focused}>{route.title}</TabBarLabel>
-                {route.key === 'Visits' && babyVisits?.numberOfNoRemark > 0 && (
-                  <NumberOfNoRemark>{babyVisits?.numberOfNoRemark}</NumberOfNoRemark>
+                {route.key === 'Visits' && babyVisits.numberOfNoRemark > 0 && (
+                  <NumberOfNoRemark>{babyVisits.numberOfNoRemark}</NumberOfNoRemark>
                 )}
               </TabBarLabelContainer>
             )}
@@ -219,19 +210,19 @@ export default function Baby({ navigation, route }) {
         renderScene={SceneMap({
           Visits: () => (
             <Visits
-              connect={connect}
+              connect={isConnected}
               onCreateVisit={handleCreateVisit}
               onChange={setStarted}
-              notStartedVisits={connect ? babyVisits?.notStarted : [offlineVisit]}
-              startedVisits={babyVisits?.started}
-              numberOfNoRemark={babyVisits?.numberOfNoRemark}
+              notStartedVisits={babyVisits.notStarted}
+              startedVisits={babyVisits.started}
+              numberOfNoRemark={babyVisits.numberOfNoRemark}
               started={started}
               navigation={navigation}
               approved={baby.approved}
             />
           ),
           Family: () => (
-            <Family baby={baby} carers={carers} connect={connect} navigation={navigation} onRefresh={onRefresh} />
+            <Family baby={baby} carers={carers} connect={isConnected} navigation={navigation} onRefresh={onRefresh} />
           ),
         })}
       />
