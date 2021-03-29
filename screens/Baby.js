@@ -46,7 +46,7 @@ export default function Baby({ navigation, route }) {
   useEffect(
     () =>
       navigation.addListener('focus', () => {
-        refreshBabyVisits();
+        // refreshBabyVisits();
         refreshConnect();
       }),
     [navigation]
@@ -209,8 +209,8 @@ export default function Baby({ navigation, route }) {
             renderLabel={({ route, focused }) => (
               <TabBarLabelContainer>
                 <TabBarLabel focused={focused}>{route.title}</TabBarLabel>
-                {route.key === 'Visits' && babyVisits.numberOfNoRemark > 0 && (
-                  <NumberOfNoRemark>{babyVisits.numberOfNoRemark}</NumberOfNoRemark>
+                {route.key === 'Visits' && babyVisits?.numberOfNoRemark > 0 && (
+                  <NumberOfNoRemark>{babyVisits?.numberOfNoRemark}</NumberOfNoRemark>
                 )}
               </TabBarLabelContainer>
             )}
@@ -222,9 +222,9 @@ export default function Baby({ navigation, route }) {
               connect={connect}
               onCreateVisit={handleCreateVisit}
               onChange={setStarted}
-              notStartedVisits={connect ? babyVisits.notStarted : [offlineVisit]}
-              startedVisits={babyVisits.started}
-              numberOfNoRemark={babyVisits.numberOfNoRemark}
+              notStartedVisits={connect ? babyVisits?.notStarted : [offlineVisit]}
+              startedVisits={babyVisits?.started}
+              numberOfNoRemark={babyVisits?.numberOfNoRemark}
               started={started}
               navigation={navigation}
               approved={baby.approved}
