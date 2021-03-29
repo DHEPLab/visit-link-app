@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { CalendarList } from 'react-native-calendars';
+import NetInfo from '@react-native-community/netinfo';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Http from '../utils/http'
@@ -21,19 +22,30 @@ export default function PickVisitTime({ navigation, route }) {
   const [mode, setMode] = useState('time');
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
   const [conflictVisible, openConflict, closeConflict] = useBoolState();
+  const [connect, isConnect, isNotConnect] = useBoolState();
 
   const defaultDatetime = Visit.defaultDatetime(range, visitTime);
   const [date, setDate] = useState(Visit.formatDate(defaultDatetime));
   const [time, setTime] = useState(moment(defaultDatetime).toDate());
 
+  useEffect(
+    () =>
+      navigation.addListener('focus', () => {
+        refreshConnect();
+      }),
+    [navigation]
+  );
+
   async function handleSubmit() {
-    const data = await Http.get('/api/visits', { date });
-    const visitTime = Visit.mergeDateAndTime(date, time);
-    const conflict = data.filter(visit => Visit.statusNotStart(visit.status))
-                         .map(visit => Visit.visitTimeMayConflict(visit.visitTime, visitTime))
-                         .reduce((previous, current) => previous || current, false);
-    if (conflict) {
-      return openConflict();
+    if (connect) {
+      const data = await Http.get('/api/visits', { date });
+      const visitTime = Visit.mergeDateAndTime(date, time);
+      const conflict = data.filter(visit => Visit.statusNotStart(visit.status))
+                          .map(visit => Visit.visitTimeMayConflict(visit.visitTime, visitTime))
+                          .reduce((previous, current) => previous || current, false);
+      if (conflict) {
+        return openConflict();
+      }
     }
     submit();
   }
@@ -55,6 +67,17 @@ export default function PickVisitTime({ navigation, route }) {
     if (nativeEvent.timestamp) {
       setTime(new Date(nativeEvent.timestamp));
     }
+  }
+
+  function refreshConnect () {
+    NetInfo.fetch().then(({ isConnected }) => {
+      if (!isConnected) {
+        isNotConnect()
+        loadOfflineVisit();
+      } else {
+        isConnect()
+      }
+    })
   }
 
   return (
