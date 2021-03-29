@@ -82,7 +82,7 @@ export default function CreateVisit({ navigation, route }) {
   }
 
   async function handleChangeVisitTime() {
-    let range = renderDateRange();
+    const range = await renderDateRange();
     navigation.navigate('PickVisitTime', {
       visitTime: Visit.formatDateTime(visitTime),
       range,
@@ -103,8 +103,8 @@ export default function CreateVisit({ navigation, route }) {
             </StaticForm>
           )}
         </Card>
-        <PromptWords>当前阶段宝宝的下一次家访课堂为"{lesson?.name}"，最早开始时间为{dateRange[0]}，</PromptWords>
-        <PromptWords>{dateRange[1]}之后宝宝将进入下一阶段则会错过当前阶段的课堂。</PromptWords>
+        {baby && <PromptWords>当前阶段宝宝的下一次家访课堂为"{lesson?.name}"，最早开始时间为{dateRange[0]}，</PromptWords>}
+        {baby && <PromptWords>{dateRange[1]}之后宝宝将进入下一阶段则会错过当前阶段的课堂。</PromptWords>}
         <Card
           title="家访对象"
           hideBody={!baby}
