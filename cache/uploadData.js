@@ -34,10 +34,10 @@ export function uploadOfflineVisits () {
   }
 
   function clearVisitsStorage (list) {
-    storage.setOfflineVisits([])
     list.forEach((offlineVisit) => {
-      storage.setOfflineVisit(offlineVisit.babyId, {})
+      storage.addOfflineVisit(offlineVisit.babyId, {})
     })
+    storage.setOfflineVisits([])
   }
 
 function addVisitError(id, msg) {
