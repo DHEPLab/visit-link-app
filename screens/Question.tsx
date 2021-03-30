@@ -58,12 +58,12 @@ export default function QuestionScreen({ navigation, route }) {
                 <View key={index}>
                   <QuestionTitle><QuestionType>（{QuestionTypeEnum[question.type]}）</QuestionType>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
                   {question.type === 'Text' ? <QuestionInputCard>
-                      <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder>
+                      <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
                         <Input placeholder="请输入内容" />
                       </InputFormItem>
                     </QuestionInputCard>:
                     <QuestionRadioCard>
-                      <FormItem name={`${index+1}.${question?.value?.title}`} noBorder>
+                      <FormItem name={`${index+1}.${question?.value?.title}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
                       {question.type === 'Radio' ?
                             <RadioGroup options={question?.value?.options} />:
                             <CheckBoxGroup options={question?.value?.options} />
