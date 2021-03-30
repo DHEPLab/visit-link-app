@@ -32,6 +32,12 @@ export default function QuestionScreen({ navigation, route }) {
     navigation.navigate('LessonModules', {});
   }
 
+  const QuestionTypeEnum = {
+    Text: '填空',
+    Checkbox: '多选',
+    Radio: '单选',
+  }
+
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -50,7 +56,7 @@ export default function QuestionScreen({ navigation, route }) {
             <ModuleCard>
               {data.questions && data.questions.map((question: any, index: number) => 
                 <View key={index}>
-                  <QuestionTitle>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
+                  <QuestionTitle><QuestionType>（{QuestionTypeEnum[question.type]}）</QuestionType>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
                   {question.type === 'Text' ? <QuestionInputCard>
                       <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder>
                         <Input placeholder="请输入内容" />
@@ -146,3 +152,9 @@ const QuestionInputCard = styled.View`
   border-radius: 30px;
   border: 2px solid #FFEDE2;
 `
+
+const QuestionType = styled.Text`
+  padding: 1px 4px;
+  font-size: 8px;
+  color: #ff794f;
+`;

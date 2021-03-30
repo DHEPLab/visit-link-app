@@ -313,7 +313,7 @@ function Visits({
       </VisitTabs>
       {!started && offlineVisit?.babyId && <VisitItem onPress={() => {}} value={offlineVisit} redDot={redDot(offlineVisit)} />}
       <FlatList
-        ListEmptyComponent={<NoData title="没有相关结果" />}
+        ListEmptyComponent={(offlineVisit?.babyId) ? null : <NoData title="没有相关结果" />}
         data={started ? startedVisits : notStartedVisits}
         keyExtractor={(item) => item.id + ''}
         renderItem={({ item }) => (
