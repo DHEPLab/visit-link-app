@@ -156,14 +156,14 @@ export default function CreateVisit({ navigation, route }) {
           )}
         </Card>
 
-        <LargeButtonContainer>
+        {isConnected && <LargeButtonContainer>
           <Button
             onPress={handleSubmit}
             title="提交"
             size="large"
-            disabled={!isConnected || !visitTime || !baby || !lesson}
+            disabled={!visitTime || !baby || !lesson}
           />
-        </LargeButtonContainer>
+        </LargeButtonContainer>}
         {!isConnected && <OfflineBookingLine>
           <Button
             onPress={handleSaveOfflineBooking}
