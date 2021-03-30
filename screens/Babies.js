@@ -123,17 +123,17 @@ export default function Babies({ navigation }) {
         content=" "
       />
 
+      {connect?
+        <BackupLine>
+          <TouchableOpacity activeOpacity={0.8} onPress={backupBabyAndCaregivers}>
+            <PromptWord>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWord>
+          </TouchableOpacity>
+        </BackupLine>:
+        <PromptWord><AntDesign name="infocirlceo" size={px2dp(8)} color="#ACA9A9" />当前系统处于离线模式</PromptWord>
+      }
       {contents.length > 0 && (
         <ListHeader>
           <TitleContainer>
-            {connect?
-              <TouchableOpacity activeOpacity={0.8} onPress={backupBabyAndCaregivers}>
-                <TooltipContainer>
-                  <PromptWords>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWords>
-                </TooltipContainer>
-              </TouchableOpacity>:
-              <PromptWords><AntDesign name="infocirlceo" size={px2dp(8)} color="#ACA9A9" />当前系统处于离线模式</PromptWords>
-            }
             <Title>宝宝列表</Title>
             <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
               <TooltipContainer>
@@ -194,11 +194,18 @@ const NoDataContainer = styled.View`
   justify-content: center;
 `;
 
+const BackupLine = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 28px 0px;
+`;
+
 const ListHeader = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin: 16px 28px;
+  margin: 5px 28px 10px;
 `;
 
 const Title = styled.Text`
@@ -212,6 +219,11 @@ const PromptWords = styled.Text`
   font-size: 10px;
   color: #8e8e93;
   margin-bottom: 20px;
+`;
+
+const PromptWord = styled.Text`
+  font-size: 10px;
+  color: #8e8e93;
 `;
 
 const Link = styled.Text`
