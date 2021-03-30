@@ -35,6 +35,7 @@ export default function Baby({ navigation, route }) {
   const [started, setStarted] = useState(false);
   const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`, {}, params);
   const [carers, refreshCarers] = useFetch(`/api/babies/${params.id}/carers`, {}, params?.allCarerList || []);
+  const [createVistErrors, refreshCreateVistErrors] = useFetch(`/api/log/${params.id}`, {}, []);
   const [babyVisits, refreshBabyVisits] = useManualFetch(`/api/babies/${params.id}/visits`, {}, {});
 
   const [messageVisble, openMessage, closeMessage] = useBoolState();
@@ -68,6 +69,7 @@ export default function Baby({ navigation, route }) {
     if (isConnected) {
       refreshBaby();
       refreshCarers();
+      refreshCreateVistErrors()
     }
   }
 
@@ -121,6 +123,12 @@ export default function Baby({ navigation, route }) {
           }
         })
       }
+    }
+  }
+
+  function deleteError (id) {
+    if (id) {
+      http.delete(`/api/log/${id}`).then(refreshCreateVistErrors)
     }
   }
 
@@ -212,6 +220,8 @@ export default function Baby({ navigation, route }) {
             <Visits
               connect={isConnected}
               onCreateVisit={handleCreateVisit}
+              createVistErrors={createVistErrors||[]}
+              deleteError={deleteError}
               onChange={setStarted}
               notStartedVisits={babyVisits.notStarted}
               startedVisits={babyVisits.started}
@@ -276,6 +286,8 @@ function Visits({
   connect,
   startedVisits,
   offlineVisit,
+  createVistErrors,
+  deleteError,
   notStartedVisits,
   numberOfNoRemark,
   onChange,
@@ -311,6 +323,7 @@ function Visits({
           </TitleContainer>
         </TouchableOpacity>
       </VisitTabs>
+      {createVistErrors && createVistErrors.map((n, i) => <ErrorText onPress={() => deleteError(n?.id)} key={i}> Ⓧ  {n.msg}</ErrorText>)}
       {!started && offlineVisit?.babyId && <VisitItem onPress={() => {}} value={offlineVisit} redDot={redDot(offlineVisit)} />}
       <FlatList
         ListEmptyComponent={(offlineVisit?.babyId) ? null : <NoData title="没有相关结果" />}
@@ -611,4 +624,13 @@ const PromptWords = styled.Text`
   font-size: 10px;
   color: #8e8e93;
   margin-bottom: 2px;
+`;
+
+const ErrorText = styled.Text`
+  padding: 1px 4px;
+  font-size: 8px;
+  font-weight: 400;
+  color: #FF2F2F;
+  border-radius: 2px;
+  margin-bottom: 5px;
 `;
