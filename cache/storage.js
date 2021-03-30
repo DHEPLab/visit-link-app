@@ -47,10 +47,6 @@ function getOfflineVisit(id) {
   return getObject(`OFFLINE_VISIT_${id}`);
 }
 
-function getCreateVisitError(id) {
-  return getObject(`VISIT_ERROR_${id}`);
-}
-
 function getNextVisit() {
   return getObject(`NEXT_VISIT`);
 }
@@ -110,7 +106,6 @@ export default {
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   addNextShouldVisit: (id, visit) => addObject(`NEXT_VISIT_${id}`, visit),
   addOfflineVisit: (id, visit) => addObject(`OFFLINE_VISIT_${id}`, visit),
-  addCreateVisitError: (id, msg) => addObject(`VISIT_ERROR_${id}`, msg),
   setOfflineVisits: (visits) => addObject('OFFLINE_VISITS', visits),
   setBabies: (babies) => addObject('BABIES', babies),
   setOfflineBabies: (babies) => addObject('OFFLINEBABIES', babies),
@@ -137,7 +132,6 @@ export default {
   getModule,
   getNextShouldVisit,
   getOfflineVisit,
-  getCreateVisitError,
   getOfflineVisits,
   getNextVisit,
   getBabies,
@@ -150,7 +144,6 @@ export default {
   useModule: (id) => use(getModule, id),
   useNextShouldVisit: (id) => use(getNextShouldVisit, id),
   useOfflineVisit: (id) => use(getOfflineVisit, id),
-  useCreateVisitError: (id) => use(getCreateVisitError, id),
   useNextVisit: () => use(getNextVisit),
   useBabies: () => use(getBabies),
   useOfflineVisits: () => use(getOfflineVisits),

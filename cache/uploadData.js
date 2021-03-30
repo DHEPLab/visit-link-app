@@ -18,16 +18,14 @@ export function uploadOfflineBabies () {
 
 export function uploadOfflineVisits () {
   storage.getOfflineVisits().then((offlineVisits) => {
-    offlineVisits.forEach((offlineVisit, index) => {
+    offlineVisits && offlineVisits.forEach((offlineVisit, index) => {
       http.post('/api/visits', offlineVisit)
         .then(() => {
           if (index === (offlineVisits.length-1)) {
             clearVisitsStorage(offlineVisits)
           }
         })
-        .catch(res => {
-          // addVisitError(offlineVisit.babyId, res)
-        })
+        .catch(_ => {})
         .finally(() => {})
       })
     })
@@ -39,7 +37,3 @@ export function uploadOfflineVisits () {
     })
     storage.setOfflineVisits([])
   }
-
-function addVisitError(id, msg) {
-  storage.setCreateVisitError(id, msg)
-}
