@@ -35,8 +35,8 @@ export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
             <Line>
               <Box source={
                   item
-                    ? require('../../assets/images/checked.png')
-                    : require('../../assets/images/unchecked.png')
+                    ? require('../../assets/images/checkbox-check.png')
+                    : require('../../assets/images/checkbox-uncheck.png')
                 }
               />
               <Label>{option.label}</Label>

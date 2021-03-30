@@ -53,11 +53,11 @@ const Box = styled.View`
   border-radius: 12px;
   align-items: center;
   justify-content: center;
+  border-color: #FFC3A0;
   ${({ checked }) =>
     checked &&
     `
     background: #FFEDE2;
-    border-color: #FFC3A0;
   `}
 `;
 
