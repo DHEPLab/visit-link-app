@@ -129,7 +129,9 @@ export default function Babies({ navigation }) {
             <PromptWord>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWord>
           </TouchableOpacity>
         </BackupLine>:
-        <PromptWord><AntDesign name="infocirlceo" size={px2dp(8)} color="#ACA9A9" />当前系统处于离线模式</PromptWord>
+        <BackupLine>
+          <PromptWord><AntDesign name="infocirlceo" size={px2dp(8)} color="#ACA9A9" />当前系统处于离线模式</PromptWord>
+        </BackupLine>
       }
       {contents.length > 0 && (
         <ListHeader>
