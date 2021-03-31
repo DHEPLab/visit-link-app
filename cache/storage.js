@@ -109,7 +109,7 @@ export default {
   setOfflineVisits: (visits) => addObject('OFFLINE_VISITS', visits),
   setBabies: (babies) => addObject('BABIES', babies),
   setOfflineBabies: (babies) => addObject('OFFLINEBABIES', babies),
-  setAnswers: (answer) => addObject(`ANSWER_LESSON_${answer.lessonId}`, answer),
+  setAnswers: (visitId, answer) => addObject(`ANSWER_LESSON_${visitId}`, answer),
   setNextVisit: (visit) => addObject('NEXT_VISIT', visit),
   setNextModule: (nextModule) => addValue('NEXT_MODULE', nextModule.toString()),
   setUncommittedVisitStatus: (id, status, startTime) => {

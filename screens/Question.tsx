@@ -13,7 +13,7 @@ import storage from '../cache/storage';
 
 export default function QuestionScreen({ navigation, route }) {
   const { params } = route;
-  const {data, lessonId} = params;
+  const {data, lessonId, visitId} = params;
   function onSubmit(values) {
     const resultList = Object.values(values).map((n, i) => {
       const type = data.questions[i].type
@@ -28,7 +28,7 @@ export default function QuestionScreen({ navigation, route }) {
         return {titleNo: (i + 1), name: Object.keys(n)[0], answer: Object.values(n)[0]}
       }
     })
-    storage.setAnswers({lessonId: lessonId, answers: resultList});
+    storage.setAnswers(visitId, {lessonId: lessonId, answers: resultList});
     navigation.navigate('LessonModules', {});
   }
 

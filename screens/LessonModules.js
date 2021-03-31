@@ -39,7 +39,7 @@ export default function LessonModules({ navigation, route }) {
   }
 
   async function finish() {
-    const { answers } = await Storage.getAnswers(lesson.id)
+    const { answers } = await Storage.getAnswers(params?.visitId)
     if (!params.preview) {
       if (isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
@@ -50,6 +50,7 @@ export default function LessonModules({ navigation, route }) {
           nextModuleIndex: nextModule,
           questionnaireRecords: answers
         });
+        Storage.setAnswers(params?.visitId, []);
         Storage.committedVisitStatus();
         Storage.setNextModule(0);
       } else {
@@ -72,7 +73,7 @@ export default function LessonModules({ navigation, route }) {
   }
 
   function toQuestion () {
-    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire, lessonId: lesson.id})
+    navigation.navigate('Question', { id: questionnaire.id, data: questionnaire, lessonId: lesson.id, visitId: params?.visitId})
   }
 
   return (
