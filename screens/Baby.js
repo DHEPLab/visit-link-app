@@ -100,7 +100,7 @@ export default function Baby({ navigation, route }) {
           openErrorMessage()
         });
     } else {
-      if (offlineVisit) {
+      if (offlineVisit?.babyId) {
         setErrorMessage('已创建离线家访，不可重复创建')
         openErrorMessage()
         return false;
