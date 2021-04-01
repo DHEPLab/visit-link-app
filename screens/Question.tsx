@@ -135,7 +135,6 @@ const QuestionTitle = styled.Text`
   width: 512px;
   height: 24px;
   font-size: 12px;
-  font-family: Helvetica;
   color: #525252;
   line-height: 32px;
 `

@@ -42,9 +42,9 @@ export default function Home({ navigation }) {
     try {
       Storage.setNextVisit(await Http.get('/api/visits/next'));
     } catch (e) {
-      if (e.status === 404) {
-        Storage.setNextVisit({});
-      }
+      Storage.setNextVisit({});
+      // never going to get 404
+      // if (e.status === 404) {}
     }
     reloadVisit();
     !silent && endRefresh();
