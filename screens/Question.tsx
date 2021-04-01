@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Formik } from 'formik';
 import { styled } from '../utils/styled';
 import FormItem from '../components/elements/FormItem';
+import Message from '../components/elements/Message';
+import { useBoolState } from '../utils';
 import InputFormItem from '../components/elements/InputFormItem';
 import { Colors } from '../constants';
 import { Button, Input } from '../components';
@@ -14,6 +16,8 @@ import storage from '../cache/storage';
 export default function QuestionScreen({ navigation, route }) {
   const { params } = route;
   const {data, lessonId, visitId} = params;
+  const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
+
   function onSubmit(values) {
     const resultList = Object.values(values).map((n, i) => {
       const type = data.questions[i].type
@@ -51,7 +55,7 @@ export default function QuestionScreen({ navigation, route }) {
         validateOnChange={false}
         onSubmit={onSubmit}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit, validateForm, values }) => (
           <StyledScrollView>
             <ModuleCard>
               {data.questions && data.questions.map((question: any, index: number) => 
@@ -78,12 +82,28 @@ export default function QuestionScreen({ navigation, route }) {
               <Button
                 size="large"
                 title="完成"
-                onPress={handleSubmit}
+                onPress={() => {
+                  validateForm(values).then(res => {
+                    if (Object.keys(res).length === 0) {
+                      handleSubmit()
+                    } else {
+                      openErrorMessage()
+                    }
+                  })
+                }}
               />
             </ButtonContainer>
           </StyledScrollView>
         )}
       </Formik>
+      <Message
+        error
+        visible={errorMessageVisble}
+        buttonText="知道了"
+        onButtonPress={closeErrorMessage}
+        title="无法保存问卷"
+        content="有未完成题目，请全部作答"
+      />
     </>
   );
 }
