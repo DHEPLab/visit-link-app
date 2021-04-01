@@ -8,6 +8,9 @@ import Http from '../utils/http';
 import Storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
+import { useBoolState } from '../utils';
+import Message from '../components/elements/Message';
+
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
 import QuestionnaireItem from '../components/QuestionnaireItem'
 
@@ -18,6 +21,7 @@ export default function LessonModules({ navigation, route }) {
   const canFinish = nextModule > lesson.modules?.length - 1;
   const [questionnaire, setQuestionnaire] = useState()
   const { isConnected } = useSelector((state) => state.net);
+  const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
 
   useEffect(() => {
     /*
@@ -40,6 +44,10 @@ export default function LessonModules({ navigation, route }) {
 
   async function finish() {
     const { answers } = await Storage.getAnswers(params?.visitId)
+    if (!answers && questionnaire) {
+      openErrorMessage()
+      return
+    }
     if (!params.preview) {
       if (isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
@@ -105,6 +113,14 @@ export default function LessonModules({ navigation, route }) {
           <Button size="large" title="完成家访" disabled={!canFinish} onPress={finish} />
         </ButtonContainer>
       </StyledScrollView>
+      <Message
+        error
+        visible={errorMessageVisble}
+        buttonText="知道了"
+        onButtonPress={closeErrorMessage}
+        title="无法完成家访"
+        content="问卷未答，请作答"
+      />
     </>
   );
 }
