@@ -57,6 +57,10 @@ export default function VisitScreen({ navigation, route }) {
     return true;
   }
 
+  function cancelVisit () {
+    http.delete(`/api/visits/${visit.id}`).then(navigation.navigate('Baby'))
+  }
+
   return (
     <ScrollView>
       <Container>
@@ -127,6 +131,7 @@ export default function VisitScreen({ navigation, route }) {
             from: 'Visit',
             validate,
           }}
+          cancelVisit={cancelVisit}
         />
       </Container>
     </ScrollView>

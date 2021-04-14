@@ -7,6 +7,7 @@ import Button from './elements/Button';
 import Modal from './elements/Modal';
 import Message from './elements/Message';
 import LargeButtonContainer from './LargeButtonContainer';
+import { styled } from '../utils/styled';
 
 export default function StartLesson({
   disabled,
@@ -18,9 +19,11 @@ export default function StartLesson({
   nextModuleIndex,
   from,
   validate,
+  cancelVisit
 }) {
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
+  const [deleteVisible, openDelete, closeDelete] = useBoolState();
 
   function handleStart() {
     closeStartVisit();
@@ -66,6 +69,19 @@ export default function StartLesson({
         </LargeButtonContainer>
       )}
 
+      {visitId && Visit.statusNotStart(status) && (
+        <ButtonLine>
+          <Button
+            disabled={disabled || Visit.statusDone(status)}
+            size="large"
+            ghost
+            type="primary"
+            title="取消家访"
+            onPress={openDelete}
+          />
+        </ButtonLine>
+      )}
+
       <Message
         error
         visible={errorMessageVisble}
@@ -84,6 +100,24 @@ export default function StartLesson({
         onCancel={closeStartVisit}
         onOk={handleStart}
       />
+
+      <Modal
+        title="删除家访"
+        visible={deleteVisible}
+        contentText="确认要删除此条家访？"
+        okText="删除"
+        cancelText="取消"
+        onCancel={closeDelete}
+        onOk={() => {
+          cancelVisit()
+          closeDelete()
+        }}
+      />
     </>
   );
 }
+
+
+const ButtonLine = styled.View`
+  margin: 0 auto;
+`;

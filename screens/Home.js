@@ -81,6 +81,10 @@ export default function Home({ navigation }) {
     }
   }
 
+  function cancelVisit () {
+    Http.delete(`/api/visits/${visit.id}`).then(refresh(true))
+  }
+
   return (
     <StyledScrollView
       refreshControl={
@@ -158,6 +162,7 @@ export default function Home({ navigation }) {
           lessonId: visit?.lesson?.id,
           from: 'Home',
         }}
+        cancelVisit={cancelVisit}
       />
     </StyledScrollView>
   );
