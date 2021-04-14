@@ -18,6 +18,7 @@ export default function Babies({ navigation }) {
   const [search, setSearch] = useState({
     page: 0,
     size: 10,
+    sort: null
   });
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
@@ -27,6 +28,8 @@ export default function Babies({ navigation }) {
   const [messageVisble, openMessage, closeMessage] = useBoolState();
   const [connect, isConnect, isNotConnect] = useBoolState();
   const [name, setName] = useState();
+  const [sortName, setSortName] = useState();
+  const [sortDate, setSortDate] = useState();
 
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
@@ -101,6 +104,46 @@ export default function Babies({ navigation }) {
     }));
   }
 
+  function searchBySortName () {
+    const nextSort = getNextSort(sortName);
+    setSortName(nextSort)
+    setSortDate(null)
+    searchBySort(`name,${nextSort}`)
+  }
+  
+  function searchBySortDate () {
+    const nextSort = getNextSort(sortDate);
+    setSortDate(nextSort)
+    setSortName(null)
+    searchBySort(`createdAt,${nextSort}`)
+  }
+
+  function searchBySort (sort) {
+    const search = {page: 0, size: 10, sort}
+    setSearch(search)
+    startLoad();
+    http
+      .get('/api/babies', search)
+      .then((data) => {
+        setTotalPages(data.totalPages);
+        setContents(data.content);
+      })
+      .finally(() => {
+        endLoad();
+      });
+  }
+
+  function getNextSort(sort) {
+    switch (sort) {
+      case 'asc':
+        return 'desc';
+      case 'desc':
+        return null;
+      default:
+        return 'asc';
+    }
+  }
+
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -137,6 +180,12 @@ export default function Babies({ navigation }) {
         <ListHeader>
           <TitleContainer>
             <Title>宝宝列表</Title>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
+              <SortLine>排序方式：&nbsp;&nbsp;
+                <SortField sortType={sortName} onPress={searchBySortName} > 姓名 {sortName === 'asc' ? '↑': sortName === 'desc'? '↓': '⇅'}</SortField>&nbsp;&nbsp;&nbsp;&nbsp;
+                <SortField sortType={sortDate} onPress={searchBySortDate} > 创建时间  {sortDate === 'asc' ? '↑': sortDate === 'desc'? '↓': '⇅'}</SortField>
+              </SortLine>
+            </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
               <TooltipContainer>
                 <Tooltip>请注意</Tooltip>
@@ -232,6 +281,20 @@ const Link = styled.Text`
   font-size: 10px;
   color: #1717F3;
   margin-right: 2px;
+`;
+
+const SortLine = styled.Text`
+  font-size: 10px;
+  margin-right: 2px;
+  margin-top: 3px;
+`;
+
+const SortField = styled.Text`
+  font-size: 11px;
+  font-weight: 400;
+  color: #A4A4A4;
+  ${({ sortType }) =>
+    sortType && `color: #FF794F;`}
 `;
 
 const Tooltip = styled.Text`
