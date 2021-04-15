@@ -105,6 +105,7 @@ export default function Babies({ navigation }) {
   }
 
   function searchBySortName () {
+    if (!connect) return;
     const nextSort = getNextSort(sortName);
     setSortName(nextSort)
     setSortDate(null)
@@ -112,6 +113,7 @@ export default function Babies({ navigation }) {
   }
   
   function searchBySortDate () {
+    if (!connect) return;
     const nextSort = getNextSort(sortDate);
     setSortDate(nextSort)
     setSortName(null)
@@ -180,12 +182,12 @@ export default function Babies({ navigation }) {
         <ListHeader>
           <TitleContainer>
             <Title>宝宝列表</Title>
-            <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
+            {connect && <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
               <SortLine>排序方式：&nbsp;&nbsp;
                 <SortField sortType={sortName} onPress={searchBySortName} > 姓名 {sortName === 'asc' ? '↑': sortName === 'desc'? '↓': '⇅'}</SortField>&nbsp;&nbsp;&nbsp;&nbsp;
                 <SortField sortType={sortDate} onPress={searchBySortDate} > 创建时间  {sortDate === 'asc' ? '↑': sortDate === 'desc'? '↓': '⇅'}</SortField>
               </SortLine>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
               <TooltipContainer>
                 <Tooltip>请注意</Tooltip>
@@ -287,6 +289,7 @@ const SortLine = styled.Text`
   font-size: 10px;
   margin-right: 2px;
   margin-top: 3px;
+  margin-bottom: 3px;
 `;
 
 const SortField = styled.Text`

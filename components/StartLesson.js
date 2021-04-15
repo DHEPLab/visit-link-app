@@ -8,6 +8,7 @@ import Modal from './elements/Modal';
 import Message from './elements/Message';
 import LargeButtonContainer from './LargeButtonContainer';
 import { styled } from '../utils/styled';
+import { useSelector } from 'react-redux';
 
 export default function StartLesson({
   disabled,
@@ -24,6 +25,7 @@ export default function StartLesson({
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
   const [deleteVisible, openDelete, closeDelete] = useBoolState();
+  const { isConnected } = useSelector((state) => state.net);
 
   function handleStart() {
     closeStartVisit();
@@ -69,7 +71,7 @@ export default function StartLesson({
         </LargeButtonContainer>
       )}
 
-      {visitId && Visit.statusNotStart(status) && (
+      {visitId && isConnected && Visit.statusNotStart(status) && (
         <ButtonLine>
           <Button
             disabled={disabled || Visit.statusDone(status)}
