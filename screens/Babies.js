@@ -17,8 +17,7 @@ export default function Babies({ navigation }) {
   const { navigate } = navigation;
   const [search, setSearch] = useState({
     page: 0,
-    size: 10,
-    sort: null
+    size: 10
   });
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
@@ -109,7 +108,7 @@ export default function Babies({ navigation }) {
     const nextSort = getNextSort(sortName);
     setSortName(nextSort)
     setSortDate(null)
-    searchBySort(`name,${nextSort}`)
+    searchBySort(nextSort ? `name,${nextSort}`: nextSort)
   }
   
   function searchBySortDate () {
@@ -117,11 +116,12 @@ export default function Babies({ navigation }) {
     const nextSort = getNextSort(sortDate);
     setSortDate(nextSort)
     setSortName(null)
-    searchBySort(`createdAt,${nextSort}`)
+    searchBySort(nextSort ? `createdAt,${nextSort}` : nextSort)
   }
 
   function searchBySort (sort) {
-    const search = {page: 0, size: 10, sort}
+    const search = {page: 0, size: 10}
+    if (sort) Object.assign(search, {sort: sort})
     setSearch(search)
     startLoad();
     http
