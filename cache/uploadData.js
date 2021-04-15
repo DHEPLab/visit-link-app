@@ -25,7 +25,11 @@ export function uploadOfflineVisits () {
             clearVisitsStorage(offlineVisits)
           }
         })
-        .catch(_ => {})
+        .catch(_ => {
+          if (index === (offlineVisits.length-1)) {
+            clearVisitsStorage(offlineVisits)
+          }
+        })
         .finally(() => {})
       })
     })
