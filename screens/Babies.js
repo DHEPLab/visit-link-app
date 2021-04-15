@@ -188,12 +188,14 @@ export default function Babies({ navigation }) {
                 <SortField sortType={sortDate} onPress={searchBySortDate} > 创建时间  {sortDate === 'asc' ? '↑': sortDate === 'desc'? '↓': '⇅'}</SortField>
               </SortLine>
             </TouchableOpacity>}
-            <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
-              <TooltipContainer>
-                <Tooltip>请注意</Tooltip>
-                <AntDesign name="infocirlceo" size={px2dp(8)} color="#ff794f" />
-              </TooltipContainer>
-            </TouchableOpacity>
+            <InfoLine>
+              <TouchableOpacity activeOpacity={0.8} onPress={openTooltip}>
+                <TooltipContainer>
+                  <Tooltip>请注意</Tooltip>
+                  <AntDesign name="infocirlceo" size={px2dp(8)} color="#ff794f" />
+                </TooltipContainer>
+              </TouchableOpacity>
+            </InfoLine>
           </TitleContainer>
           <Button onPress={() => navigate('CreateBabyStep1')} title="添加宝宝" />
         </ListHeader>
@@ -329,3 +331,7 @@ const Search = styled.View`
   border-radius: 12px;
   padding-left: 12px;
 `;
+
+const InfoLine = styled.View`
+  width: 50px;
+`
