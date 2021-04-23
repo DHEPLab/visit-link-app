@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useBoolState } from '../utils';
+import { ToastAndroid } from 'react-native';
 
 import Visit from '../utils/visit';
 import Button from './elements/Button';
 import Modal from './elements/Modal';
 import Message from './elements/Message';
+import Input from './elements/Input';
 import LargeButtonContainer from './LargeButtonContainer';
 import { styled } from '../utils/styled';
 import { useSelector } from 'react-redux';
@@ -26,6 +28,7 @@ export default function StartLesson({
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
   const [deleteVisible, openDelete, closeDelete] = useBoolState();
   const { isConnected } = useSelector((state) => state.net);
+  const [deleteremark, setDeleteRemark] = useState();
 
   function handleStart() {
     closeStartVisit();
@@ -79,7 +82,10 @@ export default function StartLesson({
             ghost
             type="primary"
             title="取消家访"
-            onPress={openDelete}
+            onPress={() => {
+              openDelete()
+              setDeleteRemark('')
+            }}
           />
         </ButtonLine>
       )}
@@ -104,15 +110,19 @@ export default function StartLesson({
       />
 
       <Modal
-        title="删除家访"
+        title="删除家访原因"
         visible={deleteVisible}
-        contentText="确认要删除此条家访？"
+        content={<Input value={deleteremark} onChangeText={setDeleteRemark} border placeholder="请输入" />}
         okText="删除"
         cancelText="取消"
         onCancel={closeDelete}
         onOk={() => {
-          cancelVisit()
-          closeDelete()
+          if (deleteremark) {
+            cancelVisit(deleteremark)
+            closeDelete()
+          } else {
+            ToastAndroid.show("请填写取消家访原因", ToastAndroid.LONG);
+          }
         }}
       />
     </>

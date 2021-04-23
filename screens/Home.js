@@ -81,8 +81,11 @@ export default function Home({ navigation }) {
     }
   }
 
-  function cancelVisit () {
-    Http.delete(`/api/visits/${visit.id}`).then(refresh(true))
+  async function cancelVisit (deleteReason) {
+    await Http.delete(`/api/visits/${visit.id}?deleteReason=${deleteReason}`)
+    setTimeout(() => {
+      refresh(true)
+    }, 1)
   }
 
   return (
