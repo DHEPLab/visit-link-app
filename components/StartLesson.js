@@ -110,11 +110,11 @@ export default function StartLesson({
       />
 
       <Modal
-        title="删除家访原因"
+        title="取消家访原因"
         visible={deleteVisible}
         content={<Input value={deleteremark} onChangeText={setDeleteRemark} border placeholder="请输入" />}
-        okText="删除"
-        cancelText="取消"
+        okText="取消家访"
+        cancelText="再想想"
         onCancel={closeDelete}
         onOk={() => {
           if (deleteremark) {
