@@ -43,11 +43,12 @@ export default function LessonModules({ navigation, route }) {
   }
 
   async function finish() {
-    const { answers } = await Storage.getAnswers(params?.visitId)
-    if (!answers && questionnaire) {
+    const answersData = await Storage.getAnswers(params?.visitId)
+    if (!answersData && questionnaire) {
       openErrorMessage()
       return
     }
+    const answers = answersData.answers;
     if (!params.preview) {
       if (isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
@@ -106,7 +107,7 @@ export default function LessonModules({ navigation, route }) {
         ))}
         {questionnaire && <QuestionnaireItem
             name={questionnaire.name}
-            disabled={!params.preview && lesson.modules.length !== nextModule}
+            disabled={!params.preview && lesson.modules.length > nextModule}
             onPress={() => toQuestion()}
           />}
         <ButtonContainer>
