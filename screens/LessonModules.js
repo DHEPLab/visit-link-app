@@ -48,7 +48,7 @@ export default function LessonModules({ navigation, route }) {
       openErrorMessage()
       return
     }
-    const answers = answersData.answers;
+    const answers = answersData?.answers;
     if (!params.preview) {
       if (isConnected) {
         const uncommitted = await Storage.getUncommittedVisitStatus();
