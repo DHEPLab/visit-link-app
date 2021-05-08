@@ -33,8 +33,11 @@ export default function Babies({ navigation }) {
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
   useEffect(() => {
-    // fix repeat load when first load
     if (search.name == null) return;
+    refreshBabies()
+  }, [search]);
+
+  function refreshBabies() {
     if (!connect) return;
     if (search.page === 0) {
       startRefresh();
@@ -53,7 +56,7 @@ export default function Babies({ navigation }) {
         endRefresh();
         endLoad();
       });
-  }, [search]);
+  }
 
   function backupBabyAndCaregivers () {
     http
@@ -83,8 +86,9 @@ export default function Babies({ navigation }) {
       setContents([...(offlineBabies || []), ...(data || [])]);
     } else {
       isConnect()
-      uploadOfflineBabies()
       uploadOfflineVisits()
+      await uploadOfflineBabies()
+      refreshBabies()
     }
 
     setSearch((s) => ({
