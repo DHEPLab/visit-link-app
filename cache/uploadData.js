@@ -5,8 +5,12 @@ export async function uploadOfflineBabies () {
   const offlineBabies = await storage.getOfflineBabies() || []
   storage.setOfflineBabies([])
   offlineBabies.forEach(babyInfo => {
-    http.post('/api/babies', {...babyInfo})
+    createBaby(babyInfo)
   });
+}
+
+async function createBaby (babyInfo) {
+  await http.post('/api/babies', {...babyInfo})
 }
 
 export async function uploadOfflineVisits () {
