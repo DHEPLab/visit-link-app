@@ -186,6 +186,7 @@ export default function Baby({ navigation, route }) {
               <Button
                 ghost
                 title="修改资料"
+                disabled={!isConnected}
                 onPress={() => navigation.navigate('EditBaby', { from: 'Baby', baby, id: params.id })}
               />}
           </InfoContainer>
