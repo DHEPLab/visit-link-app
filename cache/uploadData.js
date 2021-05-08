@@ -16,28 +16,18 @@ export function uploadOfflineBabies () {
   })
 }
 
-export function uploadOfflineVisits () {
-  storage.getOfflineVisits().then((offlineVisits) => {
-    offlineVisits && offlineVisits.forEach((offlineVisit, index) => {
-      http.post('/api/visits', offlineVisit)
-        .then(() => {
-          if (index === (offlineVisits.length-1)) {
-            clearVisitsStorage(offlineVisits)
-          }
-        })
-        .catch(_ => {
-          if (index === (offlineVisits.length-1)) {
-            clearVisitsStorage(offlineVisits)
-          }
-        })
-        .finally(() => {})
-      })
-    })
-  }
+export async function uploadOfflineVisits () {
+  const offlineVisits = await storage.getOfflineVisits() || []
+  clearVisitsStorage()
+  offlineVisits.forEach(offlineVisit => {
+    createVisit(offlineVisit)
+  })
+}
 
-  function clearVisitsStorage (list) {
-    list.forEach((offlineVisit) => {
-      storage.addOfflineVisit(offlineVisit.babyId, {})
-    })
+async function createVisit (offlineVisit) {
+  await http.post('/api/visits', offlineVisit)
+}
+
+  function clearVisitsStorage () {
     storage.setOfflineVisits([])
   }

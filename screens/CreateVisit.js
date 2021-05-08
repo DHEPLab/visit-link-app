@@ -64,8 +64,7 @@ export default function CreateVisit({ navigation, route }) {
       lessonName: lesson.name
     }
     const oldVisits = await storage.getOfflineVisits();
-    storage.setOfflineVisits([...(oldVisits || []), visit])
-    storage.addOfflineVisit(baby.id, visit).then(navigation.goBack);
+    storage.setOfflineVisits([...(oldVisits || []), visit]).then(navigation.goBack);
   }
 
   async function renderDateRange () {

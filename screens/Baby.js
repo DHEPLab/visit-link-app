@@ -75,7 +75,8 @@ export default function Baby({ navigation, route }) {
 
   async function loadOfflineVisit () {
     if (params?.id) {
-      const data = await storage.getOfflineVisit(params?.id)
+      const visits = await storage.getOfflineVisits() || []
+      const data = visits.find(n => n.babyId === params?.id)
       setOfflineVisit(data)
     }
   }
