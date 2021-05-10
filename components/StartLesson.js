@@ -77,7 +77,6 @@ export default function StartLesson({
       {visitId && isConnected && Visit.statusNotStart(status) && (
         <ButtonLine>
           <Button
-            disabled={disabled}
             size="large"
             ghost
             type="primary"
