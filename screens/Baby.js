@@ -83,6 +83,11 @@ export default function Baby({ navigation, route }) {
 
   function handleCreateVisit() {
     if (isConnected) {
+      if (offlineVisit?.babyId) {
+        setErrorMessage('已创建离线家访，不可重复创建')
+        openErrorMessage()
+        return false;
+      }
       http
         .silenceGet(`/api/babies/${baby.id}/lesson`)
         .then((_) =>
