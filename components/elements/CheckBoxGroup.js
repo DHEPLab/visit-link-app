@@ -39,7 +39,7 @@ export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
                     : require('../../assets/images/checkbox-uncheck.png')
                 }
               />
-              <Label>{option.label}</Label>
+              <Label>{option.label.trim()}</Label>
             </Line>
             {option.needEnter && <StyledTextInput
               placeholder="请输入内容"

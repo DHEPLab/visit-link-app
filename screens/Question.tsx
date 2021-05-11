@@ -60,7 +60,7 @@ export default function QuestionScreen({ navigation, route }) {
             <ModuleCard>
               {data.questions && data.questions.map((question: any, index: number) => 
                 <View key={index}>
-                  <QuestionTitle><QuestionType>（{QuestionTypeEnum[question.type]}）</QuestionType>{`${index+1}.${question?.value?.title}`}</QuestionTitle>
+                  <QuestionTitle><QuestionType>（{QuestionTypeEnum[question.type]}）</QuestionType>{`${index+1}.${question?.value?.title.trim()}`}</QuestionTitle>
                   {question.type === 'Text' ? <QuestionInputCard>
                       <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
                         <Input placeholder="请输入内容" />

@@ -24,7 +24,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
           >
             <Line>
               <Box checked={option.label === value?.check}>{option.label === value?.check && <Checked />}</Box>
-              <Label>{option.label}</Label>
+              <Label>{option.label.trim()}</Label>
             </Line>
             {option.needEnter && <StyledTextInput
               placeholder="请输入内容"
