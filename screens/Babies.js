@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, TextInput, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
-import NetInfo from '@react-native-community/netinfo';
 import storage from '../cache/storage';
 import { uploadOfflineBabies, uploadOfflineVisits } from '../cache/uploadData'
 
@@ -12,6 +11,7 @@ import { Colors } from '../constants';
 import { BabyItem, NoData, Button, ListFooter, Message, Modal } from '../components';
 import { useBoolState } from '../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
 export default function Babies({ navigation }) {
   const { navigate } = navigation;
@@ -25,7 +25,7 @@ export default function Babies({ navigation }) {
   const [tooltip, openTooltip, closeTooltip] = useBoolState();
   const [loading, startLoad, endLoad] = useBoolState();
   const [messageVisble, openMessage, closeMessage] = useBoolState();
-  const [connect, isConnect, isNotConnect] = useBoolState();
+  const { isConnected } = useSelector((state) => state.net);
   const [name, setName] = useState();
   const [sortName, setSortName] = useState();
   const [sortDate, setSortDate] = useState();
@@ -33,30 +33,40 @@ export default function Babies({ navigation }) {
   useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
 
   useEffect(() => {
-    if (search.name == null) return;
-    refreshBabies()
-  }, [search]);
+    async function load() {
+      // fix repeat load when first load
+      if (search.name == null) return;
+      if (isConnected) {
+        if (search.page === 0) {
+          startRefresh();
+          setContents([]);
+          uploadOfflineVisits()
+          await uploadOfflineBabies()
+        } else {
+          startLoad();
+        }
 
-  function refreshBabies() {
-    if (!connect) return;
-    if (search.page === 0) {
-      startRefresh();
-      setContents([]);
-    } else {
-      startLoad();
-    }
-
-    http
-      .get('/api/babies', search)
-      .then((data) => {
-        setTotalPages(data.totalPages);
-        setContents((c) => [...c, ...data.content]);
-      })
-      .finally(() => {
-        endRefresh();
-        endLoad();
-      });
-  }
+        http
+          .get('/api/babies', search)
+          .then((data) => {
+            setTotalPages(data.totalPages);
+            setContents((c) => [...c, ...data.content]);
+          })
+          .finally(() => {
+            endRefresh();
+            endLoad();
+          });
+      } else {
+        // load offline data
+        const data = await storage.getBabies()
+        // load offline create babies
+        const offlineBabies = await storage.getOfflineBabies()
+        setTotalPages(1);
+        setContents([...(offlineBabies || []), ...(data || [])]);
+      }
+    } 
+    load();
+  }, [search, isConnected]);
 
   function backupBabyAndCaregivers () {
     http
@@ -76,25 +86,13 @@ export default function Babies({ navigation }) {
 
   async function refresh() {
     if (refreshing) return;
-
-    const { isConnected } = await NetInfo.fetch()
-    if (!isConnected) {
-      isNotConnect()
-      const data = await storage.getBabies()
-      const offlineBabies = await storage.getOfflineBabies()
-      setTotalPages(((data || []).length) + (offlineBabies || []).length);
-      setContents([...(offlineBabies || []), ...(data || [])]);
-    } else {
-      isConnect()
-      uploadOfflineVisits()
-      await uploadOfflineBabies()
-      refreshBabies()
-    }
-
+    setSortDate(undefined)
+    setSortName(undefined)
     setSearch((s) => ({
       ...s,
       page: 0,
       name: name || '',
+      sort: undefined
     }));
   }
 
@@ -108,35 +106,25 @@ export default function Babies({ navigation }) {
   }
 
   function searchBySortName () {
-    if (!connect) return;
     const nextSort = getNextSort(sortName);
     setSortName(nextSort)
-    setSortDate(null)
-    searchBySort(nextSort ? `name,${nextSort}`: nextSort)
+    setSortDate(undefined)
+    setSearch((s) => ({
+      ...s,
+      page: 0,
+      sort: nextSort && `name,${nextSort}`
+    }));
   }
-  
+ 
   function searchBySortDate () {
-    if (!connect) return;
     const nextSort = getNextSort(sortDate);
     setSortDate(nextSort)
-    setSortName(null)
-    searchBySort(nextSort ? `createdAt,${nextSort}` : nextSort)
-  }
-
-  function searchBySort (sort) {
-    const search = {page: 0, size: 10}
-    if (sort) Object.assign(search, {sort: sort})
-    setSearch(search)
-    startLoad();
-    http
-      .get('/api/babies', search)
-      .then((data) => {
-        setTotalPages(data.totalPages);
-        setContents(data.content);
-      })
-      .finally(() => {
-        endLoad();
-      });
+    setSortName(undefined)
+    setSearch((s) => ({
+      ...s,
+      page: 0,
+      sort: nextSort && `createdAt,${nextSort}`
+    }));
   }
 
   function getNextSort(sort) {
@@ -144,7 +132,7 @@ export default function Babies({ navigation }) {
       case 'asc':
         return 'desc';
       case 'desc':
-        return null;
+        return undefined;
       default:
         return 'asc';
     }
@@ -172,7 +160,7 @@ export default function Babies({ navigation }) {
         content=" "
       />
 
-      {connect?
+      {isConnected ?
         <BackupLine>
           <TouchableOpacity activeOpacity={0.8} onPress={backupBabyAndCaregivers}>
             <PromptWord>请及时备份宝宝数据到本地，以便离线时正常使用, <Link>点此一键备份</Link></PromptWord>
@@ -186,7 +174,7 @@ export default function Babies({ navigation }) {
         <ListHeader>
           <TitleContainer>
             <Title>宝宝列表</Title>
-            {connect && <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
+            {isConnected && <TouchableOpacity activeOpacity={0.8} onPress={() => {}}>
               <SortLine>排序方式：&nbsp;&nbsp;
                 <SortField sortType={sortName} onPress={searchBySortName} > 姓名 {sortName === 'asc' ? '↑': sortName === 'desc'? '↓': '⇅'}</SortField>&nbsp;&nbsp;&nbsp;&nbsp;
                 <SortField sortType={sortDate} onPress={searchBySortDate} > 创建时间  {sortDate === 'asc' ? '↑': sortDate === 'desc'? '↓': '⇅'}</SortField>
