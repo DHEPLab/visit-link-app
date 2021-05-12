@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function addObject(key, obj) {
   return AsyncStorage.setItem(key, JSON.stringify(obj));
@@ -41,6 +41,10 @@ function getModule(id) {
 
 function getNextShouldVisit(id) {
   return getObject(`NEXT_VISIT_${id}`);
+}
+
+function getOfflineVisit(id) {
+  return getObject(`OFFLINE_VISIT_${id}`);
 }
 
 function getNextVisit() {
@@ -101,6 +105,7 @@ export default {
   addLesson: (lesson) => addObject(`LESSON_${lesson.id}`, lesson),
   addModule: (module) => addObject(`MODULE_${module.id}`, module),
   addNextShouldVisit: (id, visit) => addObject(`NEXT_VISIT_${id}`, visit),
+  addOfflineVisit: (id, visit) => addObject(`OFFLINE_VISIT_${id}`, visit),
   setOfflineVisits: (visits) => addObject('OFFLINE_VISITS', visits),
   setBabies: (babies) => addObject('BABIES', babies),
   setOfflineBabies: (babies) => addObject('OFFLINEBABIES', babies),
@@ -126,6 +131,7 @@ export default {
   getLesson,
   getModule,
   getNextShouldVisit,
+  getOfflineVisit,
   getOfflineVisits,
   getNextVisit,
   getBabies,
@@ -137,6 +143,7 @@ export default {
   useLesson: (id) => use(getLesson, id),
   useModule: (id) => use(getModule, id),
   useNextShouldVisit: (id) => use(getNextShouldVisit, id),
+  useOfflineVisit: (id) => use(getOfflineVisit, id),
   useNextVisit: () => use(getNextVisit),
   useBabies: () => use(getBabies),
   useOfflineVisits: () => use(getOfflineVisits),
