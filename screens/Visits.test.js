@@ -1,9 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import { render, fireEvent } from 'react-native-testing-library';
+import { Provider } from 'react-redux';
+import rootReducer from '../reducers';
 
 import Visits from './Visits';
+import { createStore } from 'redux';
 
+const store = createStore(rootReducer);
 const createTestProps = () => ({
   navigation: {
     addListener: jest.fn(),
@@ -16,7 +20,10 @@ describe('<Visits />', () => {
   let props;
   beforeEach(() => {
     props = createTestProps();
-    wrapper = render(<Visits {...props} />);
+    wrapper = render(
+      <Provider store={store}>
+        <Visits {...props} />
+      </Provider>);
   });
 
   it('should create visit use current selected date', () => {
