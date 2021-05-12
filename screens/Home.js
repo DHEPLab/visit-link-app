@@ -56,13 +56,16 @@ export default function Home({ navigation }) {
     const nextModuleIndex = await Storage.getNextModule();
     const id = Object.keys(uncommitted || {})[0];
     if (id) {
+      const answersData = await Storage.getAnswers(id)
       return Http.silencePut(`/api/visits/${id}/status`, {
         visitStatus: uncommitted[id].status,
         startTime: uncommitted[id].startTime,
         nextModuleIndex,
+        questionnaireRecords: answersData?.answers
       }).then((_) => {
         Storage.setNextVisit({});
         Storage.committedVisitStatus();
+        Storage.setAnswers(id, {});
         Storage.setNextModule(0);
       }).catch(_ => openSubmitErrorMessage());
     }
