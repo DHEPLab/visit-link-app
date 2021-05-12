@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import NetInfo from '@react-native-community/netinfo';
 import { ToastAndroid } from 'react-native';
-// import { SplashScreen } from 'expo';
-import * as SplashScreen from 'expo-splash-screen';
+import { SplashScreen } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { setStatusBarStyle } from 'expo-status-bar';
 import { Asset } from 'expo-asset';
@@ -33,7 +32,7 @@ export default function App(props) {
     setStatusBarStyle('light');
     async function loadResourcesAndDataAsync() {
       try {
-        SplashScreen.preventAutoHideAsync();
+        SplashScreen.preventAutoHide();
 
         const net = await NetInfo.fetch();
 
@@ -61,7 +60,7 @@ export default function App(props) {
         console.warn(e);
       } finally {
         loadingComplete();
-        SplashScreen.hideAsync();
+        SplashScreen.hide();
       }
     }
 
