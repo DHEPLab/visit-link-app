@@ -19,6 +19,8 @@
     "android": {
       "package": "edu.stanford.fsi.reap.app"
     },
-    "releaseChannel": "prod"
+    "extra": {
+      "releaseChannel": "prod"
+    }
   }
 }
