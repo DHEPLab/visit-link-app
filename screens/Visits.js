@@ -4,6 +4,7 @@ import { FlatList, ToastAndroid } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 import Visit from '../utils/visit';
 import Http from '../utils/http';
@@ -20,6 +21,7 @@ export default function Visits({ navigation }) {
   const [showCalendar, setShowCalendar] = useState(false);
   const [selected, setSelected] = useState(Visit.formatDate(moment()));
   const [markedDates, refreshMarkedDates] = useManualFetchArray('/api/visits/marked-dates');
+  const { isConnected } = useSelector((state) => state.net);
 
   useEffect(() => navigation.addListener('focus', () => refreshMarkedDates()), [navigation]);
 
@@ -85,7 +87,7 @@ export default function Visits({ navigation }) {
       <ButtonContainer>
         <Button
           title="新建家访"
-          disabled={Visit.disabledVisitButton(now, selected)}
+          disabled={!isConnected || Visit.disabledVisitButton(now, selected)}
           onPress={() =>
             navigation.navigate('CreateVisit', {
               visitTime: Visit.defaultVisitTime(new Date(), selected),
