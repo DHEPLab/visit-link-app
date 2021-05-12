@@ -8,12 +8,12 @@
 
 ## 本地开发
 
-NodeJS 版本 v12 LTS
+NodeJS 版本 v12 LTS, Expo SDK 38
 
 [准备 Android 模拟器](https://docs.expo.io/workflow/android-studio-emulator/)
 
 ```
-$ yarn global add expo-cli
+$ yarn global add expo-cli@3.23.1
 $ yarn
 $ yarn start
 ```
