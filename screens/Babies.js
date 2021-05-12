@@ -86,13 +86,13 @@ export default function Babies({ navigation }) {
 
   async function refresh() {
     if (refreshing) return;
-    setSortDate(undefined)
-    setSortName(undefined)
+    setSortDate('')
+    setSortName('')
     setSearch((s) => ({
       ...s,
       page: 0,
       name: name || '',
-      sort: undefined
+      sort: ''
     }));
   }
 
@@ -108,7 +108,7 @@ export default function Babies({ navigation }) {
   function searchBySortName () {
     const nextSort = getNextSort(sortName);
     setSortName(nextSort)
-    setSortDate(undefined)
+    setSortDate('')
     setSearch((s) => ({
       ...s,
       page: 0,
@@ -119,7 +119,7 @@ export default function Babies({ navigation }) {
   function searchBySortDate () {
     const nextSort = getNextSort(sortDate);
     setSortDate(nextSort)
-    setSortName(undefined)
+    setSortName('')
     setSearch((s) => ({
       ...s,
       page: 0,
@@ -132,7 +132,7 @@ export default function Babies({ navigation }) {
       case 'asc':
         return 'desc';
       case 'desc':
-        return undefined;
+        return '';
       default:
         return 'asc';
     }
