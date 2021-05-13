@@ -19,18 +19,17 @@ export default function QuestionScreen({ navigation, route }) {
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
 
   function onSubmit(values) {
-    const resultList = Object.values(values).map((n, i) => {
+    const resultList = Object.values(values).map((answer: any, i) => {
       const type = data.questions[i].type
-      if(type ==='Radio') {
-        const check = Object.values(n)[0]
-        return {titleNo: (i + 1), name: Object.keys(n)[0], answer: check?.check + (check?.input ? ',' + check?.input : '') || ''}
-      } else if(type === 'Checkbox') {
-        const checkArray = Object.values(n)[0]
-        const res = checkArray.map(e => e?.check + (e.input ? ',' + e.input : '')).join('/n')
-        return {titleNo: (i + 1), name: Object.keys(n)[0], answer: res}
+      const result: any = {titleNo: (i + 1), name: data.questions[i].value?.title.trim()};
+      if (type === 'Radio') {
+        result.answer = answer?.check + (answer?.input ? ',' + answer?.input : '') || ''
+      } else if (type === 'Checkbox') {
+        result.answer = answer.map(e => e?.check + (e.input ? ',' + e.input : '')).join('/n')
       } else {
-        return {titleNo: (i + 1), name: Object.keys(n)[0], answer: Object.values(n)[0]}
+        result.answer = answer;
       }
+      return result;
     })
     storage.setAnswers(visitId, {lessonId: lessonId, answers: resultList});
     navigation.navigate('LessonModules', {});
@@ -62,12 +61,12 @@ export default function QuestionScreen({ navigation, route }) {
                 <View key={index}>
                   <QuestionTitle><QuestionType>（{QuestionTypeEnum[question.type]}）</QuestionType>{`${index+1}.${question?.value?.title.trim()}`}</QuestionTitle>
                   {question.type === 'Text' ? <QuestionInputCard>
-                      <InputFormItem name={`${index+1}.${question?.value?.title}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
+                      <InputFormItem name={`${index+1}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
                         <Input placeholder="请输入内容" />
                       </InputFormItem>
                     </QuestionInputCard>:
                     <QuestionRadioCard>
-                      <FormItem name={`${index+1}.${question?.value?.title}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
+                      <FormItem name={`${index+1}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
                       {question.type === 'Radio' ?
                             <RadioGroup options={question?.value?.options} />:
                             <CheckBoxGroup options={question?.value?.options} />
@@ -89,6 +88,9 @@ export default function QuestionScreen({ navigation, route }) {
                     } else {
                       openErrorMessage()
                     }
+                  }).catch(e => {
+                    console.error(e) 
+                    openErrorMessage()
                   })
                 }}
               />
@@ -152,11 +154,10 @@ const Header = styled(LinearGradient)`
 `;
 
 const QuestionTitle = styled.Text`
-  width: 512px;
-  height: 24px;
+  min-height: 24px;
   font-size: 12px;
   color: #525252;
-  line-height: 32px;
+  line-height: 20px;
 `
 
 const QuestionRadioCard = styled.View`

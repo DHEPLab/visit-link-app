@@ -7,7 +7,7 @@ import { TextInput } from 'react-native';
 export default function CheckBoxGroup({ value = [], onChange, options = [] }) {
 
   function checkChange (label, input, from) {
-    const resultArray = value
+    const resultArray = [...value]
     const before = value.findIndex(n => label === n?.check)
     if (before === -1) {
       resultArray.push({check: label, input: input})
