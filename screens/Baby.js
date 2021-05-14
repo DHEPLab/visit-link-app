@@ -48,9 +48,7 @@ export default function Baby({ navigation, route }) {
     () =>
       navigation.addListener('focus', () => {
         refreshBabyVisits();
-        if (!isConnected) {
-          loadOfflineVisit()
-        }
+        loadOfflineVisit()
       }),
     [navigation]
   );
