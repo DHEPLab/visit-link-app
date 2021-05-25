@@ -31,10 +31,11 @@ function defaultStartingRange() {
 
 function meridiem(momentInstance) {
   const format = 'HH:mm'
-  const morning = moment(moment('9:00',format)).diff(moment(momentInstance), 'minutes' )
-  const aftermorning = moment(moment('11:30',format)).diff(moment(momentInstance), 'minutes' )
-  const noon = moment(moment('13:30',format)).diff(moment(momentInstance), 'minutes' )
-  const afternoon = moment(moment('18:00',format)).diff(moment(momentInstance), 'minutes' )
+  const momentTime = moment().set({'hour': momentInstance.hour(), 'minute': momentInstance.minute()});
+  const morning = moment(moment('9:00',format)).diff(moment(momentTime), 'minutes' )
+  const aftermorning = moment(moment('11:30',format)).diff(moment(momentTime), 'minutes' )
+  const noon = moment(moment('13:30',format)).diff(moment(momentTime), 'minutes' )
+  const afternoon = moment(moment('18:00',format)).diff(moment(momentTime), 'minutes' )
   if (morning > 0) {
     return '早上';
   } else if (aftermorning > 0) {
