@@ -30,15 +30,18 @@ function defaultStartingRange() {
 }
 
 function meridiem(momentInstance) {
-  const hour = momentInstance.hour();
-  const minute = momentInstance.minute();
-  if (hour < 9) {
+  const format = 'HH:mm'
+  const morning = moment(moment('9:00',format)).diff(moment(momentInstance), 'minutes' )
+  const aftermorning = moment(moment('11:30',format)).diff(moment(momentInstance), 'minutes' )
+  const noon = moment(moment('13:30',format)).diff(moment(momentInstance), 'minutes' )
+  const afternoon = moment(moment('18:00',format)).diff(moment(momentInstance), 'minutes' )
+  if (morning > 0) {
     return '早上';
-  } else if (hour < 11 && minute < 30) {
+  } else if (aftermorning > 0) {
     return '上午';
-  } else if (hour < 13 && minute < 30) {
+  } else if (noon > 0) {
     return '中午';
-  } else if (hour < 18) {
+  } else if (afternoon > 0) {
     return '下午';
   } else {
     return '晚上';
