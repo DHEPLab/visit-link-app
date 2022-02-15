@@ -122,3 +122,18 @@ export default {
     return Math.abs(diff) <= 60
   }
 };
+
+export function uploadVisitLocation(babyId) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { longitude, latitude } = position.coords;
+        Http.post('/api/visits/upload/location', {
+          babyId, longitude, latitude
+        })
+      },
+      _ => { },
+      { timeout: 10000 }
+    );
+  }
+}

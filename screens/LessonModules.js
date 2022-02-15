@@ -13,10 +13,13 @@ import Message from '../components/elements/Message';
 
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
 import QuestionnaireItem from '../components/QuestionnaireItem'
+import { uploadVisitLocation } from '../utils/visit';
 
 export default function LessonModules({ navigation, route }) {
   const { params } = route;
   const [lesson] = Storage.useLesson(params?.id);
+  const [visit] = useManualFetch(`/api/visits/${params.id}`);
+  const { baby } = visit;
   const [nextModule, reloadNextModule] = Storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
   const [questionnaire, setQuestionnaire] = useState()
@@ -35,6 +38,10 @@ export default function LessonModules({ navigation, route }) {
   }, [route.params?.originModuleId]);
 
   useEffect(() => {
+    uploadVisitLocation(baby.id);
+  }, [])
+
+  useEffect(() => {
     queryQuestionnaire()
   }, [lesson]);
 
@@ -48,6 +55,7 @@ export default function LessonModules({ navigation, route }) {
       openErrorMessage()
       return
     }
+    uploadVisitLocation(baby.id);
     const answers = answersData?.answers;
     if (!params.preview) {
       if (isConnected) {
@@ -106,10 +114,10 @@ export default function LessonModules({ navigation, route }) {
           />
         ))}
         {questionnaire && <QuestionnaireItem
-            name={questionnaire.name}
-            disabled={!params.preview && lesson.modules.length > nextModule}
-            onPress={() => toQuestion()}
-          />}
+          name={questionnaire.name}
+          disabled={!params.preview && lesson.modules.length > nextModule}
+          onPress={() => toQuestion()}
+        />}
         <ButtonContainer>
           <Button size="large" title="完成家访" disabled={!canFinish} onPress={finish} />
         </ButtonContainer>
