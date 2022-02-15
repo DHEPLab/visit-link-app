@@ -18,7 +18,7 @@ import { uploadVisitLocation } from '../utils/visit';
 export default function LessonModules({ navigation, route }) {
   const { params } = route;
   const [lesson] = Storage.useLesson(params?.id);
-  const [visit] = useManualFetch(`/api/visits/${params.id}`);
+  const [visit] = useManualFetch(`/api/visits/${params.visitId}`);
   const { baby } = visit;
   const [nextModule, reloadNextModule] = Storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
@@ -39,7 +39,7 @@ export default function LessonModules({ navigation, route }) {
 
   useEffect(() => {
     uploadVisitLocation(baby.id);
-  }, [])
+  }, [baby])
 
   useEffect(() => {
     queryQuestionnaire()
