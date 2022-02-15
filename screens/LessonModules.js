@@ -8,7 +8,7 @@ import Http from '../utils/http';
 import Storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
-import { useBoolState, useManualFetch } from '../utils';
+import { useBoolState } from '../utils';
 import Message from '../components/elements/Message';
 
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
@@ -18,8 +18,7 @@ import { uploadVisitLocation } from '../utils/visit';
 export default function LessonModules({ navigation, route }) {
   const { params } = route;
   const [lesson] = Storage.useLesson(params?.id);
-  const [visit] = useManualFetch(`/api/visits/${params.visitId}`);
-  const { baby } = visit;
+  const [babyId, setBabyId] = useState()
   const [nextModule, reloadNextModule] = Storage.useNextModule();
   const canFinish = nextModule > lesson.modules?.length - 1;
   const [questionnaire, setQuestionnaire] = useState()
@@ -38,8 +37,11 @@ export default function LessonModules({ navigation, route }) {
   }, [route.params?.originModuleId]);
 
   useEffect(() => {
-    uploadVisitLocation(baby.id);
-  }, [baby])
+    Http.get(`/api/visits/${params.visitId}`).then(({ baby })=> {
+      setBabyId(baby.id)
+      uploadVisitLocation(baby.id);
+    })
+  }, [params])
 
   useEffect(() => {
     queryQuestionnaire()
@@ -55,7 +57,7 @@ export default function LessonModules({ navigation, route }) {
       openErrorMessage()
       return
     }
-    uploadVisitLocation(baby.id);
+    uploadVisitLocation(babyId);
     const answers = answersData?.answers;
     if (!params.preview) {
       if (isConnected) {
