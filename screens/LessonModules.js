@@ -8,7 +8,7 @@ import Http from '../utils/http';
 import Storage from '../cache/storage';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
-import { useBoolState } from '../utils';
+import { useBoolState, useManualFetch } from '../utils';
 import Message from '../components/elements/Message';
 
 import { GhostNavigatorHeader, BottomRightBackground, Button, ModuleItem } from '../components';
