@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Http from './http';
 
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
@@ -31,11 +32,11 @@ function defaultStartingRange() {
 
 function meridiem(momentInstance) {
   const format = 'HH:mm'
-  const momentTime = moment().set({'hour': momentInstance.hour(), 'minute': momentInstance.minute()});
-  const morning = moment(moment('9:00',format)).diff(moment(momentTime), 'minutes' )
-  const aftermorning = moment(moment('11:30',format)).diff(moment(momentTime), 'minutes' )
-  const noon = moment(moment('13:30',format)).diff(moment(momentTime), 'minutes' )
-  const afternoon = moment(moment('18:00',format)).diff(moment(momentTime), 'minutes' )
+  const momentTime = moment().set({ 'hour': momentInstance.hour(), 'minute': momentInstance.minute() });
+  const morning = moment(moment('9:00', format)).diff(moment(momentTime), 'minutes')
+  const aftermorning = moment(moment('11:30', format)).diff(moment(momentTime), 'minutes')
+  const noon = moment(moment('13:30', format)).diff(moment(momentTime), 'minutes')
+  const afternoon = moment(moment('18:00', format)).diff(moment(momentTime), 'minutes')
   if (morning > 0) {
     return '早上';
   } else if (aftermorning > 0) {
@@ -128,12 +129,20 @@ export function uploadVisitLocation(babyId) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { longitude, latitude } = position.coords;
-        Http.post('/api/visits/upload/location', {
+        Http.post('/api/visits/upload/location/', {
           babyId, longitude, latitude
         })
       },
-      _ => { },
-      { timeout: 10000 }
+      (error) => {
+        console.warn('失败：' + JSON.stringify(error.message))
+      },
+      { // 提高精确度，但是获取的速度会慢一点
+        enableHighAccuracy: true,
+        // 设置获取超时的时间10秒
+        timeout: 10000,
+        // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
+        maximumAge: 1000
+      }
     );
   }
 }
