@@ -1,5 +1,6 @@
 import moment from 'moment';
 import Http from './http';
+import * as Location from 'expo-location';
 
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
@@ -125,6 +126,26 @@ export default {
 };
 
 export function uploadVisitLocation(babyId, visitId) {
+  (async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') return;
+    Http.post('/api/visits/upload/location', {
+      babyId, visitId, longitude: 121.446834, latitude: 31.252135
+    })
+    /**
+     try {
+       let location = await Location.getCurrentPositionAsync({
+         timeout: 15000,
+         maximumAge: 10000
+       });
+       const { latitude, longitude } = location.coords;
+       console.log(latitude, longitude, location, 88888)
+     } catch (e) {
+       console.log('Error while trying to get location: ', e);
+     }
+     */
+  })();
+  /**
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -145,4 +166,5 @@ export function uploadVisitLocation(babyId, visitId) {
       }
     );
   }
+   */
 }

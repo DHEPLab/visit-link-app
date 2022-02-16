@@ -11,6 +11,7 @@ import Input from './elements/Input';
 import LargeButtonContainer from './LargeButtonContainer';
 import { styled } from '../utils/styled';
 import { useSelector } from 'react-redux';
+import * as Location from 'expo-location';
 
 export default function StartLesson({
   disabled,
@@ -29,6 +30,7 @@ export default function StartLesson({
   const [deleteVisible, openDelete, closeDelete] = useBoolState();
   const { isConnected } = useSelector((state) => state.net);
   const [deleteremark, setDeleteRemark] = useState();
+  const [errorMessageContent, setErrorMessageContent] = useState('时间未到，无法开始课堂');
 
   function handleStart() {
     closeStartVisit();
@@ -61,8 +63,15 @@ export default function StartLesson({
               disabled={disabled || Visit.statusDone(status)}
               size="large"
               title="开始课堂"
-              onPress={() => {
+              onPress={async () => {
                 if (!Visit.canIStart(status, visitTime)) {
+                  openErrorMessage();
+                  setErrorMessageContent("时间未到，无法开始课堂")
+                  return;
+                }
+                let { status } = await Location.requestPermissionsAsync();
+                if (status !== 'granted') {
+                  setErrorMessageContent("定位权限未打开，无法开始课堂")
                   openErrorMessage();
                   return;
                 }
@@ -95,7 +104,7 @@ export default function StartLesson({
         buttonText="知道了"
         onButtonPress={closeErrorMessage}
         title="无法开始课堂"
-        content="时间未到，无法开始课堂"
+        content={errorMessageContent}
       />
 
       <Modal
