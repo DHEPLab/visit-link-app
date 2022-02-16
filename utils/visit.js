@@ -124,13 +124,13 @@ export default {
   }
 };
 
-export function uploadVisitLocation(babyId) {
+export function uploadVisitLocation(babyId, visitId) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { longitude, latitude } = position.coords;
         Http.post('/api/visits/upload/location', {
-          babyId, longitude, latitude
+          babyId, visitId, longitude, latitude
         })
       },
       (error) => {

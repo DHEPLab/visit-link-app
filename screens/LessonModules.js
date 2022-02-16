@@ -39,7 +39,7 @@ export default function LessonModules({ navigation, route }) {
   useEffect(() => {
     Http.get(`/api/visits/${params.visitId}`).then(({ baby })=> {
       setBabyId(baby.id)
-      uploadVisitLocation(baby.id);
+      uploadVisitLocation(baby.id, params.visitId);
     })
   }, [params])
 
@@ -57,7 +57,7 @@ export default function LessonModules({ navigation, route }) {
       openErrorMessage()
       return
     }
-    uploadVisitLocation(babyId);
+    uploadVisitLocation(babyId, params.visitId);
     const answers = answersData?.answers;
     if (!params.preview) {
       if (isConnected) {
