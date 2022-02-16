@@ -21,6 +21,11 @@ jest.mock('../cache/storage', () => ({
   setNextModule: jest.fn(),
 }));
 
+jest.mock('../utils/http', () => ({
+  ...jest.requireActual('../utils/http'),
+  get: jest.fn(() => Promise.resolve({ data: { baby: { id: 1 } } })),
+}));
+
 const createTestProps = () => ({
   navigation: {
     canGoBack: jest.fn(),
@@ -30,6 +35,7 @@ const createTestProps = () => ({
   route: {
     params: {
       id: 1,
+      // visitId: 1
     },
   },
 });
