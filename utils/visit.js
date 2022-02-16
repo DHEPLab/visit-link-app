@@ -129,7 +129,7 @@ export function uploadVisitLocation(babyId) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { longitude, latitude } = position.coords;
-        Http.post('/api/visits/upload/location/', {
+        Http.post('/api/visits/upload/location', {
           babyId, longitude, latitude
         })
       },
@@ -139,9 +139,9 @@ export function uploadVisitLocation(babyId) {
       { // 提高精确度，但是获取的速度会慢一点
         enableHighAccuracy: true,
         // 设置获取超时的时间10秒
-        timeout: 10000,
+        timeout: 20000,
         // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
-        maximumAge: 1000
+        maximumAge: 10000
       }
     );
   }
