@@ -63,18 +63,19 @@ export default function StartLesson({
               disabled={disabled || Visit.statusDone(status)}
               size="large"
               title="开始课堂"
-              onPress={async () => {
+              onPress={() => {
                 if (!Visit.canIStart(status, visitTime)) {
                   openErrorMessage();
                   setErrorMessageContent("时间未到，无法开始课堂")
                   return;
                 }
-                let { status } = await Location.requestPermissionsAsync();
-                if (status !== 'granted') {
-                  setErrorMessageContent("定位权限未打开，无法开始课堂")
-                  openErrorMessage();
-                  return;
-                }
+                Location.requestPermissionsAsync().then(res=> {
+                  if (res.status !== 'granted') {
+                    setErrorMessageContent("定位权限未打开，无法开始课堂")
+                    openErrorMessage();
+                    return;
+                  }
+                })
                 if (validate && !validate()) return;
                 openStartVisit();
               }}
