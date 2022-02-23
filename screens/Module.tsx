@@ -240,7 +240,12 @@ export default function ModuleScreen({ navigation, route }) {
     <>
       <Header {...Colors.linearGradient}>
         <Escape>
-          <Button type="text" title="退出模块" onPress={navigation.goBack} />
+          <Button
+            disabled={false}
+            type="text"
+            title="退出模块"
+            onPress={navigation.goBack}
+          />
         </Escape>
         <Name>{module.name}</Name>
         <Description>{module.description}</Description>
@@ -257,24 +262,37 @@ export default function ModuleScreen({ navigation, route }) {
         <ButtonContainer>
           {switchAtTheEnd ? (
             <>
-              {lastComponent?.value?.cases?.map((_case: Case, index: number) => (
-                <Button
-                  key={_case.key}
-                  size="large"
-                  title={_case.text}
-                  onPress={() => handleCase(setPath, components.length - 1, index)}
-                />
-              ))}
+              {lastComponent?.value?.cases?.map(
+                (_case: Case, index: number) => (
+                  <Button
+                    key={_case.key}
+                    size="large"
+                    title={_case.text}
+                    onPress={() =>
+                      handleCase(setPath, components.length - 1, index)
+                    }
+                    disabled={false}
+                  />
+                )
+              )}
             </>
           ) : (
             <Button
               size="large"
               title={theLastPage ? '完成' : '下一步'}
-              onPress={() => nextStep(navigation.navigate, params, module, path, setPath)}
+              onPress={() =>
+                nextStep(navigation.navigate, params, module, path, setPath)
+              }
+              disabled={false}
             />
           )}
           {canPreviousStep && (
-            <Button type="info" title="上一步" onPress={() => previousStep(path, setPath)} />
+            <Button
+              type="info"
+              title="上一步"
+              onPress={() => previousStep(path, setPath)}
+              disabled={false}
+            />
           )}
         </ButtonContainer>
       </StyledScrollView>

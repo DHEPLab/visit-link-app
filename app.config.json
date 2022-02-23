@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Healthy Future",
+    "description": "RURAL EDUCATION ACTION PROGRAM",
+    "slug": "healthy-future-app",
+    "platforms": ["android"],
+    "version": "1.0.0-local",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "hf",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "cover"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "edu.stanford.fsi.reap.app"
+    }
+  }
+}
