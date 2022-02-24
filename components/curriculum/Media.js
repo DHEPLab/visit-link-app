@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Image, Modal, Platform } from 'react-native';
-import { Video } from 'expo-av';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, {useState} from 'react';
+import {Image, Modal} from 'react-native';
+import {Video} from 'expo-av';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as FileSystem from 'expo-file-system';
 
-import { styled, px2dp } from '../../utils/styled';
-import { useBoolState } from '../../utils';
-import * as ImagePicker from 'expo-image-picker';
+import {px2dp, styled} from '../../utils/styled';
+import {useBoolState} from '../../utils';
 
 export default function CurriculumMedia({ value }) {
-
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('no permiss');
-          return;
-        }
-      }
-    })();
-  }, []);
-
   return (
     <Container>
       {value.type === 'VIDEO' ? (

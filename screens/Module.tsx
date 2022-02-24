@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import lodash from 'lodash';
@@ -235,7 +235,15 @@ export default function ModuleScreen({ navigation, route }) {
   useEffect(() => {
     handleChangeRouteParams(navigation.navigate, route.params, setPath, reloadModule, setModule);
   }, [route.params]);
-
+  const [moduleComponentVisible, setModuleComponentVisible] = useState(false)
+  const moduleCardRef = useCallback((e,q) => {
+    if (e != null) {
+      setTimeout(() => {
+        // 延迟加载，避免WebView导致的APP闪退问题
+        setModuleComponentVisible(true)
+      }, 800)
+    }
+  }, [])
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -252,10 +260,12 @@ export default function ModuleScreen({ navigation, route }) {
       </Header>
 
       <StyledScrollView>
-        <ModuleCard>
-          {components.map((component: any) => (
-            <ModuleComponent key={component.key} component={component} />
-          ))}
+        <ModuleCard ref={moduleCardRef}>
+          {moduleComponentVisible?
+              components.map((component: any) => (
+                  <ModuleComponent key={component.key} component={component} />
+              )):null
+          }
           {switchAtTheEnd && <Text value={lastComponent?.value?.question} />}
         </ModuleCard>
 
