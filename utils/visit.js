@@ -1,5 +1,4 @@
 import moment from 'moment';
-import Http from './http';
 import * as Location from 'expo-location';
 
 function defaultDatetime(range, visitTime) {
@@ -32,19 +31,15 @@ function defaultStartingRange() {
 }
 
 function meridiem(momentInstance) {
-  const format = 'HH:mm'
-  const momentTime = moment().set({ 'hour': momentInstance.hour(), 'minute': momentInstance.minute() });
-  const morning = moment(moment('9:00', format)).diff(moment(momentTime), 'minutes')
-  const aftermorning = moment(moment('11:30', format)).diff(moment(momentTime), 'minutes')
-  const noon = moment(moment('13:30', format)).diff(moment(momentTime), 'minutes')
-  const afternoon = moment(moment('18:00', format)).diff(moment(momentTime), 'minutes')
-  if (morning > 0) {
+  const hour = momentInstance.hour();
+  const minute = momentInstance.minute();
+  if (hour < 9) {
     return '早上';
-  } else if (aftermorning > 0) {
+  } else if (hour < 11 && minute < 30) {
     return '上午';
-  } else if (noon > 0) {
+  } else if (hour < 13 && minute < 30) {
     return '中午';
-  } else if (afternoon > 0) {
+  } else if (hour < 18) {
     return '下午';
   } else {
     return '晚上';
@@ -125,46 +120,22 @@ export default {
   }
 };
 
-export function uploadVisitLocation(babyId, visitId) {
+export function uploadVisitLocation() {
   (async () => {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') return;
-    Http.post('/api/visits/upload/location', {
-      babyId, visitId, longitude: 121.446834, latitude: 31.252135
-    })
-    /**
-     try {
-       let location = await Location.getCurrentPositionAsync({
-         timeout: 15000,
-         maximumAge: 10000
-       });
-       const { latitude, longitude } = location.coords;
-       console.log(latitude, longitude, location, 88888)
-     } catch (e) {
-       console.log('Error while trying to get location: ', e);
-     }
-     */
-  })();
-  /**
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { longitude, latitude } = position.coords;
-        Http.post('/api/visits/upload/location', {
-          babyId, visitId, longitude, latitude
-        })
-      },
-      (error) => {
-        console.warn('失败：' + JSON.stringify(error.message))
-      },
-      { // 提高精确度，但是获取的速度会慢一点
-        enableHighAccuracy: true,
-        // 设置获取超时的时间10秒
-        timeout: 20000,
-        // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
+    try {
+      let location = await Location.getCurrentPositionAsync({
+        timeout: 15000,
         maximumAge: 10000
-      }
-    );
-  }
-   */
+      });
+      const { latitude, longitude } = location.coords;
+      //  Http.post('/api/visits/upload/location', {
+      //   babyId, visitId, longitude, latitude
+      // })
+      console.log("get location: ", latitude, longitude)
+    } catch (e) {
+      console.log('Error while trying to get location: ', e);
+    }
+  })();
 }

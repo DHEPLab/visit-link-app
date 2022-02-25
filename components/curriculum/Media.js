@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Image, Modal } from 'react-native';
-import { Video } from 'expo-av';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, {useState} from 'react';
+import {Image, Modal} from 'react-native';
+import {Video} from 'expo-av';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import * as FileSystem from 'expo-file-system';
 
-import { styled, px2dp } from '../../utils/styled';
-import { useBoolState } from '../../utils';
+import {px2dp, styled} from '../../utils/styled';
+import {useBoolState} from '../../utils';
 
 export default function CurriculumMedia({ value }) {
   return (
@@ -55,10 +55,13 @@ function VideoMedia({ uri }) {
 
 function PictureMedia({ uri }) {
   const [visible, openModal, closeModal] = useBoolState();
+
   return (
     <>
       <TouchableOpacity onPress={openModal} activeOpacity={0.8}>
-        <StyledImage source={{ uri }} resizeMode="contain" />
+        <StyledImage source={{ uri }} resizeMode="contain" onError={({ nativeEvent: { error } }) => {
+          console.error('image load error：', error)
+        }} />
       </TouchableOpacity>
       <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
         <ImageViewer renderIndicator={() => {}} onClick={closeModal} imageUrls={[{ url: uri }]} />

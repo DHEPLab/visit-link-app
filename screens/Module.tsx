@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import { ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import lodash from 'lodash';
@@ -235,46 +235,74 @@ export default function ModuleScreen({ navigation, route }) {
   useEffect(() => {
     handleChangeRouteParams(navigation.navigate, route.params, setPath, reloadModule, setModule);
   }, [route.params]);
-
+  const [moduleComponentVisible, setModuleComponentVisible] = useState(false)
+  const moduleCardRef = useCallback((e,q) => {
+    if (e != null) {
+      setTimeout(() => {
+        // 延迟加载，避免WebView导致的APP闪退问题
+        setModuleComponentVisible(true)
+      }, 800)
+    }
+  }, [])
   return (
     <>
       <Header {...Colors.linearGradient}>
         <Escape>
-          <Button type="text" title="退出模块" onPress={navigation.goBack} />
+          <Button
+            disabled={false}
+            type="text"
+            title="退出模块"
+            onPress={navigation.goBack}
+          />
         </Escape>
         <Name>{module.name}</Name>
         <Description>{module.description}</Description>
       </Header>
 
       <StyledScrollView>
-        <ModuleCard>
-          {components.map((component: any) => (
-            <ModuleComponent key={component.key} component={component} />
-          ))}
+        <ModuleCard ref={moduleCardRef}>
+          {moduleComponentVisible?
+              components.map((component: any) => (
+                  <ModuleComponent key={component.key} component={component} />
+              )):null
+          }
           {switchAtTheEnd && <Text value={lastComponent?.value?.question} />}
         </ModuleCard>
 
         <ButtonContainer>
           {switchAtTheEnd ? (
             <>
-              {lastComponent?.value?.cases?.map((_case: Case, index: number) => (
-                <Button
-                  key={_case.key}
-                  size="large"
-                  title={_case.text}
-                  onPress={() => handleCase(setPath, components.length - 1, index)}
-                />
-              ))}
+              {lastComponent?.value?.cases?.map(
+                (_case: Case, index: number) => (
+                  <Button
+                    key={_case.key}
+                    size="large"
+                    title={_case.text}
+                    onPress={() =>
+                      handleCase(setPath, components.length - 1, index)
+                    }
+                    disabled={false}
+                  />
+                )
+              )}
             </>
           ) : (
             <Button
               size="large"
               title={theLastPage ? '完成' : '下一步'}
-              onPress={() => nextStep(navigation.navigate, params, module, path, setPath)}
+              onPress={() =>
+                nextStep(navigation.navigate, params, module, path, setPath)
+              }
+              disabled={false}
             />
           )}
           {canPreviousStep && (
-            <Button type="info" title="上一步" onPress={() => previousStep(path, setPath)} />
+            <Button
+              type="info"
+              title="上一步"
+              onPress={() => previousStep(path, setPath)}
+              disabled={false}
+            />
           )}
         </ButtonContainer>
       </StyledScrollView>

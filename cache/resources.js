@@ -17,7 +17,9 @@ async function fetchUpdateAsync() {
       .forEach(storage.addModule);
 
     media.forEach(async (medium) => {
-      await fs.downloadFromOSS(medium);
+      if (!medium) {
+        await fs.downloadFromOSS(medium);
+      }
     });
     storage.setLastUpdateAt(new Date());
   } catch (error) {
