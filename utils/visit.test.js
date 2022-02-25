@@ -13,7 +13,7 @@ test.skip(`should i can start the home visit from 8 o 'clock to 20 o 'clock on t
 });
 
 it('should format visit time cn', () => {
-  expect(Visit.formatDateTimeCN('2020-07-12T11:11:00')).toBe('2020年07月12日/中午11:11');
+  expect(Visit.formatDateTimeCN('2020-07-12T11:11:00')).toBe('2020年07月12日/上午11:11');
 });
 
 it('should format visit date cn', () => {
