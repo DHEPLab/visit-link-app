@@ -16,7 +16,7 @@ const environments = {
   },
 };
 
-const env = Constants.manifest.releaseChannel || 'local';
+const env = Constants.manifest?.extra?.releaseChannel || 'local';
 
 export default {
   ...environments[env],
