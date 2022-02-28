@@ -35,3 +35,14 @@ export const closeGlobalSubmitErrorMessage = () => ({
     visible: false,
   },
 });
+
+export const setConfirmModalValue = ({id, visible, title, okText, cancelText, contentText, onOk}) => ({
+  type: 'SET_CONFIRM_MODAL_VALUE',
+  payload: {
+    id, visible, title, okText, cancelText, contentText, onOk
+  }
+})
+
+export const closeConfirmModal = () => ({
+  type: 'CLOSE_CONFIRM_MODAL'
+})
