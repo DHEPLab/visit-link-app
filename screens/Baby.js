@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { FlatList, Image, View, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import http from '../utils/http';
@@ -27,6 +27,7 @@ import {
 } from '../components';
 import { useMethods } from './BabyForm/CreateBabyStep2';
 import storage from '../cache/storage';
+import confirm from "../components/confirm";
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
@@ -377,6 +378,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
   const [deleteVisible, openDelete, closeDelete] = useBoolState();
   const [closeAccountVisible, openCloseAccount, closeCloseAccount] = useBoolState();
   const { familyTies } = useMethods();
+  const dispatch = useDispatch()
 
   function handleChangeMaster(carer) {
     http
@@ -392,10 +394,14 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
   }
 
   function handleChangeRemark() {
-    http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
-      onRefresh();
-      closeRemark();
-    });
+    confirm("确认提交修改信息？", {
+        onOk: (close) => {
+            http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
+                onRefresh();
+                closeRemark();
+            }).finally(close);
+        }
+    }, dispatch)
   }
 
   function handleCloseAccount() {

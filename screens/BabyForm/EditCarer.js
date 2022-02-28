@@ -16,6 +16,8 @@ import {
 } from '../../components';
 import { FamilyTies } from '../../constants/enums';
 import http from '../../utils/http';
+import confirm from "../../components/confirm";
+import {useDispatch} from "react-redux";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -42,6 +44,7 @@ function filteredFamilyTies(familyTies) {
 
 export default function CreateCarer({ navigation, route }) {
   const { params } = route;
+  const dispatch = useDispatch()
   async function onSubmit(carer) {
     if (params?.carer?.master && !carer.master) {
       ToastAndroid.show('请至少设置一个主看护人', ToastAndroid.LONG);
@@ -54,13 +57,16 @@ export default function CreateCarer({ navigation, route }) {
       navigation.navigate(params.from, { carer, carerIndex });
       return;
     }
-
-    carerIndex === -1
-      ? // create new carer
-        await http.post(`/api/babies/${params.babyId}/carers`, carer)
-      : // edit old carer
-        await http.put(`/api/babies/${params.babyId}/carers/${carer.id}`, carer);
-    navigation.navigate(params.from, { success: Math.random() });
+    if (carerIndex === -1) {
+      await http.post(`/api/babies/${params.babyId}/carers`, carer)
+      navigation.navigate(params.from, { success: Math.random() });
+    } else {
+      confirm("确认修改宝宝信息吗？", {
+        onOk: async (close) => {
+          await http.put(`/api/babies/${params.babyId}/carers/${carer.id}`, carer).finally(close);
+        }
+      }, dispatch)
+    }
   }
 
   return (

@@ -15,9 +15,8 @@ async function fetchUpdateAsync() {
         components: [],
       }))
       .forEach(storage.addModule);
-
     media.forEach(async (medium) => {
-      if (!medium) {
+      if (medium) {
         await fs.downloadFromOSS(medium);
       }
     });
