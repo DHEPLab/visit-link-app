@@ -12,6 +12,7 @@ import { BabyItem, NoData, Button, ListFooter, Message, Modal } from '../compone
 import { useBoolState } from '../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import ViewabilityHelper from "react-native-web/dist/vendor/react-native/ViewabilityHelper";
 
 export default function Babies({ navigation }) {
   const { navigate } = navigation;
@@ -30,43 +31,52 @@ export default function Babies({ navigation }) {
   const [sortName, setSortName] = useState();
   const [sortDate, setSortDate] = useState();
 
-  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+  async function load() {
+    if (isConnected) {
+      if (search.page === 0) {
+        startRefresh();
+        setContents([]);
+        uploadOfflineVisits()
+        await uploadOfflineBabies()
+      } else {
+        startLoad();
+      }
 
-  useEffect(() => {
-    async function load() {
-      // fix repeat load when first load
-      if (search.name == null) return;
-      if (isConnected) {
-        if (search.page === 0) {
-          startRefresh();
-          setContents([]);
-          uploadOfflineVisits()
-          await uploadOfflineBabies()
-        } else {
-          startLoad();
-        }
-
-        http
+      http
           .get('/api/babies', search)
           .then((data) => {
             setTotalPages(data.totalPages);
-            setContents((c) => [...c, ...data.content]);
+            setContents((contents) => {
+              contents.map(v => v.id)
+              const newValue = [...contents];
+              data.content.forEach((tmp, index) => {
+                const targetIndex = newValue.findIndex(v => v.id === tmp)
+                if (targetIndex >= 0) {
+                  newValue[index] = tmp;
+                } else {
+                  newValue.push(tmp)
+                }
+              })
+              return newValue;
+            });
           })
           .finally(() => {
             endRefresh();
             endLoad();
           });
-      } else {
-        // load offline data
-        const data = await storage.getBabies()
-        // load offline create babies
-        const offlineBabies = await storage.getOfflineBabies()
-        setTotalPages(1);
-        setContents([...(offlineBabies || []), ...(data || [])]);
-      }
-    } 
+    } else {
+      // load offline data
+      const data = await storage.getBabies()
+      // load offline create babies
+      const offlineBabies = await storage.getOfflineBabies()
+      setTotalPages(1);
+      setContents([...(offlineBabies || []), ...(data || [])]);
+    }
+  }
+
+  useEffect(() => {
     load();
-  }, [search, isConnected]);
+  }, [search.page, isConnected]);
 
   function backupBabyAndCaregivers () {
     http
@@ -137,7 +147,6 @@ export default function Babies({ navigation }) {
         return 'asc';
     }
   }
-
   return (
     <>
       <Header {...Colors.linearGradient}>
