@@ -1,25 +1,26 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { ToastAndroid } from 'react-native';
+import {ToastAndroid} from 'react-native';
 // import { SplashScreen } from 'expo';
 import * as SplashScreen from 'expo-splash-screen';
-import { NavigationContainer } from '@react-navigation/native';
-import { setStatusBarStyle } from 'expo-status-bar';
-import { Asset } from 'expo-asset';
+import {NavigationContainer} from '@react-navigation/native';
+import {setStatusBarStyle} from 'expo-status-bar';
+import {Asset} from 'expo-asset';
 import fundebug from 'fundebug-reactnative'
 
-import { Provider, useSelector, useDispatch } from 'react-redux';
-import { restoreToken, netInfo, closeGlobalSubmitErrorMessage } from './actions';
-import { uploadOfflineBabies } from './cache/uploadData'
+import {Provider, useDispatch, useSelector} from 'react-redux';
+import {closeGlobalSubmitErrorMessage, netInfo, restoreToken} from './actions';
+import {uploadOfflineBabies} from './cache/uploadData'
 
 import Http from './utils/http';
 import Navigator from './navigation/Navigator';
-import { Colors } from './constants';
-import { useBoolState } from './utils';
+import {Colors} from './constants';
+import {useBoolState} from './utils';
 import store from './store';
 import './config';
 
-import { Message } from './components';
+import {Message} from './components';
+import {ConfirmModal} from "./components/confirm";
 
 export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
@@ -78,6 +79,7 @@ export default function App(props) {
       <NavigationContainer theme={Colors.theme}>
         <Navigator />
         <GlobalErrorMessage />
+        <ConfirmModal />
       </NavigationContainer>
     </Provider>
   );

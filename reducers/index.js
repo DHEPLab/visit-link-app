@@ -4,10 +4,12 @@ import user from './user';
 import net from './net';
 import message from './message';
 import lessonsUpdate from './lessons_update';
+import confirmModal from './confirmModal';
 
 export default combineReducers({
   user,
   net,
   message,
   lessonsUpdate,
+  confirmModal
 });
