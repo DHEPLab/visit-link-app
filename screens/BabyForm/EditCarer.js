@@ -16,7 +16,7 @@ import {
 } from '../../components';
 import { FamilyTies } from '../../constants/enums';
 import http from '../../utils/http';
-import confirm from "../../components/confirm";
+import confirm from "../../components/modal/confirm";
 import {useDispatch} from "react-redux";
 
 const validationSchema = Yup.object().shape({
@@ -62,10 +62,10 @@ export default function CreateCarer({ navigation, route }) {
       navigation.navigate(params.from, { success: Math.random() });
     } else {
       confirm("确认修改宝宝信息吗？", {
-        onOk: async (close) => {
-          await http.put(`/api/babies/${params.babyId}/carers/${carer.id}`, carer).finally(close);
-        }
-      }, dispatch)
+        onOk: () => {
+          return http.put(`/api/babies/${params.babyId}/carers/${carer.id}`, carer);
+        }, dispatch
+      })
     }
   }
 

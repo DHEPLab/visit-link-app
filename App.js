@@ -20,7 +20,8 @@ import store from './store';
 import './config';
 
 import {Message} from './components';
-import {ConfirmModal} from "./components/confirm";
+import {ConfirmModal} from "./components/modal/confirm";
+import {PromptModal} from "./components/modal/prompt";
 
 export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
@@ -80,6 +81,7 @@ export default function App(props) {
         <Navigator />
         <GlobalErrorMessage />
         <ConfirmModal />
+        <PromptModal />
       </NavigationContainer>
     </Provider>
   );

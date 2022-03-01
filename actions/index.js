@@ -46,3 +46,14 @@ export const setConfirmModalValue = ({id, visible, title, okText, cancelText, co
 export const closeConfirmModal = () => ({
   type: 'CLOSE_CONFIRM_MODAL'
 })
+
+export const setPromptModalValue = ({id, visible, title, okText, cancelText, contentText, onOk}) => ({
+  type: 'SET_PROMPT_MODAL_VALUE',
+  payload: {
+    id, visible, title, okText, cancelText, contentText, onOk
+  }
+})
+
+export const closePromptModal = () => ({
+  type: 'CLOSE_PROMPT_MODAL'
+})

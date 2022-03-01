@@ -4,7 +4,7 @@ import http from '../../utils/http';
 import {BabyForm} from '../../components';
 import {styled} from '../../utils/styled';
 import storage from '../../cache/storage';
-import confirm from "../../components/confirm";
+import confirm from "../../components/modal/confirm";
 import {useDispatch} from "react-redux";
 
 export default function EditBaby({ navigation, route }) {
@@ -14,14 +14,14 @@ export default function EditBaby({ navigation, route }) {
   function onSubmit(values) {
     if (!params.id) return;
     confirm("确认修改宝宝信息吗？", {
-      onOk : async (close) => {
-        await http.put(`/api/babies/${params.id}`, values).finally(close);
+      onOk : async () => {
+        await http.put(`/api/babies/${params.id}`, values);
         clearNotSubmitVisit()
         navigation.navigate(params.from, {
           success: Math.random(),
         });
-      }
-    }, dispatch)
+      }, dispatch
+    })
   }
 
   async function clearNotSubmitVisit(){

@@ -1,16 +1,16 @@
 import React from "react"
 import {useDispatch, useSelector} from "react-redux";
-import {closeConfirmModal, setConfirmModalValue} from "../../actions";
-import {Modal} from "../index";
+import {closeConfirmModal, closePromptModal, setConfirmModalValue} from "../../../actions";
+import {Modal} from "../../index";
 
-const confirm = (contentText, {title, okText, cancelText, onOk}, dispatch) => {
+const confirm = (contentText, {title, okText, cancelText, onOk, dispatch}) => {
     dispatch(setConfirmModalValue({
         visible: true, title, okText, cancelText, onOk, contentText
     }))
 }
 
 export const ConfirmModal = () => {
-    const confirmModal = useSelector((state) => state.confirmModal);
+    const confirmModal = useSelector((state) => state.modal.confirm);
     const dispatch = useDispatch();
     const {
         title= "提示信息", contentText= "确认{{content}}？",
@@ -25,7 +25,12 @@ export const ConfirmModal = () => {
                contentText={contentText}
                okText={okText} cancelText={cancelText}
                onOk={() => {
-                   onOk && onOk(closeModal)
+                   const result = onOk && onOk()
+                   if (result instanceof Promise) {
+                       result.finally(closeModal)
+                   } else if (result) {
+                       closeModal()
+                   }
                }}
                onCancel={closeModal}
         />

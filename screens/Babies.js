@@ -18,7 +18,8 @@ export default function Babies({ navigation }) {
   const { navigate } = navigation;
   const [search, setSearch] = useState({
     page: 0,
-    size: 10
+    size: 10,
+    force: {}
   });
   const [totalPages, setTotalPages] = useState(0);
   const [contents, setContents] = useState([]);
@@ -76,7 +77,7 @@ export default function Babies({ navigation }) {
 
   useEffect(() => {
     load();
-  }, [search.page, isConnected]);
+  }, [search.page, search.force, isConnected]);
 
   function backupBabyAndCaregivers () {
     http
@@ -101,6 +102,7 @@ export default function Babies({ navigation }) {
     setSearch((s) => ({
       ...s,
       page: 0,
+      force: {},
       name: name || '',
       sort: ''
     }));

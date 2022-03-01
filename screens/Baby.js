@@ -27,7 +27,7 @@ import {
 } from '../components';
 import { useMethods } from './BabyForm/CreateBabyStep2';
 import storage from '../cache/storage';
-import confirm from "../components/confirm";
+import confirm from "../components/modal/confirm";
 
 export default function Baby({ navigation, route }) {
   const { params } = route;
@@ -395,13 +395,13 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
 
   function handleChangeRemark() {
     confirm("确认提交修改信息？", {
-        onOk: (close) => {
-            http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
+        onOk: () => {
+            return http.put(`/api/babies/${baby.id}/remark`, { remark }).then(() => {
                 onRefresh();
                 closeRemark();
-            }).finally(close);
-        }
-    }, dispatch)
+            });
+        }, dispatch
+    })
   }
 
   function handleCloseAccount() {

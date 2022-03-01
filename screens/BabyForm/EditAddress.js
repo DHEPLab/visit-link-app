@@ -2,7 +2,7 @@ import React from 'react';
 
 import http from '../../utils/http';
 import {AddressForm} from '../../components';
-import confirm from "../../components/confirm";
+import confirm from "../../components/modal/confirm";
 import {useDispatch} from "react-redux";
 
 export default function EditAddress({ navigation, route }) {
@@ -12,13 +12,13 @@ export default function EditAddress({ navigation, route }) {
   async function onSubmit(values) {
     if (!params.id) return;
     confirm("确认修改宝宝信息吗？", {
-      onOk: async (close) => {
-        await http.put(`/api/babies/${params.id}/address`, values).finally(close);
+      onOk: async () => {
+        await http.put(`/api/babies/${params.id}/address`, values);
         navigation.navigate(params.from, {
           success: Math.random(),
         });
-      }
-    }, dispatch)
+      }, dispatch
+    })
   }
 
   return <>
