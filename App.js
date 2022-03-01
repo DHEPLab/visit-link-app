@@ -43,7 +43,7 @@ export default function App(props) {
         const token = await Http.token();
         store.dispatch(restoreToken(token));
 
-        if (!net.isConnected) {
+        if (!net.isInternetReachable) {
           return ToastAndroid.show('当前处于离线模式', ToastAndroid.LONG);
         }
         uploadOfflineBabies()
