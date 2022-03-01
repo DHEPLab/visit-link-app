@@ -26,6 +26,7 @@ export default function Home({navigation}) {
     const [refreshing, startRefresh, endRefresh] = useBoolState();
     const [fetching, startFetch, endFetch] = useBoolState();
     const [submitErrorMessageVisible, openSubmitErrorMessage, closeSubmitErrorMessage] = useBoolState(false);
+    const [reloadOtherVisit, setReloadOtherVisit] = useState({})
 
     const dispatch = useDispatch();
     // lesson resources update state
@@ -46,7 +47,7 @@ export default function Home({navigation}) {
         } catch (e) {
         }
         try {
-            Storage.setNextVisit(await Http.get('/api/visits/next'));
+            Storage.setNextVisit(await Http.get('/api/visits/next')).then(() => setReloadOtherVisit({}));
         } catch (e) {
             Storage.setNextVisit({});
             // never going to get 404
@@ -175,12 +176,12 @@ export default function Home({navigation}) {
                 }}
                 cancelVisit={cancelVisit}
             />
-            <OtherBabyCard excludeVisitId={visit.id}/>
+            {visit.id?<OtherBabyCard excludeVisitId={visit.id} reload={reloadOtherVisit}/>:null}
         </StyledScrollView>
     );
 }
 
-function OtherBabyCard({excludeVisitId}) {
+function OtherBabyCard({excludeVisitId, reload}) {
     const dispatch = useDispatch()
     const [visits, setVisits] = useState([])
     const fetchAllVisitOfTodo = () => {
@@ -191,12 +192,12 @@ function OtherBabyCard({excludeVisitId}) {
     }
     useEffect(() => {
         fetchAllVisitOfTodo()
-    }, [])
+    }, [reload])
     const onCancelHomeVisit = (id) => {
         prompt("取消家访原因", {
             onOk: async (v) => {
                 await Http.delete(`/api/visits/${id}?deleteReason=${v}`)
-                    .then()
+                    .then(() => setVisits(visits.filter(v => v.id !== id)))
             }, dispatch
         })
     }
