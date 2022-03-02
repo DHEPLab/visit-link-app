@@ -7,9 +7,9 @@ export default function Net(
 ) {
   switch (action.type) {
     case 'NET_INFO':
-      const {isInternetReachable} = action.payload
+      const {isInternetReachable, type} = action.payload
       return {
-        ...state,
+        type: type,
         isConnected: isInternetReachable
       };
     default:
