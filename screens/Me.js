@@ -1,16 +1,17 @@
 import React from 'react';
 import Constants from 'expo-constants';
-import { View, Image, RefreshControl, ScrollView } from 'react-native';
-import { useDispatch } from 'react-redux';
+import {Image, RefreshControl, ScrollView, View} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import Http from '../utils/http';
-import { styled } from '../utils/styled';
-import { Colors } from '../constants';
-import { useFetch, useBoolState } from '../utils';
+import {styled} from '../utils/styled';
+import {Colors} from '../constants';
+import {useBoolState, useFetch} from '../utils';
 import Storage from '../cache/storage';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Modal, Button, Card, StaticForm, StaticField, Message } from '../components';
-import { signOut } from '../actions';
+import {LinearGradient} from 'expo-linear-gradient';
+import {Button, Card, Message, Modal, StaticField, StaticForm} from '../components';
+import {signOut} from '../actions';
+import QrCodeScanner from "./QrCodeScanner";
 
 export default function Me({ navigation }) {
   const dispatch = useDispatch();
@@ -36,7 +37,6 @@ export default function Me({ navigation }) {
     Storage.setBabies([])
     Storage.setOfflineBabies([])
   }
-
   return (
     <>
       <ScrollView
@@ -57,6 +57,7 @@ export default function Me({ navigation }) {
               <PhoneNumber>{user.phone}</PhoneNumber>
               <Location>{user.chw?.tags?.join(', ')}</Location>
             </View>
+            <QrCodeScanner onScanned={(v) => console.log(v)}/>
           </InfoContainer>
         </Header>
 

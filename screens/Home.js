@@ -301,6 +301,7 @@ const otherStyle = StyleSheet.create({
         fontWeight: "bold"
     },
     visitDate: {
-        fontSize: 8
+        fontSize: 12,
+        fontWeight: "bold"
     }
 })

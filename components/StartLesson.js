@@ -69,7 +69,7 @@ export default function StartLesson({
                   setErrorMessageContent("时间未到，无法开始课堂")
                   return;
                 }
-                Location.requestPermissionsAsync().then(res=> {
+                Location.requestBackgroundPermissionsAsync().then(res=> {
                   if (res.status !== 'granted') {
                     setErrorMessageContent("定位权限未打开，无法开始课堂")
                     openErrorMessage();

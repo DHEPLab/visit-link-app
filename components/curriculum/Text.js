@@ -1,7 +1,7 @@
 import React from 'react';
-import AutoHeightWebView from 'react-native-autoheight-webview';
 
-import { styled } from '../../utils/styled';
+import {styled} from '../../utils/styled';
+import HtmlView from "react-native-htmlview";
 
 export default function CurriculumText({ value }) {
   switch (value.type) {
@@ -66,6 +66,6 @@ const ReferenceContainer = styled.View`
 
 function WebViewContainer({ html, customStyle }) {
   return (
-    <AutoHeightWebView style={{ width: 'auto' }} customStyle={customStyle} source={{ html }} />
+    <HtmlView style={{ width: 'auto' }} customStyle={customStyle} value={html} />
   );
 }

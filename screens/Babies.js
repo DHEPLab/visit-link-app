@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, TextInput, RefreshControl } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons, AntDesign } from '@expo/vector-icons';
+import React, {useEffect, useState} from 'react';
+import {FlatList, RefreshControl, TextInput} from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient';
+import {AntDesign, MaterialIcons} from '@expo/vector-icons';
 import storage from '../cache/storage';
-import { uploadOfflineBabies, uploadOfflineVisits } from '../cache/uploadData'
+import {uploadOfflineBabies, uploadOfflineVisits} from '../cache/uploadData'
 
 import http from '../utils/http';
-import { styled, px2dp } from '../utils/styled';
-import { Colors } from '../constants';
-import { BabyItem, NoData, Button, ListFooter, Message, Modal } from '../components';
-import { useBoolState } from '../utils';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
-import ViewabilityHelper from "react-native-web/dist/vendor/react-native/ViewabilityHelper";
+import {px2dp, styled} from '../utils/styled';
+import {Colors} from '../constants';
+import {BabyItem, Button, ListFooter, Message, Modal, NoData} from '../components';
+import {useBoolState} from '../utils';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
 
 export default function Babies({ navigation }) {
   const { navigate } = navigation;
