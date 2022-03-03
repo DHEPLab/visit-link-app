@@ -22,6 +22,7 @@ export const PromptModal = () => {
     const [value, setValue] = useState(defaultValue);
     const closeModal = () => {
         dispatch(closePromptModal());
+        setValue("")
     }
     return (
         <Modal title={title}
