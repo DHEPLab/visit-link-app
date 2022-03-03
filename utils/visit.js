@@ -130,9 +130,9 @@ export function uploadVisitLocation() {
         maximumAge: 10000
       });
       const { latitude, longitude } = location.coords;
-      //  Http.post('/api/visits/upload/location', {
-      //   babyId, visitId, longitude, latitude
-      // })
+       Http.post('/api/visits/upload/location', {
+        babyId, visitId, longitude, latitude
+      })
       console.log("get location: ", latitude, longitude)
     } catch (e) {
       console.log('Error while trying to get location: ', e);
