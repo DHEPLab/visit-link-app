@@ -55,3 +55,7 @@ export const ModuleStatus = {
   DONE: '已完成',
   UNDONE: '待开始',
 };
+
+export const QrType = {
+  MODULE_ID: "MODULE_ID"      // module的id
+}

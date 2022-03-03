@@ -8,14 +8,19 @@ import * as FileSystem from 'expo-file-system';
 
 import {px2dp, styled} from '../../utils/styled';
 import {useBoolState} from '../../utils';
+import {Config} from "../../constants";
 
 export default function CurriculumMedia({ value }) {
+  let uri = value.mode === "REVIEW"?
+      `${Config.apiHost}/api/files${value.file}`
+      :
+      `${FileSystem.documentDirectory}${value.file}`;
   return (
     <Container>
       {value.type === 'VIDEO' ? (
-        <VideoMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
+        <VideoMedia uri={uri} />
       ) : (
-        <PictureMedia uri={`${FileSystem.documentDirectory}${value.file}`} />
+        <PictureMedia uri={uri} />
       )}
       <Title>{value.text}</Title>
     </Container>

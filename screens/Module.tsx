@@ -1,17 +1,17 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import { ScrollView, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, View} from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient';
 import lodash from 'lodash';
 
 import Text from '../components/curriculum/Text';
-import Media from '../components/curriculum/Media';
 import storage from '../cache/storage';
-import { Case } from '../utils/module';
-import { styled } from '../utils/styled';
-import { Colors } from '../constants';
-import { Button } from '../components';
+import {Case} from '../utils/module';
+import {styled} from '../utils/styled';
+import {Colors} from '../constants';
+import {Button} from '../components';
+import Media from "../components/curriculum/Media";
 
-export function useMethods() {
+export function useMethods(preview) {
   function handleCase(setPath: Function, switchComponentIndex: number, caseIndex: number) {
     setPath((path: any[]) =>
       // fold too many layers and expand when you use them
@@ -36,7 +36,9 @@ export function useMethods() {
       });
       return;
     }
-
+    if (preview) {
+      return
+    }
     // go back to the lesson modules page and finished current module
     navigate('LessonModules', {
       id: params.lessonId,
@@ -226,7 +228,7 @@ export default function ModuleScreen({ navigation, route }) {
   const [path, setPath] = useState([0]);
   const [module, reloadModule, setModule] = storage.useModule(params.id);
 
-  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods();
+  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods(params.preview);
   const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed(
     module,
     path
@@ -300,7 +302,7 @@ export default function ModuleScreen({ navigation, route }) {
 }
 
 function ModuleComponent({ component }) {
-  let As: any;
+  let As;
   switch (component.type) {
     case 'Text':
       As = Text;

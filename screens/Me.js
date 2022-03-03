@@ -57,7 +57,7 @@ export default function Me({ navigation }) {
               <PhoneNumber>{user.phone}</PhoneNumber>
               <Location>{user.chw?.tags?.join(', ')}</Location>
             </View>
-            <QrCodeScanner onScanned={(v) => console.log(v)}/>
+            <QrCodeScanner navigation={navigation}/>
           </InfoContainer>
         </Header>
 
