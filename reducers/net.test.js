@@ -6,7 +6,7 @@ it('should switch net type to callular', () => {
       type: 'NET_INFO',
       payload: {
         type: 'callular',
-        isConnected: true,
+        isInternetReachable: true,
       },
     })
   ).toStrictEqual({
@@ -21,7 +21,7 @@ it('should switch net type to wifi', () => {
       type: 'NET_INFO',
       payload: {
         type: 'Wifi',
-        isConnected: true,
+        isInternetReachable: true,
       },
     })
   ).toStrictEqual({
@@ -36,7 +36,7 @@ it('should switch net type none, connected false', () => {
       type: 'NET_INFO',
       payload: {
         type: 'none',
-        isConnected: false,
+        isInternetReachable: false,
       },
     })
   ).toStrictEqual({
