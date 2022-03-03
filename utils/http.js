@@ -5,7 +5,6 @@ import Config from '../constants/Config';
 import store from '../store';
 import { restoreToken, openGlobalSubmitErrorMessage } from '../actions';
 
-global.fetch = require('node-fetch');
 // fetch timeout 15s
 const timeout = 15000;
 const Host = Config.apiHost;

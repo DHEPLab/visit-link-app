@@ -10,3 +10,4 @@ jest.mock('@react-native-async-storage/async-storage', () => {
 
 ToastAndroid.showWithGravity = jest.fn();
 ToastAndroid.show = jest.fn();
+global.fetch = jest.fn();
