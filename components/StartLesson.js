@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
-import { useBoolState } from '../utils';
-import { ToastAndroid } from 'react-native';
+import {useBoolState} from '../utils';
+import {ToastAndroid} from 'react-native';
 
 import Visit from '../utils/visit';
 import Button from './elements/Button';
@@ -9,9 +9,8 @@ import Modal from './elements/Modal';
 import Message from './elements/Message';
 import Input from './elements/Input';
 import LargeButtonContainer from './LargeButtonContainer';
-import { styled } from '../utils/styled';
-import { useSelector } from 'react-redux';
-import * as Location from 'expo-location';
+import {styled} from '../utils/styled';
+import {useSelector} from 'react-redux';
 
 export default function StartLesson({
   disabled,
@@ -69,13 +68,13 @@ export default function StartLesson({
                   setErrorMessageContent("时间未到，无法开始课堂")
                   return;
                 }
-                Location.requestBackgroundPermissionsAsync().then(res=> {
+                /*Location.requestBackgroundPermissionsAsync().then(res=> {
                   if (res.status !== 'granted') {
                     setErrorMessageContent("定位权限未打开，无法开始课堂")
                     openErrorMessage();
                     return;
                   }
-                })
+                })*/
                 if (validate && !validate()) return;
                 openStartVisit();
               }}

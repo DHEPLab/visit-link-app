@@ -1,11 +1,20 @@
 import {Image, Modal, Text, TouchableHighlight, View} from "react-native";
 import {BarCodeScanner} from "expo-barcode-scanner";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useBoolState} from "../utils";
 import {QrType} from "../constants/enums";
 
 export default function QrCodeScanner({navigation}) {
+    const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [scanVisible, openScan, closeScan] = useBoolState(false)
+    useEffect(() => {
+        if (scanVisible) {
+            (async () => {
+                const { status } = await BarCodeScanner.requestPermissionsAsync();
+                setHasCameraPermission(status === 'granted');
+            })();
+        }
+    }, [scanVisible])
     function onBarCodeScanned(v) {
         closeScan()
         const {data} = v
@@ -19,7 +28,6 @@ export default function QrCodeScanner({navigation}) {
                     navigation.navigate('Module', { id: json.data, originId: json.data, preview: true });
                     break;
             }
-            // setComponent({comp, props:compProps})
         } catch (e) {
             console.error(e)
             return
@@ -27,7 +35,7 @@ export default function QrCodeScanner({navigation}) {
     }
     return (
         <View>
-            {scanVisible?
+            {hasCameraPermission && scanVisible?
                 <Modal visible={true} onRequestClose={scanVisible? closeScan : null}>
                     <BarCodeScanner barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
                                     onBarCodeScanned={scanVisible ? onBarCodeScanned : undefined}

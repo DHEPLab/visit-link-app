@@ -11,6 +11,7 @@ import {Colors} from '../constants';
 import {Button} from '../components';
 import Media from "../components/curriculum/Media";
 
+
 export function useMethods(preview) {
   function handleCase(setPath: Function, switchComponentIndex: number, caseIndex: number) {
     setPath((path: any[]) =>

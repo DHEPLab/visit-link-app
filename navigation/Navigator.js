@@ -137,7 +137,7 @@ export default function StackNavigator() {
         </>
       ) : (
         <>
-          <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
+          <Stack.Screen name="Index" component={HomeTabs} options={{ headerShown: false }} />
           {screens.map((screen) => (
             <Stack.Screen
               key={screen.name}
@@ -160,14 +160,15 @@ export default function StackNavigator() {
 function HomeTabs() {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        keyboardHidesTabBar: true,
-        style: {
-          height: px2dp(68),
-          borderTopWidth: 1,
-          borderTopColor: '#FFC3A0',
-        },
-      }}
+        screenOptions={{
+            headerShown: false,
+            tabBarHideOnKeyboard: true,
+            tabBarStyle: {
+                height: px2dp(68),
+                borderTopWidth: 1,
+                borderTopColor: '#FFC3A0',
+            },
+        }}
     >
       <Tab.Screen
         name="Home"

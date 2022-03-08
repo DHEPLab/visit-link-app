@@ -1,7 +1,7 @@
+import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
 import NetInfo from '@react-native-community/netinfo';
 import {ToastAndroid} from 'react-native';
-// import { SplashScreen } from 'expo';
 import * as SplashScreen from 'expo-splash-screen';
 import {NavigationContainer} from '@react-navigation/native';
 import {setStatusBarStyle} from 'expo-status-bar';
@@ -22,7 +22,6 @@ import './config';
 import {Message} from './components';
 import {ConfirmModal} from "./components/modal/confirm";
 import {PromptModal} from "./components/modal/prompt";
-
 export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
 

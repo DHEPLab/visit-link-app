@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Http from '../utils/http'
 import * as Location from 'expo-location';
 
 function defaultDatetime(range, visitTime) {
@@ -120,20 +121,25 @@ export default {
   }
 };
 
-export function uploadVisitLocation() {
+export function uploadVisitLocation(babyId, visitId) {
   (async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') return;
     try {
-      let location = await Location.getCurrentPositionAsync({
-        timeout: 15000,
-        maximumAge: 10000
-      });
-      const { latitude, longitude } = location.coords;
-      Http.post('/api/visits/upload/location', {
-        babyId, visitId, longitude, latitude
+      console.log("start getLocation")
+      Location.getCurrentPositionAsync({
+        enableHighAccuracy: true,
+        accuracy: Location.Accuracy.Highest,
+        maximumAge: 10000,
+        timeout: 5000
+      }).then(location => {
+        const { latitude, longitude } = location.coords;
+        Http.post('/api/visits/upload/location', {
+          babyId, visitId, longitude, latitude
+        })
+        console.log("get location: ", latitude, longitude)
       })
-      console.log("get location: ", latitude, longitude)
+
     } catch (e) {
       console.log('Error while trying to get location: ', e);
     }

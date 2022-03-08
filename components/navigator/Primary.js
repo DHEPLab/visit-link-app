@@ -7,11 +7,7 @@ import { Colors } from '../../constants';
 import { styled } from '../../utils/styled';
 
 export default function ({
-  navigation,
-  scene: {
-    // route,
-    descriptor: { options },
-  },
+  navigation, options
 }) {
   function goBack() {
     navigation.goBack();
