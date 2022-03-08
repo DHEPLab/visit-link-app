@@ -21,7 +21,6 @@
     },
     "extra": {
       "releaseChannel": "dev"
-    },
-    "permissions": ["CAMERA"]
+    }
   }
 }
