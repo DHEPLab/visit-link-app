@@ -124,14 +124,16 @@ export default {
 
 export function uploadVisitLocation(babyId, visitId) {
   (async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') return;
+    const hasEnableLocation = await Location.hasServicesEnabledAsync();
+    if (!hasEnableLocation) {
+      ToastAndroid.show("未打开手机定位服务，无法获取位置信息！", ToastAndroid.LONG)
+      return
+    }
     try {
       console.log("start getLocation")
-      ToastAndroid.show("start getLocation", ToastAndroid.LONG)
       Location.getCurrentPositionAsync({
         enableHighAccuracy: true,
-        accuracy: Location.Accuracy.Highest,
+        accuracy: Location.Accuracy.High,
         maximumAge: 10000,
         timeout: 5000
       }).then(location => {
@@ -139,8 +141,7 @@ export function uploadVisitLocation(babyId, visitId) {
         Http.post('/api/visits/upload/location', {
           babyId, visitId, longitude, latitude
         })
-        ToastAndroid.show(JSON.stringify({latitude, longitude}), ToastAndroid.LONG)
-        console.log("get location: ", latitude, longitude)
+        ToastAndroid.show("经度：" + longitude + ", 纬度" + latitude, ToastAndroid.LONG)
       })
 
     } catch (e) {

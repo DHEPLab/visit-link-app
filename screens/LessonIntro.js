@@ -6,6 +6,8 @@ import storage from '../cache/storage';
 import { Colors } from '../constants';
 import { styled } from '../utils/styled';
 import { GhostNavigatorHeader, BottomRightBackground, Button } from '../components';
+import * as Location from "expo-location";
+import {ToastAndroid} from "react-native";
 
 export default function LessonIntro({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
@@ -39,7 +41,22 @@ export default function LessonIntro({ navigation, route }) {
         <Button
           type="info"
           title="下一步"
-          onPress={() => navigation.navigate('LessonModules', route.params)}
+          onPress={() => {
+              Location.requestForegroundPermissionsAsync()
+                  .then(async ({status}) => {
+                      if (status !== 'granted') {
+                          ToastAndroid.show("未授予获取用户位置的权限，无法进行家访任务！", ToastAndroid.LONG)
+                          navigation.goBack()
+                          return
+                      }
+                      const hasEnableLocation = await Location.hasServicesEnabledAsync();
+                      if (!hasEnableLocation) {
+                          ToastAndroid.show("未打开手机定位服务，无法进行家访任务！", ToastAndroid.LONG)
+                          return
+                      }
+                      navigation.navigate('LessonModules', route.params)
+                  })
+          }}
         />
       </ButtonContainer>
     </Container>
