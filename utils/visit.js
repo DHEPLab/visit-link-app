@@ -1,6 +1,7 @@
 import moment from 'moment';
 import Http from '../utils/http'
 import * as Location from 'expo-location';
+import {ToastAndroid} from "react-native";
 
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
@@ -127,6 +128,7 @@ export function uploadVisitLocation(babyId, visitId) {
     if (status !== 'granted') return;
     try {
       console.log("start getLocation")
+      ToastAndroid.show("start getLocation", ToastAndroid.LONG)
       Location.getCurrentPositionAsync({
         enableHighAccuracy: true,
         accuracy: Location.Accuracy.Highest,
@@ -137,6 +139,7 @@ export function uploadVisitLocation(babyId, visitId) {
         Http.post('/api/visits/upload/location', {
           babyId, visitId, longitude, latitude
         })
+        ToastAndroid.show(JSON.stringify({latitude, longitude}), ToastAndroid.LONG)
         console.log("get location: ", latitude, longitude)
       })
 
