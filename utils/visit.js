@@ -132,16 +132,14 @@ export function uploadVisitLocation(babyId, visitId) {
     try {
       console.log("start getLocation")
       Location.getCurrentPositionAsync({
-        enableHighAccuracy: true,
-        accuracy: Location.Accuracy.High,
-        maximumAge: 10000,
-        timeout: 5000
+        accuracy: Location.Accuracy.Highest,
+        timeInterval: 5000
       }).then(location => {
         const { latitude, longitude } = location.coords;
         Http.post('/api/visits/upload/location', {
           babyId, visitId, longitude, latitude
         })
-        ToastAndroid.show("经度：" + longitude + ", 纬度" + latitude, ToastAndroid.LONG)
+        console.log("getLocation", longitude, latitude)
       })
 
     } catch (e) {
