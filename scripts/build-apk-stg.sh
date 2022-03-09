@@ -7,4 +7,4 @@ turtle build:android \
   --keystore-path ./keystore/dev.jks \
   --keystore-alias "keyalias" \
   --allow-non-https-public-url \
-  --public-url https://stg.healthyfutures.cloud/expo/android-index.json
+  --public-url https://stg.healthyfutures.cloud/expo/sdk44/android-index.json
