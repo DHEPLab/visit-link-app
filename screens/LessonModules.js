@@ -39,6 +39,7 @@ export default function LessonModules({navigation, route}) {
 
     useEffect(() => {
         if (!params.preview) {
+            console.log(params.visitId)
             Http.get(`/api/visits/${params.visitId}`).then(({baby}) => {
                 setBabyId(baby.id)
                 uploadVisitLocation(baby.id, params.visitId);
@@ -127,11 +128,11 @@ export default function LessonModules({navigation, route}) {
                         value={{...module, status: status(index)}}
                         disabled={!params.preview && index !== nextModule}
                         onPress={() => {
-                            onUploadVisitLocation()
                             navigation.navigate('Module', {
                                 id: module.id,
                                 originId: module.id,
-                                lessonId: params.id
+                                lessonId: params.id,
+                                backParams: params
                             })
                         }}
                     />
