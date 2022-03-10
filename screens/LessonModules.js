@@ -25,7 +25,6 @@ export default function LessonModules({navigation, route}) {
     const [questionnaire, setQuestionnaire] = useState()
     const {isConnected} = useSelector((state) => state.net);
     const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
-
     useEffect(() => {
         /*
           使用原始 originModuleId, 因为 moduleId 会在跳转到其他模块时发生改变；
@@ -39,7 +38,6 @@ export default function LessonModules({navigation, route}) {
 
     useEffect(() => {
         if (!params.preview) {
-            console.log(params.visitId)
             Http.get(`/api/visits/${params.visitId}`).then(({baby}) => {
                 setBabyId(baby.id)
                 uploadVisitLocation(baby.id, params.visitId);
@@ -92,8 +90,7 @@ export default function LessonModules({navigation, route}) {
         if (isConnected && lesson.questionnaireAddress) {
             await WebBrowser.openBrowserAsync(lesson.questionnaireAddress);
         }
-
-        navigation.navigate(params.from);
+        navigation.navigate(params.from, {id : params.visitId});
     }
 
     async function queryQuestionnaire() {
@@ -106,7 +103,8 @@ export default function LessonModules({navigation, route}) {
             id: questionnaire.id,
             data: questionnaire,
             lessonId: lesson.id,
-            visitId: params?.visitId
+            visitId: params?.visitId,
+            backParams: params
         })
     }
 
