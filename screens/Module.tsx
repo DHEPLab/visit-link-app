@@ -42,7 +42,6 @@ export function useMethods(preview) {
     }
     // go back to the lesson modules page and finished current module
     navigate('LessonModules', {
-      ...params.backParams,
       id: params.lessonId,
       originModuleId: params.originId,
       finished: true,

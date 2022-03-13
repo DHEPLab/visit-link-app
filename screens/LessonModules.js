@@ -103,8 +103,7 @@ export default function LessonModules({navigation, route}) {
             id: questionnaire.id,
             data: questionnaire,
             lessonId: lesson.id,
-            visitId: params?.visitId,
-            backParams: params
+            visitId: params?.visitId
         })
     }
 

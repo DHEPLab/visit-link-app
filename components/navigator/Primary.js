@@ -7,22 +7,26 @@ import { Colors } from '../../constants';
 import { styled } from '../../utils/styled';
 
 export default function ({
-  navigation, options
-}) {
+                           navigation,
+                           scene: {
+                             // route,
+                             descriptor: { options },
+                           },
+                         }) {
   function goBack() {
     navigation.goBack();
   }
 
   return (
-    <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
-      {navigation.canGoBack() && (
-        <Back onPress={() => goBack()}>
-          <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
-          <BackText>返回</BackText>
-        </Back>
-      )}
-      <Title>{options.headerTitle || 'Title'}</Title>
-    </Header>
+      <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
+        {navigation.canGoBack() && (
+            <Back onPress={() => goBack()}>
+              <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
+              <BackText>返回</BackText>
+            </Back>
+        )}
+        <Title>{options.headerTitle || 'Title'}</Title>
+      </Header>
   );
 }
 

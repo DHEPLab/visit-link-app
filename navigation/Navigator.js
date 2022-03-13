@@ -124,85 +124,84 @@ export default function StackNavigator() {
   const user = useSelector((state) => state.user);
 
   return (
-    <Stack.Navigator>
-      {user.userToken == null ? (
-        <>
-          <Stack.Screen
-            name="SignIn"
-            component={SignIn}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="Index" component={HomeTabs} options={{ headerShown: false }} />
-          {screens.map((screen) => (
-            <Stack.Screen
-              key={screen.name}
-              name={screen.name}
-              component={screen.component}
-              options={{
-                header: NavigatorHeader,
-                headerTitle: screen.title,
-                headerShown: screen.headerShown,
-                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-              }}
-            />
-          ))}
-        </>
-      )}
-    </Stack.Navigator>
+      <Stack.Navigator>
+        {user.userToken == null ? (
+            <>
+              <Stack.Screen
+                  name="SignIn"
+                  component={SignIn}
+                  options={{
+                    headerShown: false,
+                  }}
+              />
+            </>
+        ) : (
+            <>
+              <Stack.Screen name="Home" component={HomeTabs} options={{ headerShown: false }} />
+              {screens.map((screen) => (
+                  <Stack.Screen
+                      key={screen.name}
+                      name={screen.name}
+                      component={screen.component}
+                      options={{
+                        header: NavigatorHeader,
+                        headerTitle: screen.title,
+                        headerShown: screen.headerShown,
+                        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                      }}
+                  />
+              ))}
+            </>
+        )}
+      </Stack.Navigator>
   );
 }
 
 function HomeTabs() {
   return (
-    <Tab.Navigator
-        screenOptions={{
-            headerShown: false,
-            tabBarHideOnKeyboard: true,
-            tabBarStyle: {
-                height: px2dp(68),
-                borderTopWidth: 1,
-                borderTopColor: '#FFC3A0',
+      <Tab.Navigator
+          tabBarOptions={{
+            keyboardHidesTabBar: true,
+            style: {
+              height: px2dp(68),
+              borderTopWidth: 1,
+              borderTopColor: '#FFC3A0',
             },
-        }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>首页</TabBarLabel>,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
-        }}
-      />
-      <Tab.Screen
-        name="Babies"
-        component={Babies}
-        options={{
-          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="baby" />,
-        }}
-      />
-      <Tab.Screen
-        name="Visits"
-        component={Visits}
-        options={{
-          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>家访安排</TabBarLabel>,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="visit" />,
-        }}
-      />
-      <Tab.Screen
-        name="Me"
-        component={Me}
-        options={{
-          tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>个人中心</TabBarLabel>,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="me" />,
-        }}
-      />
-    </Tab.Navigator>
+          }}
+      >
+        <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>首页</TabBarLabel>,
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
+            }}
+        />
+        <Tab.Screen
+            name="Babies"
+            component={Babies}
+            options={{
+              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>,
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="baby" />,
+            }}
+        />
+        <Tab.Screen
+            name="Visits"
+            component={Visits}
+            options={{
+              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>家访安排</TabBarLabel>,
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="visit" />,
+            }}
+        />
+        <Tab.Screen
+            name="Me"
+            component={Me}
+            options={{
+              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>个人中心</TabBarLabel>,
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="me" />,
+            }}
+        />
+      </Tab.Navigator>
   );
 }
 

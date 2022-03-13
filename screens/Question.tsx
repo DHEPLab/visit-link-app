@@ -32,7 +32,7 @@ export default function QuestionScreen({ navigation, route }) {
       return result;
     })
     storage.setAnswers(visitId, {lessonId: lessonId, answers: resultList});
-    navigation.navigate('LessonModules', params.backParams);
+    navigation.navigate('LessonModules', {});
   }
 
   const QuestionTypeEnum = {
