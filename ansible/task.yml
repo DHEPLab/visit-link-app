@@ -9,7 +9,7 @@
     app_name: healthy-future-app
     app_path: /opt/healthy-future-app
   tasks:
-    - name: clean app path
+    - name: clean app/sdk44 path
       file:
         path: "{{ app_path }}/sdk44"
         state: absent
