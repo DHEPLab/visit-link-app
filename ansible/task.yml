@@ -11,7 +11,7 @@
   tasks:
     - name: clean app path
       file:
-        path: "{{ app_path }}"
+        path: "{{ app_path }}/sdk44"
         state: absent
     - name: create app path
       file:
