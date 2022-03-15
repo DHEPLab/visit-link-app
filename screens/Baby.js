@@ -236,6 +236,7 @@ export default function Baby({ navigation, route }) {
               started={started}
               navigation={navigation}
               approved={baby.approved}
+              canCreate={baby.canCreate}
             />
           ),
           Family: () => (
@@ -300,6 +301,7 @@ function Visits({
   navigation,
   onCreateVisit,
   approved,
+  canCreate
 }) {
   function handlePressVisit(item) {
     if (!approved && item.status === 'NOT_STARTED') {
@@ -340,7 +342,7 @@ function Visits({
         )}
       />
       <FixedButtonContainer>
-        <Button size="large" disabled={!approved} title="新建家访" onPress={onCreateVisit} />
+        <Button size="large" disabled={!canCreate} title="新建家访" onPress={onCreateVisit} />
       </FixedButtonContainer>
     </VisitsContainer>
   );
