@@ -4,7 +4,7 @@
     "description": "RURAL EDUCATION ACTION PROGRAM",
     "slug": "healthy-future-app",
     "platforms": ["android"],
-    "version": "4.0.2-dev",
+    "version": "4.0.3-dev",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "hf",

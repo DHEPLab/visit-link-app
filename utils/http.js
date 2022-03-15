@@ -25,7 +25,7 @@ async function cleanToken() {
   await AsyncStorage.removeItem('JWT_TOKEN');
 }
 
-async function onResponseError(status, data) {
+async function onResponseError(url, status, data) {
   let msg = '服务异常，请稍后重试';
   switch (status) {
     case 502:
@@ -44,10 +44,11 @@ async function onResponseError(status, data) {
         msg = data.detail;
       }
   }
+  console.warn(url, msg, data)
   ToastAndroid.show(msg, ToastAndroid.LONG);
 }
 
-function request(fetchPromise, method, silence) {
+function request(fetchPromise, method, {silence, url}) {
   return new Promise((resolve, reject) => {
     fetchPromise
       .then(async (response) => {
@@ -57,20 +58,20 @@ function request(fetchPromise, method, silence) {
         if (response.ok) {
           resolve(data);
         } else {
-          !silence && onResponseError(response.status, data);
+          !silence && onResponseError(url, response.status, data);
           reject(data);
         }
       })
       .catch((error) => {
         if (!silence) {
           if (method === 'GET') {
-            ToastAndroid.show('网络异常，请稍后重试', ToastAndroid.SHORT);
+            ToastAndroid.show(url + '网络异常，请稍后重试', ToastAndroid.SHORT);
           } else {
             store.dispatch(openGlobalSubmitErrorMessage());
           }
         } 
         reject(error);
-        console.warn(JSON.stringify(error));
+        console.warn(url+ JSON.stringify(error));
       });
   });
 }
@@ -106,7 +107,7 @@ export default {
         body: JSON.stringify(body),
         timeout,
       }),
-      'POST'
+      'POST',{url}
     );
   },
   put(url, body) {
@@ -121,7 +122,7 @@ export default {
         body: JSON.stringify(body),
         timeout,
       }),
-      'PUT'
+      'PUT',{url}
     );
   },
   silencePut(url, body) {
@@ -136,8 +137,7 @@ export default {
         body: JSON.stringify(body),
         timeout,
       }),
-      'PUT',
-      true
+      'PUT',{silence: true, url}
     );
   },
   get(url, params) {
@@ -150,7 +150,7 @@ export default {
         },
         timeout,
       }),
-      'GET'
+      'GET',{url}
     );
   },
   silenceGet(url, params) {
@@ -163,8 +163,7 @@ export default {
         },
         timeout,
       }),
-      'GET',
-      true
+      'GET',{silence: true, url}
     );
   },
   delete(url) {
@@ -177,7 +176,7 @@ export default {
         },
         timeout,
       }),
-      'DELETE'
+      'DELETE',{url}
     );
   },
 };
