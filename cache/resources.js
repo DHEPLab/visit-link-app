@@ -4,27 +4,22 @@ import http from '../utils/http';
 import Modules from '../utils/module';
 
 async function fetchUpdateAsync() {
-  try {
-    const lessons = await http.get('/api/resources/lessons');
-    lessons.forEach(storage.addLesson);
-    const { modules, media } = await http.get('/api/resources/modules');
-    modules
+  const lessons = await http.get('/api/resources/lessons');
+  lessons.forEach(storage.addLesson);
+  const { modules, media } = await http.get('/api/resources/modules');
+  modules
       .map((module) => ({
         ...module,
         pageComponents: Modules.pageable(module.components),
         components: [],
       }))
       .forEach(storage.addModule);
-    media.forEach(async (medium) => {
-      if (medium) {
-        await fs.downloadFromOSS(medium);
-      }
-    });
-    storage.setLastUpdateAt(new Date());
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
+  media.forEach(async (medium) => {
+    if (medium) {
+      await fs.downloadFromOSS(medium);
+    }
+  });
+  storage.setLastUpdateAt(new Date());
 }
 
 function checkForUpdateAsync() {
