@@ -62,7 +62,7 @@ function formatTimeCN(time) {
 }
 
 function formatDateTime(datetime) {
-  return moment(datetime).format('YYYY-MM-DDTHH:mm');
+  return moment(datetime).format('YYYY-MM-DDTHH:mm:ss');
 }
 
 function formatDateTimeCN(datetime) {
