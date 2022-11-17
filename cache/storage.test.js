@@ -48,14 +48,14 @@ it('should save visit status', async () => {
   await storage.setUncommittedVisitStatus(
     1,
     'UNDONE',
-    Visits.formatDateTime(new Date('2020-01-01T10:00'))
+    Visits.formatDateTime(new Date('2020-01-01T10:00:00'))
   );
   await storage.setUncommittedVisitStatus(2, 'DONE');
   const { result } = renderHook(() => storage.useUncommittedVisitStatus());
   await waitFor(() => {
     const [status] = result.current;
     expect(status).toStrictEqual({
-      1: { status: 'UNDONE', startTime: '2020-01-01T10:00' },
+      1: { status: 'UNDONE', startTime: '2020-01-01T10:00:00' },
       2: { status: 'DONE' },
     });
   });
