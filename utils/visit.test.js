@@ -25,7 +25,7 @@ it('should format visit date', () => {
 });
 
 it('should format visit date time', () => {
-  expect(Visit.formatDateTime(new Date('2020-07-12 11:11'))).toBe('2020-07-12T11:11');
+  expect(Visit.formatDateTime(new Date('2020-07-12 11:11:11'))).toBe('2020-07-12T11:11:11');
 });
 
 it('should merge date and time', () => {
