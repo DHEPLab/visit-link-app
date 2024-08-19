@@ -7,6 +7,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {setStatusBarStyle} from 'expo-status-bar';
 import {Asset} from 'expo-asset';
 import fundebug from 'fundebug-reactnative'
+import { useTranslation } from 'react-i18next';
+import './i18n';
 
 import {Provider, useDispatch, useSelector} from 'react-redux';
 import {closeGlobalSubmitErrorMessage, netInfo, restoreToken} from './actions';
@@ -89,15 +91,16 @@ export default function App(props) {
 function GlobalErrorMessage() {
   const { visible } = useSelector((state) => state.message);
   const dispatch = useDispatch();
+  const { t } = useTranslation('App');
 
   return (
-    <Message
-      error
-      visible={visible}
-      title="提交失败"
-      content="网络发生错误，请稍后重试"
-      buttonText="知道了"
-      onButtonPress={() => dispatch(closeGlobalSubmitErrorMessage())}
-    />
+      <Message
+          error
+          visible={visible}
+          title={t('submitFailed')}
+          content={t('networkError')}
+          buttonText={t('understood')}
+          onButtonPress={() => dispatch(closeGlobalSubmitErrorMessage())}
+      />
   );
 }

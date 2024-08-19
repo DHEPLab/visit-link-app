@@ -2,94 +2,96 @@ import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Http from '../utils/http';
 import { useBoolState } from '../utils';
 import { styled } from '../utils/styled';
 import {
-  Message,
-  Form,
-  FormItem,
-  PasswordInput,
-  Button,
-  Alert,
-  LargeButtonContainer,
+    Message,
+    Form,
+    FormItem,
+    PasswordInput,
+    Button,
+    Alert,
+    LargeButtonContainer,
 } from '../components';
 import { signOut } from '../actions';
 import { ToastAndroid, Keyboard } from 'react-native';
 
-const validationSchema = Yup.object().shape({
-  oldPassword: Yup.string().required('旧密码不能为空'),
-  password: Yup.string().min(6, '密码必须至少 6 个字符').required('不能为空'),
-});
-
 export default function ChangePassword() {
-  const dispatch = useDispatch();
-  const [visible, openMessage] = useBoolState();
+    const { t } = useTranslation("ChangePassword");
+    const dispatch = useDispatch();
+    const [visible, openMessage] = useBoolState();
 
-  function onSubmit({ oldPassword, password }) {
-    // fix huawei unable to display toast when soft keyborard pops up
-    Keyboard.dismiss();
-    Http.put('/api/account/password', {
-      oldPassword,
-      password,
-    })
-      .then(() => {
-        openMessage();
-        setTimeout(async () => {
-          await Http.signOut();
-          dispatch(signOut());
-        }, 500);
-      })
-      .catch((err) => {
-        if (err.status === 400) {
-          ToastAndroid.showWithGravity('旧密码错误', ToastAndroid.LONG, ToastAndroid.TOP);
-        }
-      });
-  }
+    const validationSchema = Yup.object().shape({
+        oldPassword: Yup.string().required(t('oldPasswordRequired')),
+        password: Yup.string().min(6, t('passwordMinLength')).required(t('passwordRequired')),
+    });
 
-  return (
-    <Container>
-      <Alert>请您牢记修改的账户密码，提交后将不再显示。</Alert>
-      <Message visible={visible} title="密码修改成功，请您重新登录" />
-      <Formik
-        initialValues={{}}
-        validateOnChange={false}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ handleSubmit, values }) => (
-          <>
-            <Form labelWidth={50} labelAlign="right">
-              <FormItem name="oldPassword" label="旧密码">
-                <PasswordInput />
-              </FormItem>
-              <FormItem name="password" label="新密码">
-                <PasswordInput />
-              </FormItem>
-              <FormItem
-                name="confirmPassword"
-                label="确认密码"
-                noBorder
-                validate={(value) => {
-                  if (value !== values.password) {
-                    return '您两次输入的新密码不一致';
-                  }
-                }}
-              >
-                <PasswordInput onEndEditing={handleSubmit} />
-              </FormItem>
-            </Form>
-            <LargeButtonContainer>
-              <Button size="large" onPress={handleSubmit} title="提交" />
-            </LargeButtonContainer>
-          </>
-        )}
-      </Formik>
-    </Container>
-  );
+    function onSubmit({ oldPassword, password }) {
+        // fix huawei unable to display toast when soft keyborard pops up
+        Keyboard.dismiss();
+        Http.put('/api/account/password', {
+            oldPassword,
+            password,
+        })
+            .then(() => {
+                openMessage();
+                setTimeout(async () => {
+                    await Http.signOut();
+                    dispatch(signOut());
+                }, 500);
+            })
+            .catch((err) => {
+                if (err.status === 400) {
+                    ToastAndroid.showWithGravity(t('oldPasswordIncorrect'), ToastAndroid.LONG, ToastAndroid.TOP);
+                }
+            });
+    }
+
+    return (
+        <Container>
+            <Alert>{t('passwordChangeWarning')}</Alert>
+            <Message visible={visible} title={t('passwordChangeSuccess')} />
+            <Formik
+                initialValues={{}}
+                validateOnChange={false}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+            >
+                {({ handleSubmit, values }) => (
+                    <>
+                        <Form labelWidth={50} labelAlign="right">
+                            <FormItem name="oldPassword" label={t('oldPassword')}>
+                                <PasswordInput />
+                            </FormItem>
+                            <FormItem name="password" label={t('newPassword')}>
+                                <PasswordInput />
+                            </FormItem>
+                            <FormItem
+                                name="confirmPassword"
+                                label={t('confirmPassword')}
+                                noBorder
+                                validate={(value) => {
+                                    if (value !== values.password) {
+                                        return t('passwordMismatch');
+                                    }
+                                }}
+                            >
+                                <PasswordInput onEndEditing={handleSubmit} />
+                            </FormItem>
+                        </Form>
+                        <LargeButtonContainer>
+                            <Button size="large" onPress={handleSubmit} title={t('submit')} />
+                        </LargeButtonContainer>
+                    </>
+                )}
+            </Formik>
+        </Container>
+    );
 }
 
 const Container = styled.View`
-  padding: 6px 28px;
+    padding: 6px 28px;
 `;

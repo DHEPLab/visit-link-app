@@ -2,8 +2,8 @@ import Constants from 'expo-constants';
 
 const environments = {
   local: {
-    apiHost: 'https://dev.healthyfutures.cloud'
-    // apiHost: 'http://192.168.43.30:8080',
+    //apiHost: 'https://dev.healthyfutures.cloud'
+    apiHost: 'http://192.168.71.53:8080',
   },
   dev: {
     apiHost: 'https://dev.healthyfutures.cloud',

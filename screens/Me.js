@@ -2,6 +2,7 @@ import React from 'react';
 import Constants from 'expo-constants';
 import {Image, RefreshControl, ScrollView, View} from 'react-native';
 import {useDispatch} from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Http from '../utils/http';
 import {styled} from '../utils/styled';
@@ -14,6 +15,7 @@ import {signOut} from '../actions';
 import QrCodeScanner from "./QrCodeScanner";
 
 export default function Me({ navigation }) {
+  const { t } = useTranslation("Me");
   const dispatch = useDispatch();
   const { navigate } = navigation;
   const [user, refresh, refreshing] = useFetch('/api/account/profile');
@@ -37,74 +39,75 @@ export default function Me({ navigation }) {
     Storage.setBabies([])
     Storage.setOfflineBabies([])
   }
-  return (
-    <>
-      <ScrollView
-        refreshControl={
-          <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
-        }
-      >
-        <Header {...Colors.linearGradient}>
-          <Message visible={visible} title="您已退出登录" />
-          <BackgroundImage source={require('../assets/images/me-bg.png')} />
-          <HeaderTitle>个人中心</HeaderTitle>
-          <NameContainer>
-            <Name>{user.realName}</Name>
-            <Identity>ID: {chw?.identity}</Identity>
-          </NameContainer>
-          <InfoContainer>
-            <View>
-              <PhoneNumber>{user.phone}</PhoneNumber>
-              <Location>{user.chw?.tags?.join(', ')}</Location>
-            </View>
-            <QrCodeScanner navigation={navigation}/>
-          </InfoContainer>
-        </Header>
 
-        <CardsContainer>
-          <Card
-            title="账户信息"
-            right={<Button title="修改密码" onPress={() => navigate('ChangePassword')} />}
-            background={require('../assets/images/account.png')}
-            backgroundWidth={40}
-            backgroundHeight={50}
-          >
-            <StaticForm>
-              <StaticField label="账户名称">{user.username}</StaticField>
-              <StaticField label="账户密码">******</StaticField>
-            </StaticForm>
-          </Card>
-          {supervisor?.id && (
+  return (
+      <>
+        <ScrollView
+            refreshControl={
+              <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
+            }
+        >
+          <Header {...Colors.linearGradient}>
+            <Message visible={visible} title={t('logOutSuccessfully')} />
+            <BackgroundImage source={require('../assets/images/me-bg.png')} />
+            <HeaderTitle>{t('account')}</HeaderTitle>
+            <NameContainer>
+              <Name>{user.realName}</Name>
+              <Identity>{t('id')}: {chw?.identity}</Identity>
+            </NameContainer>
+            <InfoContainer>
+              <View>
+                <PhoneNumber>{user.phone}</PhoneNumber>
+                <Location>{user.chw?.tags?.join(', ')}</Location>
+              </View>
+              <QrCodeScanner navigation={navigation}/>
+            </InfoContainer>
+          </Header>
+
+          <CardsContainer>
             <Card
-              title="督导信息"
-              background={require('../assets/images/supervisor.png')}
-              backgroundWidth={40}
-              backgroundHeight={50}
+                title={t('myAccount')}
+                right={<Button title={t('resetPassword')} onPress={() => navigate('ChangePassword')} />}
+                background={require('../assets/images/account.png')}
+                backgroundWidth={40}
+                backgroundHeight={50}
             >
               <StaticForm>
-                <StaticField label="督导姓名">{supervisor?.realName}</StaticField>
-                <StaticField label="督导电话">{supervisor?.phone}</StaticField>
+                <StaticField label={t('username')}>{user.username}</StaticField>
+                <StaticField label={t('password')}>******</StaticField>
               </StaticForm>
             </Card>
-          )}
-        </CardsContainer>
-      </ScrollView>
+            {supervisor?.id && (
+                <Card
+                    title={t('mySupervisor')}
+                    background={require('../assets/images/supervisor.png')}
+                    backgroundWidth={40}
+                    backgroundHeight={50}
+                >
+                  <StaticForm>
+                    <StaticField label={t('supervisorName')}>{supervisor?.realName}</StaticField>
+                    <StaticField label={t('supervisorPhoneNumber')}>{supervisor?.phone}</StaticField>
+                  </StaticForm>
+                </Card>
+            )}
+          </CardsContainer>
+        </ScrollView>
 
-      <Logout>
-        <Button title="退出登录" type="weaken" onPress={openConfirm} />
-      </Logout>
-      <Version>版本号 v{Constants.manifest.version}</Version>
+        <Logout>
+          <Button title={t('logOut')} type="weaken" onPress={openConfirm} />
+        </Logout>
+        <Version>{t('version')} v{Constants.manifest.version}</Version>
 
-      <Modal
-        title="退出登录"
-        visible={confirmVisible}
-        contentText="您确定要退出登录吗？"
-        okText="退出登录"
-        cancelText="稍后再说"
-        onCancel={closeConfirm}
-        onOk={handleLogout}
-      />
-    </>
+        <Modal
+            title={t('logOut')}
+            visible={confirmVisible}
+            contentText={t('logOutConfirmation')}
+            okText={t('logOut')}
+            cancelText={t('cancel')}
+            onCancel={closeConfirm}
+            onOk={handleLogout}
+        />
+      </>
   );
 }
 
