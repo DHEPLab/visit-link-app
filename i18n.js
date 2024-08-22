@@ -24,9 +24,10 @@ const deviceLanguage = getLanguageFromLocale(Localization.locale);
 i18n
     .use(initReactI18next)
     .init({
+        compatibilityJSON: 'v3',
         resources: {
-            en: { translation: enTranslation },
-            zh: { translation: zhTranslation }
+            en: enTranslation,
+            zh: zhTranslation
         },
         lng: deviceLanguage,
         fallbackLng: 'en',

@@ -17,3 +17,4 @@ dist.*/
 
 *.tar.gz
 /coverage/
+.idea
