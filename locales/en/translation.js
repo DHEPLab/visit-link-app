@@ -4,7 +4,7 @@ export default {
         myAccount: "My Account",
         username: "Username",
         password: "Password",
-        resetPassword: "Reset Password",
+        resetMyPassword: "Reset Password",
         mySupervisor: "My Supervisor",
         supervisorName: "Supervisor Name",
         supervisorPhoneNumber: "Supervisor Phone Number",
@@ -70,6 +70,10 @@ export default {
         pending: "Pending",
     },
     Navigator:{
-        account:"Account"
+        account:"Account",
+        resetPassword: "Reset Password",
+    },
+    Common: {
+        back: "Back",
     }
 }

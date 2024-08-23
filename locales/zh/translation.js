@@ -4,7 +4,7 @@ export default {
         myAccount: "我的账户",
         username: "账户名称",
         password: "账户密码",
-        resetPassword: "修改密码",
+        resetMyPassword: "修改密码",
         mySupervisor: "我的督导",
         supervisorName: "督导姓名",
         supervisorPhoneNumber: "督导电话",
@@ -70,6 +70,10 @@ export default {
         pending: "待审核",
     },
     Navigator:{
-        account:"个人中心"
-    }
+        account:"个人中心",
+        resetPassword: "修改账户密码",
+    },
+    Common: {
+        back: "返回",
+    },
 }

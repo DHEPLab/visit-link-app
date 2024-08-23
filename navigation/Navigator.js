@@ -33,98 +33,100 @@ import {useTranslation} from "react-i18next";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const screens = [
-  {
-    name: 'PickBaby',
-    title: '选择宝宝',
-    component: PickBaby,
-  },
-  {
-    name: 'PickVisitTime',
-    title: '选择家访日期',
-    component: PickVisitTime,
-  },
-  {
-    name: 'Visit',
-    title: '家访详情',
-    component: Visit,
-  },
-  {
-    name: 'CreateVisit',
-    title: '新建家访',
-    component: CreateVisit,
-  },
-  {
-    name: 'Module',
-    component: Module,
-    headerShown: false,
-  },
-  {
-    name: 'Question',
-    component: Question,
-    headerShown: false,
-  },
-  {
-    name: 'LessonModules',
-    component: LessonModules,
-    headerShown: false,
-  },
-  {
-    name: 'LessonIntro',
-    component: LessonIntro,
-    headerShown: false,
-  },
-  {
-    name: 'Baby',
-    component: Baby,
-    headerShown: false,
-  },
-  {
-    name: 'CreateBabyStep1',
-    headerShown: false,
-    component: CreateBabyStep1,
-  },
-  {
-    name: 'CreateBabyStep2',
-    headerShown: false,
-    component: CreateBabyStep2,
-  },
-  {
-    name: 'EditCarer',
-    title: '编辑看护人',
-    component: EditCarer,
-  },
-  {
-    name: 'EditBaby',
-    title: '修改宝宝信息',
-    component: EditBaby,
-  },
-  {
-    name: 'EditAddress',
-    title: '修改地址信息',
-    component: EditAddress,
-  },
-  {
-    name: 'CreateCarer',
-    title: '添加看护人',
-    component: EditCarer,
-  },
-  {
-    name: 'CreateBabyStep3',
-    headerShown: false,
-    component: CreateBabyStep3,
-  },
-  {
-    name: 'ChangePassword',
-    title: '修改账户密码',
-    component: ChangePassword,
-  },
-];
-
 export default function StackNavigator() {
   const user = useSelector((state) => state.user);
+  const { t } = useTranslation('Navigator');
 
-  return (
+  const screens = [
+    {
+      name: 'PickBaby',
+      title: '选择宝宝',
+      component: PickBaby,
+    },
+    {
+      name: 'PickVisitTime',
+      title: '选择家访日期',
+      component: PickVisitTime,
+    },
+    {
+      name: 'Visit',
+      title: '家访详情',
+      component: Visit,
+    },
+    {
+      name: 'CreateVisit',
+      title: '新建家访',
+      component: CreateVisit,
+    },
+    {
+      name: 'Module',
+      component: Module,
+      headerShown: false,
+    },
+    {
+      name: 'Question',
+      component: Question,
+      headerShown: false,
+    },
+    {
+      name: 'LessonModules',
+      component: LessonModules,
+      headerShown: false,
+    },
+    {
+      name: 'LessonIntro',
+      component: LessonIntro,
+      headerShown: false,
+    },
+    {
+      name: 'Baby',
+      component: Baby,
+      headerShown: false,
+    },
+    {
+      name: 'CreateBabyStep1',
+      headerShown: false,
+      component: CreateBabyStep1,
+    },
+    {
+      name: 'CreateBabyStep2',
+      headerShown: false,
+      component: CreateBabyStep2,
+    },
+    {
+      name: 'EditCarer',
+      title: '编辑看护人',
+      component: EditCarer,
+    },
+    {
+      name: 'EditBaby',
+      title: '修改宝宝信息',
+      component: EditBaby,
+    },
+    {
+      name: 'EditAddress',
+      title: '修改地址信息',
+      component: EditAddress,
+    },
+    {
+      name: 'CreateCarer',
+      title: '添加看护人',
+      component: EditCarer,
+    },
+    {
+      name: 'CreateBabyStep3',
+      headerShown: false,
+      component: CreateBabyStep3,
+    },
+    {
+      name: 'ChangePassword',
+      title: t('resetPassword'),
+      component: ChangePassword,
+    },
+  ];
+
+
+    return (
       <Stack.Navigator>
         {user.userToken == null ? (
             <>
@@ -200,7 +202,7 @@ function HomeTabs() {
             name="Me"
             component={Me}
             options={{
-              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>t{('Account')}</TabBarLabel>,
+              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>{t('Account')}</TabBarLabel>,
               tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="me" />,
             }}
         />
