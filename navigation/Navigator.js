@@ -28,6 +28,7 @@ import LessonModules from '../screens/LessonModules';
 import Module from '../screens/Module';
 import Question from '../screens/Question';
 import EditAddress from '../screens/BabyForm/EditAddress';
+import {useTranslation} from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -158,6 +159,8 @@ export default function StackNavigator() {
 }
 
 function HomeTabs() {
+  const { t } = useTranslation("Navigator");
+
   return (
       <Tab.Navigator
           tabBarOptions={{
@@ -197,7 +200,7 @@ function HomeTabs() {
             name="Me"
             component={Me}
             options={{
-              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>个人中心</TabBarLabel>,
+              tabBarLabel: ({ focused }) => <TabBarLabel focused={focused}>t{('Account')}</TabBarLabel>,
               tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="me" />,
             }}
         />

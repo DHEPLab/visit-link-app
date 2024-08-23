@@ -21,7 +21,7 @@ export default {
         passwordRequired: "不能为空",
         oldPasswordIncorrect: "旧密码错误",
         passwordChangeWarning: "请您牢记修改的账户密码，提交后将不再显示。",
-        passwordChangeSuccess: "密码修改成功，请您重新登录",
+        passwordChangeSuccess: "修改成功，请重新登录",
         oldPassword: "旧密码",
         newPassword: "新密码",
         confirmPassword: "确认密码",
@@ -40,5 +40,36 @@ export default {
         submitFailed: "提交失败",
         networkError: "网络发生错误，请稍后重试",
         understood: "知道了"
+    },
+    Babies: {
+        searchPlaceholder: "请您输入要搜索的宝宝姓名",
+        backupPrompt: "请及时备份宝宝数据到本地，以便离线时正常使用, ",
+        backupLink: "点此一键备份",
+        backupSuccess: "备份成功",
+        offlineMode: "当前系统处于离线模式",
+        babyList: "宝宝列表",
+        sortBy: "排序方式：",
+        name: "姓名",
+        creationTime: "创建时间",
+        attention: "请注意",
+        addBaby: "添加宝宝",
+        attentionTooltip: "预产日期已过时请联系并确认是否已出生，若已出生则修改宝宝为已出生并填写准确的出生日期，若尚未出生请修改并延长预产日期。注意：当宝宝成长阶段由待产期调为已出生后不可改回待产期。",
+        noBabyInfo: "尚未添加宝宝信息",
+        noMatchingBaby: "暂无匹配的宝宝信息"
+    },
+    ListFooter: {
+        noMoreData: "无更多数据"
+    },
+    MiniBaby: {
+        babyDueDateArrived: "宝宝预产期已到",
+        idNotFilled: "未填写",
+        days: "天",
+    },
+    ApproveStatus: {
+        approved: "已审核",
+        pending: "待审核",
+    },
+    Navigator:{
+        account:"个人中心"
     }
 }
