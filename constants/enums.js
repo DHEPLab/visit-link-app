@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 export const Role = {
   ROLE_CHW: '工作人员',
   ROLE_SUPERVISOR: '督导',
@@ -25,9 +27,10 @@ export const VisitStatus = {
 };
 
 export const BabyStage = {
-  EDC: '待产期',
-  BIRTH: '已出生',
+  EDC: i18next.t('BabyStage.EDC', { ns: "enum" }),
+  BIRTH: i18next.t('BabyStage.BIRTH', { ns: "enum" }),
 };
+
 
 export const AssistedFood = {
   true: '已添加',

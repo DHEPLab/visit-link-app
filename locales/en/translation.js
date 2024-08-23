@@ -63,7 +63,7 @@ export default {
     MiniBaby: {
         babyDueDateArrived: "Baby's due date has arrived",
         idNotFilled: "Not filled",
-        days: "days",
+        days: "day(s)",
     },
     ApproveStatus: {
         approved: "Approved",
@@ -75,5 +75,11 @@ export default {
     },
     Common: {
         back: "Back",
+    },
+    enum: {
+        BabyStage: {
+            EDC: "EDC",
+            BIRTH: "Born"
+        }
     }
 }

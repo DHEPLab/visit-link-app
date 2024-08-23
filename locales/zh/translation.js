@@ -76,4 +76,10 @@ export default {
     Common: {
         back: "返回",
     },
+    enum: {
+        BabyStage: {
+            EDC: "待产期",
+            BIRTH: "已出生"
+        }
+    }
 }

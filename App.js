@@ -28,7 +28,7 @@ export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
 
   fundebug.init({
-    apikey : '27609b1a4d7f92df3ac938822f5f2d24b434b59042a1ceba944b3164d7934f3e'
+    apikey : 'my-secret-token-to-change-in-production'
   })
 
   // Load any resources or data that we need prior to rendering the app

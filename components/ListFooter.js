@@ -1,13 +1,16 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { styled } from '../utils/styled';
 import { Colors } from '../constants';
 
 export default function ListFooter({ loading }) {
+  const { t } = useTranslation('ListFooter');
+
   return (
-    <Container>
-      {loading ? <ActivityIndicator color={Colors.primary} /> : <NoMore>无更多数据</NoMore>}
-    </Container>
+      <Container>
+        {loading ? <ActivityIndicator color={Colors.primary} /> : <NoMore>{t('noMoreData')}</NoMore>}
+      </Container>
   );
 }
 

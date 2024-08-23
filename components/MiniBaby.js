@@ -1,5 +1,6 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 
 import ApproveStatus from '../components/ApproveStatus';
 import WaitingSubmit from '../components/WaitingSubmit';
@@ -7,44 +8,46 @@ import { BabyStage, GenderIcon } from '../constants/enums';
 import { styled, px2dp } from '../utils/styled';
 
 export default function MiniBaby({
-  baby: { id, approved, name, gender, stage, days, identity, pastEdc },
-  hideStatus,
-}) {
-  function genderColor(value) {
-    switch (value) {
-      case 'MALE':
-        return '#64B5CF';
-      case 'FEMALE':
-        return '#F2709C';
-      default:
-        return '#CECECE';
-    }
-  }
+                                     baby: { id, approved, name, gender, stage, days, identity, pastEdc },
+                                     hideStatus,
+                                 }) {
+    const { t } = useTranslation('MiniBaby');
 
-  return (
-    <Baby>
-      {!hideStatus && (
-        <StatusContainer>
-          {id?
-          <ApproveStatus gray approved={approved} />:
-          <WaitingSubmit gray approved={approved} />
-          }
-        </StatusContainer>
-      )}
-      <Name>{name}</Name>
-      <Gender>
-        <MaterialCommunityIcons
-          name={GenderIcon[gender]}
-          size={px2dp(12)}
-          color={genderColor(gender)}
-        />
-      </Gender>
-      <Age>
-        {days !== -1 && (pastEdc ? <Alert>宝宝预产期已到</Alert> : days && `${BabyStage[stage]} ${days} 天`)}
-      </Age>
-      <Identity>ID:{identity || '未填写'}</Identity>
-    </Baby>
-  );
+    function genderColor(value) {
+        switch (value) {
+            case 'MALE':
+                return '#64B5CF';
+            case 'FEMALE':
+                return '#F2709C';
+            default:
+                return '#CECECE';
+        }
+    }
+
+    return (
+        <Baby>
+            {!hideStatus && (
+                <StatusContainer>
+                    {id?
+                        <ApproveStatus gray approved={approved} />:
+                        <WaitingSubmit gray approved={approved} />
+                    }
+                </StatusContainer>
+            )}
+            <Name>{name}</Name>
+            <Gender>
+                <MaterialCommunityIcons
+                    name={GenderIcon[gender]}
+                    size={px2dp(12)}
+                    color={genderColor(gender)}
+                />
+            </Gender>
+            <Age>
+                {days !== -1 && (pastEdc ? <Alert>{t('babyDueDateArrived')}</Alert> : days && `${BabyStage[stage]} ${days} ${t('days')}`)}
+            </Age>
+            <Identity>ID:{identity || t('idNotFilled')}</Identity>
+        </Baby>
+    );
 }
 
 const StatusContainer = styled.View`

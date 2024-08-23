@@ -1,9 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { styled } from '../utils/styled';
 
 export default function ApproveStatus({ approved, gray }) {
-  return <Status gray={!approved && gray}>{approved ? '已审核' : '待审核'}</Status>;
+  const { t } = useTranslation('ApproveStatus');
+
+  return (
+      <Status gray={!approved && gray}>
+        {approved ? t('approved') : t('pending')}
+      </Status>
+  );
 }
 
 const Status = styled.Text`
