@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Icons from '../elements/Icons';
 import { Colors } from '../../constants';
 import { styled } from '../../utils/styled';
+import {useTranslation} from "react-i18next";
 
 export default function ({
                            navigation,
@@ -16,13 +17,15 @@ export default function ({
   function goBack() {
     navigation.goBack();
   }
+    const { t } = useTranslation('Common');
 
-  return (
+
+    return (
       <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
         {navigation.canGoBack() && (
             <Back onPress={() => goBack()}>
               <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
-              <BackText>返回</BackText>
+                <BackText>{t('back')}</BackText>
             </Back>
         )}
         <Title>{options.headerTitle || 'Title'}</Title>

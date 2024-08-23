@@ -67,7 +67,7 @@ export default function Me({ navigation }) {
           <CardsContainer>
             <Card
                 title={t('myAccount')}
-                right={<Button title={t('resetPassword')} onPress={() => navigate('ChangePassword')} />}
+                right={<Button title={t('resetMyPassword')} onPress={() => navigate('ChangePassword')} />}
                 background={require('../assets/images/account.png')}
                 backgroundWidth={40}
                 backgroundHeight={50}
