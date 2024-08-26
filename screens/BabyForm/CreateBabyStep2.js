@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, View, ToastAndroid } from 'react-native';
 import Arrays from 'lodash/array';
+import { useTranslation } from 'react-i18next';
 
 import { styled } from '../../utils/styled';
 import { CarerItem, CreateBabyNavigator, LargeButtonContainer, Button } from '../../components';
 
 export function useMethods() {
+  const { t } = useTranslation('CreateBabyStep2');
+
   function keepMasterCarerUnique(carers, masterCarerIndex) {
     return carers.map((carer, index) => {
       carer.master = index === masterCarerIndex;
@@ -37,15 +40,15 @@ export function useMethods() {
           break;
         }
       }
-      if (!hasMaster) return ToastAndroid.show('必须设置一个主看护人', ToastAndroid.LONG);
+      if (!hasMaster) return ToastAndroid.show(t('setPrimaryCarer'), ToastAndroid.LONG);
 
       navigation.navigate('CreateBabyStep3', { baby, carers });
     },
 
     create: (dataSource, carer) => {
       return carer.master
-        ? keepMasterCarerUnique([...dataSource, carer], dataSource.length)
-        : [...dataSource, carer];
+          ? keepMasterCarerUnique([...dataSource, carer], dataSource.length)
+          : [...dataSource, carer];
     },
 
     familyTies(carers, exclude) {
@@ -55,6 +58,7 @@ export function useMethods() {
 }
 
 export default function CreateBabyStep2({ navigation, route }) {
+  const { t } = useTranslation('CreateBabyStep2');
   const { params } = route;
   const { baby } = params;
   const [carers, setCarers] = useState([]);
@@ -78,66 +82,66 @@ export default function CreateBabyStep2({ navigation, route }) {
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1
-      ? // create new carer
+        ? // create new carer
         setCarers(create(carers, route.params.carer))
-      : // edit old carer
+        : // edit old carer
         setCarers(replace(carers, route.params.carerIndex, route.params.carer));
   }, [route.params.carer]);
 
   return (
-    <>
-      <CreateBabyNavigator active={2} navigation={navigation} />
-      <ScrollView>
-        <Container>
-          <ListHeader>
-            <View>
-              <Title>看护人列表</Title>
-              <SubTitle>最多可添加4位看护人</SubTitle>
-            </View>
-            <Button
-              disabled={carers.length > 3}
-              title="添加看护人"
-              onPress={() =>
-                navigation.navigate('CreateCarer', {
-                  from: 'CreateBabyStep2',
-                  filterFamilyTies: familyTies(carers),
-                })
-              }
-            />
-          </ListHeader>
-
-          <CarerListContainer>
-            {carers.map((carer, index) => (
-              <CarerItem
-                number={index + 1}
-                key={carer.familyTies}
-                value={carer}
-                noBorder={index === carers.length - 1}
-                onPressDelete={() => handleDelete(index)}
-                onChangeMaster={() => onChangeMaster(index)}
-                onPressModify={() =>
-                  navigation.navigate('EditCarer', {
-                    carer,
-                    carerIndex: index,
-                    from: 'CreateBabyStep2',
-                    filterFamilyTies: familyTies(carers, carer.familyTies),
-                  })
-                }
+      <>
+        <CreateBabyNavigator active={2} navigation={navigation} />
+        <ScrollView>
+          <Container>
+            <ListHeader>
+              <View>
+                <Title>{t('carerList')}</Title>
+                <SubTitle>{t('maxCarers')}</SubTitle>
+              </View>
+              <Button
+                  disabled={carers.length > 3}
+                  title={t('addCarer')}
+                  onPress={() =>
+                      navigation.navigate('CreateCarer', {
+                        from: 'CreateBabyStep2',
+                        filterFamilyTies: familyTies(carers),
+                      })
+                  }
               />
-            ))}
-          </CarerListContainer>
+            </ListHeader>
 
-          <LargeButtonContainer>
-            <Button
-              disabled={carers.length === 0}
-              size="large"
-              title="下一步"
-              onPress={() => handleNextStep(navigation, baby, carers)}
-            />
-          </LargeButtonContainer>
-        </Container>
-      </ScrollView>
-    </>
+            <CarerListContainer>
+              {carers.map((carer, index) => (
+                  <CarerItem
+                      number={index + 1}
+                      key={carer.familyTies}
+                      value={carer}
+                      noBorder={index === carers.length - 1}
+                      onPressDelete={() => handleDelete(index)}
+                      onChangeMaster={() => onChangeMaster(index)}
+                      onPressModify={() =>
+                          navigation.navigate('EditCarer', {
+                            carer,
+                            carerIndex: index,
+                            from: 'CreateBabyStep2',
+                            filterFamilyTies: familyTies(carers, carer.familyTies),
+                          })
+                      }
+                  />
+              ))}
+            </CarerListContainer>
+
+            <LargeButtonContainer>
+              <Button
+                  disabled={carers.length === 0}
+                  size="large"
+                  title={t('nextStep')}
+                  onPress={() => handleNextStep(navigation, baby, carers)}
+              />
+            </LargeButtonContainer>
+          </Container>
+        </ScrollView>
+      </>
   );
 }
 

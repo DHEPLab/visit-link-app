@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 import Form from './elements/Form';
 import Card from './elements/Card';
@@ -13,40 +14,42 @@ import LargeButtonContainer from './LargeButtonContainer';
 import Pcas from '../constants/pcas-code.json';
 import { styled } from '../utils/styled';
 
-const validationSchema = Yup.object().shape({
-  area: Yup.string().required('此项为必填'),
-  location: Yup.string().max(200, '最多200个字符').required('此项为必填'),
-});
-
 export default function AddressForm({ onSubmit, initialValues = {}, submitting }) {
-  return (
-    <Container>
-      <Formik
-        initialValues={initialValues}
-        validateOnChange={false}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ handleSubmit }) => (
-          <>
-            <Card title="地址信息" noPadding>
-              <Form>
-                <FormItem name="area" label="所在区域">
-                  <Cascader options={Pcas} placeholder="请选择省/市/县（区）/乡（镇）" />
-                </FormItem>
-                <FormItem name="location" label="详细地址" noBorder>
-                  <Input placeholder="请输入详细地址，精确到门牌号" />
-                </FormItem>
-              </Form>
-            </Card>
-            <LargeButtonContainer>
-              <Button size="large" title="提交" disabled={submitting} onPress={handleSubmit} />
-            </LargeButtonContainer>
-          </>
-        )}
-      </Formik>
-    </Container>
-  );
+    const { t } = useTranslation('AddressForm');
+
+    const validationSchema = Yup.object().shape({
+        area: Yup.string().required(t('required')),
+        location: Yup.string().max(200, t('locationMaxLength')).required(t('required')),
+    });
+
+    return (
+        <Container>
+            <Formik
+                initialValues={initialValues}
+                validateOnChange={false}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+            >
+                {({ handleSubmit }) => (
+                    <>
+                        <Card title={t('addressInfo')} noPadding>
+                            <Form>
+                                <FormItem name="area" label={t('area')}>
+                                    <Cascader options={Pcas} placeholder={t('selectArea')} />
+                                </FormItem>
+                                <FormItem name="location" label={t('detailedAddress')} noBorder>
+                                    <Input placeholder={t('enterDetailedAddress')} />
+                                </FormItem>
+                            </Form>
+                        </Card>
+                        <LargeButtonContainer>
+                            <Button size="large" title={t('submit')} disabled={submitting} onPress={handleSubmit} />
+                        </LargeButtonContainer>
+                    </>
+                )}
+            </Formik>
+        </Container>
+    );
 }
 
 const Container = styled.View`

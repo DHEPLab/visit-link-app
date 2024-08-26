@@ -80,6 +80,105 @@ export default {
         BabyStage: {
             EDC: "EDC",
             BIRTH: "Born"
-        }
-    }
+        },
+        Gender: {
+            FEMALE: "Female",
+            MALE: "Male",
+            UNKNOWN: "Unknown"
+        },
+        AssistedFood: {
+            TRUE: "Add",
+            FALSE: "No Add",
+        },
+        FeedingPattern: {
+            BREAST_MILK: "Breast Milk",
+            MILK_POWDER: "Milk Powder",
+            MIXED: "Mixed",
+            TERMINATED: "Terminated",
+        },
+        RELATIVES: {
+            MOTHER: "Mother",
+            FATHER: "Father",
+            GRANDMOTHER: "Grandmother",
+            GRANDMA: "Grandma",
+            GRANDFATHER: "Grandfather",
+            GRANDPA: "Grandpa",
+            OTHER: "Other",
+        },
+    },
+    BabyForm: {
+        nameValidation: "Please enter 2-10 Chinese characters",
+        required: "This field is required",
+        babyInfo: "Baby Info",
+        babyName: "Baby Name",
+        enterBabyName: "Please enter 2-10 Chinese characters",
+        babyGender: "Baby Gender",
+        growthStage: "Growth Stage",
+        dueDate: "Due Date",
+        birthDate: "Birth Date",
+        supplementFood: "Supplement Food",
+        feedingMethods: "Feeding Methods",
+        submit: "Submit"
+    },
+    DatePicker: {
+        selectDate: "Please select year/month/day",
+    },
+    CreateBabyStep1: {
+        nextStep: "Next Step",
+        attention: "Confirmation",
+        loseEditedContent: "The edited content will be lost. Are you sure to return to the baby list?",
+        exit: "Confirm",
+        thinkAgain: "Cancel"
+    },
+    CreateBabyStep2: {
+        setPrimaryCarer: "Please set a primary caregiver",
+        carerList: "Caregiver List",
+        maxCarers: "You can add up to 4 caregivers",
+        addCarer: "Add Caregiver",
+        nextStep: "Next Step"
+    },
+    CarerItem: {
+        caregiver: "Caregiver {{number}}",
+        primaryCaregiver: "Primary Caregiver",
+        setPrimaryCaregiver: "Set as Primary Caregiver",
+        delete: "Delete",
+        edit: "Edit",
+        caregiverName: "Caregiver Name",
+        relationship: "Relatives",
+        phoneNumber: "Phone",
+        wechatAccount: "IM Account",
+    },
+    CreateCarer: {
+        nameValidation: "Please enter 2-10 Chinese characters",
+        required: "This field is required",
+        phoneValidation: "Please enter phone number",
+        wechatValidation: "No more than 20 characters.",
+        setPrimaryCaregiver: "Please set a primary caregiver",
+        confirmEdit: "Are you sure you want to edit the baby's information?",
+        caregiver: "Caregiver",
+        primaryCaregiver: "Primary Caregiver",
+        realName: "Name",
+        enterName: "Please enter 2-10 characters",
+        relationship: "Relatives",
+        phoneNumber: "Phone",
+        enterPhone: "Please enter phone number",
+        wechatAccount: "IM Account",
+        enterWechat: "Please enter instant messaging account.",
+        submit: "Submit",
+        add: "Add"
+    },
+    AddressForm: {
+        required: "This field is required",
+        locationMaxLength: "No more than 200 characters。",
+        addressInfo: "Address",
+        area: "Area",
+        selectArea: "Please select area",
+        detailedAddress: "Detailed Address",
+        enterDetailedAddress: "Please enter a detailed address, including the house number",
+        submit: "Submit"
+    },
+    CreateBabyStep3: {
+        submitSuccess: "Submission Successful",
+        submitMessage: "You can view the results in the list later. New baby creation requires supervisor approval. For expedited approval, please contact your supervisor directly.",
+    },
 }

@@ -7,9 +7,9 @@ export const Role = {
 };
 
 export const Gender = {
-  FEMALE: '女',
-  MALE: '男',
-  UNKNOWN: '未知',
+  FEMALE: i18next.t('Gender.FEMALE', { ns: "enum" }),
+  MALE: i18next.t('Gender.MALE', { ns: "enum" }),
+  UNKNOWN: i18next.t('Gender.UNKNOWN', { ns: "enum" }),
 };
 
 export const GenderIcon = {
@@ -33,25 +33,25 @@ export const BabyStage = {
 
 
 export const AssistedFood = {
-  true: '已添加',
-  false: '未添加',
+  true: i18next.t('AssistedFood.TRUE', { ns: "enum" }),
+  false: i18next.t('AssistedFood.FALSE', { ns: "enum" }),
 };
 
 export const FeedingPattern = {
-  BREAST_MILK: '纯母乳喂养',
-  MILK_POWDER: '纯奶粉喂养',
-  MIXED: '母乳奶粉混合喂养',
-  TERMINATED: '已终止母乳/奶粉喂养',
+  BREAST_MILK: i18next.t('FeedingPattern.BREAST_MILK', { ns: "enum" }),
+  MILK_POWDER: i18next.t('FeedingPattern.MILK_POWDER', { ns: "enum" }),
+  MIXED: i18next.t('FeedingPattern.MIXED', { ns: "enum" }),
+  TERMINATED: i18next.t('FeedingPattern.TERMINATED', { ns: "enum" }),
 };
 
 export const FamilyTies = {
-  MOTHER: "妈妈",
-  FATHER: "爸爸",
-  GRANDMOTHER: "奶奶",
-  GRANDMA: "外婆",
-  GRANDFATHER: "爷爷",
-  GRANDPA: "外公",
-  OTHER: "其他",
+  MOTHER: i18next.t('RELATIVES.MOTHER', { ns: "enum" }),
+  FATHER: i18next.t('RELATIVES.FATHER', { ns: "enum" }),
+  GRANDMOTHER: i18next.t('RELATIVES.GRANDMOTHER', { ns: "enum" }),
+  GRANDMA: i18next.t('RELATIVES.GRANDMA', { ns: "enum" }),
+  GRANDFATHER: i18next.t('RELATIVES.GRANDFATHER', { ns: "enum" }),
+  GRANDPA: i18next.t('RELATIVES.GRANDPA', { ns: "enum" }),
+  OTHER: i18next.t('RELATIVES.OTHER', { ns: "enum" }),
 };
 
 export const ModuleStatus = {

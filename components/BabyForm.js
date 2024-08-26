@@ -12,25 +12,26 @@ import SolidRadios from './elements/SolidRadios';
 import DatePicker from './elements/DatePicker';
 import Button from './elements/Button';
 import LargeButtonContainer from './LargeButtonContainer';
+import { useTranslation } from 'react-i18next';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
-    .matches(/^[\u4e00-\u9fa5]{2,10}$/, '请输入2个以上的汉字，最多10个字符')
-    .required('此项为必填'),
-  gender: Yup.string().required('此项为必填'),
-  stage: Yup.string().required('此项为必填'),
+      .matches(/^[\u4e00-\u9fa5]{2,10}$/, t('nameValidation'))
+      .required(t('required')),
+  gender: Yup.string().required(t('required')),
+  stage: Yup.string().required(t('required')),
 });
 
 function validate(values) {
   const errors = {};
   switch (values.stage) {
     case 'EDC':
-      if (!values.edc) errors.edc = '此项为必填';
+      if (!values.edc) errors.edc = t('required');
       break;
     case 'BIRTH':
-      if (!values.birthday) errors.birthday = '此项为必填';
-      if (values.assistedFood == null) errors.assistedFood = '此项为必填';
-      if (!values.feedingPattern) errors.feedingPattern = '此项为必填';
+      if (!values.birthday) errors.birthday = t('required');
+      if (values.assistedFood == null) errors.assistedFood = t('required');
+      if (!values.feedingPattern) errors.feedingPattern = t('required');
       break;
   }
   return errors;
@@ -45,6 +46,7 @@ function FilteredBabyStage(stage) {
 }
 
 export default function BabyForm({ onSubmit, submitBtnText = '提交', initialValues = {} }) {
+  const { t } = useTranslation('BabyForm');
   return (
     <Formik
       initialValues={initialValues}
@@ -55,19 +57,19 @@ export default function BabyForm({ onSubmit, submitBtnText = '提交', initialVa
     >
       {({ handleSubmit, values }) => (
         <>
-          <Card title="宝宝信息" noPadding>
+          <Card title={t('babyInfo')} noPadding>
             <Form>
-              <FormItem name="name" label="宝宝姓名">
-                <Input placeholder="请输入2-10个汉字" />
+              <FormItem name="name" label={t('babyName')}>
+                <Input placeholder={t('enterBabyName')} />
               </FormItem>
-              <FormItem name="gender" label="宝宝性别">
+              <FormItem name="gender" label={t('babyGender')}>
                 <SolidRadios enums={Gender} />
               </FormItem>
-              <FormItem name="stage" label="成长阶段" noBorder={!values.stage}>
+              <FormItem name="stage" label={t('growthStage')} noBorder={!values.stage}>
                 <SolidRadios enums={FilteredBabyStage(initialValues.stage)} />
               </FormItem>
               {values.stage === 'EDC' && (
-                <FormItem name="edc" label="预产日期" noBorder>
+                  <FormItem name="edc" label={t('dueDate')} noBorder>
                   <DatePicker
                     minimumDate={new Date()}
                     maximumDate={moment().add(280, 'day').toDate()}
@@ -76,13 +78,13 @@ export default function BabyForm({ onSubmit, submitBtnText = '提交', initialVa
               )}
               {values.stage === 'BIRTH' && (
                 <>
-                  <FormItem name="birthday" label="出生日期">
+                  <FormItem name="birthday" label={t('birthDate')}>
                     <DatePicker maximumDate={new Date()} />
                   </FormItem>
-                  <FormItem name="assistedFood" label="添加辅食">
+                  <FormItem name="assistedFood" label={t('supplementFood')}>
                     <SolidRadios enums={AssistedFood} />
                   </FormItem>
-                  <FormItem name="feedingPattern" label="喂养状态" noBorder>
+                  <FormItem name="feedingPattern" label={t('feedingMethods')} noBorder>
                     <SolidRadios enums={FeedingPattern} />
                   </FormItem>
                 </>
@@ -90,7 +92,7 @@ export default function BabyForm({ onSubmit, submitBtnText = '提交', initialVa
             </Form>
           </Card>
           <LargeButtonContainer>
-            <Button size="large" title={submitBtnText} onPress={handleSubmit} />
+            <Button size="large" title={submitBtnText || t('submit')} onPress={handleSubmit} />
           </LargeButtonContainer>
         </>
       )}

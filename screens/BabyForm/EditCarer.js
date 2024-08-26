@@ -2,6 +2,7 @@ import React from 'react';
 import { ToastAndroid } from 'react-native';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { styled } from '../../utils/styled';
 
 import {
@@ -19,16 +20,21 @@ import http from '../../utils/http';
 import confirm from "../../components/modal/confirm";
 import {useDispatch} from "react-redux";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .matches(/^[\u4e00-\u9fa5]{2,10}$/, '请输入2个以上的汉字，最多10个字符')
-    .required('此项为必填'),
-  familyTies: Yup.string().required('此项为必填'),
-  phone: Yup.string()
-    .matches(/^1[0-9]{10}$/, '请输入正确的手机号')
-    .required('此项为必填'),
-  wechat: Yup.string().nullable(true).max(20, '最多20个字符'),
-});
+export default function CreateCarer({ navigation, route }) {
+  const { t } = useTranslation('CreateCarer');
+  const { params } = route;
+  const dispatch = useDispatch();
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+        .matches(/^[\u4e00-\u9fa5]{2,10}$/, t('nameValidation'))
+        .required(t('required')),
+    familyTies: Yup.string().required(t('required')),
+    phone: Yup.string()
+        .matches(/^1[0-9]{10}$/, t('phoneValidation'))
+        .required(t('required')),
+    wechat: Yup.string().nullable(true).max(20, t('wechatValidation')),
+  });
 
 // The same baby cannot choose caregivers who have the same family ties
 function filteredFamilyTies(familyTies) {
@@ -42,12 +48,9 @@ function filteredFamilyTies(familyTies) {
   return filtered;
 }
 
-export default function CreateCarer({ navigation, route }) {
-  const { params } = route;
-  const dispatch = useDispatch()
   async function onSubmit(carer) {
     if (params?.carer?.master && !carer.master) {
-      ToastAndroid.show('请至少设置一个主看护人', ToastAndroid.LONG);
+      ToastAndroid.show(t('setPrimaryCaregiver'), ToastAndroid.LONG);
       return;
     }
 
@@ -61,7 +64,7 @@ export default function CreateCarer({ navigation, route }) {
       await http.post(`/api/babies/${params.babyId}/carers`, carer)
       navigation.navigate(params.from, { success: Math.random() });
     } else {
-      confirm("确认修改宝宝信息吗？", {
+      confirm(t('confirmEdit'), {
         onOk: () => {
           return http.put(`/api/babies/${params.babyId}/carers/${carer.id}`, carer);
         }, dispatch
@@ -70,48 +73,48 @@ export default function CreateCarer({ navigation, route }) {
   }
 
   return (
-    <Container>
-      <Formik
-        initialValues={params?.carer || { master: false }}
-        validateOnChange={false}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ handleSubmit, values, setFieldValue }) => (
-          <>
-            <Card
-              title="看护人"
-              right={
-                <CheckBox
-                  label="主看护人"
-                  value={values.master}
-                  onChange={(checked) => setFieldValue('master', checked)}
-                />
-              }
-              noPadding
-            >
-              <Form>
-                <FormItem name="name" label="真实姓名">
-                  <Input placeholder="请输入2-10个汉字" />
-                </FormItem>
-                <FormItem name="familyTies" label="亲属关系">
-                  <SolidRadios enums={filteredFamilyTies(params.filterFamilyTies)} />
-                </FormItem>
-                <FormItem name="phone" label="联系电话">
-                  <Input placeholder="请输入11位手机号码" />
-                </FormItem>
-                <FormItem name="wechat" label="微信号码" noBorder>
-                  <Input placeholder="请输入微信号" />
-                </FormItem>
-              </Form>
-            </Card>
-            <LargeButtonContainer>
-              <Button size="large" title={params?.carer ? '提交' : '添加'} onPress={handleSubmit} />
-            </LargeButtonContainer>
-          </>
-        )}
-      </Formik>
-    </Container>
+      <Container>
+        <Formik
+            initialValues={params?.carer || { master: false }}
+            validateOnChange={false}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+        >
+          {({ handleSubmit, values, setFieldValue }) => (
+              <>
+                <Card
+                    title={t('caregiver')}
+                    right={
+                      <CheckBox
+                          label={t('primaryCaregiver')}
+                          value={values.master}
+                          onChange={(checked) => setFieldValue('master', checked)}
+                      />
+                    }
+                    noPadding
+                >
+                  <Form>
+                    <FormItem name="name" label={t('realName')}>
+                      <Input placeholder={t('enterName')} />
+                    </FormItem>
+                    <FormItem name="familyTies" label={t('relationship')}>
+                      <SolidRadios enums={filteredFamilyTies(params.filterFamilyTies)} />
+                    </FormItem>
+                    <FormItem name="phone" label={t('phoneNumber')}>
+                      <Input placeholder={t('enterPhone')} />
+                    </FormItem>
+                    <FormItem name="wechat" label={t('wechatAccount')} noBorder>
+                      <Input placeholder={t('enterWechat')} />
+                    </FormItem>
+                  </Form>
+                </Card>
+                <LargeButtonContainer>
+                  <Button size="large" title={params?.carer ? t('submit') : t('add')} onPress={handleSubmit} />
+                </LargeButtonContainer>
+              </>
+          )}
+        </Formik>
+      </Container>
   );
 }
 

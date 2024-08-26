@@ -80,6 +80,100 @@ export default {
         BabyStage: {
             EDC: "待产期",
             BIRTH: "已出生"
-        }
-    }
+        },
+        FeedingPattern: {
+            BREAST_MILK: "纯母乳喂养",
+            MILK_POWDER: "纯奶粉喂养",
+            MIXED: "母乳奶粉混合喂养",
+            TERMINATED: "已终止母乳/奶粉喂养",
+        },
+        AssistedFood: {
+            TRUE: "已添加",
+            FALSE: "未添加",
+        },
+        RELATIVES: {
+            MOTHER: "妈妈",
+            FATHER: "爸爸",
+            GRANDMOTHER: "奶奶",
+            GRANDMA: "外婆",
+            GRANDFATHER: "爷爷",
+            GRANDPA: "外公",
+            OTHER: "其他",
+        },
+    },
+    BabyForm: {
+        nameValidation: "请输入2个以上的汉字，最多10个字符",
+        required: "此项为必填",
+        babyInfo: "宝宝信息",
+        babyName: "宝宝姓名",
+        enterBabyName: "请输入2-10个汉字",
+        babyGender: "宝宝性别",
+        growthStage: "成长阶段",
+        dueDate: "预产日期",
+        birthDate: "出生日期",
+        supplementFood: "添加辅食",
+        feedingMethods: "喂养状态",
+        submit: "提交"
+    },
+    DatePicker: {
+        selectDate: "请选择年/月/日",
+    },
+    CreateBabyStep1: {
+        nextStep: "下一步",
+        attention: "提示",
+        loseEditedContent: "已编辑内容将丢失是否返回至宝宝列表",
+        exit: "退出",
+        thinkAgain: "再想想"
+    },
+    CreateBabyStep2: {
+        setPrimaryCarer: "必须设置一个主看护人",
+        carerList: "看护人列表",
+        maxCarers: "最多可添加4位看护人",
+        addCarer: "添加看护人",
+        nextStep: "下一步"
+    },
+    CarerItem: {
+        caregiver: "看护人{{number}}",
+        primaryCaregiver: "主看护人",
+        setPrimaryCaregiver: "设为主看护人",
+        delete: "删除",
+        edit: "修改",
+        caregiverName: "看护人姓名",
+        relationship: "亲属关系",
+        phoneNumber: "联系电话",
+        wechatAccount: "微信号码",
+    },
+    CreateCarer: {
+        nameValidation: "请输入2个以上的汉字，最多10个字符",
+        required: "此项为必填",
+        phoneValidation: "请输入正确的手机号",
+        wechatValidation: "最多20个字符",
+        setPrimaryCaregiver: "请至少设置一个主看护人",
+        confirmEdit: "确认修改宝宝信息吗？",
+        caregiver: "看护人",
+        primaryCaregiver: "主看护人",
+        realName: "真实姓名",
+        enterName: "请输入2-10个汉字",
+        relationship: "亲属关系",
+        phoneNumber: "联系电话",
+        enterPhone: "请输入11位手机号码",
+        wechatAccount: "微信号码",
+        enterWechat: "请输入微信号",
+        submit: "提交",
+        add: "添加"
+    },
+    AddressForm: {
+        required: "此项为必填",
+        locationMaxLength: "最多200个字符",
+        addressInfo: "地址信息",
+        area: "所在区域",
+        selectArea: "请选择省/市/县（区）/乡（镇）",
+        detailedAddress: "详细地址",
+        enterDetailedAddress: "请输入详细地址，精确到门牌号",
+        submit: "提交"
+    },
+    CreateBabyStep3: {
+        submitSuccess: "提交成功",
+        submitMessage: "稍后可在列表中查看结果，新建宝宝需要督导员审核，如需尽快审核，请直接联系您的督导员。",
+    },
 }
