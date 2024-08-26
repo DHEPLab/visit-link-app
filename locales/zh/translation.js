@@ -230,4 +230,7 @@ export default {
         caregiverInfo: "看护人信息",
         addressInfo: "地址信息",
     },
+    Ghost: {
+        back: "返回",
+    },
 }

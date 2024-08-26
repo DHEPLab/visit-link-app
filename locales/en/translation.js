@@ -235,4 +235,7 @@ export default {
         caregiverInfo: "Caregiver Info",
         addressInfo: "Address Info",
     },
+    Ghost: {
+        back: "Back",
+    },
 }

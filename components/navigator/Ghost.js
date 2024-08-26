@@ -1,24 +1,27 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import Icons from '../elements/Icons';
 import { styled } from '../../utils/styled';
 
-export default function ({ navigation, title, backText = '返回' }) {
+export default function Ghost({ navigation, title, backText }) {
+  const { t } = useTranslation('Ghost');
+
   function goBack() {
     navigation.goBack();
   }
 
   return (
-    <Header>
-      {navigation.canGoBack() && (
-        <Back onPress={() => goBack()}>
-          <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
-          <BackText>{backText}</BackText>
-        </Back>
-      )}
-      {title && <Title>{title}</Title>}
-    </Header>
+      <Header>
+        {navigation.canGoBack() && (
+            <Back onPress={() => goBack()}>
+              <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
+              <BackText>{backText || t('back')}</BackText>
+            </Back>
+        )}
+        {title && <Title>{title}</Title>}
+      </Header>
   );
 }
 
