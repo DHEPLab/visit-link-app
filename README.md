@@ -1,16 +1,17 @@
 # Healthy Future App
 
-## 适用平台
+## Supported Platforms
 
-推荐分辨率 12000x1920
+Recommended resolution: 1200x1920
 
-仅支持 Android Pad，Android 9 Pie 或更高（其他版本未测试，测试机型号 HUAWEI MediaPad M5 lite 8"）
+Supports only Android Pad, Android 9 Pie or higher (other versions untested; tested on HUAWEI MediaPad M5 lite 8 which is 1200x1920 FHD, 283 PPI, 8.0 inch)
 
-## 本地开发
+## Local Development
 
-NodeJS 版本 v12 LTS, Expo SDK 38
+* NodeJS version v16 LTS
+* Expo SDK 38
 
-[准备 Android 模拟器](https://docs.expo.io/workflow/android-studio-emulator/)
+[Prepare an Android emulator](https://docs.expo.io/workflow/android-studio-emulator/)
 
 ```
 $ yarn global add expo-cli@3.23.1
@@ -18,15 +19,16 @@ $ yarn
 $ yarn start
 ```
 
-点击 Expo Development Tools 中的 Run on Android device/emulator，也可以使用官方 [Expo Client App](https://expo.io/tools#client) 扫码预览
+Run on Android device/emulator by clicking in the Expo Development Tools or use the official [Expo Client App](https://expo.io/tools#client) to scan the QR code for preview.
 
-推荐使用 [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
 
-## 外部依赖
+Recommended tool: [React Native Debugger](https://github.com/jhen0409/react-native-debugger)
 
-healthy-future-backend，请求地址在 `constants/Config.js`
+## External Dependencies
 
-## 部署脚本
+healthy-future-backend，API endpoint located in `constants/Config.js`
+
+## Deployment Scripts
 
 ```
 $ ansible/build.sh
@@ -34,7 +36,7 @@ $ ansible/package.sh
 $ DEPLOY_GROUP=prod ansible/deploy.sh
 ```
 
-## 打包 Android Apk
+## Building Android APK
 
 [Turtle](https://github.com/expo/turtle) CLI is a command line interface for building Expo standalone apps. You can use it both on your CI and your private computer.
 
