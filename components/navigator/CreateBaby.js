@@ -7,46 +7,49 @@ import BottomRightBackground from '../BottomRightBackground';
 import { Colors } from '../../constants';
 import { styled, px2dp } from '../../utils/styled';
 import { Image } from 'react-native';
+import {useTranslation} from "react-i18next";
 
 export default function CreateBabyNavigator({ navigation, active = 1 }) {
-  return (
-    <Container {...Colors.linearGradient}>
-      <BottomRightBackground
-        width={px2dp(90)}
-        height={px2dp(38)}
-        source={require('../../assets/images/create-baby-bg.png')}
-      />
-      <Ghost navigation={navigation} title="添加宝宝" />
-      <Steps>
-        <Step>
-          <Number active={active > 0}>1</Number>
-          <Name active={active > 0}>宝宝信息</Name>
-        </Step>
-        <ArrowImage
-          source={
-            active > 1
-              ? require('../../assets/images/step-arrow-active.png')
-              : require('../../assets/images/step-arrow.png')
-          }
-        />
-        <Step>
-          <Number active={active > 1}>2</Number>
-          <Name active={active > 1}>看护人信息</Name>
-        </Step>
-        <ArrowImage
-          source={
-            active > 2
-              ? require('../../assets/images/step-arrow-active.png')
-              : require('../../assets/images/step-arrow.png')
-          }
-        />
-        <Step>
-          <Number active={active > 2}>3</Number>
-          <Name active={active > 2}>地址信息</Name>
-        </Step>
-      </Steps>
-    </Container>
-  );
+    const { t } = useTranslation('CreateBabyNavigator');
+
+    return (
+        <Container {...Colors.linearGradient}>
+            <BottomRightBackground
+                width={px2dp(90)}
+                height={px2dp(38)}
+                source={require('../../assets/images/create-baby-bg.png')}
+            />
+            <Ghost navigation={navigation} title={t('addBaby')} />
+            <Steps>
+                <Step>
+                    <Number active={active > 0}>1</Number>
+                    <Name active={active > 0}>{t('babyInfo')}</Name>
+                </Step>
+                <ArrowImage
+                    source={
+                        active > 1
+                            ? require('../../assets/images/step-arrow-active.png')
+                            : require('../../assets/images/step-arrow.png')
+                    }
+                />
+                <Step>
+                    <Number active={active > 1}>2</Number>
+                    <Name active={active > 1}>{t('caregiverInfo')}</Name>
+                </Step>
+                <ArrowImage
+                    source={
+                        active > 2
+                            ? require('../../assets/images/step-arrow-active.png')
+                            : require('../../assets/images/step-arrow.png')
+                    }
+                />
+                <Step>
+                    <Number active={active > 2}>3</Number>
+                    <Name active={active > 2}>{t('addressInfo')}</Name>
+                </Step>
+            </Steps>
+        </Container>
+    );
 }
 
 const ArrowImage = styled(Image)`

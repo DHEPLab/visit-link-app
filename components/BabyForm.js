@@ -14,39 +14,40 @@ import Button from './elements/Button';
 import LargeButtonContainer from './LargeButtonContainer';
 import { useTranslation } from 'react-i18next';
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-      .matches(/^[\u4e00-\u9fa5]{2,10}$/, t('nameValidation'))
-      .required(t('required')),
-  gender: Yup.string().required(t('required')),
-  stage: Yup.string().required(t('required')),
-});
 
-function validate(values) {
-  const errors = {};
-  switch (values.stage) {
-    case 'EDC':
-      if (!values.edc) errors.edc = t('required');
-      break;
-    case 'BIRTH':
-      if (!values.birthday) errors.birthday = t('required');
-      if (values.assistedFood == null) errors.assistedFood = t('required');
-      if (!values.feedingPattern) errors.feedingPattern = t('required');
-      break;
-  }
-  return errors;
-}
-
-// the baby stage cannot be changed from birth to edc
-function FilteredBabyStage(stage) {
-  if (stage === 'BIRTH') {
-    return { BIRTH: BabyStage['BIRTH'] };
-  }
-  return BabyStage;
-}
 
 export default function BabyForm({ onSubmit, submitBtnText = '提交', initialValues = {} }) {
   const { t } = useTranslation('BabyForm');
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+        .matches(/^[\u4e00-\u9fa5]{2,10}$/, t('nameValidation'))
+        .required(t('required')),
+    gender: Yup.string().required(t('required')),
+    stage: Yup.string().required(t('required')),
+  });
+
+  function validate(values) {
+    const errors = {};
+    switch (values.stage) {
+      case 'EDC':
+        if (!values.edc) errors.edc = t('required');
+        break;
+      case 'BIRTH':
+        if (!values.birthday) errors.birthday = t('required');
+        if (values.assistedFood == null) errors.assistedFood = t('required');
+        if (!values.feedingPattern) errors.feedingPattern = t('required');
+        break;
+    }
+    return errors;
+  }
+
+// the baby stage cannot be changed from birth to edc
+  function FilteredBabyStage(stage) {
+    if (stage === 'BIRTH') {
+      return { BIRTH: BabyStage['BIRTH'] };
+    }
+    return BabyStage;
+  }
   return (
     <Formik
       initialValues={initialValues}
