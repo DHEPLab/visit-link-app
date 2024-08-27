@@ -73,7 +73,7 @@ function formatDateTimeCN(datetime) {
 
 function formatDateTimeEN(datetime) {
   if (!datetime) return "";
-  return moment(datetime).format("YYYY/MM/DD h:mm a") ;
+  return moment(datetime).format("YYYY/MM/DD h:mm a");
 }
 
 function mergeDateAndTime(date, time) {
@@ -122,7 +122,7 @@ export default {
   defaultStartingRange,
   remarkTitle: (status) =>
     statusNotStart(status)
-      ? i18next.t('Visits:remarkTitle')
+      ? i18next.t("Visits:remarkTitle")
       : statusUndone(status)
         ? "未完成原因"
         : "过期原因",

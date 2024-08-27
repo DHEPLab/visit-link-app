@@ -18,11 +18,11 @@ import {
   BabyCard,
   StartLesson,
 } from "../components";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function VisitScreen({ navigation, route }) {
   const { params } = route;
-  const {t,i18n}  =useTranslation()
+  const { t, i18n } = useTranslation();
   const [visit, refresh] = useManualFetch(`/api/visits/${params.id}`);
   const { visitTime, status, baby, lesson } = visit;
 
@@ -58,7 +58,7 @@ export default function VisitScreen({ navigation, route }) {
 
   function validate() {
     if (update.isAvailable) {
-      ToastAndroid.show(t('Visits:unavailableMessage'), ToastAndroid.LONG);
+      ToastAndroid.show(t("Visits:unavailableMessage"), ToastAndroid.LONG);
       return false;
     }
     return true;
@@ -71,12 +71,12 @@ export default function VisitScreen({ navigation, route }) {
     }, 1);
   }
 
-  const formatDateTime=(time)=>{
-    if(i18n.language==='zh'){
-     return Visit.formatDateTimeCN(time)
+  const formatDateTime = (time) => {
+    if (i18n.language === "zh") {
+      return Visit.formatDateTimeCN(time);
     }
-    return Visit.formatDateTimeEN(time)
-  }
+    return Visit.formatDateTimeEN(time);
+  };
 
   return (
     <ScrollView>
@@ -84,7 +84,7 @@ export default function VisitScreen({ navigation, route }) {
         {!Visit.statusDone(status) && (
           <Card
             title={Visit.remarkTitle(status)}
-            right={<Button title={t('Common:edit')} onPress={openRemark} />}
+            right={<Button title={t("Common:edit")} onPress={openRemark} />}
             hideBody={!visit.remark}
           >
             <StaticForm>
@@ -95,14 +95,14 @@ export default function VisitScreen({ navigation, route }) {
           </Card>
         )}
         <Modal
-          title={t('Visits:inputRemark')}
+          title={t("Visits:inputRemark")}
           visible={remarkVisible}
           content={
             <Input
               value={remark}
               onChangeText={setRemark}
               border
-              placeholder={t('Form:pleaseInput')}
+              placeholder={t("Form:pleaseInput")}
             />
           }
           onCancel={closeRemark}
@@ -111,31 +111,34 @@ export default function VisitScreen({ navigation, route }) {
         />
 
         <Card
-          title={t('Visits:visitTime')}
+          title={t("Visits:visitTime")}
           right={
             Visit.statusNotStart(status) && (
-              <Button title={t('Visits:edit')} onPress={handleChangeVisitTime} />
+              <Button
+                title={t("Visits:edit")}
+                onPress={handleChangeVisitTime}
+              />
             )
           }
         >
           <StaticForm>
             {(Visit.statusNotStart(status) || Visit.statusExpired(status)) &&
               visitTime && (
-                <StaticField label={t('Visits:visitTime')}>
+                <StaticField label={t("Visits:visitTime")}>
                   {formatDateTime(visitTime)}
                 </StaticField>
               )}
             {Visit.statusUndone(status) && visitTime && (
-              <StaticField label={t('Visits:startTime')}>
+              <StaticField label={t("Visits:startTime")}>
                 {formatDateTime(visit.startTime)}
               </StaticField>
             )}
             {Visit.statusDone(status) && visitTime && (
               <>
-                <StaticField label={t('Visits:startTime')}>
+                <StaticField label={t("Visits:startTime")}>
                   {formatDateTime(visit.startTime)}
                 </StaticField>
-                <StaticField label={t('Visits:endTime')}>
+                <StaticField label={t("Visits:endTime")}>
                   {formatDateTime(visit.completeTime)}
                 </StaticField>
               </>

@@ -78,7 +78,7 @@ export default {
   },
   Common: {
     back: "Back",
-    edit:'Edit',
+    edit: "Edit",
   },
   enum: {
     BabyStage: {
@@ -255,20 +255,21 @@ export default {
   Ghost: {
     back: "Back",
   },
-  Form:{
-    pleaseInput:'Please enter content',
+  Form: {
+    pleaseInput: "Please enter content",
   },
-  Visits:{
-    startTime:'Start Time',
-    endTime:'Complete Time',
+  Visits: {
+    startTime: "Start Time",
+    endTime: "Complete Time",
     edit: "Edit",
-    unavailableMessage:'Please update the course resources on the homepage first',
-    inputRemark:'Visit Incomplete Reason',
-    babyName:'Baby Name',
-    lessonName:' Session Name',
-    visitTime:'Visit Time',
-    visitDetail:'Visit Detail',
-    remarkTitle:'Comments'
+    unavailableMessage:
+      "Please update the course resources on the homepage first",
+    inputRemark: "Visit Incomplete Reason",
+    babyName: "Baby Name",
+    lessonName: " Session Name",
+    visitTime: "Visit Time",
+    visitDetail: "Visit Detail",
+    remarkTitle: "Comments",
   },
   BabyItem: {
     primaryCaregiver: "Primary Caregiver",
