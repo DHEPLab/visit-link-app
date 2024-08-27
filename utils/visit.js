@@ -2,6 +2,7 @@ import moment from "moment";
 import Http from "../utils/http";
 import * as Location from "expo-location";
 import { ToastAndroid } from "react-native";
+import i18next from "i18next";
 
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
@@ -72,7 +73,7 @@ function formatDateTimeCN(datetime) {
 
 function formatDateTimeEN(datetime) {
   if (!datetime) return "";
-  return moment(datetime).format("YYYY/MM/DD hh a") ;
+  return moment(datetime).format("YYYY/MM/DD h:mm a") ;
 }
 
 function mergeDateAndTime(date, time) {
@@ -121,7 +122,7 @@ export default {
   defaultStartingRange,
   remarkTitle: (status) =>
     statusNotStart(status)
-      ? "备注"
+      ? i18next.t('Visits:remarkTitle')
       : statusUndone(status)
         ? "未完成原因"
         : "过期原因",

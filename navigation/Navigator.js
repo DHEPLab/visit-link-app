@@ -38,7 +38,7 @@ const Stack = createStackNavigator();
 
 export default function StackNavigator() {
   const user = useSelector((state) => state.user);
-  const { t } = useTranslation("Navigator");
+  const { t } = useTranslation(['Navigator']);
 
   const screens = [
     {
@@ -53,7 +53,7 @@ export default function StackNavigator() {
     },
     {
       name: "Visit",
-      title: "家访详情",
+      title: t('Visits:visitDetail'),
       component: Visit,
     },
     {

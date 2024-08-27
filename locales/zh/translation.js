@@ -77,6 +77,7 @@ export default {
   },
   Common: {
     back: "返回",
+    edit:'编辑',
   },
   enum: {
     BabyStage: {
@@ -244,14 +245,24 @@ export default {
   Ghost: {
     back: "返回",
   },
+  Form:{
+    pleaseInput:'请输入',
+  },
+  Visits:{
+    startTime:'开始时间',
+    endTime:'结束时间',
+    edit: "修改",
+    unavailableMessage:'请先到首页更新课程资源',
+    inputRemark:'请填写备注',
+    babyName:'宝宝名称',
+    lessonName:'课堂名称',
+    visitTime:'家访时间',
+    visitDetail:'家访详情',
+    remarkTitle:'备注'
+  },
   BabyItem: {
     primaryCaregiver: "主要看护人",
     contactInfo: "联系方式",
     none: "无",
-  },
-  Visits: {
-    babyName: "宝宝名称",
-    lessonName: "课堂名称",
-    visitTime: "拜访时间",
   },
 };
