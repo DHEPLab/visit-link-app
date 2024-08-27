@@ -101,6 +101,13 @@ export default {
       GRANDPA: "外公",
       OTHER: "其他",
     },
+    VisitStatus: {
+      NOT_SUBMIT: '待提交',
+      NOT_STARTED: '待开始',
+      UNDONE: '未完成',
+      EXPIRED: '已过期',
+      DONE: '已完成',
+    },
   },
   BabyForm: {
     nameValidation: "请输入2个以上的汉字，最多10个字符",
@@ -236,4 +243,9 @@ export default {
   Ghost: {
     back: "返回",
   },
+  Visits:{
+    babyName:'宝宝名称',
+    lessonName:'课堂名称',
+    visitTime:'拜访时间'
+  }
 };

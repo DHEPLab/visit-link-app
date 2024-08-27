@@ -107,6 +107,13 @@ export default {
       GRANDPA: "Grandpa",
       OTHER: "Other",
     },
+    VisitStatus: {
+      NOT_SUBMIT: 'To be submitted',
+      NOT_STARTED: 'Scheduled',
+      UNDONE: 'Incomplete',
+      EXPIRED: 'Expired',
+      DONE: 'Completed',
+    },
   },
   BabyForm: {
     nameValidation: "Please enter 2-10 characters",
@@ -246,4 +253,9 @@ export default {
   Ghost: {
     back: "Back",
   },
+  Visits:{
+    babyName:'Baby Name',
+    lessonName:' Session Name',
+    visitTime:'Visit Time',
+  }
 };

@@ -70,6 +70,11 @@ function formatDateTimeCN(datetime) {
   return moment(datetime).format("YYYY年MM月DD日/") + formatTimeCN(datetime);
 }
 
+function formatDateTimeEN(datetime) {
+  if (!datetime) return "";
+  return moment(datetime).format("YYYY/MM/DD hh a") ;
+}
+
 function mergeDateAndTime(date, time) {
   return `${formatDate(date)}T${moment(time).format("HH:mm")}`;
 }
@@ -104,6 +109,7 @@ export default {
   formatDate,
   formatDateTime,
   formatTimeCN,
+  formatDateTimeEN,
   formatDateTimeCN,
   formatDateCN,
   mergeDateAndTime,

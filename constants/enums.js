@@ -19,11 +19,11 @@ export const GenderIcon = {
 };
 
 export const VisitStatus = {
-  NOT_SUBMIT: "待提交",
-  NOT_STARTED: "待开始",
-  UNDONE: "未完成",
-  EXPIRED: "已过期",
-  DONE: "已完成",
+  NOT_SUBMIT: i18next.t('VisitStatus.NOT_SUBMIT', { ns: "enum" }),
+  NOT_STARTED: i18next.t('VisitStatus.NOT_STARTED', { ns: "enum" }),
+  UNDONE: i18next.t('VisitStatus.UNDONE', { ns: "enum" }),
+  EXPIRED: i18next.t('VisitStatus.EXPIRED', { ns: "enum" }),
+  DONE: i18next.t('VisitStatus.DONE', { ns: "enum" }),
 };
 
 export const BabyStage = {
