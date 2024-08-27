@@ -1,13 +1,14 @@
 {
   "name": "healthy-future-app",
   "main": "index.ts",
+  "version": "3.0.0",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test": "jest --watch",
+    "test": "jest --watchAll",
     "test:ci": "jest --silent --coverage"
   },
   "dependencies": {

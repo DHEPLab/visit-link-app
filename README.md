@@ -14,9 +14,9 @@ Supports only Android Pad, Android 9 Pie or higher (other versions untested; tes
 [Prepare an Android emulator](https://docs.expo.io/workflow/android-studio-emulator/)
 
 ```
-$ yarn global add expo-cli@3.23.1
-$ yarn
-$ yarn start
+$ npm install
+$ npm start
+$ NODE_ENV=development npm start
 ```
 
 Run on Android device/emulator by clicking in the Expo Development Tools or use the official [Expo Client App](https://expo.io/tools#client) to scan the QR code for preview.
