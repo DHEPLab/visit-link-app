@@ -1,7 +1,7 @@
-import React from 'react';
-import { Text } from 'react-native';
-import { SvgXml } from 'react-native-svg';
-import { px2dp } from '../../utils/styled';
+import React from "react";
+import { Text } from "react-native";
+import { SvgXml } from "react-native-svg";
+import { px2dp } from "../../utils/styled";
 
 const svgs = {
   home: `
@@ -92,7 +92,7 @@ const svgs = {
       </g>
   </svg>
   `,
-  'home-focused': `
+  "home-focused": `
   <?xml version="1.0" encoding="UTF-8"?>
 <svg width="50px" height="44px" viewBox="0 0 50 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
@@ -108,7 +108,7 @@ const svgs = {
     </g>
 </svg>
   `,
-  'baby-focused': `
+  "baby-focused": `
   <?xml version="1.0" encoding="UTF-8"?>
 <svg width="50px" height="44px" viewBox="0 0 50 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
@@ -124,7 +124,7 @@ const svgs = {
     </g>
 </svg>
   `,
-  'visit-focused': `
+  "visit-focused": `
   <?xml version="1.0" encoding="UTF-8"?>
 <svg width="50px" height="44px" viewBox="0 0 50 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
@@ -140,7 +140,7 @@ const svgs = {
     </g>
 </svg>
   `,
-  'me-focused': `
+  "me-focused": `
   <?xml version="1.0" encoding="UTF-8"?>
 <svg width="50px" height="44px" viewBox="0 0 50 44" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
@@ -173,7 +173,12 @@ const svgs = {
 
 export default function Icons({ name, size = 30, style }) {
   return svgs[name] ? (
-    <SvgXml style={style} xml={svgs[name]} width={px2dp(size)} height={px2dp(size)} />
+    <SvgXml
+      style={style}
+      xml={svgs[name]}
+      width={px2dp(size)}
+      height={px2dp(size)}
+    />
   ) : (
     <Text>{name}</Text>
   );

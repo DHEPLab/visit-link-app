@@ -1,4 +1,4 @@
-import { styled } from '../utils/styled';
+import { styled } from "../utils/styled";
 
 export default styled.View`
   padding: 2px 0;

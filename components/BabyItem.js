@@ -1,14 +1,20 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import StaticField from './elements/StaticField';
-import StaticForm from './elements/StaticForm';
-import MiniBaby from './MiniBaby';
+import StaticField from "./elements/StaticField";
+import StaticForm from "./elements/StaticForm";
+import MiniBaby from "./MiniBaby";
 
-import { styled, px2dp } from '../utils/styled';
+import { styled, px2dp } from "../utils/styled";
 
-export default function BabyItem({ id, carerName, carerPhone, onPress, ...props }) {
+export default function BabyItem({
+  id,
+  carerName,
+  carerPhone,
+  onPress,
+  ...props
+}) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -20,13 +26,17 @@ export default function BabyItem({ id, carerName, carerPhone, onPress, ...props 
       }
     >
       <Card>
-        <MiniBaby baby={({...props, id})} />
+        <MiniBaby baby={{ ...props, id }} />
         <Carer>
           <StaticForm>
-            <StaticField label="主要看护人">{carerName || '无'}</StaticField>
-            <StaticField label="联系方式">{carerPhone || '无'}</StaticField>
+            <StaticField label="主要看护人">{carerName || "无"}</StaticField>
+            <StaticField label="联系方式">{carerPhone || "无"}</StaticField>
           </StaticForm>
-          <ArrowRight name="keyboard-arrow-right" size={px2dp(18)} color="#FF794F" />
+          <ArrowRight
+            name="keyboard-arrow-right"
+            size={px2dp(18)}
+            color="#FF794F"
+          />
         </Carer>
       </Card>
     </TouchableOpacity>

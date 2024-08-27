@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import { styled } from '../utils/styled';
+import { styled } from "../utils/styled";
 
-import Card from './elements/Card';
-import StaticForm from './elements/StaticForm';
-import StaticField from './elements/StaticField';
-import MiniBaby from './MiniBaby';
+import Card from "./elements/Card";
+import StaticForm from "./elements/StaticForm";
+import StaticField from "./elements/StaticField";
+import MiniBaby from "./MiniBaby";
 
 export default function BabyCard({ baby }) {
   return (
-    <Card title="家访对象" background={require('../assets/images/baby-bg.png')}>
+    <Card title="家访对象" background={require("../assets/images/baby-bg.png")}>
       <MiniBabyContainer>
         <MiniBaby hideStatus baby={baby || {}} />
       </MiniBabyContainer>

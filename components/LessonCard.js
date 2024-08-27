@@ -1,17 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import { styled } from '../utils/styled';
+import { styled } from "../utils/styled";
 
-import Visit from '../utils/visit';
-import Card from './elements/Card';
-import Button from './elements/Button';
-import StaticForm from './elements/StaticForm';
-import StaticField from './elements/StaticField';
+import Visit from "../utils/visit";
+import Card from "./elements/Card";
+import Button from "./elements/Button";
+import StaticForm from "./elements/StaticForm";
+import StaticField from "./elements/StaticField";
 
-export default function LessonCard({ validate, disabled, status, lesson, navigation }) {
+export default function LessonCard({
+  validate,
+  disabled,
+  status,
+  lesson,
+  navigation,
+}) {
   function startVisitPreview() {
     if (validate && !validate()) return;
-    navigation.navigate('LessonIntro', { id: lesson.id, preview: true });
+    navigation.navigate("LessonIntro", { id: lesson.id, preview: true });
   }
 
   return (
@@ -19,7 +25,11 @@ export default function LessonCard({ validate, disabled, status, lesson, navigat
       title="课堂安排"
       right={
         Visit.statusNotStart(status) && (
-          <Button title="预览" disabled={disabled} onPress={startVisitPreview} />
+          <Button
+            title="预览"
+            disabled={disabled}
+            onPress={startVisitPreview}
+          />
         )
       }
     >

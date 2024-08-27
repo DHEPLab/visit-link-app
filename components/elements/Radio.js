@@ -1,6 +1,6 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React from "react";
+import { styled } from "../../utils/styled";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Radio({ value, onChange, label }) {
   return (

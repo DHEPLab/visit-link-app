@@ -1,7 +1,7 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import { Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React from "react";
+import { styled } from "../../utils/styled";
+import { Image } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Checkbox({ label, value, onChange }) {
   return (
@@ -10,8 +10,8 @@ export default function Checkbox({ label, value, onChange }) {
         <Box
           source={
             value
-              ? require('../../assets/images/checked.png')
-              : require('../../assets/images/unchecked.png')
+              ? require("../../assets/images/checked.png")
+              : require("../../assets/images/unchecked.png")
           }
         />
         <Label>{label}</Label>

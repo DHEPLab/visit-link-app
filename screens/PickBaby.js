@@ -1,18 +1,22 @@
-import React from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import React from "react";
+import { FlatList, RefreshControl } from "react-native";
 
-import { Colors } from '../constants';
-import { styled } from '../utils/styled';
-import { BabyItem, NoData } from '../components';
-import { useFetch } from '../utils';
+import { Colors } from "../constants";
+import { styled } from "../utils/styled";
+import { BabyItem, NoData } from "../components";
+import { useFetch } from "../utils";
 
 export default function PickBaby({ navigation, route }) {
-  const [babies, refresh, refreshing] = useFetch('/api/babies/available-for-visit', {
-    visitDate: route.params.visitDate,
-  }, []);
+  const [babies, refresh, refreshing] = useFetch(
+    "/api/babies/available-for-visit",
+    {
+      visitDate: route.params.visitDate,
+    },
+    [],
+  );
 
   function pick(baby) {
-    navigation.navigate('CreateVisit', { baby });
+    navigation.navigate("CreateVisit", { baby });
   }
 
   return (
@@ -28,8 +32,10 @@ export default function PickBaby({ navigation, route }) {
           />
         }
         data={babies}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <BabyItem onPress={() => pick(item)} {...item} />}
+        keyExtractor={(item) => item.id + ""}
+        renderItem={({ item }) => (
+          <BabyItem onPress={() => pick(item)} {...item} />
+        )}
       />
     </Container>
   );

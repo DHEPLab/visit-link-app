@@ -1,8 +1,8 @@
-import React from 'react';
-import { TextInput } from 'react-native';
+import React from "react";
+import { TextInput } from "react-native";
 
-import { styled } from '../../utils/styled';
-import { Colors } from '../../constants';
+import { styled } from "../../utils/styled";
+import { Colors } from "../../constants";
 
 export default function Input({ value, border, onChange, onBlur, ...props }) {
   return (

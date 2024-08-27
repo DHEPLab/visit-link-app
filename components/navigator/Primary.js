@@ -1,35 +1,38 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-import Icons from '../elements/Icons';
-import { Colors } from '../../constants';
-import { styled } from '../../utils/styled';
-import {useTranslation} from "react-i18next";
+import Icons from "../elements/Icons";
+import { Colors } from "../../constants";
+import { styled } from "../../utils/styled";
+import { useTranslation } from "react-i18next";
 
 export default function ({
-                           navigation,
-                           scene: {
-                             // route,
-                             descriptor: { options },
-                           },
-                         }) {
+  navigation,
+  scene: {
+    // route,
+    descriptor: { options },
+  },
+}) {
   function goBack() {
     navigation.goBack();
   }
-    const { t } = useTranslation('Common');
+  const { t } = useTranslation("Common");
 
-
-    return (
-      <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
-        {navigation.canGoBack() && (
-            <Back onPress={() => goBack()}>
-              <Icons name="arrow" size={8} style={{ transform: [{ rotate: '180deg' }] }} />
-                <BackText>{t('back')}</BackText>
-            </Back>
-        )}
-        <Title>{options.headerTitle || 'Title'}</Title>
-      </Header>
+  return (
+    <Header start={[0, 0]} end={[1, 1]} colors={Colors.colors}>
+      {navigation.canGoBack() && (
+        <Back onPress={() => goBack()}>
+          <Icons
+            name="arrow"
+            size={8}
+            style={{ transform: [{ rotate: "180deg" }] }}
+          />
+          <BackText>{t("back")}</BackText>
+        </Back>
+      )}
+      <Title>{options.headerTitle || "Title"}</Title>
+    </Header>
   );
 }
 

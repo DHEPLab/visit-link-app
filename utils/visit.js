@@ -1,7 +1,7 @@
-import moment from 'moment';
-import Http from '../utils/http'
-import * as Location from 'expo-location';
-import {ToastAndroid} from "react-native";
+import moment from "moment";
+import Http from "../utils/http";
+import * as Location from "expo-location";
+import { ToastAndroid } from "react-native";
 
 function defaultDatetime(range, visitTime) {
   if (!visitTime) visitTime = moment();
@@ -24,7 +24,7 @@ function defaultDatetime(range, visitTime) {
   }
 
   // return range start with default time 08:00 AM
-  return range[0] + 'T08:00';
+  return range[0] + "T08:00";
 }
 
 function defaultStartingRange() {
@@ -35,7 +35,7 @@ function defaultStartingRange() {
 function meridiem(momentInstance) {
   let hour = momentInstance.hour();
   const minute = momentInstance.minute();
-  hour += (minute / 60)
+  hour += minute / 60;
   if (hour <= 9) {
     return "早上";
   } else if (hour <= 11.5) {
@@ -50,49 +50,47 @@ function meridiem(momentInstance) {
 }
 
 function formatDate(date) {
-  return moment(date).format('YYYY-MM-DD');
+  return moment(date).format("YYYY-MM-DD");
 }
 
 function formatDateCN(date) {
-  return moment(date).format('YYYY年MM月DD日');
+  return moment(date).format("YYYY年MM月DD日");
 }
 
 function formatTimeCN(time) {
-  return meridiem(moment(time)) + moment(time).format('h:mm');
+  return meridiem(moment(time)) + moment(time).format("h:mm");
 }
 
 function formatDateTime(datetime) {
-  return moment(datetime).format('YYYY-MM-DDTHH:mm:ss');
+  return moment(datetime).format("YYYY-MM-DDTHH:mm:ss");
 }
 
 function formatDateTimeCN(datetime) {
-  if (!datetime) return '';
-  return moment(datetime).format('YYYY年MM月DD日/') + formatTimeCN(datetime);
+  if (!datetime) return "";
+  return moment(datetime).format("YYYY年MM月DD日/") + formatTimeCN(datetime);
 }
 
 function mergeDateAndTime(date, time) {
-  return `${formatDate(date)}T${moment(time).format('HH:mm')}`;
+  return `${formatDate(date)}T${moment(time).format("HH:mm")}`;
 }
 
 function statusNotStart(status) {
-  return status === 'NOT_STARTED';
+  return status === "NOT_STARTED";
 }
 
 function statusUndone(status) {
-  return status === 'UNDONE';
+  return status === "UNDONE";
 }
 
 function statusExpired(status) {
-  return status === 'EXPIRED';
+  return status === "EXPIRED";
 }
 
 export default {
   canIStart(status, visitTime) {
-    if (status !== 'NOT_STARTED') return false;
+    if (status !== "NOT_STARTED") return false;
     const now = moment();
-    return (
-      moment(formatDate(now)).isSame(formatDate(moment(visitTime)))
-    );
+    return moment(formatDate(now)).isSame(formatDate(moment(visitTime)));
   },
   disabledVisitButton(now, selected) {
     return moment(formatDate(now)).isAfter(selected);
@@ -110,41 +108,50 @@ export default {
   formatDateCN,
   mergeDateAndTime,
   defaultDatetime,
-  statusDone: (status) => status === 'DONE',
+  statusDone: (status) => status === "DONE",
   statusUndone,
   statusNotStart,
   statusExpired,
   defaultStartingRange,
   remarkTitle: (status) =>
-    statusNotStart(status) ? '备注' : statusUndone(status) ? '未完成原因' : '过期原因',
+    statusNotStart(status)
+      ? "备注"
+      : statusUndone(status)
+        ? "未完成原因"
+        : "过期原因",
   visitTimeMayConflict(vt1, vt2) {
-    const diff = moment(vt1).diff(moment(vt2), 'minutes')
-    return Math.abs(diff) <= 60
-  }
+    const diff = moment(vt1).diff(moment(vt2), "minutes");
+    return Math.abs(diff) <= 60;
+  },
 };
 
 export function uploadVisitLocation(babyId, visitId) {
   (async () => {
     const hasEnableLocation = await Location.hasServicesEnabledAsync();
     if (!hasEnableLocation) {
-      ToastAndroid.show("未打开手机定位服务，无法获取位置信息！", ToastAndroid.LONG)
-      return
+      ToastAndroid.show(
+        "未打开手机定位服务，无法获取位置信息！",
+        ToastAndroid.LONG,
+      );
+      return;
     }
     try {
-      console.log("start getLocation")
+      console.log("start getLocation");
       Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest,
-        timeInterval: 5000
-      }).then(location => {
+        timeInterval: 5000,
+      }).then((location) => {
         const { latitude, longitude } = location.coords;
-        Http.post('/api/visits/upload/location', {
-          babyId, visitId, longitude, latitude
-        })
-        console.log("getLocation", longitude, latitude)
-      })
-
+        Http.post("/api/visits/upload/location", {
+          babyId,
+          visitId,
+          longitude,
+          latitude,
+        });
+        console.log("getLocation", longitude, latitude);
+      });
     } catch (e) {
-      console.log('Error while trying to get location: ', e);
+      console.log("Error while trying to get location: ", e);
     }
   })();
 }

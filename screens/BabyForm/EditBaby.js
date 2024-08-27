@@ -1,33 +1,34 @@
-import React from 'react';
+import React from "react";
 
-import http from '../../utils/http';
-import {BabyForm} from '../../components';
-import {styled} from '../../utils/styled';
-import storage from '../../cache/storage';
+import http from "../../utils/http";
+import { BabyForm } from "../../components";
+import { styled } from "../../utils/styled";
+import storage from "../../cache/storage";
 import confirm from "../../components/modal/confirm";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function EditBaby({ navigation, route }) {
   const { params } = route;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   function onSubmit(values) {
     if (!params.id) return;
     confirm("确认修改宝宝信息吗？", {
-      onOk : async () => {
+      onOk: async () => {
         await http.put(`/api/babies/${params.id}`, values);
-        clearNotSubmitVisit()
+        clearNotSubmitVisit();
         navigation.navigate(params.from, {
           success: Math.random(),
         });
-      }, dispatch
-    })
+      },
+      dispatch,
+    });
   }
 
-  async function clearNotSubmitVisit(){
-    const offlineVisits = await storage.getOfflineVisits() || []
-    const deleteArray = offlineVisits.filter(n => n.id === params.id)
-    storage.setOfflineVisits(deleteArray)
+  async function clearNotSubmitVisit() {
+    const offlineVisits = (await storage.getOfflineVisits()) || [];
+    const deleteArray = offlineVisits.filter((n) => n.id === params.id);
+    storage.setOfflineVisits(deleteArray);
   }
 
   return (

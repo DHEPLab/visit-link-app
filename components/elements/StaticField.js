@@ -1,5 +1,5 @@
-import React from 'react';
-import { styled, px2dp } from '../../utils/styled';
+import React from "react";
+import { styled, px2dp } from "../../utils/styled";
 
 export default function ({ label, children, labelWidth = 50 }) {
   return (

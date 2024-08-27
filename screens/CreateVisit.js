@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 
-import http from '../utils/http';
-import Visit from '../utils/visit';
-import { styled } from '../utils/styled';
+import http from "../utils/http";
+import Visit from "../utils/visit";
+import { styled } from "../utils/styled";
 import {
   MiniBaby,
   Card,
@@ -12,8 +12,8 @@ import {
   StaticField,
   StaticForm,
   LargeButtonContainer,
-} from '../components';
-import storage from '../cache/storage';
+} from "../components";
+import storage from "../cache/storage";
 
 export default function CreateVisit({ navigation, route }) {
   const { params } = route;
@@ -27,7 +27,7 @@ export default function CreateVisit({ navigation, route }) {
     if (params?.baby) {
       const { baby } = params;
       if (!isConnected) {
-        setLesson(baby?.nextShouldVisitDTO?.lesson || null)
+        setLesson(baby?.nextShouldVisitDTO?.lesson || null);
       } else {
         http.get(`/api/babies/${baby.id}/lesson`).then(setLesson);
       }
@@ -42,12 +42,12 @@ export default function CreateVisit({ navigation, route }) {
   }, [params?.visitTime]);
 
   useEffect(() => {
-    renderDateRange()
+    renderDateRange();
   }, [baby]);
 
   function handleSubmit() {
     http
-      .post('/api/visits', {
+      .post("/api/visits", {
         visitTime: Visit.formatDateTime(visitTime),
         babyId: baby.id,
         lessonId: lesson.id,
@@ -60,32 +60,34 @@ export default function CreateVisit({ navigation, route }) {
       visitTime: Visit.formatDateTime(visitTime),
       babyId: baby.id,
       lessonId: lesson.id,
-      status: 'NOT_SUBMIT',
-      lessonName: lesson.name
-    }
+      status: "NOT_SUBMIT",
+      lessonName: lesson.name,
+    };
     const oldVisits = await storage.getOfflineVisits();
-    storage.setOfflineVisits([...(oldVisits || []), visit]).then(navigation.goBack);
+    storage
+      .setOfflineVisits([...(oldVisits || []), visit])
+      .then(navigation.goBack);
   }
 
-  async function renderDateRange () {
+  async function renderDateRange() {
     let range = [Visit.defaultStartingRange()];
     if (baby?.id) {
       if (isConnected) {
         range = await http.get(`/api/babies/${baby.id}/visit-date-range`);
       } else {
-        const {visitDateRange} = await storage.getNextShouldVisit(baby.id)
+        const { visitDateRange } = await storage.getNextShouldVisit(baby.id);
         if (visitDateRange) {
-          range = visitDateRange
+          range = visitDateRange;
         }
       }
     }
-    setDateRange(range)
-    return range
+    setDateRange(range);
+    return range;
   }
 
   async function handleChangeVisitTime() {
     const range = await renderDateRange();
-    navigation.navigate('PickVisitTime', {
+    navigation.navigate("PickVisitTime", {
       visitTime: Visit.formatDateTime(visitTime),
       range,
     });
@@ -97,16 +99,33 @@ export default function CreateVisit({ navigation, route }) {
         <Card
           title="家访时间"
           hideBody={!visitTime}
-          right={<Button title="修改" onPress={handleChangeVisitTime} hideBody={!visitTime} />}
+          right={
+            <Button
+              title="修改"
+              onPress={handleChangeVisitTime}
+              hideBody={!visitTime}
+            />
+          }
         >
           {visitTime && (
             <StaticForm>
-              <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
+              <StaticField label="家访时间">
+                {Visit.formatDateTimeCN(visitTime)}
+              </StaticField>
             </StaticForm>
           )}
         </Card>
-        {baby && <PromptWords>当前阶段宝宝的下一次家访课堂为"{lesson?.name}"，最早开始时间为{dateRange[0]}，</PromptWords>}
-        {baby && <PromptWords>{dateRange[1]}之后宝宝将进入下一阶段则会错过当前阶段的课堂。</PromptWords>}
+        {baby && (
+          <PromptWords>
+            当前阶段宝宝的下一次家访课堂为"{lesson?.name}"，最早开始时间为
+            {dateRange[0]}，
+          </PromptWords>
+        )}
+        {baby && (
+          <PromptWords>
+            {dateRange[1]}之后宝宝将进入下一阶段则会错过当前阶段的课堂。
+          </PromptWords>
+        )}
         <Card
           title="家访对象"
           hideBody={!baby}
@@ -115,14 +134,14 @@ export default function CreateVisit({ navigation, route }) {
               <Button
                 title="选择"
                 onPress={() =>
-                  navigation.navigate('PickBaby', {
+                  navigation.navigate("PickBaby", {
                     visitDate: visitTime && Visit.formatDate(visitTime),
                   })
                 }
               />
             )
           }
-          background={require('../assets/images/baby-bg.png')}
+          background={require("../assets/images/baby-bg.png")}
         >
           {baby && (
             <>
@@ -155,24 +174,28 @@ export default function CreateVisit({ navigation, route }) {
           )}
         </Card>
 
-        {isConnected && <LargeButtonContainer>
-          <Button
-            onPress={handleSubmit}
-            title="提交"
-            size="large"
-            disabled={!visitTime || !baby || !lesson}
-          />
-        </LargeButtonContainer>}
-        {!isConnected && <OfflineBookingLine>
-          <Button
-            onPress={handleSaveOfflineBooking}
-            title="离线预约"
-            size="large"
-            ghost
-            type="primary"
-            disabled={!visitTime || !baby || !lesson}
-          />
-        </OfflineBookingLine>}
+        {isConnected && (
+          <LargeButtonContainer>
+            <Button
+              onPress={handleSubmit}
+              title="提交"
+              size="large"
+              disabled={!visitTime || !baby || !lesson}
+            />
+          </LargeButtonContainer>
+        )}
+        {!isConnected && (
+          <OfflineBookingLine>
+            <Button
+              onPress={handleSaveOfflineBooking}
+              title="离线预约"
+              size="large"
+              ghost
+              type="primary"
+              disabled={!visitTime || !baby || !lesson}
+            />
+          </OfflineBookingLine>
+        )}
       </Container>
     </ScrollView>
   );

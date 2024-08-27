@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { styled } from '../utils/styled';
+import { styled } from "../utils/styled";
 
 export default function WaitingSubmit({ approved, gray }) {
   return <Status gray={!approved && gray}>待提交</Status>;

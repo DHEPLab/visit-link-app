@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 
-import Visits from '../utils/visit';
-import storage from '../cache/storage';
-import { Colors } from '../constants';
-import { styled } from '../utils/styled';
-import { GhostNavigatorHeader, BottomRightBackground, Button } from '../components';
+import Visits from "../utils/visit";
+import storage from "../cache/storage";
+import { Colors } from "../constants";
+import { styled } from "../utils/styled";
+import {
+  GhostNavigatorHeader,
+  BottomRightBackground,
+  Button,
+} from "../components";
 import * as Location from "expo-location";
-import {ToastAndroid} from "react-native";
+import { ToastAndroid } from "react-native";
 
 export default function LessonIntro({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
@@ -16,8 +20,8 @@ export default function LessonIntro({ navigation, route }) {
     if (!route.params.preview) {
       storage.setUncommittedVisitStatus(
         route.params?.visitId,
-        'UNDONE',
-        Visits.formatDateTime(new Date())
+        "UNDONE",
+        Visits.formatDateTime(new Date()),
       );
       if (route.params.continue) {
         storage.setNextModule(route.params.nextModuleIndex);
@@ -30,7 +34,7 @@ export default function LessonIntro({ navigation, route }) {
       <BottomRightBackground
         width={280}
         height={268}
-        source={require('../assets/images/curriculum-bg.png')}
+        source={require("../assets/images/curriculum-bg.png")}
       />
       <GhostNavigatorHeader navigation={navigation} />
       <TextContainer>
@@ -42,20 +46,28 @@ export default function LessonIntro({ navigation, route }) {
           type="info"
           title="下一步"
           onPress={() => {
-              Location.requestForegroundPermissionsAsync()
-                  .then(async ({status}) => {
-                      if (status !== 'granted') {
-                          ToastAndroid.show("未授予获取用户位置的权限，无法进行家访任务！", ToastAndroid.LONG)
-                          navigation.goBack()
-                          return
-                      }
-                      const hasEnableLocation = await Location.hasServicesEnabledAsync();
-                      if (!hasEnableLocation) {
-                          ToastAndroid.show("未打开手机定位服务，无法进行家访任务！", ToastAndroid.LONG)
-                          return
-                      }
-                      navigation.navigate('LessonModules', route.params)
-                  })
+            Location.requestForegroundPermissionsAsync().then(
+              async ({ status }) => {
+                if (status !== "granted") {
+                  ToastAndroid.show(
+                    "未授予获取用户位置的权限，无法进行家访任务！",
+                    ToastAndroid.LONG,
+                  );
+                  navigation.goBack();
+                  return;
+                }
+                const hasEnableLocation =
+                  await Location.hasServicesEnabledAsync();
+                if (!hasEnableLocation) {
+                  ToastAndroid.show(
+                    "未打开手机定位服务，无法进行家访任务！",
+                    ToastAndroid.LONG,
+                  );
+                  return;
+                }
+                navigation.navigate("LessonModules", route.params);
+              },
+            );
           }}
         />
       </ButtonContainer>

@@ -1,10 +1,10 @@
-import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import React from "react";
+import { TouchableOpacity } from "react-native";
 
-import Status from './Status';
-import { styled } from '../utils/styled';
+import Status from "./Status";
+import { styled } from "../utils/styled";
 
-export default function QuestionnaireItem({ name , onPress, disabled }) {
+export default function QuestionnaireItem({ name, onPress, disabled }) {
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} disabled={disabled}>
       <Container opacity={disabled ? 0.4 : 1}>

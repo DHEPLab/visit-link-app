@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, ToastAndroid } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { ScrollView, ToastAndroid } from "react-native";
+import { useSelector } from "react-redux";
 
-import http from '../utils/http';
-import Visit from '../utils/visit';
+import http from "../utils/http";
+import Visit from "../utils/visit";
 
-import { styled } from '../utils/styled';
-import { useManualFetch, useBoolState } from '../utils';
+import { styled } from "../utils/styled";
+import { useManualFetch, useBoolState } from "../utils";
 import {
   Card,
   Button,
@@ -17,7 +17,7 @@ import {
   LessonCard,
   BabyCard,
   StartLesson,
-} from '../components';
+} from "../components";
 
 export default function VisitScreen({ navigation, route }) {
   const { params } = route;
@@ -29,16 +29,21 @@ export default function VisitScreen({ navigation, route }) {
   const [remarkVisible, openRemark, closeRemark] = useBoolState();
   const update = useSelector((state) => state.lessonsUpdate);
 
-  useEffect(() => navigation.addListener('focus', () => refresh()), [navigation]);
+  useEffect(
+    () => navigation.addListener("focus", () => refresh()),
+    [navigation],
+  );
 
   useEffect(() => {
     if (!route.params.visitTime) return;
-    http.put(`/api/visits/${params.id}`, { visitTime: params.visitTime }).then(() => refresh());
+    http
+      .put(`/api/visits/${params.id}`, { visitTime: params.visitTime })
+      .then(() => refresh());
   }, [route.params?.visitTime]);
 
   function handleChangeVisitTime() {
     http.get(`/api/visits/${params.id}/date-range`).then((range) => {
-      navigation.navigate('PickVisitTime', { visitTime, from: 'Visit', range });
+      navigation.navigate("PickVisitTime", { visitTime, from: "Visit", range });
     });
   }
 
@@ -51,17 +56,17 @@ export default function VisitScreen({ navigation, route }) {
 
   function validate() {
     if (update.isAvailable) {
-      ToastAndroid.show('请先到首页更新课程资源', ToastAndroid.LONG);
+      ToastAndroid.show("请先到首页更新课程资源", ToastAndroid.LONG);
       return false;
     }
     return true;
   }
 
-  async function cancelVisit (deleteReason) {
-    await http.delete(`/api/visits/${visit.id}?deleteReason=${deleteReason}`)
-    setTimeout(()=>{
-      navigation.navigate('Baby')
-    }, 1)
+  async function cancelVisit(deleteReason) {
+    await http.delete(`/api/visits/${visit.id}?deleteReason=${deleteReason}`);
+    setTimeout(() => {
+      navigation.navigate("Baby");
+    }, 1);
   }
 
   return (
@@ -74,14 +79,23 @@ export default function VisitScreen({ navigation, route }) {
             hideBody={!visit.remark}
           >
             <StaticForm>
-              <StaticField label={Visit.remarkTitle(status)}>{visit.remark}</StaticField>
+              <StaticField label={Visit.remarkTitle(status)}>
+                {visit.remark}
+              </StaticField>
             </StaticForm>
           </Card>
         )}
         <Modal
           title="请填写备注"
           visible={remarkVisible}
-          content={<Input value={remark} onChangeText={setRemark} border placeholder="请输入" />}
+          content={
+            <Input
+              value={remark}
+              onChangeText={setRemark}
+              border
+              placeholder="请输入"
+            />
+          }
           onCancel={closeRemark}
           onOk={handleChangeRemark}
           disableOk={!remark}
@@ -90,15 +104,22 @@ export default function VisitScreen({ navigation, route }) {
         <Card
           title="家访时间"
           right={
-            Visit.statusNotStart(status) && <Button title="修改" onPress={handleChangeVisitTime} />
+            Visit.statusNotStart(status) && (
+              <Button title="修改" onPress={handleChangeVisitTime} />
+            )
           }
         >
           <StaticForm>
-            {(Visit.statusNotStart(status) || Visit.statusExpired(status)) && visitTime && (
-              <StaticField label="家访时间">{Visit.formatDateTimeCN(visitTime)}</StaticField>
-            )}
+            {(Visit.statusNotStart(status) || Visit.statusExpired(status)) &&
+              visitTime && (
+                <StaticField label="家访时间">
+                  {Visit.formatDateTimeCN(visitTime)}
+                </StaticField>
+              )}
             {Visit.statusUndone(status) && visitTime && (
-              <StaticField label="开始时间">{Visit.formatDateTimeCN(visit.startTime)}</StaticField>
+              <StaticField label="开始时间">
+                {Visit.formatDateTimeCN(visit.startTime)}
+              </StaticField>
             )}
             {Visit.statusDone(status) && visitTime && (
               <>
@@ -131,7 +152,7 @@ export default function VisitScreen({ navigation, route }) {
             visitId: visit.id,
             lessonId: visit?.lesson?.id,
             nextModuleIndex: visit?.nextModuleIndex,
-            from: 'Visit',
+            from: "Visit",
             validate,
           }}
           cancelVisit={cancelVisit}

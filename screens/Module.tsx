@@ -1,22 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, View} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient';
-import lodash from 'lodash';
+import React, { useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import lodash from "lodash";
 
-import Text from '../components/curriculum/Text';
-import storage from '../cache/storage';
-import {Case} from '../utils/module';
-import {styled} from '../utils/styled';
-import {Colors} from '../constants';
-import {Button} from '../components';
+import Text from "../components/curriculum/Text";
+import storage from "../cache/storage";
+import { Case } from "../utils/module";
+import { styled } from "../utils/styled";
+import { Colors } from "../constants";
+import { Button } from "../components";
 import Media from "../components/curriculum/Media";
 
-
 export function useMethods(preview) {
-  function handleCase(setPath: Function, switchComponentIndex: number, caseIndex: number) {
+  function handleCase(
+    setPath: Function,
+    switchComponentIndex: number,
+    caseIndex: number,
+  ) {
     setPath((path: any[]) =>
       // fold too many layers and expand when you use them
-      path.concat([`${switchComponentIndex}.value.cases.${caseIndex}`, 'pageComponents', 0])
+      path.concat([
+        `${switchComponentIndex}.value.cases.${caseIndex}`,
+        "pageComponents",
+        0,
+      ]),
     );
   }
 
@@ -28,20 +35,20 @@ export function useMethods(preview) {
       const id = moduleStack.shift();
       const path = pathStack.shift();
       // go back to the module screen at the top of the stack
-      navigate('Module', {
+      navigate("Module", {
         id,
         path,
         moduleStack,
         pathStack,
-        originId: params.originId
+        originId: params.originId,
       });
       return;
     }
     if (preview) {
-      return
+      return;
     }
     // go back to the lesson modules page and finished current module
-    navigate('LessonModules', {
+    navigate("LessonModules", {
       id: params.lessonId,
       originModuleId: params.originId,
       finished: true,
@@ -51,16 +58,16 @@ export function useMethods(preview) {
   function jumpToAnotherModule(
     navigate: Function,
     params: any,
-    path: Array<string | number>,
-    finishAction: Array<string | number>
+    path: (string | number)[],
+    finishAction: (string | number)[],
   ) {
     const [action, target] = finishAction;
-    if (action === 'Redirect_End') {
-      navigate('Module', { id: target });
+    if (action === "Redirect_End") {
+      navigate("Module", { id: target });
       return;
     }
 
-    if (action === 'Redirect_Continue') {
+    if (action === "Redirect_Continue") {
       // deep copy module, path stack
       const moduleStack = (params.moduleStack && [...params.moduleStack]) || [];
       const pathStack = (params.pathStack && [...params.pathStack]) || [];
@@ -68,12 +75,12 @@ export function useMethods(preview) {
       moduleStack.unshift(params.id);
       pathStack.unshift(path);
 
-      navigate('Module', {
+      navigate("Module", {
         id: target,
         path: null,
         moduleStack,
         pathStack,
-        originId: params.originId
+        originId: params.originId,
       });
     }
   }
@@ -82,9 +89,9 @@ export function useMethods(preview) {
     navigate: Function,
     params: any,
     module: any,
-    path: Array<any>,
+    path: any[],
     setPath: Function,
-    skipFinishAction: boolean = false
+    skipFinishAction: boolean = false,
   ) {
     const _path = [...path];
     const contextPath = [..._path];
@@ -118,7 +125,7 @@ export function useMethods(preview) {
     }
   }
 
-  function previousStep(path: Array<any>, setPath: Function) {
+  function previousStep(path: any[], setPath: Function) {
     if (path[path.length - 1] > 0) {
       setPath(pageNumberMinusOne(path));
     } else {
@@ -135,26 +142,34 @@ export function useMethods(preview) {
     }
   }
 
-  function totalPage(module: any, contextPath: Array<string | number>) {
+  function totalPage(module: any, contextPath: (string | number)[]) {
     if (contextPath.length === 1) {
       return module.pageComponents.length;
     }
-    return lodash.get(module?.pageComponents, unfoldPath(contextPath), []).length;
+    return lodash.get(module?.pageComponents, unfoldPath(contextPath), [])
+      .length;
   }
 
-  function getFinishAction(module: any, casesPath: Array<string | number>) {
+  function getFinishAction(module: any, casesPath: (string | number)[]) {
     if (casesPath.length === 1) {
       return [];
     }
-    return lodash.get(module?.pageComponents, unfoldPath([...casesPath, 'finishAction']));
+    return lodash.get(
+      module?.pageComponents,
+      unfoldPath([...casesPath, "finishAction"]),
+    );
   }
 
-  function pageNumberPlusOne(path: Array<string | number>) {
-    return path.map((item: number, index: number) => (index === path.length - 1 ? item + 1 : item));
+  function pageNumberPlusOne(path: (string | number)[]) {
+    return path.map((item: number, index: number) =>
+      index === path.length - 1 ? item + 1 : item,
+    );
   }
 
-  function pageNumberMinusOne(path: Array<string | number>) {
-    return path.map((item: number, index: number) => (index === path.length - 1 ? item - 1 : item));
+  function pageNumberMinusOne(path: (string | number)[]) {
+    return path.map((item: number, index: number) =>
+      index === path.length - 1 ? item - 1 : item,
+    );
   }
 
   function canPreviousStep(path: any[]) {
@@ -167,11 +182,11 @@ export function useMethods(preview) {
 
   // unfold layers for support lodash get method
   // 0.value.cases.0 -> [0, 'value', 'cases', 0]
-  function unfoldPath(path: Array<string | number>) {
+  function unfoldPath(path: (string | number)[]) {
     const array = [];
     path.forEach((p: string | number) => {
-      if (typeof p === 'string') {
-        array.push(...p.split('.'));
+      if (typeof p === "string") {
+        array.push(...p.split("."));
       } else {
         array.push(p);
       }
@@ -179,10 +194,10 @@ export function useMethods(preview) {
     return array;
   }
 
-  function computed(module: any, path: Array<string | number>) {
+  function computed(module: any, path: (string | number)[]) {
     const components = lodash.get(module?.pageComponents, unfoldPath(path), []);
     const lastComponent = components[components.length - 1] || {};
-    const switchAtTheEnd = lastComponent.type === 'Switch';
+    const switchAtTheEnd = lastComponent.type === "Switch";
     const theLastPage = path[0] === module.pageComponents?.length - 1;
     return {
       components,
@@ -198,7 +213,7 @@ export function useMethods(preview) {
     params: any,
     setPath: Function,
     reloadModule: Function,
-    setModule: Function
+    setModule: Function,
   ) {
     if (!params?.id) return;
     // when go back from another module and continue on the previous path
@@ -229,14 +244,29 @@ export default function ModuleScreen({ navigation, route }) {
   const [path, setPath] = useState([0]);
   const [module, reloadModule, setModule] = storage.useModule(params.id);
 
-  const { handleCase, computed, previousStep, nextStep, handleChangeRouteParams } = useMethods(params.preview);
-  const { components, lastComponent, switchAtTheEnd, theLastPage, canPreviousStep } = computed(
-    module,
-    path
-  );
+  const {
+    handleCase,
+    computed,
+    previousStep,
+    nextStep,
+    handleChangeRouteParams,
+  } = useMethods(params.preview);
+  const {
+    components,
+    lastComponent,
+    switchAtTheEnd,
+    theLastPage,
+    canPreviousStep,
+  } = computed(module, path);
 
   useEffect(() => {
-    handleChangeRouteParams(navigation.navigate, route.params, setPath, reloadModule, setModule);
+    handleChangeRouteParams(
+      navigation.navigate,
+      route.params,
+      setPath,
+      reloadModule,
+      setModule,
+    );
   }, [route.params]);
   return (
     <>
@@ -256,7 +286,7 @@ export default function ModuleScreen({ navigation, route }) {
       <StyledScrollView>
         <ModuleCard>
           {components.map((component: any) => (
-              <ModuleComponent key={component.key} component={component} />
+            <ModuleComponent key={component.key} component={component} />
           ))}
           {switchAtTheEnd && <Text value={lastComponent?.value?.question} />}
         </ModuleCard>
@@ -275,13 +305,13 @@ export default function ModuleScreen({ navigation, route }) {
                     }
                     disabled={false}
                   />
-                )
+                ),
               )}
             </>
           ) : (
             <Button
               size="large"
-              title={theLastPage ? '完成' : '下一步'}
+              title={theLastPage ? "完成" : "下一步"}
               onPress={() =>
                 nextStep(navigation.navigate, params, module, path, setPath)
               }
@@ -305,10 +335,10 @@ export default function ModuleScreen({ navigation, route }) {
 function ModuleComponent({ component }) {
   let As;
   switch (component.type) {
-    case 'Text':
+    case "Text":
       As = Text;
       break;
-    case 'Media':
+    case "Media":
       As = Media;
       break;
     default:

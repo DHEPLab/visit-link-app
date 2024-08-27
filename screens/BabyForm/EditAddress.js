@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import http from '../../utils/http';
-import {AddressForm} from '../../components';
+import http from "../../utils/http";
+import { AddressForm } from "../../components";
 import confirm from "../../components/modal/confirm";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function EditAddress({ navigation, route }) {
   const { params } = route;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   async function onSubmit(values) {
     if (!params.id) return;
@@ -17,11 +17,14 @@ export default function EditAddress({ navigation, route }) {
         navigation.navigate(params.from, {
           success: Math.random(),
         });
-      }, dispatch
-    })
+      },
+      dispatch,
+    });
   }
 
-  return <>
-    <AddressForm initialValues={params.address} onSubmit={onSubmit} />
-  </>
+  return (
+    <>
+      <AddressForm initialValues={params.address} onSubmit={onSubmit} />
+    </>
+  );
 }

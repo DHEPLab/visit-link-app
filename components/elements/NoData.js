@@ -1,12 +1,12 @@
-import React from 'react';
-import { Image } from 'react-native';
+import React from "react";
+import { Image } from "react-native";
 
-import { styled } from '../../utils/styled';
+import { styled } from "../../utils/styled";
 
 export default function NoData({ title }) {
   return (
     <Container>
-      <StyledImage source={require('../../assets/images/no-data.png')} />
+      <StyledImage source={require("../../assets/images/no-data.png")} />
       <Title>{title}</Title>
     </Container>
   );

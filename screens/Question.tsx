@@ -1,45 +1,52 @@
-import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Formik } from 'formik';
-import { styled } from '../utils/styled';
-import FormItem from '../components/elements/FormItem';
-import Message from '../components/elements/Message';
-import { useBoolState } from '../utils';
-import InputFormItem from '../components/elements/InputFormItem';
-import { Colors } from '../constants';
-import { Button, Input } from '../components';
-import RadioGroup from '../components/elements/RadioGroup';
-import CheckBoxGroup from '../components/elements/CheckBoxGroup';
-import storage from '../cache/storage';
+import React from "react";
+import { ScrollView, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Formik } from "formik";
+import { styled } from "../utils/styled";
+import FormItem from "../components/elements/FormItem";
+import Message from "../components/elements/Message";
+import { useBoolState } from "../utils";
+import InputFormItem from "../components/elements/InputFormItem";
+import { Colors } from "../constants";
+import { Button, Input } from "../components";
+import RadioGroup from "../components/elements/RadioGroup";
+import CheckBoxGroup from "../components/elements/CheckBoxGroup";
+import storage from "../cache/storage";
 
 export default function QuestionScreen({ navigation, route }) {
   const { params } = route;
-  const {data, lessonId, visitId} = params;
-  const [errorMessageVisble, openErrorMessage, closeErrorMessage] = useBoolState();
+  const { data, lessonId, visitId } = params;
+  const [errorMessageVisble, openErrorMessage, closeErrorMessage] =
+    useBoolState();
 
   function onSubmit(values) {
     const resultList = Object.values(values).map((answer: any, i) => {
-      const type = data.questions[i].type
-      const result: any = {titleNo: (i + 1), name: data.questions[i].value?.title.trim()};
-      if (type === 'Radio') {
-        result.answer = answer?.check + (answer?.input ? ',' + answer?.input : '') || ''
-      } else if (type === 'Checkbox') {
-        result.answer = answer.map(e => e?.check + (e.input ? ',' + e.input : '')).join('/n')
+      const type = data.questions[i].type;
+      const result: any = {
+        titleNo: i + 1,
+        name: data.questions[i].value?.title.trim(),
+      };
+      if (type === "Radio") {
+        result.answer =
+          answer?.check + (answer?.input ? "," + answer?.input : "") || "";
+      } else if (type === "Checkbox") {
+        result.answer = answer
+          .map((e) => e?.check + (e.input ? "," + e.input : ""))
+          .join("/n");
       } else {
         result.answer = answer;
       }
       return result;
-    })
-    storage.setAnswers(visitId, {lessonId: lessonId, answers: resultList});
-    navigation.navigate('LessonModules', {});
+    });
+    storage.setAnswers(visitId, { lessonId: lessonId, answers: resultList });
+    navigation.navigate("LessonModules", {});
   }
 
   const QuestionTypeEnum = {
-    Text: '填空',
-    Checkbox: '多选',
-    Radio: '单选',
-  }
+    Text: "填空",
+    Checkbox: "多选",
+    Radio: "单选",
+  };
 
   return (
     <>
@@ -49,49 +56,68 @@ export default function QuestionScreen({ navigation, route }) {
         </Escape>
         <Name>{data.name}</Name>
       </Header>
-      <Formik
-        initialValues={({})}
-        validateOnChange={false}
-        onSubmit={onSubmit}
-      >
+      <Formik initialValues={{}} validateOnChange={false} onSubmit={onSubmit}>
         {({ handleSubmit, validateForm, values }) => (
           <StyledScrollView>
             <ModuleCard>
-              {data.questions && data.questions.map((question: any, index: number) => 
-                <View key={index}>
-                  <QuestionTitle><QuestionType>（{QuestionTypeEnum[question.type]}）</QuestionType>{`${index+1}.${question?.value?.title.trim()}`}</QuestionTitle>
-                  {question.type === 'Text' ? <QuestionInputCard>
-                      <InputFormItem name={`${index+1}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
-                        <Input placeholder="请输入内容" />
-                      </InputFormItem>
-                    </QuestionInputCard>:
-                    <QuestionRadioCard>
-                      <FormItem name={`${index+1}`} noBorder validate={(value: string) => (value ? '' : 'Required！')}>
-                      {question.type === 'Radio' ?
-                            <RadioGroup options={question?.value?.options} />:
-                            <CheckBoxGroup options={question?.value?.options} />
+              {data.questions &&
+                data.questions.map((question: any, index: number) => (
+                  <View key={index}>
+                    <QuestionTitle>
+                      <QuestionType>
+                        （{QuestionTypeEnum[question.type]}）
+                      </QuestionType>
+                      {`${index + 1}.${question?.value?.title.trim()}`}
+                    </QuestionTitle>
+                    {question.type === "Text" ? (
+                      <QuestionInputCard>
+                        <InputFormItem
+                          name={`${index + 1}`}
+                          noBorder
+                          validate={(value: string) =>
+                            value ? "" : "Required！"
                           }
-                      </FormItem>
-                    </QuestionRadioCard>
-                    }
-                </View>
-              )}
+                        >
+                          <Input placeholder="请输入内容" />
+                        </InputFormItem>
+                      </QuestionInputCard>
+                    ) : (
+                      <QuestionRadioCard>
+                        <FormItem
+                          name={`${index + 1}`}
+                          noBorder
+                          validate={(value: string) =>
+                            value ? "" : "Required！"
+                          }
+                        >
+                          {question.type === "Radio" ? (
+                            <RadioGroup options={question?.value?.options} />
+                          ) : (
+                            <CheckBoxGroup options={question?.value?.options} />
+                          )}
+                        </FormItem>
+                      </QuestionRadioCard>
+                    )}
+                  </View>
+                ))}
             </ModuleCard>
             <ButtonContainer>
               <Button
                 size="large"
                 title="完成"
                 onPress={() => {
-                  validateForm(values).then(res => {
-                    if (Object.keys(res).length === 0) {
-                      handleSubmit()
-                    } else {
-                      openErrorMessage()
-                    }
-                  }).catch(e => {
-                    console.error(e) 
-                    openErrorMessage()
-                  })
+                  validateForm(values)
+                    .then((res) => {
+                      if (Object.keys(res).length === 0) {
+                        handleSubmit();
+                      } else {
+                        openErrorMessage();
+                      }
+                    })
+                    .catch((e) => {
+                      console.error(e);
+                      openErrorMessage();
+                    });
                 }}
               />
             </ButtonContainer>
@@ -158,20 +184,20 @@ const QuestionTitle = styled.Text`
   font-size: 12px;
   color: #525252;
   line-height: 20px;
-`
+`;
 
 const QuestionRadioCard = styled.View`
   margin: 3px 0px 10px;
   border-radius: 8px;
-  border: 3px solid #FFEDE2;
+  border: 3px solid #ffede2;
   padding: 10px;
-`
+`;
 
 const QuestionInputCard = styled.View`
   margin: 3px 0px 10px;
   border-radius: 30px;
-  border: 2px solid #FFEDE2;
-`
+  border: 2px solid #ffede2;
+`;
 
 const QuestionType = styled.Text`
   padding: 1px 4px;

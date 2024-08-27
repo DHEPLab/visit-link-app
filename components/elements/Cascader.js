@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { ScrollView, Modal, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { ScrollView, Modal, TouchableOpacity } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-import { useBoolState } from '../../utils';
-import { px2dp, styled } from '../../utils/styled';
+import { useBoolState } from "../../utils";
+import { px2dp, styled } from "../../utils/styled";
 
 export default function Cascader({ value, onChange, options, placeholder }) {
   const [visible, open, close] = useBoolState();
@@ -15,7 +15,7 @@ export default function Cascader({ value, onChange, options, placeholder }) {
       setData(item.children);
       setValues((v) => [...v, item]);
     } else {
-      onChange([...values, item].map((i) => i.name).join('/'));
+      onChange([...values, item].map((i) => i.name).join("/"));
       close();
     }
   }
@@ -43,7 +43,11 @@ export default function Cascader({ value, onChange, options, placeholder }) {
   return (
     <>
       <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
-        {value ? <Value>{value}</Value> : <Placeholder>{placeholder}</Placeholder>}
+        {value ? (
+          <Value>{value}</Value>
+        ) : (
+          <Placeholder>{placeholder}</Placeholder>
+        )}
       </TouchableOpacity>
       <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
         <Shadow>
@@ -57,11 +61,18 @@ export default function Cascader({ value, onChange, options, placeholder }) {
               </CloseButton>
             </Header>
             <CurrentPick>
-              <TouchableOpacity activeOpacity={0.8} onPress={() => backTo(null, -1)}>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => backTo(null, -1)}
+              >
                 <Picked>当前选择：</Picked>
               </TouchableOpacity>
               {values.map((v, index) => (
-                <TouchableOpacity activeOpacity={0.8} key={v.name} onPress={() => backTo(v, index)}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  key={v.name}
+                  onPress={() => backTo(v, index)}
+                >
                   <Picked key={v.name}>{`${v.name}/`}</Picked>
                 </TouchableOpacity>
               ))}

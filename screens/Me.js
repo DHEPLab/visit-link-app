@@ -1,24 +1,31 @@
-import React from 'react';
-import Constants from 'expo-constants';
-import {Image, RefreshControl, ScrollView, View} from 'react-native';
-import {useDispatch} from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import Constants from "expo-constants";
+import { Image, RefreshControl, ScrollView, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
-import Http from '../utils/http';
-import {styled} from '../utils/styled';
-import {Colors} from '../constants';
-import {useBoolState, useFetch} from '../utils';
-import Storage from '../cache/storage';
-import {LinearGradient} from 'expo-linear-gradient';
-import {Button, Card, Message, Modal, StaticField, StaticForm} from '../components';
-import {signOut} from '../actions';
+import Http from "../utils/http";
+import { styled } from "../utils/styled";
+import { Colors } from "../constants";
+import { useBoolState, useFetch } from "../utils";
+import Storage from "../cache/storage";
+import { LinearGradient } from "expo-linear-gradient";
+import {
+  Button,
+  Card,
+  Message,
+  Modal,
+  StaticField,
+  StaticForm,
+} from "../components";
+import { signOut } from "../actions";
 import QrCodeScanner from "./QrCodeScanner";
 
 export default function Me({ navigation }) {
   const { t } = useTranslation("Me");
   const dispatch = useDispatch();
   const { navigate } = navigation;
-  const [user, refresh, refreshing] = useFetch('/api/account/profile');
+  const [user, refresh, refreshing] = useFetch("/api/account/profile");
 
   const [visible, open] = useBoolState();
   const [confirmVisible, openConfirm, closeConfirm] = useBoolState();
@@ -29,85 +36,102 @@ export default function Me({ navigation }) {
   async function handleLogout() {
     closeConfirm();
     await Http.signOut();
-    clearCache()
+    clearCache();
     open();
     dispatch(signOut());
   }
 
-  function clearCache () {
+  function clearCache() {
     Storage.setNextVisit({});
-    Storage.setBabies([])
-    Storage.setOfflineBabies([])
+    Storage.setBabies([]);
+    Storage.setOfflineBabies([]);
   }
 
   return (
-      <>
-        <ScrollView
-            refreshControl={
-              <RefreshControl colors={Colors.colors} refreshing={refreshing} onRefresh={refresh} />
-            }
-        >
-          <Header {...Colors.linearGradient}>
-            <Message visible={visible} title={t('logOutSuccessfully')} />
-            <BackgroundImage source={require('../assets/images/me-bg.png')} />
-            <HeaderTitle>{t('account')}</HeaderTitle>
-            <NameContainer>
-              <Name>{user.realName}</Name>
-              <Identity>{t('id')}: {chw?.identity}</Identity>
-            </NameContainer>
-            <InfoContainer>
-              <View>
-                <PhoneNumber>{user.phone}</PhoneNumber>
-                <Location>{user.chw?.tags?.join(', ')}</Location>
-              </View>
-              <QrCodeScanner navigation={navigation}/>
-            </InfoContainer>
-          </Header>
+    <>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            colors={Colors.colors}
+            refreshing={refreshing}
+            onRefresh={refresh}
+          />
+        }
+      >
+        <Header {...Colors.linearGradient}>
+          <Message visible={visible} title={t("logOutSuccessfully")} />
+          <BackgroundImage source={require("../assets/images/me-bg.png")} />
+          <HeaderTitle>{t("account")}</HeaderTitle>
+          <NameContainer>
+            <Name>{user.realName}</Name>
+            <Identity>
+              {t("id")}: {chw?.identity}
+            </Identity>
+          </NameContainer>
+          <InfoContainer>
+            <View>
+              <PhoneNumber>{user.phone}</PhoneNumber>
+              <Location>{user.chw?.tags?.join(", ")}</Location>
+            </View>
+            <QrCodeScanner navigation={navigation} />
+          </InfoContainer>
+        </Header>
 
-          <CardsContainer>
+        <CardsContainer>
+          <Card
+            title={t("myAccount")}
+            right={
+              <Button
+                title={t("resetMyPassword")}
+                onPress={() => navigate("ChangePassword")}
+              />
+            }
+            background={require("../assets/images/account.png")}
+            backgroundWidth={40}
+            backgroundHeight={50}
+          >
+            <StaticForm>
+              <StaticField label={t("username")}>{user.username}</StaticField>
+              <StaticField label={t("password")}>******</StaticField>
+            </StaticForm>
+          </Card>
+          {supervisor?.id && (
             <Card
-                title={t('myAccount')}
-                right={<Button title={t('resetMyPassword')} onPress={() => navigate('ChangePassword')} />}
-                background={require('../assets/images/account.png')}
-                backgroundWidth={40}
-                backgroundHeight={50}
+              title={t("mySupervisor")}
+              background={require("../assets/images/supervisor.png")}
+              backgroundWidth={40}
+              backgroundHeight={50}
             >
               <StaticForm>
-                <StaticField label={t('username')}>{user.username}</StaticField>
-                <StaticField label={t('password')}>******</StaticField>
+                <StaticField label={t("supervisorName")}>
+                  {supervisor?.realName}
+                </StaticField>
+                <StaticField label={t("supervisorPhoneNumber")}>
+                  {supervisor?.phone}
+                </StaticField>
               </StaticForm>
             </Card>
-            {supervisor?.id && (
-                <Card
-                    title={t('mySupervisor')}
-                    background={require('../assets/images/supervisor.png')}
-                    backgroundWidth={40}
-                    backgroundHeight={50}
-                >
-                  <StaticForm>
-                    <StaticField label={t('supervisorName')}>{supervisor?.realName}</StaticField>
-                    <StaticField label={t('supervisorPhoneNumber')}>{supervisor?.phone}</StaticField>
-                  </StaticForm>
-                </Card>
-            )}
-          </CardsContainer>
-        </ScrollView>
+          )}
+        </CardsContainer>
+      </ScrollView>
 
-        <Logout>
-          <Button title={t('logOut')} type="weaken" onPress={openConfirm} />
-        </Logout>
-        <Version>{t('version')} v{Constants.expoConfig.version}</Version>
+      <Logout>
+        <Button title={t("logOut")} type="weaken" onPress={openConfirm} />
+      </Logout>
+      <Version>
+        {t("version")} v{Constants.expoConfig.version}
+      </Version>
 
-        <Modal
-            title={t('logOut')}
-            visible={confirmVisible}
-            contentText={t('logOutConfirmation')}
-            okText={t('logOut')}
-            cancelText={t('cancel')}
-            onCancel={closeConfirm}
-            onOk={handleLogout}
-        />
-      </>
+      <Modal
+        title={t("logOut")}
+        visible={confirmVisible}
+        contentText={t("logOutConfirmation")}
+        okText={t("logOut")}
+        cancelText={t("cancel")}
+        onCancel={closeConfirm}
+        onOk={handleLogout}
+      />
+    </>
   );
 }
 

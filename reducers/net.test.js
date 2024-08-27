@@ -1,46 +1,46 @@
-import net from './net';
+import net from "./net";
 
-it('should switch net type to callular', () => {
+it("should switch net type to callular", () => {
   expect(
     net(undefined, {
-      type: 'NET_INFO',
+      type: "NET_INFO",
       payload: {
-        type: 'callular',
+        type: "callular",
         isInternetReachable: true,
       },
-    })
+    }),
   ).toStrictEqual({
-    type: 'callular',
+    type: "callular",
     isConnected: true,
   });
 });
 
-it('should switch net type to wifi', () => {
+it("should switch net type to wifi", () => {
   expect(
     net(undefined, {
-      type: 'NET_INFO',
+      type: "NET_INFO",
       payload: {
-        type: 'Wifi',
+        type: "Wifi",
         isInternetReachable: true,
       },
-    })
+    }),
   ).toStrictEqual({
-    type: 'Wifi',
+    type: "Wifi",
     isConnected: true,
   });
 });
 
-it('should switch net type none, connected false', () => {
+it("should switch net type none, connected false", () => {
   expect(
     net(undefined, {
-      type: 'NET_INFO',
+      type: "NET_INFO",
       payload: {
-        type: 'none',
+        type: "none",
         isInternetReachable: false,
       },
-    })
+    }),
   ).toStrictEqual({
-    type: 'none',
+    type: "none",
     isConnected: false,
   });
 });

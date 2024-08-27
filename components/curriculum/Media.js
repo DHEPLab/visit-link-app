@@ -1,23 +1,23 @@
-import React, {useState} from 'react';
-import {Image, Modal} from 'react-native';
-import {Video} from 'expo-av';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import ImageViewer from 'react-native-image-zoom-viewer';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import * as FileSystem from 'expo-file-system';
+import React, { useState } from "react";
+import { Image, Modal } from "react-native";
+import { Video } from "expo-av";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import ImageViewer from "react-native-image-zoom-viewer";
+import * as ScreenOrientation from "expo-screen-orientation";
+import * as FileSystem from "expo-file-system";
 
-import {px2dp, styled} from '../../utils/styled';
-import {useBoolState} from '../../utils';
-import {Config} from "../../constants";
+import { px2dp, styled } from "../../utils/styled";
+import { useBoolState } from "../../utils";
+import { Config } from "../../constants";
 
 export default function CurriculumMedia({ value }) {
-  let uri = value.mode === "REVIEW"?
-      `${Config.apiHost}/api/files${value.file}`
-      :
-      `${FileSystem.documentDirectory}${value.file}`;
+  let uri =
+    value.mode === "REVIEW"
+      ? `${Config.apiHost}/api/files${value.file}`
+      : `${FileSystem.documentDirectory}${value.file}`;
   return (
     <Container>
-      {value.type === 'VIDEO' ? (
+      {value.type === "VIDEO" ? (
         <VideoMedia uri={uri} />
       ) : (
         <PictureMedia uri={uri} />
@@ -40,17 +40,23 @@ function VideoMedia({ uri }) {
       volume={1.0}
       isMuted={false}
       useNativeControls
-      resizeMode={inFullscreen ? Video.RESIZE_MODE_CONTAIN : Video.RESIZE_MODE_COVER}
+      resizeMode={
+        inFullscreen ? Video.RESIZE_MODE_CONTAIN : Video.RESIZE_MODE_COVER
+      }
       style={{ width, height }}
       onFullscreenUpdate={async ({ fullscreenUpdate }) => {
         switch (fullscreenUpdate) {
           case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
             switchToLandscape();
-            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
+            await ScreenOrientation.lockAsync(
+              ScreenOrientation.OrientationLock.LANDSCAPE_LEFT,
+            );
             break;
           case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
             switchToPortrait();
-            await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+            await ScreenOrientation.lockAsync(
+              ScreenOrientation.OrientationLock.PORTRAIT_UP,
+            );
             break;
         }
       }}
@@ -64,12 +70,20 @@ function PictureMedia({ uri }) {
   return (
     <>
       <TouchableOpacity onPress={openModal} activeOpacity={0.8}>
-        <StyledImage source={{ uri }} resizeMode="contain" onError={({ nativeEvent: { error } }) => {
-          console.error('image load error：', error)
-        }} />
+        <StyledImage
+          source={{ uri }}
+          resizeMode="contain"
+          onError={({ nativeEvent: { error } }) => {
+            console.error("image load error：", error);
+          }}
+        />
       </TouchableOpacity>
       <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
-        <ImageViewer renderIndicator={() => {}} onClick={closeModal} imageUrls={[{ url: uri }]} />
+        <ImageViewer
+          renderIndicator={() => {}}
+          onClick={closeModal}
+          imageUrls={[{ url: uri }]}
+        />
       </Modal>
     </>
   );

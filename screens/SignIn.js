@@ -1,69 +1,86 @@
-import React from 'react';
-import { ToastAndroid } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { ToastAndroid } from "react-native";
+import { useDispatch } from "react-redux";
+import { Formik } from "formik";
+import { useTranslation } from "react-i18next";
 
-import Http from '../utils/http';
-import { signIn } from '../actions';
-import { useBoolState } from '../utils';
-import { Layout } from '../constants';
-import { styled } from '../utils/styled';
-import { PasswordInput, FormItem, SpecialInput, Button, Message } from '../components';
+import Http from "../utils/http";
+import { signIn } from "../actions";
+import { useBoolState } from "../utils";
+import { Layout } from "../constants";
+import { styled } from "../utils/styled";
+import {
+  PasswordInput,
+  FormItem,
+  SpecialInput,
+  Button,
+  Message,
+} from "../components";
 
 export default function SignIn() {
-    const { t } = useTranslation('SignIn');
-    const dispatch = useDispatch();
-    const [visible, openSuccessMessage] = useBoolState();
-    const [badCredentials, onBadCredentials, resetBadCredentials] = useBoolState();
+  const { t } = useTranslation("SignIn");
+  const dispatch = useDispatch();
+  const [visible, openSuccessMessage] = useBoolState();
+  const [badCredentials, onBadCredentials, resetBadCredentials] =
+    useBoolState();
 
-    function onSubmit(values) {
-        resetBadCredentials();
-        Http.post('/api/authenticate', values)
-            .then((data) => {
-                Http.auth(data.idToken);
-                openSuccessMessage();
-                dispatch(signIn(data));
-            })
-            .catch((error) => {
-                if (error.status === 401) {
-                    onBadCredentials();
-                    return;
-                }
-            });
-    }
+  function onSubmit(values) {
+    resetBadCredentials();
+    Http.post("/api/authenticate", values)
+      .then((data) => {
+        Http.auth(data.idToken);
+        openSuccessMessage();
+        dispatch(signIn(data));
+      })
+      .catch((error) => {
+        if (error.status === 401) {
+          onBadCredentials();
+          return;
+        }
+      });
+  }
 
-    return (
-        <Container>
-            <Logo resizeMode="contain" source={require('../assets/images/logo.png')} />
-            <Message visible={visible} title={t('loginSuccess')} />
-            <Formik initialValues={{}} onSubmit={onSubmit}>
-                {({ handleSubmit, values }) => (
-                    <FormContainer>
-                        <FormItem name="username" center noBorder>
-                            <SpecialInput placeholder={t('enterUsername')} />
-                        </FormItem>
-                        <FormItem name="password" center noBorder>
-                            <PasswordInput
-                                type="special"
-                                placeholder={t('enterPassword')}
-                                onEndEditing={handleSubmit}
-                            />
-                        </FormItem>
-                        <ForgetPassword>{/* <Button type="link" title={t('forgotPassword')} /> */}</ForgetPassword>
-                        {badCredentials && <BadCredentials>{t('badCredentials')}</BadCredentials>}
-                        <Button
-                            disabled={!values.username || !values.password}
-                            size="large"
-                            title={t('login')}
-                            onPress={handleSubmit}
-                        />
-                    </FormContainer>
-                )}
-            </Formik>
-            <Inset resizeMode="contain" source={require('../assets/images/login-inset.png')} />
-        </Container>
-    );
+  return (
+    <Container>
+      <Logo
+        resizeMode="contain"
+        source={require("../assets/images/logo.png")}
+      />
+      <Message visible={visible} title={t("loginSuccess")} />
+      <Formik initialValues={{}} onSubmit={onSubmit}>
+        {({ handleSubmit, values }) => (
+          <FormContainer>
+            <FormItem name="username" center noBorder>
+              <SpecialInput placeholder={t("enterUsername")} />
+            </FormItem>
+            <FormItem name="password" center noBorder>
+              <PasswordInput
+                type="special"
+                placeholder={t("enterPassword")}
+                onEndEditing={handleSubmit}
+              />
+            </FormItem>
+            <ForgetPassword>
+              {/* <Button type="link" title={t('forgotPassword')} /> */}
+            </ForgetPassword>
+            {badCredentials && (
+              <BadCredentials>{t("badCredentials")}</BadCredentials>
+            )}
+            <Button
+              disabled={!values.username || !values.password}
+              size="large"
+              title={t("login")}
+              onPress={handleSubmit}
+            />
+          </FormContainer>
+        )}
+      </Formik>
+      <Inset
+        resizeMode="contain"
+        source={require("../assets/images/login-inset.png")}
+      />
+    </Container>
+  );
 }
 
 const Logo = styled.Image`

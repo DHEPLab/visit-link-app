@@ -1,5 +1,5 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
+import React from "react";
+import { styled } from "../../utils/styled";
 
 export default function ({ children }) {
   return <Container>{children}</Container>;

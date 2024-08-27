@@ -1,15 +1,15 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useTranslation } from "react-i18next";
 
-import { styled } from '../utils/styled';
+import { styled } from "../utils/styled";
 
 export default function ApproveStatus({ approved, gray }) {
-  const { t } = useTranslation('ApproveStatus');
+  const { t } = useTranslation("ApproveStatus");
 
   return (
-      <Status gray={!approved && gray}>
-        {approved ? t('approved') : t('pending')}
-      </Status>
+    <Status gray={!approved && gray}>
+      {approved ? t("approved") : t("pending")}
+    </Status>
   );
 }
 

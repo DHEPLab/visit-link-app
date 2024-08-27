@@ -1,14 +1,18 @@
-import * as React from 'react';
-import Icons from './Icons';
-import { styled } from '../../utils/styled';
-import { LinearGradient } from 'expo-linear-gradient';
+import * as React from "react";
+import Icons from "./Icons";
+import { styled } from "../../utils/styled";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function TabBarIcon({ name, focused }) {
   const size = 25;
   return (
     <TabBarIconContainer focused={focused}>
       {focused ? (
-        <FocusedIcon start={[1, 0]} end={[0, 1]} colors={['#FF9472', '#F2709C']}>
+        <FocusedIcon
+          start={[1, 0]}
+          end={[0, 1]}
+          colors={["#FF9472", "#F2709C"]}
+        >
           <Icons name={`${name}-focused`} size={size} />
         </FocusedIcon>
       ) : (
@@ -20,7 +24,7 @@ export default function TabBarIcon({ name, focused }) {
 
 const TabBarIconContainer = styled.View`
   margin-top: 4px;
-  ${({ focused }) => !focused && 'margin-top: 8px;'}
+  ${({ focused }) => !focused && "margin-top: 8px;"}
 `;
 
 const FocusedIcon = styled(LinearGradient)`

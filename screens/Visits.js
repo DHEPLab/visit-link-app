@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
-import { FlatList, ToastAndroid } from 'react-native';
-import { CalendarList } from 'react-native-calendars';
-import { LinearGradient } from 'expo-linear-gradient';
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import moment from "moment";
+import { FlatList, ToastAndroid } from "react-native";
+import { CalendarList } from "react-native-calendars";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
 
-import Visit from '../utils/visit';
-import Http from '../utils/http';
-import { useManualFetchArray, calenderMarkedDates } from '../utils';
-import { Colors } from '../constants';
-import { styled, px2dp } from '../utils/styled';
-import { Button, VisitItem, NoData } from '../components';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import Visit from "../utils/visit";
+import Http from "../utils/http";
+import { useManualFetchArray, calenderMarkedDates } from "../utils";
+import { Colors } from "../constants";
+import { styled, px2dp } from "../utils/styled";
+import { Button, VisitItem, NoData } from "../components";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Visits({ navigation }) {
   const [now] = useState(moment());
@@ -20,24 +20,29 @@ export default function Visits({ navigation }) {
   const [visits, setVisits] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selected, setSelected] = useState(Visit.formatDate(moment()));
-  const [markedDates, refreshMarkedDates] = useManualFetchArray('/api/visits/marked-dates');
+  const [markedDates, refreshMarkedDates] = useManualFetchArray(
+    "/api/visits/marked-dates",
+  );
   const { isConnected } = useSelector((state) => state.net);
 
-  useEffect(() => navigation.addListener('focus', () => refreshMarkedDates()), [navigation]);
+  useEffect(
+    () => navigation.addListener("focus", () => refreshMarkedDates()),
+    [navigation],
+  );
 
   useEffect(() => {
     if (markedDates && !markedDates.includes(selected)) return setVisits([]);
-    Http.get('/api/visits', {
+    Http.get("/api/visits", {
       date: selected,
     }).then(setVisits);
   }, [selected, markedDates]);
 
   function handlePressVisit(item) {
-    if (!item.babyApproved && item.status === 'NOT_STARTED') {
-      ToastAndroid.show('请等待宝宝完成审核', ToastAndroid.SHORT);
+    if (!item.babyApproved && item.status === "NOT_STARTED") {
+      ToastAndroid.show("请等待宝宝完成审核", ToastAndroid.SHORT);
       return;
     }
-    navigation.navigate('Visit', { id: item.id });
+    navigation.navigate("Visit", { id: item.id });
   }
 
   return (
@@ -54,14 +59,14 @@ export default function Visits({ navigation }) {
             pagingEnabled={true}
             hideArrows={false}
             calendarWidth={px2dp(400)}
-            monthFormat={'yyyy年 M月'}
+            monthFormat={"yyyy年 M月"}
             current={Visit.formatDate(now)}
             theme={Colors.calendar}
             markedDates={{
               ...calenderMarkedDates(markedDates),
               [selected]: {
                 selected: true,
-                dotColor: '#fff',
+                dotColor: "#fff",
                 marked: markedDates?.includes(selected),
               },
             }}
@@ -70,14 +75,23 @@ export default function Visits({ navigation }) {
         </CalendarContainer>
       )}
 
-      <TouchableOpacity onPress={() => setShowCalendar(!showCalendar)} activeOpacity={0.8}>
+      <TouchableOpacity
+        onPress={() => setShowCalendar(!showCalendar)}
+        activeOpacity={0.8}
+      >
         <ExtendCalendar>
           <ExtendLabel>
-            <FontAwesome5 name="calendar-alt" size={px2dp(14)} color="#ff794f" />
-            <ExtendLabelText>{showCalendar ? '收起日历' : '展开日历'}</ExtendLabelText>
+            <FontAwesome5
+              name="calendar-alt"
+              size={px2dp(14)}
+              color="#ff794f"
+            />
+            <ExtendLabelText>
+              {showCalendar ? "收起日历" : "展开日历"}
+            </ExtendLabelText>
           </ExtendLabel>
           <MaterialIcons
-            name={showCalendar ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+            name={showCalendar ? "keyboard-arrow-up" : "keyboard-arrow-down"}
             size={px2dp(16)}
             color="#FF794F"
           />
@@ -89,7 +103,7 @@ export default function Visits({ navigation }) {
           title="新建家访"
           disabled={!isConnected || Visit.disabledVisitButton(now, selected)}
           onPress={() =>
-            navigation.navigate('CreateVisit', {
+            navigation.navigate("CreateVisit", {
               visitTime: Visit.defaultVisitTime(new Date(), selected),
             })
           }
@@ -99,8 +113,10 @@ export default function Visits({ navigation }) {
       <StyledFlatList
         ListEmptyComponent={<NoData title="该日期暂时没有家访安排" />}
         data={visits}
-        keyExtractor={(item) => item.id + ''}
-        renderItem={({ item }) => <VisitItem onPress={() => handlePressVisit(item)} value={item} />}
+        keyExtractor={(item) => item.id + ""}
+        renderItem={({ item }) => (
+          <VisitItem onPress={() => handlePressVisit(item)} value={item} />
+        )}
       />
     </>
   );

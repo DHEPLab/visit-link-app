@@ -1,23 +1,23 @@
-import React from 'react';
+import React from "react";
 
-import {styled} from '../../utils/styled';
+import { styled } from "../../utils/styled";
 import HtmlView from "react-native-htmlview";
 
 export default function CurriculumText({ value }) {
   switch (value.type) {
-    case 'script':
+    case "script":
       return (
         <Container>
           <Script html={value.html} />
         </Container>
       );
-    case 'reference':
+    case "reference":
       return (
         <Container>
           <ReferenceText html={value.html} />
         </Container>
       );
-    case 'instruction':
+    case "instruction":
     default:
       return (
         <Container>
@@ -66,6 +66,10 @@ const ReferenceContainer = styled.View`
 
 function WebViewContainer({ html, customStyle }) {
   return (
-    <HtmlView style={{ width: 'auto' }} customStyle={customStyle} value={html} />
+    <HtmlView
+      style={{ width: "auto" }}
+      customStyle={customStyle}
+      value={html}
+    />
   );
 }

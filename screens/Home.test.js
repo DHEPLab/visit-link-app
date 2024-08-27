@@ -1,14 +1,14 @@
-import React from 'react';
-import { render, waitFor } from 'react-native-testing-library';
-import storage from '../cache/storage';
-import Home from './Home';
+import React from "react";
+import { render, waitFor } from "react-native-testing-library";
+import storage from "../cache/storage";
+import Home from "./Home";
 
-jest.mock('../cache/storage', () => ({
+jest.mock("../cache/storage", () => ({
   useNextVisit: jest.fn(),
   useVisitStatus: jest.fn(),
 }));
 
-jest.mock('react-redux', () => ({
+jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
   useSelector: () => ({
     state: {
@@ -26,7 +26,7 @@ const createTestProps = () => ({
   },
 });
 
-it('should no data', async () => {
+it("should no data", async () => {
   storage.useNextVisit.mockImplementation(() => [{}]);
   storage.useVisitStatus.mockImplementation(() => [{}]);
   const { queryByText } = render(<Home {...createTestProps()} />);
@@ -35,23 +35,25 @@ it('should no data', async () => {
   });
 });
 
-it('should render next visit', async () => {
+it("should render next visit", async () => {
   storage.useNextVisit.mockImplementation(() => [
     {
       id: 1,
-      visitTime: '2020-01-01T10:00',
+      visitTime: "2020-01-01T10:00",
       baby: {
-        name: 'Baby Name',
+        name: "Baby Name",
       },
       lesson: {
-        name: 'Lesson Name',
+        name: "Lesson Name",
       },
     },
   ]);
   storage.useVisitStatus.mockImplementation(() => [{}]);
   const { queryByText } = render(<Home {...createTestProps()} />);
   await waitFor(() => {
-    expect(queryByText(/您的下一次家访：\n2020年01月01日\/上午10:00/)).not.toBeNull();
+    expect(
+      queryByText(/您的下一次家访：\n2020年01月01日\/上午10:00/),
+    ).not.toBeNull();
     expect(queryByText(/Baby Name/)).not.toBeNull();
     expect(queryByText(/Lesson Name/)).not.toBeNull();
   });

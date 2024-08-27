@@ -1,21 +1,21 @@
-import user from './user';
+import user from "./user";
 
-it('should restore token', () => {
+it("should restore token", () => {
   expect(
     user(undefined, {
-      type: 'RESTORE_TOKEN',
+      type: "RESTORE_TOKEN",
       token: 123,
-    })
+    }),
   ).toStrictEqual({
     userToken: 123,
   });
 });
 
-it('should clean token', () => {
+it("should clean token", () => {
   expect(
     user(undefined, {
-      type: 'SIGN_OUT',
-    })
+      type: "SIGN_OUT",
+    }),
   ).toStrictEqual({
     userToken: null,
   });

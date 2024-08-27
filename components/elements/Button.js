@@ -1,7 +1,7 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import { TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import { styled } from "../../utils/styled";
+import { TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Button({ onPress, disabled, ...props }) {
   return (
@@ -21,31 +21,31 @@ function RenderButton({ title, type, size, ghost, disabled }) {
   }
 
   switch (type) {
-    case 'weaken':
+    case "weaken":
       return (
         <WeakenButton>
           <Text>{title}</Text>
         </WeakenButton>
       );
-    case 'info':
+    case "info":
       return (
         <InfoButton>
           <InfoButtonText>{title}</InfoButtonText>
         </InfoButton>
       );
-    case 'text':
+    case "text":
       return <Text>{title}</Text>;
-    case 'delete':
+    case "delete":
       return <DeleteText>{title}</DeleteText>;
-    case 'link':
+    case "link":
       return <LinkButton>{title}</LinkButton>;
-    case 'primary':
+    case "primary":
       return (
         <PrimaryButton disabled={disabled}>
           <Text>{title}</Text>
         </PrimaryButton>
       );
-    case 'shade':
+    case "shade":
     default:
       return (
         <ShadeButton
@@ -54,7 +54,7 @@ function RenderButton({ title, type, size, ghost, disabled }) {
           size={size}
           start={[1, 0]}
           end={[0, 1]}
-          colors={['#F2709C', '#FF9472']}
+          colors={["#F2709C", "#FF9472"]}
         >
           <Text>{title}</Text>
         </ShadeButton>
@@ -66,15 +66,15 @@ const GhostButton = styled.View`
   border: 1px solid #fff;
   border-radius: 25px;
   padding: 4px;
-  width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
+  width: ${(props) => (props.size === "large" ? "260px" : "auto")};
   min-width: 80px;
   ${({ type }) =>
-    type === 'primary' &&
+    type === "primary" &&
     `
     border-color: #FF794F;
   `}
   ${({ type }) =>
-    type === 'error' &&
+    type === "error" &&
     `
     border-color: #FF2E2E;
   `}
@@ -85,7 +85,7 @@ const PrimaryButton = styled.View`
   padding: 4px;
   min-width: 80px;
   background: #ff794f;
-  ${({ disabled }) => disabled && 'opacity: 0.5;'}
+  ${({ disabled }) => disabled && "opacity: 0.5;"}
 `;
 
 const LinkButton = styled.Text`
@@ -112,11 +112,11 @@ const InfoButton = styled.View`
 `;
 
 const ShadeButton = styled(LinearGradient)`
-  width: ${(props) => (props.size === 'large' ? '260px' : 'auto')};
-  padding: ${(props) => (props.size === 'large' ? '7px' : '4px')} 16px;
-  margin-bottom: ${(props) => (props.size === 'large' ? '10px' : 0)};
+  width: ${(props) => (props.size === "large" ? "260px" : "auto")};
+  padding: ${(props) => (props.size === "large" ? "7px" : "4px")} 16px;
+  margin-bottom: ${(props) => (props.size === "large" ? "10px" : 0)};
   border-radius: 270px;
-  ${({ disabled }) => disabled && 'opacity: 0.5;'}
+  ${({ disabled }) => disabled && "opacity: 0.5;"}
   align-self: center;
 `;
 
@@ -126,12 +126,12 @@ const Text = styled.Text`
   color: #fff;
   font-weight: bold;
   ${({ type }) =>
-    type === 'primary' &&
+    type === "primary" &&
     `
     color: #FF794F;
   `}
   ${({ type }) =>
-    type === 'error' &&
+    type === "error" &&
     `
     color: #FF2E2E;
   `}

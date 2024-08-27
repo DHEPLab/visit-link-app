@@ -1,15 +1,14 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TextInput } from 'react-native';
+import React from "react";
+import { styled } from "../../utils/styled";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { TextInput } from "react-native";
 
 export default function RadioGroup({ value, onChange, options = [] }) {
-
-  function checkChange (label, input, from) {
-    if (from === 'input' || value === label) {
-      onChange({ target: { value: {check: label, input: input} } })
+  function checkChange(label, input, from) {
+    if (from === "input" || value === label) {
+      onChange({ target: { value: { check: label, input: input } } });
     } else {
-      onChange({ target: { value: {check: label, input: ''} } })
+      onChange({ target: { value: { check: label, input: "" } } });
     }
   }
 
@@ -20,18 +19,24 @@ export default function RadioGroup({ value, onChange, options = [] }) {
           <TouchableOpacity
             key={option.label}
             activeOpacity={0.8}
-            onPress={() => checkChange(option.label, value?.input, 'text')}
+            onPress={() => checkChange(option.label, value?.input, "text")}
           >
             <Line>
-              <Box checked={option.label === value?.check}>{option.label === value?.check && <Checked />}</Box>
+              <Box checked={option.label === value?.check}>
+                {option.label === value?.check && <Checked />}
+              </Box>
               <Label>{option.label.trim()}</Label>
             </Line>
-            {option.needEnter && <StyledTextInput
-              placeholder="请输入内容"
-              value={(option.label === value?.check) ? (option?.input) : ''}
-              border={true}
-              onChangeText={text => checkChange(option.label, text, 'input')}
-            />}
+            {option.needEnter && (
+              <StyledTextInput
+                placeholder="请输入内容"
+                value={option.label === value?.check ? option?.input : ""}
+                border={true}
+                onChangeText={(text) =>
+                  checkChange(option.label, text, "input")
+                }
+              />
+            )}
           </TouchableOpacity>
         );
       })}
@@ -53,7 +58,7 @@ const Box = styled.View`
   border-radius: 12px;
   align-items: center;
   justify-content: center;
-  border-color: #FFC3A0;
+  border-color: #ffc3a0;
   ${({ checked }) =>
     checked &&
     `

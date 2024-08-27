@@ -1,6 +1,6 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import BottomRightBackground from '../BottomRightBackground';
+import React from "react";
+import { styled } from "../../utils/styled";
+import BottomRightBackground from "../BottomRightBackground";
 
 export default function Card({
   title,
@@ -59,5 +59,5 @@ const Title = styled.Text`
 const Body = styled.View`
   border-top-width: 1px;
   border-color: #ffede2;
-  ${({ noPadding }) => !noPadding && 'padding: 12px 24px;'}
+  ${({ noPadding }) => !noPadding && "padding: 12px 24px;"}
 `;

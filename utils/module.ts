@@ -1,12 +1,12 @@
 class ComponentValue {}
 
 export class TextValue extends ComponentValue {
-  type: 'instruction' | 'script' | 'reference';
+  type: "instruction" | "script" | "reference";
   html: string;
 }
 
 export class MediaValue {
-  type: 'VIDEO' | 'PHOTO';
+  type: "VIDEO" | "PHOTO";
   file: string;
   text: string;
 }
@@ -14,15 +14,21 @@ export class MediaValue {
 export class Case {
   key: number;
   text: string;
-  finishAction: ['Continue'] | ['Redirect_End', number] | ['Redirect_Continue', number];
+  finishAction:
+    | ["Continue"]
+    | ["Redirect_End", number]
+    | ["Redirect_Continue", number];
   components: Component[];
   pageComponents: Component[][];
 
   constructor(
     key: number,
     text: string,
-    finishAction: ['Continue'] | ['Redirect_End', number] | ['Redirect_Continue', number],
-    components: Component[]
+    finishAction:
+      | ["Continue"]
+      | ["Redirect_End", number]
+      | ["Redirect_Continue", number],
+    components: Component[],
   ) {
     this.key = key;
     this.text = text;
@@ -47,14 +53,14 @@ export class SwitchValue {
 }
 
 export class Component {
-  type: 'Text' | 'Media' | 'Switch' | 'PageFooter';
+  type: "Text" | "Media" | "Switch" | "PageFooter";
   key: number;
   value?: ComponentValue;
 
   constructor(
-    type: 'Text' | 'Media' | 'Switch' | 'PageFooter',
+    type: "Text" | "Media" | "Switch" | "PageFooter",
     key: number,
-    value?: ComponentValue
+    value?: ComponentValue,
   ) {
     this.type = type;
     this.key = key;
@@ -67,7 +73,7 @@ function pageable(components: Component[]): Component[][] {
   let pageNumber = 0;
   components.forEach((component: Component) => {
     if (!page[pageNumber]) page[pageNumber] = [];
-    if (component.type === 'Switch' && component.value) {
+    if (component.type === "Switch" && component.value) {
       const switchValue = component.value as SwitchValue;
       switchValue.cases.forEach((_case) => {
         _case.pageComponents = pageable(_case.components);
@@ -77,7 +83,7 @@ function pageable(components: Component[]): Component[][] {
 
     page[pageNumber].push(component);
 
-    if (component.type === 'PageFooter' || component.type === 'Switch') {
+    if (component.type === "PageFooter" || component.type === "Switch") {
       pageNumber++;
     }
   });

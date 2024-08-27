@@ -1,11 +1,14 @@
-import React from 'react';
-import { styled } from '../utils/styled';
+import React from "react";
+import { styled } from "../utils/styled";
 
 export default function Status({ color, borderColor, title }) {
   return (
     <Container>
-      <Point color={color || '#FF794F'} borderColor={borderColor || '#FFEDE2'} />
-      <Title color={color || '#FF794F'}>{title}</Title>
+      <Point
+        color={color || "#FF794F"}
+        borderColor={borderColor || "#FFEDE2"}
+      />
+      <Title color={color || "#FF794F"}>{title}</Title>
     </Container>
   );
 }

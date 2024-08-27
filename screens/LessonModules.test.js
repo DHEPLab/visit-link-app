@@ -1,28 +1,28 @@
-import React from 'react';
-import { render } from 'react-native-testing-library';
-import storage from '../cache/storage';
+import React from "react";
+import { render } from "react-native-testing-library";
+import storage from "../cache/storage";
 
-import LessonModules from './LessonModules';
+import LessonModules from "./LessonModules";
 
-jest.mock('react-redux', () => ({
+jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
   useSelector: () => ({
     state: {
       net: {
-        isConnected: true
+        isConnected: true,
       },
     },
   }),
 }));
 
-jest.mock('../cache/storage', () => ({
+jest.mock("../cache/storage", () => ({
   useLesson: jest.fn(),
   useNextModule: jest.fn(),
   setNextModule: jest.fn(),
 }));
 
-jest.mock('../utils/http', () => ({
-  ...jest.requireActual('../utils/http'),
+jest.mock("../utils/http", () => ({
+  ...jest.requireActual("../utils/http"),
   get: jest.fn(() => Promise.resolve({ data: { baby: { id: 1 } } })),
 }));
 
@@ -40,13 +40,13 @@ const createTestProps = () => ({
   },
 });
 
-it('should render modules', async () => {
+it("should render modules", async () => {
   storage.useLesson.mockImplementation(() => [
     {
       modules: [
-        { id: 10, number: 'M2', name: 'M2' },
-        { id: 11, number: 'M2', name: 'M2' },
-        { id: 12, number: 'M2', name: 'M2' },
+        { id: 10, number: "M2", name: "M2" },
+        { id: 11, number: "M2", name: "M2" },
+        { id: 12, number: "M2", name: "M2" },
       ],
     },
   ]);
@@ -56,13 +56,13 @@ it('should render modules', async () => {
   expect(queryAllByText(/待开始/).length).toBe(2);
 });
 
-it('should finish current module', async () => {
+it("should finish current module", async () => {
   storage.useLesson.mockImplementation(() => [
     {
       modules: [
-        { id: 10, number: 'M2', name: 'M2' },
-        { id: 11, number: 'M2', name: 'M2' },
-        { id: 12, number: 'M2', name: 'M2' },
+        { id: 10, number: "M2", name: "M2" },
+        { id: 11, number: "M2", name: "M2" },
+        { id: 12, number: "M2", name: "M2" },
       ],
     },
   ]);
@@ -81,13 +81,13 @@ it('should finish current module', async () => {
 // Animated: `useNativeDriver` is not supported because the native animated module is missing. Falling back to JS-based animation. To resolve this, add `RCTAnimation` module to this app, or remove `useNativeDriver`. More info: https://github.com/facebook/react-native/issues/11094#issuecomment-263240420
 console.warn = jest.fn();
 
-it('should preview mode, do not set status', async () => {
+it("should preview mode, do not set status", async () => {
   storage.useLesson.mockImplementation(() => [
     {
       modules: [
-        { id: 10, number: 'M2', name: 'M2' },
-        { id: 11, number: 'M2', name: 'M2' },
-        { id: 12, number: 'M2', name: 'M2' },
+        { id: 10, number: "M2", name: "M2" },
+        { id: 11, number: "M2", name: "M2" },
+        { id: 12, number: "M2", name: "M2" },
       ],
     },
   ]);

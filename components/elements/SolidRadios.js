@@ -1,13 +1,13 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React from "react";
+import { styled } from "../../utils/styled";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function SolidRadios({ value, onChange, enums = {} }) {
   return (
     <Container>
       {Object.keys(enums).map((key) => {
-        if (key === 'true') key = true;
-        if (key === 'false') key = false;
+        if (key === "true") key = true;
+        if (key === "false") key = false;
         return (
           <TouchableOpacity
             key={key}

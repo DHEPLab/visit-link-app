@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
-import moment from 'moment';
-import { CalendarList } from 'react-native-calendars';
-import { useSelector } from 'react-redux';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useState } from "react";
+import moment from "moment";
+import { CalendarList } from "react-native-calendars";
+import { useSelector } from "react-redux";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-import Http from '../utils/http'
-import Visit from '../utils/visit';
-import { Colors } from '../constants';
-import { styled, px2dp } from '../utils/styled';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useFetchArray, useBoolState, calenderMarkedDates } from '../utils';
-import { StaticField, StaticForm, LargeButtonContainer, Button, Modal } from '../components';
+import Http from "../utils/http";
+import Visit from "../utils/visit";
+import { Colors } from "../constants";
+import { styled, px2dp } from "../utils/styled";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useFetchArray, useBoolState, calenderMarkedDates } from "../utils";
+import {
+  StaticField,
+  StaticForm,
+  LargeButtonContainer,
+  Button,
+  Modal,
+} from "../components";
 
 export default function PickVisitTime({ navigation, route }) {
   const { params } = route;
   const { range, visitTime } = params;
-  const from = params.from || 'CreateVisit';
+  const from = params.from || "CreateVisit";
   const [now] = useState(moment());
-  const [markedDates] = useFetchArray('/api/visits/marked-dates');
+  const [markedDates] = useFetchArray("/api/visits/marked-dates");
 
-  const [mode, setMode] = useState('time');
+  const [mode, setMode] = useState("time");
   const [timePicker, showTimePicker, hideTimePicker] = useBoolState();
   const [conflictVisible, openConflict, closeConflict] = useBoolState();
 
@@ -31,11 +37,12 @@ export default function PickVisitTime({ navigation, route }) {
 
   async function handleSubmit() {
     if (isConnected) {
-      const data = await Http.get('/api/visits', { date });
+      const data = await Http.get("/api/visits", { date });
       const visitTime = Visit.mergeDateAndTime(date, time);
-      const conflict = data.filter(visit => Visit.statusNotStart(visit.status))
-                          .map(visit => Visit.visitTimeMayConflict(visit.visitTime, visitTime))
-                          .reduce((previous, current) => previous || current, false);
+      const conflict = data
+        .filter((visit) => Visit.statusNotStart(visit.status))
+        .map((visit) => Visit.visitTimeMayConflict(visit.visitTime, visitTime))
+        .reduce((previous, current) => previous || current, false);
       if (conflict) {
         return openConflict();
       }
@@ -52,7 +59,7 @@ export default function PickVisitTime({ navigation, route }) {
   function onPressTime() {
     showTimePicker();
     // set mode value to trigger render
-    setMode('time');
+    setMode("time");
   }
 
   function onChangeTime({ nativeEvent }) {
@@ -78,7 +85,7 @@ export default function PickVisitTime({ navigation, route }) {
           pagingEnabled={true}
           hideArrows={false}
           calendarWidth={px2dp(344)}
-          monthFormat={'yyyy年 M月'}
+          monthFormat={"yyyy年 M月"}
           current={Visit.formatDate(now)}
           minDate={range[0]}
           maxDate={range[1]}
@@ -88,7 +95,7 @@ export default function PickVisitTime({ navigation, route }) {
             ...calenderMarkedDates(markedDates),
             [date]: {
               selected: true,
-              dotColor: '#fff',
+              dotColor: "#fff",
               marked: markedDates?.includes(date),
             },
           }}

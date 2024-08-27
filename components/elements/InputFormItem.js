@@ -1,9 +1,16 @@
-import React from 'react';
-import { Image } from 'react-native';
-import { styled } from '../../utils/styled';
-import { useField, useFormikContext } from 'formik';
+import React from "react";
+import { Image } from "react-native";
+import { styled } from "../../utils/styled";
+import { useField, useFormikContext } from "formik";
 
-export default function ({ label, children, noBorder, labelWidth, labelAlign, ...props }) {
+export default function ({
+  label,
+  children,
+  noBorder,
+  labelWidth,
+  labelAlign,
+  ...props
+}) {
   const form = useFormikContext();
   const [field] = useField(props);
   const { name } = props;
@@ -27,7 +34,7 @@ export default function ({ label, children, noBorder, labelWidth, labelAlign, ..
       </Field>
       {form.errors[name] && (
         <ErrorContainer>
-          <ErrorIcon source={require('../../assets/images/error.png')} />
+          <ErrorIcon source={require("../../assets/images/error.png")} />
           <Error>{form.errors[name]}</Error>
         </ErrorContainer>
       )}
@@ -58,12 +65,12 @@ const FieldComponent = styled.View`
 
 const Field = styled.View`
   flex-direction: row;
-  ${({ center }) => center && 'justify-content: center;'}
+  ${({ center }) => center && "justify-content: center;"}
 `;
 
 const FormItem = styled.View`
   border-color: #eee;
-  ${({ noBorder }) => !noBorder && 'border-bottom-width: 1px;'}
+  ${({ noBorder }) => !noBorder && "border-bottom-width: 1px;"}
   padding-left: 5px;
 `;
 

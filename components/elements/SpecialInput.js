@@ -1,6 +1,6 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
-import { TextInput } from 'react-native';
+import React from "react";
+import { styled } from "../../utils/styled";
+import { TextInput } from "react-native";
 
 export default function ({ value, onChange, onBlur, ...props }) {
   return (

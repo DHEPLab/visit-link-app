@@ -1,19 +1,19 @@
-import * as fs from './fs';
-import storage from './storage';
-import http from '../utils/http';
-import Modules from '../utils/module';
+import * as fs from "./fs";
+import storage from "./storage";
+import http from "../utils/http";
+import Modules from "../utils/module";
 
 async function fetchUpdateAsync() {
-  const lessons = await http.get('/api/resources/lessons');
+  const lessons = await http.get("/api/resources/lessons");
   lessons.forEach(storage.addLesson);
-  const { modules, media } = await http.get('/api/resources/modules');
+  const { modules, media } = await http.get("/api/resources/modules");
   modules
-      .map((module) => ({
-        ...module,
-        pageComponents: Modules.pageable(module.components),
-        components: [],
-      }))
-      .forEach(storage.addModule);
+    .map((module) => ({
+      ...module,
+      pageComponents: Modules.pageable(module.components),
+      components: [],
+    }))
+    .forEach(storage.addModule);
   media.forEach(async (medium) => {
     if (medium) {
       await fs.downloadFromOSS(medium);
@@ -30,8 +30,8 @@ function checkForUpdateAsync() {
         resolve({ isAvailable: true, firstTime: true });
         return;
       }
-      const { updated } = await http.get('/api/resources/check-for-updates', {
-        lastUpdateAt: lastUpdateAt || '',
+      const { updated } = await http.get("/api/resources/check-for-updates", {
+        lastUpdateAt: lastUpdateAt || "",
       });
       resolve({ isAvailable: updated });
     } catch (e) {

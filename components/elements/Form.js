@@ -1,5 +1,5 @@
-import React from 'react';
-import { styled } from '../../utils/styled';
+import React from "react";
+import { styled } from "../../utils/styled";
 
 export default function Form({ children, labelWidth, labelAlign }) {
   return (
@@ -10,7 +10,7 @@ export default function Form({ children, labelWidth, labelAlign }) {
               key: index,
               labelWidth,
               labelAlign,
-            })
+            }),
           )
         : children}
     </Container>

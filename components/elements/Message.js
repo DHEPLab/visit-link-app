@@ -1,20 +1,37 @@
-import React from 'react';
-import { Modal, Image } from 'react-native';
+import React from "react";
+import { Modal, Image } from "react-native";
 
-import { styled } from '../../utils/styled';
-import Button from './Button';
+import { styled } from "../../utils/styled";
+import Button from "./Button";
 
-export default function Message({ error, info, visible, title, content, buttonText, onButtonPress }) {
+export default function Message({
+  error,
+  info,
+  visible,
+  title,
+  content,
+  buttonText,
+  onButtonPress,
+}) {
   return (
     <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
       <Container>
         <Box>
-          {info && <StyledImage source={require('../../assets/images/info-message.png')} />}
-          {!info && (error ? (
-            <StyledImage source={require('../../assets/images/error-message.png')} />
-          ) : (
-            <StyledImage source={require('../../assets/images/success.png')} />
-          ))}
+          {info && (
+            <StyledImage
+              source={require("../../assets/images/info-message.png")}
+            />
+          )}
+          {!info &&
+            (error ? (
+              <StyledImage
+                source={require("../../assets/images/error-message.png")}
+              />
+            ) : (
+              <StyledImage
+                source={require("../../assets/images/success.png")}
+              />
+            ))}
           <Title error={error}>{title}</Title>
           {content && <Content>{content}</Content>}
           {buttonText && (
@@ -22,7 +39,7 @@ export default function Message({ error, info, visible, title, content, buttonTe
               <Button
                 ghost
                 title={buttonText}
-                type={error ? 'error' : 'primary'}
+                type={error ? "error" : "primary"}
                 onPress={onButtonPress}
               />
             </ButtonContainer>
@@ -59,7 +76,7 @@ const Box = styled.View`
 `;
 
 const Title = styled.Text`
-  color: ${({ error }) => (error ? '#FF2E2E' : '#ff794f')};
+  color: ${({ error }) => (error ? "#FF2E2E" : "#ff794f")};
   font-size: 8px;
   font-weight: bold;
   margin-top: 10px;

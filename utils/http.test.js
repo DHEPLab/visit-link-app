@@ -1,11 +1,11 @@
-import { responseContentTypeJSON } from './http';
+import { responseContentTypeJSON } from "./http";
 
-it('should response content type is json', () => {
+it("should response content type is json", () => {
   expect(
     responseContentTypeJSON({
       headers: {
-        get: () => 'application/json',
+        get: () => "application/json",
       },
-    })
+    }),
   ).toBeTruthy();
 });

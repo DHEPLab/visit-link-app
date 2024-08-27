@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import React, { useState } from "react";
+import { Image, TouchableOpacity } from "react-native";
 
-import { styled, px2dp } from '../../utils/styled';
+import { styled, px2dp } from "../../utils/styled";
 
-import SpecialInput from './SpecialInput';
-import Input from './Input';
+import SpecialInput from "./SpecialInput";
+import Input from "./Input";
 
 export default function PasswordInput({ type, ...props }) {
   const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const height = type === 'special' ? 26 : 18;
+  const height = type === "special" ? 26 : 18;
 
   return (
     <Container>
-      {type === 'special' ? (
+      {type === "special" ? (
         <SpecialInput secureTextEntry={secureTextEntry} {...props} />
       ) : (
         <Input secureTextEntry={secureTextEntry} {...props} />
@@ -20,13 +20,13 @@ export default function PasswordInput({ type, ...props }) {
       {secureTextEntry ? (
         <CloseEyesContainer height={px2dp(height)}>
           <TouchableOpacity onPress={() => setSecureTextEntry(false)}>
-            <CloseEyes source={require('../../assets/images/close-eyes.png')} />
+            <CloseEyes source={require("../../assets/images/close-eyes.png")} />
           </TouchableOpacity>
         </CloseEyesContainer>
       ) : (
         <OpenEyesContainer height={px2dp(height)}>
           <TouchableOpacity onPress={() => setSecureTextEntry(true)}>
-            <OpenEyes source={require('../../assets/images/open-eyes.png')} />
+            <OpenEyes source={require("../../assets/images/open-eyes.png")} />
           </TouchableOpacity>
         </OpenEyesContainer>
       )}

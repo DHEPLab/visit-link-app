@@ -1,46 +1,60 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { styled } from '../utils/styled';
-import { FamilyTies } from '../constants/enums';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { styled } from "../utils/styled";
+import { FamilyTies } from "../constants/enums";
 
-import Button from './elements/Button';
-import StaticForm from './elements/StaticForm';
-import StaticField from './elements/StaticField';
-import Radio from './elements/Radio';
+import Button from "./elements/Button";
+import StaticForm from "./elements/StaticForm";
+import StaticField from "./elements/StaticField";
+import Radio from "./elements/Radio";
 
 export default function CarerItem({
-                                    number,
-                                    value,
-                                    disabled,
-                                    noBorder,
-                                    onPressDelete,
-                                    onChangeMaster,
-                                    onPressModify,
-                                  }) {
-  const { t } = useTranslation('CarerItem');
+  number,
+  value,
+  disabled,
+  noBorder,
+  onPressDelete,
+  onChangeMaster,
+  onPressModify,
+}) {
+  const { t } = useTranslation("CarerItem");
 
   return (
-      <Container noBorder={noBorder}>
-        <Header>
-          <Number>{t('caregiver', { number })}</Number>
-          <Radio
-              label={value.master ? t('primaryCaregiver') : t('setPrimaryCaregiver')}
-              value={value.master}
-              onChange={onChangeMaster}
+    <Container noBorder={noBorder}>
+      <Header>
+        <Number>{t("caregiver", { number })}</Number>
+        <Radio
+          label={
+            value.master ? t("primaryCaregiver") : t("setPrimaryCaregiver")
+          }
+          value={value.master}
+          onChange={onChangeMaster}
+        />
+        <Operation>
+          <Button
+            type="delete"
+            disabled={disabled}
+            title={t("delete")}
+            onPress={onPressDelete}
           />
-          <Operation>
-            <Button type="delete" disabled={disabled} title={t('delete')} onPress={onPressDelete} />
-            <Separator />
-            <Button type="link" disabled={disabled} title={t('edit')} onPress={onPressModify} />
-          </Operation>
-        </Header>
-        <StaticForm>
-          <StaticField label={t('caregiverName')}>{value.name}</StaticField>
-          <StaticField label={t('relationship')}>{t(`FamilyTies.${value.familyTies}`)}</StaticField>
-          <StaticField label={t('phoneNumber')}>{value.phone}</StaticField>
-          <StaticField label={t('wechatAccount')}>{value.wechat}</StaticField>
-        </StaticForm>
-      </Container>
+          <Separator />
+          <Button
+            type="link"
+            disabled={disabled}
+            title={t("edit")}
+            onPress={onPressModify}
+          />
+        </Operation>
+      </Header>
+      <StaticForm>
+        <StaticField label={t("caregiverName")}>{value.name}</StaticField>
+        <StaticField label={t("relationship")}>
+          {t(`FamilyTies.${value.familyTies}`)}
+        </StaticField>
+        <StaticField label={t("phoneNumber")}>{value.phone}</StaticField>
+        <StaticField label={t("wechatAccount")}>{value.wechat}</StaticField>
+      </StaticForm>
+    </Container>
   );
 }
 

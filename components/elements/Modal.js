@@ -1,8 +1,8 @@
-import React from 'react';
-import { Modal } from 'react-native';
+import React from "react";
+import { Modal } from "react-native";
 
-import { styled } from '../../utils/styled';
-import Button from './Button';
+import { styled } from "../../utils/styled";
+import Button from "./Button";
 
 export default function ElementModal({
   visible,
@@ -26,10 +26,20 @@ export default function ElementModal({
           <Footer>
             {!hideCancel && (
               <CancelButtonContainer>
-                <Button ghost type="primary" title={cancelText || '放弃'} onPress={onCancel} />
+                <Button
+                  ghost
+                  type="primary"
+                  title={cancelText || "放弃"}
+                  onPress={onCancel}
+                />
               </CancelButtonContainer>
             )}
-            <Button disabled={disableOk} type="primary" title={okText || '提交'} onPress={onOk} />
+            <Button
+              disabled={disableOk}
+              type="primary"
+              title={okText || "提交"}
+              onPress={onOk}
+            />
           </Footer>
         </Box>
       </Container>
