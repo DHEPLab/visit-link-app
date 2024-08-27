@@ -7,16 +7,11 @@ import { Colors } from "../../constants";
 import { styled } from "../../utils/styled";
 import { useTranslation } from "react-i18next";
 
-export default function ({
-  navigation,
-  scene: {
-    // route,
-    descriptor: { options },
-  },
-}) {
+export default function ({ navigation, options }) {
   function goBack() {
     navigation.goBack();
   }
+
   const { t } = useTranslation("Common");
 
   return (

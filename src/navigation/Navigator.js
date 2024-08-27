@@ -143,7 +143,7 @@ export default function StackNavigator() {
       ) : (
         <>
           <Stack.Screen
-            name="Home"
+            name="Main"
             component={HomeTabs}
             options={{ headerShown: false }}
           />
@@ -171,19 +171,24 @@ function HomeTabs() {
 
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        keyboardHidesTabBar: true,
-        style: {
-          height: px2dp(68),
-          borderTopWidth: 1,
-          borderTopColor: "#FFC3A0",
-        },
+      screenOptions={{
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: [
+          {
+            display: "flex",
+            height: px2dp(68),
+            borderTopWidth: 1,
+            borderTopColor: "#FFC3A0",
+          },
+          null,
+        ],
       }}
     >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
+          headerShown: false,
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>首页</TabBarLabel>
           ),
@@ -196,6 +201,7 @@ function HomeTabs() {
         name="Babies"
         component={Babies}
         options={{
+          headerShown: false,
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>{t("babyList")}</TabBarLabel>
           ),
@@ -208,6 +214,7 @@ function HomeTabs() {
         name="Visits"
         component={Visits}
         options={{
+          headerShown: false,
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>家访安排</TabBarLabel>
           ),
@@ -220,6 +227,7 @@ function HomeTabs() {
         name="Me"
         component={Me}
         options={{
+          headerShown: false,
           tabBarLabel: ({ focused }) => (
             <TabBarLabel focused={focused}>{t("account")}</TabBarLabel>
           ),
