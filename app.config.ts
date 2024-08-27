@@ -9,10 +9,10 @@ export default (context: ConfigContext): ExpoConfig => {
     platforms: ["android"],
     version: process.env.EXPO_PUBLIC_APP_VERSION || pkg.version,
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./src/assets/images/icon.png",
     scheme: "hf",
     splash: {
-      image: "./assets/images/splash.png",
+      image: "./src/assets/images/splash.png",
       resizeMode: "cover",
     },
     updates: {
@@ -23,7 +23,12 @@ export default (context: ConfigContext): ExpoConfig => {
         process.env.EXPO_PUBLIC_ANDROID_PACKAGE || "edu.stanford.fsi.reap.app",
     },
     plugins: [
-      "expo-asset",
+      [
+        "expo-asset",
+        {
+          assets: ["src/assets"],
+        },
+      ],
       "expo-font",
       "expo-localization",
       [
