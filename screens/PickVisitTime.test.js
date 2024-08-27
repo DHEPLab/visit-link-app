@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor } from "react-native-testing-library";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import PickVisitTime from "./PickVisitTime";
 import http from "../utils/http";
 

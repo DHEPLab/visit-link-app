@@ -8,8 +8,8 @@ Supports only Android Pad, Android 9 Pie or higher (other versions untested; tes
 
 ## Local Development
 
-* NodeJS version v16 LTS
-* Expo SDK 38
+* NodeJS version v20 LTS
+* Expo SDK 51
 
 [Prepare an Android emulator](https://docs.expo.io/workflow/android-studio-emulator/)
 

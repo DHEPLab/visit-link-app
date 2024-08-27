@@ -1,5 +1,20 @@
 import { useMethods } from "./CreateBabyStep2";
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => {
+    return {
+      t: (str) => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {}),
+      },
+    };
+  },
+  initReactI18next: {
+    type: "3rdParty",
+    init: () => {},
+  },
+}));
+
 describe("<CreateBabyStep2 />", () => {
   const { familyTies, handleNextStep, pullAt, keepMasterCarerUnique, create } =
     useMethods();
@@ -67,14 +82,14 @@ describe("<CreateBabyStep2 />", () => {
     const carers = [
       {
         id: 1,
-        familyTies: "MONTHER",
+        familyTies: "MOTHER",
       },
       {
         id: 2,
         familyTies: "FATHER",
       },
     ];
-    expect(familyTies(carers)).toStrictEqual(["MONTHER", "FATHER"]);
-    expect(familyTies(carers, "FATHER")).toStrictEqual(["MONTHER"]);
+    expect(familyTies(carers)).toStrictEqual(["MOTHER", "FATHER"]);
+    expect(familyTies(carers, "FATHER")).toStrictEqual(["MOTHER"]);
   });
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-native-testing-library";
+import { render } from "@testing-library/react-native";
 import storage from "../cache/storage";
 
 import LessonModules from "./LessonModules";
@@ -23,7 +23,7 @@ jest.mock("../cache/storage", () => ({
 
 jest.mock("../utils/http", () => ({
   ...jest.requireActual("../utils/http"),
-  get: jest.fn(() => Promise.resolve({ data: { baby: { id: 1 } } })),
+  get: jest.fn(() => Promise.resolve({ baby: { id: 1 } })),
 }));
 
 const createTestProps = () => ({

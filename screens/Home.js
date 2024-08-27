@@ -155,7 +155,7 @@ export default function Home({ navigation }) {
           source={require("../assets/images/curriculum-bg.png")}
         />
 
-        <Title>
+        <Title testId="visit-title">
           {visit.id
             ? `您的下一次家访：\n${Visit.formatDateTimeCN(visitTime)}`
             : `您没有家访安排，\n请创建新的家访：`}

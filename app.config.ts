@@ -19,22 +19,27 @@ export default (context: ConfigContext): ExpoConfig => {
       fallbackToCacheTimeout: 0,
     },
     android: {
-      package: process.env.EXPO_PUBLIC_ANDROID_PACKAGE || "edu.stanford.fsi.reap.app",
+      package:
+        process.env.EXPO_PUBLIC_ANDROID_PACKAGE || "edu.stanford.fsi.reap.app",
     },
     plugins: [
-      "expo-asset", "expo-font", "expo-localization",
-      ["expo-build-properties", {
-        android: {
-          usesCleartextTraffic: true,
-        }
-      }
-      ]
+      "expo-asset",
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-build-properties",
+        {
+          android: {
+            usesCleartextTraffic: true,
+          },
+        },
+      ],
     ],
     extra: {
       eas: {
         // TODO: This is testing projectId, should switch to production projectId
-        projectId: "6808191f-e81d-469a-8dc6-6a7878fea1b8"
-      }
-    }
+        projectId: "6808191f-e81d-469a-8dc6-6a7878fea1b8",
+      },
+    },
   };
 };

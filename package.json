@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint",
+    "lint": "eslint .",
     "test": "jest --watchAll",
     "test:ci": "jest --silent --coverage"
   },
@@ -15,7 +15,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
-    "@react-native-community/netinfo": "11.3.1",
+    "@react-native-community/netinfo": "11.3.2",
     "@react-navigation/bottom-tabs": "5.10.0",
     "@react-navigation/native": "5.7.3",
     "@react-navigation/stack": "5.10.0",
@@ -40,7 +40,7 @@
     "moment": "^2.27.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-i18next": "12.0.0",
+    "react-i18next": "15.0.1",
     "react-native": "0.74.5",
     "react-native-calendars": "^1.300.0",
     "react-native-gesture-handler": "~2.16.1",
@@ -77,7 +77,7 @@
     "jest-expo": "~51.0.3",
     "prettier": "^3.3.3",
     "react-devtools": "5.3.1",
-    "react-native-testing-library": "^6.0.0",
+    "@testing-library/react-native": "12.6.0",
     "react-test-renderer": "18.2.0",
     "typescript": "~5.3.3"
   },
@@ -90,7 +90,7 @@
       "<rootDir>/jest.setup.js"
     ],
     "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
+      "@testing-library/react-native/extend-expect"
     ]
   }
 }

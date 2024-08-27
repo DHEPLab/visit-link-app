@@ -1,5 +1,5 @@
 import { renderHook } from "@testing-library/react-hooks";
-import { waitFor } from "react-native-testing-library";
+import { waitFor } from "@testing-library/react-native";
 
 import Visits from "../utils/visit";
 import storage from "./storage";

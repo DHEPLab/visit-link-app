@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "react-native-testing-library";
+import { render } from "@testing-library/react-native";
 import { useFetch, useManualFetch } from "../utils";
 import http from "../utils/http";
 

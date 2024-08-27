@@ -1,13 +1,17 @@
 import React from "react";
-import moment from "moment";
-import { render, fireEvent } from "react-native-testing-library";
+import { render, fireEvent } from "@testing-library/react-native";
 import { Provider } from "react-redux";
 import rootReducer from "../reducers";
 
 import Visits from "./Visits";
 import { createStore } from "redux";
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, {
+  net: {
+    type: "cellular",
+    isConnected: true,
+  },
+});
 const createTestProps = () => ({
   navigation: {
     addListener: jest.fn(),

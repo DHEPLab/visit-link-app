@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, View, ToastAndroid } from "react-native";
+import { ScrollView, ToastAndroid, View } from "react-native";
 import Arrays from "lodash/array";
 import { useTranslation } from "react-i18next";
 
-import { styled } from "../../utils/styled";
+import { styled } from "@/utils/styled";
 import {
+  Button,
   CarerItem,
   CreateBabyNavigator,
   LargeButtonContainer,
-  Button,
 } from "../../components";
 
 export function useMethods() {
