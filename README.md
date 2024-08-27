@@ -1,5 +1,7 @@
 # Healthy Future App
 
+![main workflow](https://github.com/DHEPLab/visit-link-app/actions/workflows/main.yml/badge.svg)
+
 ## Supported Platforms
 
 Recommended resolution: 1200x1920
