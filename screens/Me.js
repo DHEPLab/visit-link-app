@@ -96,7 +96,7 @@ export default function Me({ navigation }) {
         <Logout>
           <Button title={t('logOut')} type="weaken" onPress={openConfirm} />
         </Logout>
-        <Version>{t('version')} v{Constants.manifest.version}</Version>
+        <Version>{t('version')} v{Constants.expoConfig.version}</Version>
 
         <Modal
             title={t('logOut')}
