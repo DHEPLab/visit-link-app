@@ -13,7 +13,7 @@ Supports only Android Pad, Android 9 Pie or higher (other versions untested; tes
 
 [Prepare an Android emulator](https://docs.expo.io/workflow/android-studio-emulator/)
 
-```
+```shell
 $ npm install
 $ npm start
 $ NODE_ENV=development npm start
@@ -38,20 +38,25 @@ $ DEPLOY_GROUP=prod ansible/deploy.sh
 
 ## Building Android APK
 
-[Turtle](https://github.com/expo/turtle) CLI is a command line interface for building Expo standalone apps. You can use it both on your CI and your private computer.
-
+```shell
+$ npm install --global eas-cli
 ```
-$ EXPO_ANDROID_KEYSTORE_PASSWORD="" \
-EXPO_ANDROID_KEY_PASSWORD="" \
-turtle build:android \
-  --type apk \
-  --keystore-path ../healthy-app-prod.jks \
-  --keystore-alias "keyalias" \
-  --allow-non-https-public-url \
-  --public-url https://healthyfutures.cloud/expo/android-index.json
+
+Make suer you have correct installation and environment variables set.
+* Android SDK
+* Android NDK: 26.1.10909125 (Install use Android Studio SDK Manager)
+* CMake 3.22.1 (Install use Android Studio SDK Manager)
+
+Then you can use command build APK locally
+```shell
+EAS_LOCAL_BUILD_SKIP_CLEANUP=1 eas build --profile development --platform android --local
+```
+
+You can also use EAS CLI to build APK remotely.
+```shell
+eas build --profile development --platform android
 ```
 
 ## Reference
 
 - [Expo](https://docs.expo.io/)
-- [Build Standalone Expo .apk and .ipa with Turtle CLI](https://www.robincussol.com/build-standalone-expo-apk-ipa-with-turtle-cli/)

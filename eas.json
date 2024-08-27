@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 11.0.1"
+  },
+  "build": {
+    "development": {
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_APP_NAME": "Dev Healthy Future",
+        "EXPO_PUBLIC_APP_VERSION": "4.0.0-dev",
+        "EXPO_PUBLIC_API_URL": "http://visit-link-alb-dev-1291519249.us-east-1.elb.amazonaws.com",
+        "EXPO_PUBLIC_ANDROID_PACKAGE": "edu.stanford.fsi.reap.appdev"
+      }
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
