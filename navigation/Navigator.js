@@ -197,7 +197,7 @@ function HomeTabs() {
         component={Babies}
         options={{
           tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>宝宝列表</TabBarLabel>
+            <TabBarLabel focused={focused}>{t("babyList")}</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="baby" />
@@ -221,7 +221,7 @@ function HomeTabs() {
         component={Me}
         options={{
           tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>{t("Account")}</TabBarLabel>
+            <TabBarLabel focused={focused}>{t("account")}</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="me" />

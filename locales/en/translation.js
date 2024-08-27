@@ -74,6 +74,7 @@ export default {
   Navigator: {
     account: "Account",
     resetPassword: "Reset Password",
+    babyList: "Baby List",
   },
   Common: {
     back: "Back",
@@ -108,11 +109,11 @@ export default {
       OTHER: "Other",
     },
     VisitStatus: {
-      NOT_SUBMIT: 'To be submitted',
-      NOT_STARTED: 'Scheduled',
-      UNDONE: 'Incomplete',
-      EXPIRED: 'Expired',
-      DONE: 'Completed',
+      NOT_SUBMIT: "To be submitted",
+      NOT_STARTED: "Scheduled",
+      UNDONE: "Incomplete",
+      EXPIRED: "Expired",
+      DONE: "Completed",
     },
   },
   BabyForm: {
@@ -253,9 +254,14 @@ export default {
   Ghost: {
     back: "Back",
   },
-  Visits:{
-    babyName:'Baby Name',
-    lessonName:' Session Name',
-    visitTime:'Visit Time',
-  }
+  Visits: {
+    babyName: "Baby Name",
+    lessonName: " Session Name",
+    visitTime: "Visit Time",
+  },
+  BabyItem: {
+    primaryCaregiver: "Primary Caregiver",
+    contactInfo: "Phone",
+    none: "None",
+  },
 };

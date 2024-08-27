@@ -73,6 +73,7 @@ export default {
   Navigator: {
     account: "个人中心",
     resetPassword: "修改账户密码",
+    babyList: "宝宝列表",
   },
   Common: {
     back: "返回",
@@ -102,11 +103,11 @@ export default {
       OTHER: "其他",
     },
     VisitStatus: {
-      NOT_SUBMIT: '待提交',
-      NOT_STARTED: '待开始',
-      UNDONE: '未完成',
-      EXPIRED: '已过期',
-      DONE: '已完成',
+      NOT_SUBMIT: "待提交",
+      NOT_STARTED: "待开始",
+      UNDONE: "未完成",
+      EXPIRED: "已过期",
+      DONE: "已完成",
     },
   },
   BabyForm: {
@@ -243,9 +244,14 @@ export default {
   Ghost: {
     back: "返回",
   },
-  Visits:{
-    babyName:'宝宝名称',
-    lessonName:'课堂名称',
-    visitTime:'拜访时间'
-  }
+  BabyItem: {
+    primaryCaregiver: "主要看护人",
+    contactInfo: "联系方式",
+    none: "无",
+  },
+  Visits: {
+    babyName: "宝宝名称",
+    lessonName: "课堂名称",
+    visitTime: "拜访时间",
+  },
 };

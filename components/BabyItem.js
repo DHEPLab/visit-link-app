@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import StaticField from "./elements/StaticField";
 import StaticForm from "./elements/StaticForm";
@@ -15,6 +16,8 @@ export default function BabyItem({
   onPress,
   ...props
 }) {
+  const { t } = useTranslation("BabyItem");
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -29,8 +32,12 @@ export default function BabyItem({
         <MiniBaby baby={{ ...props, id }} />
         <Carer>
           <StaticForm>
-            <StaticField label="主要看护人">{carerName || "无"}</StaticField>
-            <StaticField label="联系方式">{carerPhone || "无"}</StaticField>
+            <StaticField label={t("primaryCaregiver")}>
+              {carerName || t("none")}
+            </StaticField>
+            <StaticField label={t("contactInfo")}>
+              {carerPhone || t("none")}
+            </StaticField>
           </StaticForm>
           <ArrowRight
             name="keyboard-arrow-right"
