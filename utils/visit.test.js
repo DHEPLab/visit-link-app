@@ -87,7 +87,7 @@ it("should visit status not started is truthy", () => {
 });
 
 it("should return visit remark title", () => {
-  expect(Visit.remarkTitle("NOT_STARTED")).toBe("备注");
+  expect(Visit.remarkTitle("NOT_STARTED")).toBe("Visits:remarkTitle");
   expect(Visit.remarkTitle("EXPIRED")).toBe("过期原因");
   expect(Visit.remarkTitle("UNDONE")).toBe("未完成原因");
 });

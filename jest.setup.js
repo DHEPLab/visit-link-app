@@ -11,6 +11,22 @@ jest.mock("@react-native-async-storage/async-storage", () => {
   };
 });
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key) => key,
+    i18n: {
+      changeLanguage: jest.fn(),
+    },
+  }),
+  Trans: ({ children }) => children,
+  Translation: ({ children }) => children(() => ""),
+  withTranslation: () => (Component) => (props) => null,
+}));
+
+jest.mock("i18next", () => ({
+  t: (key) => key,
+}));
+
 ToastAndroid.showWithGravity = jest.fn();
 ToastAndroid.show = jest.fn();
 global.fetch = jest.fn();
