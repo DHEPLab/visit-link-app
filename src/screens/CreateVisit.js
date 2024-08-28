@@ -14,6 +14,7 @@ import {
   LargeButtonContainer,
 } from "../components";
 import storage from "../cache/storage";
+import { useTranslation } from "react-i18next";
 
 export default function CreateVisit({ navigation, route }) {
   const { params } = route;
@@ -22,6 +23,7 @@ export default function CreateVisit({ navigation, route }) {
   const [lesson, setLesson] = useState();
   const [dateRange, setDateRange] = useState([]);
   const { isConnected } = useSelector((state) => state.net);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     if (params?.baby) {
@@ -97,11 +99,11 @@ export default function CreateVisit({ navigation, route }) {
     <ScrollView>
       <Container>
         <Card
-          title="家访时间"
+          title={t("Visits:visitTime")}
           hideBody={!visitTime}
           right={
             <Button
-              title="修改"
+              title={t("Visits:vistEdit")}
               onPress={handleChangeVisitTime}
               hideBody={!visitTime}
             />
@@ -109,30 +111,34 @@ export default function CreateVisit({ navigation, route }) {
         >
           {visitTime && (
             <StaticForm>
-              <StaticField label="家访时间">
-                {Visit.formatDateTimeCN(visitTime)}
+              <StaticField label={t("Visits:visitTime")}>
+                {i18n.language === "zh"
+                  ? Visit.formatDateTimeCN(visitTime)
+                  : Visit.formatDateTimeEN(visitTime)}
               </StaticField>
             </StaticForm>
           )}
         </Card>
         {baby && (
           <PromptWords>
-            当前阶段宝宝的下一次家访课堂为"{lesson?.name}"，最早开始时间为
-            {dateRange[0]}，
+            {t("Visits:lessonScheduleTip1", {
+              lessonName: lesson?.name || "--",
+              date: dateRange[0],
+            })}
           </PromptWords>
         )}
         {baby && (
           <PromptWords>
-            {dateRange[1]}之后宝宝将进入下一阶段则会错过当前阶段的课堂。
+            {t("Visits:lessonScheduleTip2", { date: dateRange[1] })}
           </PromptWords>
         )}
         <Card
-          title="家访对象"
+          title={t("Visits:visitInfo")}
           hideBody={!baby}
           right={
             !params?.lockBaby && (
               <Button
-                title="选择"
+                title={t("Visits:vistSelect")}
                 onPress={() =>
                   navigation.navigate("PickBaby", {
                     visitDate: visitTime && Visit.formatDate(visitTime),
@@ -149,28 +155,37 @@ export default function CreateVisit({ navigation, route }) {
                 <MiniBaby hideStatus baby={baby} />
               </MiniBabyContainer>
               <StaticForm>
-                <StaticField label="主照料人">{baby.carerName}</StaticField>
-                <StaticField label="联系电话">{baby.carerPhone}</StaticField>
-                <StaticField label="所在区域">{baby.area}</StaticField>
-                <StaticField label="详细地址">{baby.location}</StaticField>
+                <StaticField label={t("Visits:carerName")}>
+                  {baby.carerName}
+                </StaticField>
+                <StaticField label={t("Visits:carerPhone")}>
+                  {baby.carerPhone}
+                </StaticField>
+                <StaticField label={t("Visits:area")}>{baby.area}</StaticField>
+                <StaticField label={t("Visits:location")}>
+                  {baby.location}
+                </StaticField>
               </StaticForm>
             </>
           )}
         </Card>
-        <Card title="课程安排">
+        <Card title={t("Visits:sessionIncluded")}>
           {lesson ? (
             <>
               <LessonName>{lesson.name}</LessonName>
               <StaticForm>
                 {lesson.moduleNames?.map((name, index) => (
-                  <StaticField key={name} label={`模块 ${index + 1}`}>
+                  <StaticField
+                    key={name}
+                    label={`${t("Visits:module")} ${index + 1}`}
+                  >
                     {name}
                   </StaticField>
                 ))}
               </StaticForm>
             </>
           ) : (
-            <NoLesson>课程安排将在选择家访对象后自动展示</NoLesson>
+            <NoLesson>{t("Visits:noLessonTip")}</NoLesson>
           )}
         </Card>
 
@@ -178,7 +193,7 @@ export default function CreateVisit({ navigation, route }) {
           <LargeButtonContainer>
             <Button
               onPress={handleSubmit}
-              title="提交"
+              title={t("Common:submit")}
               size="large"
               disabled={!visitTime || !baby || !lesson}
             />
@@ -188,7 +203,7 @@ export default function CreateVisit({ navigation, route }) {
           <OfflineBookingLine>
             <Button
               onPress={handleSaveOfflineBooking}
-              title="离线预约"
+              title={t("Visits:offlineBooking")}
               size="large"
               ghost
               type="primary"

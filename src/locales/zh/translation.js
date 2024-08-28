@@ -263,7 +263,15 @@ export default {
     cancelVisitReason: "取消家访原因",
     later: "再想想",
     inputVisitReason: "请填写取消家访原因",
-
+    scheduleVisit: "新建家访",
+    vistEdit: "修改",
+    vistSelect: "选择",
+    lessonScheduleTip1:
+      "当前阶段宝宝的下一次家访课堂为“{{lessonName}}”，最早开始时间为{{date}},",
+    lessonScheduleTip2:
+      "{{date}}之后宝宝将进入下一阶段则会错过当前阶段的课堂。",
+    noLessonTip: "课程安排将在选择家访对象后自动展示",
+    offlineBooking: "离线预约",
     sessionIncluded: "课程安排",
     module: "模块",
     preview: "预览",

@@ -274,6 +274,16 @@ export default {
     cancelVisitReason: "Cancel Visit Reason",
     later: "Later",
     inputVisitReason: "Please enter reason of cancelling the visit",
+    scheduleVisit: "Schedule Visit",
+    vistEdit: "Edit",
+    vistSelect: "Select",
+    lessonScheduleTip1:
+      "The next visit session for the baby in the current stage is {{lessonName}}, with the earliest start time being {{date}}.",
+    lessonScheduleTip2:
+      "If the baby progresses to the next stage after {{date}}, he/she will miss the session(s) in the current stage.",
+    noLessonTip:
+      "The course schedule will be displayed automatically after selecting a baby to visit",
+    offlineBooking: "Offline Booking",
     sessionIncluded: "Session(s) Included",
     module: "Module",
     preview: "Preview",
