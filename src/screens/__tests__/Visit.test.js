@@ -63,7 +63,7 @@ describe("<Visit />", () => {
       <Visit {...createTestProps()} />,
     );
     expect(queryAllByText(/Visits:undoneReason/).length).toBe(1);
-    expect(queryByText(/继续课堂/)).not.toBeNull();
+    expect(queryByText(/Visits:continueLesson/)).not.toBeNull();
   });
 
   it("should display expire remark", () => {
