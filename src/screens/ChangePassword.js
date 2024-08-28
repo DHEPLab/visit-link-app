@@ -5,19 +5,19 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import Http from "../utils/http";
-import { useBoolState } from "../utils";
-import { styled } from "../utils/styled";
+import { useBoolState } from "@/utils";
+import { styled } from "@/utils/styled";
 import {
-  Message,
+  Alert,
+  Button,
   Form,
   FormItem,
-  PasswordInput,
-  Button,
-  Alert,
   LargeButtonContainer,
+  Message,
+  PasswordInput,
 } from "../components";
-import { signOut } from "../actions";
-import { ToastAndroid, Keyboard } from "react-native";
+import { signOut } from "@/actions";
+import { Keyboard, ToastAndroid } from "react-native";
 
 export default function ChangePassword() {
   const { t } = useTranslation("ChangePassword");

@@ -1,20 +1,19 @@
 import React from "react";
-import { ToastAndroid } from "react-native";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 
 import Http from "../utils/http";
-import { signIn } from "../actions";
-import { useBoolState } from "../utils";
+import { signIn } from "@/actions";
+import { useBoolState } from "@/utils";
 import { Layout } from "../constants";
-import { styled } from "../utils/styled";
+import { styled } from "@/utils/styled";
 import {
-  PasswordInput,
-  FormItem,
-  SpecialInput,
   Button,
+  FormItem,
   Message,
+  PasswordInput,
+  SpecialInput,
 } from "../components";
 
 export default function SignIn() {

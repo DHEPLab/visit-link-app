@@ -1,4 +1,4 @@
-import { pullAt } from "./array";
+import { pullAt } from "../array";
 
 describe("array utils", () => {
   describe("pullAt", () => {

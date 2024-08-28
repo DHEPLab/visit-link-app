@@ -1,4 +1,4 @@
-import Visit from "./visit";
+import Visit from "../visit";
 
 test.skip(`should i can start the home visit from 8 o 'clock to 20 o 'clock on the day of the home visit`, () => {
   const visitTime = "2020-07-07T10:00:00";

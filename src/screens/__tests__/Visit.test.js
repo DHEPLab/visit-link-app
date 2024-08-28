@@ -1,17 +1,17 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import { useFetch, useManualFetch } from "../utils";
-import http from "../utils/http";
+import { useFetch, useManualFetch } from "@/utils";
+import http from "../../utils/http";
 
-import Visit from "./Visit";
+import Visit from "../Visit";
 
-jest.mock("../utils/http", () => ({
-  ...jest.requireActual("../utils/http"),
+jest.mock("@/utils/http", () => ({
+  ...jest.requireActual("@/utils/http"),
   put: jest.fn(),
 }));
 
-jest.mock("../utils", () => ({
-  ...jest.requireActual("../utils"),
+jest.mock("@/utils", () => ({
+  ...jest.requireActual("@/utils"),
   useFetch: jest.fn(),
   useManualFetch: jest.fn(),
 }));

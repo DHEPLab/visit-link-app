@@ -1,4 +1,4 @@
-import module, { Component, Case, SwitchValue, TextValue } from "./module";
+import module, { Component, Case, SwitchValue, TextValue } from "../module";
 
 it("should create page components", () => {
   const components = [

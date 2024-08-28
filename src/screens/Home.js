@@ -2,39 +2,36 @@ import React, { useEffect, useState } from "react";
 import Spinner from "react-native-loading-spinner-overlay";
 import { LinearGradient } from "expo-linear-gradient";
 import {
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-  ToastAndroid,
   FlatList,
-  View,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
   Text,
-  Alert,
+  ToastAndroid,
+  View,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Http from "../utils/http";
+import http from "../utils/http";
 import Visit from "../utils/visit";
 import Storage from "../cache/storage";
 import Resources from "../cache/resources";
 
-import { lessonsUpdate } from "../actions";
+import { lessonsUpdate } from "@/actions";
 import { Colors } from "../constants";
-import { useBoolState } from "../utils";
-import { styled } from "../utils/styled";
+import { useBoolState } from "@/utils";
+import { styled } from "@/utils/styled";
 import {
-  Message,
-  Button,
-  BottomRightBackground,
-  LessonCard,
   BabyCard,
+  BottomRightBackground,
+  Button,
+  LessonCard,
+  Message,
   StartLesson,
-  Card,
 } from "../components";
 import StaticField from "../components/elements/StaticField";
 import prompt from "../components/modal/prompt";
-import * as FileSystem from "expo-file-system";
-import http from "../utils/http";
 
 export default function Home({ navigation }) {
   const [visit, reloadVisit] = Storage.useNextVisit();
@@ -123,6 +120,7 @@ export default function Home({ navigation }) {
       refresh(true);
     }, 1);
   }
+
   return (
     <StyledScrollView
       refreshControl={

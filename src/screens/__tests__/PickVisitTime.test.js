@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import PickVisitTime from "./PickVisitTime";
-import http from "../utils/http";
+import PickVisitTime from "../PickVisitTime";
+import http from "../../utils/http";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
@@ -14,13 +14,13 @@ jest.mock("react-redux", () => ({
   }),
 }));
 
-jest.mock("../utils", () => ({
-  ...jest.requireActual("../utils"),
+jest.mock("../../utils", () => ({
+  ...jest.requireActual("../../utils"),
   useFetchArray: () => [[]],
 }));
 
-jest.mock("../utils/http", () => ({
-  ...jest.requireActual("../utils/http"),
+jest.mock("../../utils/http", () => ({
+  ...jest.requireActual("../../utils/http"),
   get: jest.fn(),
 }));
 

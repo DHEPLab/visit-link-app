@@ -1,4 +1,4 @@
-import { calenderMarkedDates } from "./index";
+import { calenderMarkedDates } from "../index";
 
 test("should return calendar marked dates", () => {
   const markedDates = ["2020-01-01", "2020-02-02"];

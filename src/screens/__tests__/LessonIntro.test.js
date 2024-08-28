@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import storage from "../cache/storage";
-import LessonIntro from "./LessonIntro";
+import storage from "../../cache/storage";
+import LessonIntro from "../LessonIntro";
 
 const createTestProps = () => ({
   navigation: {
@@ -16,7 +16,7 @@ const createTestProps = () => ({
   },
 });
 
-jest.mock("../cache/storage", () => ({
+jest.mock("../../cache/storage", () => ({
   useLesson: () => [{}],
   setVisitStatus: jest.fn(),
 }));

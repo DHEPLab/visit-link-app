@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { closePromptModal, setPromptModalValue } from "../../../actions";
+import { closePromptModal, setPromptModalValue } from "@/actions";
 import { Modal } from "../../index";
 import Input from "../../elements/Input";
 import { ToastAndroid } from "react-native";

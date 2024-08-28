@@ -1,9 +1,9 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { Provider } from "react-redux";
-import rootReducer from "../reducers";
+import rootReducer from "../../reducers";
 
-import Visits from "./Visits";
+import Visits from "../Visits";
 import { createStore } from "redux";
 
 const store = createStore(rootReducer, {

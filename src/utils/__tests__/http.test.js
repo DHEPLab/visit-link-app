@@ -1,4 +1,4 @@
-import { responseContentTypeJSON } from "./http";
+import { responseContentTypeJSON } from "../http";
 
 it("should response content type is json", () => {
   expect(

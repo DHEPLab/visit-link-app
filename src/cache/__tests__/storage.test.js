@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { waitFor } from "@testing-library/react-native";
 
-import Visits from "../utils/visit";
-import storage from "./storage";
+import Visits from "../../utils/visit";
+import storage from "./../storage";
 
 it("should add lesson to storage and useLesson", async () => {
   storage.addLesson({ id: 1, name: "Lesson1" });

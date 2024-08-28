@@ -1,4 +1,4 @@
-import { useMethods } from "./CreateBabyStep2";
+import { useMethods } from "../CreateBabyStep2";
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => {

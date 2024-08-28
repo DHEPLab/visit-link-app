@@ -3,7 +3,7 @@ import { ToastAndroid } from "react-native";
 
 import Config from "../constants/Config";
 import store from "../store";
-import { restoreToken, openGlobalSubmitErrorMessage } from "../actions";
+import { openGlobalSubmitErrorMessage, restoreToken } from "@/actions";
 
 // fetch timeout 15s
 const timeout = 15000;

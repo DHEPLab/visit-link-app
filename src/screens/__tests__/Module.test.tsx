@@ -1,8 +1,8 @@
-import { useMethods } from "./Module";
-import storage from "../cache/storage";
-import { SwitchValue, Component, TextValue, Case } from "../utils/module";
+import { useMethods } from "../Module";
+import storage from "../../cache/storage";
+import { SwitchValue, Component, TextValue, Case } from "@/utils/module";
 
-jest.mock("../cache/storage", () => ({
+jest.mock("../../cache/storage", () => ({
   getModule: jest.fn(),
 }));
 

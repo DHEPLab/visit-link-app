@@ -1,8 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import storage from "../cache/storage";
+import storage from "../../cache/storage";
 
-import LessonModules from "./LessonModules";
+import LessonModules from "../LessonModules";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
@@ -15,14 +15,14 @@ jest.mock("react-redux", () => ({
   }),
 }));
 
-jest.mock("../cache/storage", () => ({
+jest.mock("../../cache/storage", () => ({
   useLesson: jest.fn(),
   useNextModule: jest.fn(),
   setNextModule: jest.fn(),
 }));
 
-jest.mock("../utils/http", () => ({
-  ...jest.requireActual("../utils/http"),
+jest.mock("../../utils/http", () => ({
+  ...jest.requireActual("../../utils/http"),
   get: jest.fn(() => Promise.resolve({ baby: { id: 1 } })),
 }));
 

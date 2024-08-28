@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import Http from "../utils/http";
-import { styled } from "../utils/styled";
+import { styled } from "@/utils/styled";
 import { Colors } from "../constants";
-import { useBoolState, useFetch } from "../utils";
+import { useBoolState, useFetch } from "@/utils";
 import Storage from "../cache/storage";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -18,7 +18,7 @@ import {
   StaticField,
   StaticForm,
 } from "../components";
-import { signOut } from "../actions";
+import { signOut } from "@/actions";
 import QrCodeScanner from "./QrCodeScanner";
 
 export default function Me({ navigation }) {

@@ -1,10 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  closeConfirmModal,
-  closePromptModal,
-  setConfirmModalValue,
-} from "../../../actions";
+import { closeConfirmModal, setConfirmModalValue } from "@/actions";
 import { Modal } from "../../index";
 import { useTranslation } from "react-i18next";
 
