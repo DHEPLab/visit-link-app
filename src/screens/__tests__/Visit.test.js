@@ -62,7 +62,7 @@ describe("<Visit />", () => {
     const { queryByText, queryAllByText } = render(
       <Visit {...createTestProps()} />,
     );
-    expect(queryAllByText(/未完成原因/).length).toBe(1);
+    expect(queryAllByText(/Visits:undoneReason/).length).toBe(1);
     expect(queryByText(/继续课堂/)).not.toBeNull();
   });
 
@@ -73,7 +73,7 @@ describe("<Visit />", () => {
       },
     ]);
     const { queryAllByText } = render(<Visit {...createTestProps()} />);
-    expect(queryAllByText(/过期原因/).length).toBe(1);
+    expect(queryAllByText(/Visits:undoneReason/).length).toBe(1);
   });
 
   it("should readonly", () => {
