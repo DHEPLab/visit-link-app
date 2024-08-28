@@ -7,6 +7,7 @@ import Card from "./elements/Card";
 import Button from "./elements/Button";
 import StaticForm from "./elements/StaticForm";
 import StaticField from "./elements/StaticField";
+import { useTranslation } from "react-i18next";
 
 export default function LessonCard({
   validate,
@@ -15,6 +16,7 @@ export default function LessonCard({
   lesson,
   navigation,
 }) {
+  const { t } = useTranslation();
   function startVisitPreview() {
     if (validate && !validate()) return;
     navigation.navigate("LessonIntro", { id: lesson.id, preview: true });
@@ -22,11 +24,11 @@ export default function LessonCard({
 
   return (
     <Card
-      title="课堂安排"
+      title={t("Visits:sessionIncluded")}
       right={
         Visit.statusNotStart(status) && (
           <Button
-            title="预览"
+            title={t("Visits:preview")}
             disabled={disabled}
             onPress={startVisitPreview}
           />
@@ -36,7 +38,7 @@ export default function LessonCard({
       <LessonName>{lesson?.name}</LessonName>
       <StaticForm>
         {lesson?.moduleNames?.map((name, index) => (
-          <StaticField key={name} label={`模块 ${index + 1}`}>
+          <StaticField key={name} label={`${t("Visits:module")} ${index + 1}`}>
             {name}
           </StaticField>
         ))}

@@ -78,6 +78,10 @@ export default {
   Common: {
     back: "返回",
     edit: "编辑",
+    cancel: "放弃",
+    submit: "提交",
+    ok: "知道了",
+    start: "开始",
   },
   enum: {
     BabyStage: {
@@ -249,6 +253,25 @@ export default {
     pleaseInput: "请输入",
   },
   Visits: {
+    notStartMessage: "时间未到，无法开始课堂",
+    continueLesson: "继续课堂",
+    startLesson: "开始课堂",
+    cancelVisit: "取消家访",
+    canNotStartLessonMessage: "无法开始课堂",
+    confirmStartLessonMessage: "您确定要立即开始本次家访吗？",
+    visitSchedule: "本次拜访日程为",
+    cancelVisitReason: "取消家访原因",
+    later: "再想想",
+    inputVisitReason: "请填写取消家访原因",
+
+    sessionIncluded: "课程安排",
+    module: "模块",
+    preview: "预览",
+    visitInfo: "家访对象",
+    carerName: "主照料人",
+    carerPhone: "联系电话",
+    area: "所在区域",
+    location: "详细地址",
     startTime: "开始时间",
     endTime: "结束时间",
     edit: "修改",

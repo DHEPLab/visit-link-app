@@ -3,6 +3,7 @@ import { Modal } from "react-native";
 
 import { styled } from "../../utils/styled";
 import Button from "./Button";
+import { useTranslation } from "react-i18next";
 
 export default function ElementModal({
   visible,
@@ -16,6 +17,7 @@ export default function ElementModal({
   disableOk,
   hideCancel,
 }) {
+  const { t } = useTranslation();
   return (
     <Modal visible={visible} transparent={true} statusBarTranslucent={true}>
       <Container>
@@ -29,7 +31,7 @@ export default function ElementModal({
                 <Button
                   ghost
                   type="primary"
-                  title={cancelText || "放弃"}
+                  title={cancelText || t("Common:cancel")}
                   onPress={onCancel}
                 />
               </CancelButtonContainer>
@@ -37,7 +39,7 @@ export default function ElementModal({
             <Button
               disabled={disableOk}
               type="primary"
-              title={okText || "提交"}
+              title={okText || t("Common:submit")}
               onPress={onOk}
             />
           </Footer>

@@ -11,6 +11,7 @@ import Input from "./elements/Input";
 import LargeButtonContainer from "./LargeButtonContainer";
 import { styled } from "../utils/styled";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 export default function StartLesson({
   disabled,
@@ -24,14 +25,16 @@ export default function StartLesson({
   validate,
   cancelVisit,
 }) {
+  const { t } = useTranslation();
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] =
     useBoolState();
   const [deleteVisible, openDelete, closeDelete] = useBoolState();
   const { isConnected } = useSelector((state) => state.net);
   const [deleteremark, setDeleteRemark] = useState();
-  const [errorMessageContent, setErrorMessageContent] =
-    useState("时间未到，无法开始课堂");
+  const [errorMessageContent, setErrorMessageContent] = useState(
+    t("Visits:notStartMessage"),
+  );
 
   function handleStart() {
     closeStartVisit();
@@ -64,7 +67,7 @@ export default function StartLesson({
             <Button
               disabled={disabled}
               size="large"
-              title="继续课堂"
+              title={t("Visits:continueLesson")}
               onPress={handleContinue}
             />
           )}
@@ -73,11 +76,11 @@ export default function StartLesson({
             <Button
               disabled={disabled || Visit.statusDone(status)}
               size="large"
-              title="开始课堂"
+              title={t("Visits:startLesson")}
               onPress={() => {
                 if (!Visit.canIStart(status, visitTime)) {
                   openErrorMessage();
-                  setErrorMessageContent("时间未到，无法开始课堂");
+                  setErrorMessageContent(t("Visits:notStartMessage"));
                   return;
                 }
                 /*Location.requestBackgroundPermissionsAsync().then(res=> {
@@ -101,7 +104,7 @@ export default function StartLesson({
             size="large"
             ghost
             type="primary"
-            title="取消家访"
+            title={t("Visits:cancelVisit")}
             onPress={() => {
               openDelete();
               setDeleteRemark("");
@@ -113,42 +116,42 @@ export default function StartLesson({
       <Message
         error
         visible={errorMessageVisble}
-        buttonText="知道了"
+        buttonText={t("Common:ok")}
         onButtonPress={closeErrorMessage}
-        title="无法开始课堂"
+        title={t("Visits:canNotStartLessonMessage")}
         content={errorMessageContent}
       />
 
       <Modal
-        title="您确定要立即开始本次家访吗？"
+        title={t("Visits:confirmStartLessonMessage")}
         visible={startVisitVisible}
-        contentText={`本次拜访日程为：${Visit.formatDateTimeCN(visitTime)}`}
-        okText="开始"
-        cancelText="放弃"
+        contentText={`${t("Visits:visitSchedule")}：${Visit.formatDateTimeCN(visitTime)}`}
+        okText={t("Common:start")}
+        cancelText={t("Common:cancel")}
         onCancel={closeStartVisit}
         onOk={handleStart}
       />
 
       <Modal
-        title="取消家访原因"
+        title={t("Visits:cancelVisitReason")}
         visible={deleteVisible}
         content={
           <Input
             value={deleteremark}
             onChangeText={setDeleteRemark}
             border
-            placeholder="请输入"
+            placeholder={t("Form:pleaseInput")}
           />
         }
-        okText="取消家访"
-        cancelText="再想想"
+        okText={t("Visits:cancelVisit")}
+        cancelText={t("Visits:later")}
         onCancel={closeDelete}
         onOk={() => {
           if (deleteremark) {
             cancelVisit(deleteremark);
             closeDelete();
           } else {
-            ToastAndroid.show("请填写取消家访原因", ToastAndroid.LONG);
+            ToastAndroid.show(t("Visits:inputVisitReason"), ToastAndroid.LONG);
           }
         }}
       />

@@ -6,18 +6,27 @@ import Card from "./elements/Card";
 import StaticForm from "./elements/StaticForm";
 import StaticField from "./elements/StaticField";
 import MiniBaby from "./MiniBaby";
+import { useTranslation } from "react-i18next";
 
 export default function BabyCard({ baby }) {
+  const { t } = useTranslation();
   return (
-    <Card title="家访对象" background={require("../assets/images/baby-bg.png")}>
+    <Card
+      title={t("Visits:visitInfo")}
+      background={require("../assets/images/baby-bg.png")}
+    >
       <MiniBabyContainer>
         <MiniBaby hideStatus baby={baby || {}} />
       </MiniBabyContainer>
       <StaticForm>
-        <StaticField label="主照料人">{baby?.carerName}</StaticField>
-        <StaticField label="联系电话">{baby?.carerPhone}</StaticField>
-        <StaticField label="所在区域">{baby?.area}</StaticField>
-        <StaticField label="详细地址">{baby?.location}</StaticField>
+        <StaticField label={t("Visits:carerName")}>
+          {baby?.carerName}
+        </StaticField>
+        <StaticField label={t("Visits:carerPhone")}>
+          {baby?.carerPhone}
+        </StaticField>
+        <StaticField label={t("Visits:area")}>{baby?.area}</StaticField>
+        <StaticField label={t("Visits:location")}>{baby?.location}</StaticField>
       </StaticForm>
     </Card>
   );

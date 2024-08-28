@@ -79,6 +79,10 @@ export default {
   Common: {
     back: "Back",
     edit: "Edit",
+    cancel: "Cancel",
+    submit: "Submit",
+    ok: "Ok",
+    start: "Start",
   },
   enum: {
     BabyStage: {
@@ -259,6 +263,25 @@ export default {
     pleaseInput: "Please enter content",
   },
   Visits: {
+    notStartMessage: "Class cannot be started because the time has not arrived",
+    continueLesson: "Continue Lesson",
+    startLesson: "Start Lesson",
+    cancelVisit: "Cancel Visit",
+    canNotStartLessonMessage: "Can't start Lesson",
+    confirmStartLessonMessage:
+      "Are you sure you want to start this home visit now?",
+    visitSchedule: "The schedule for this visit is",
+    cancelVisitReason: "Cancel Visit Reason",
+    later: "Later",
+    inputVisitReason: "Please enter reason of cancelling the visit",
+    sessionIncluded: "Session(s) Included",
+    module: "Module",
+    preview: "Preview",
+    visitInfo: "Visit Info",
+    carerName: "Primary Caregiver",
+    carerPhone: "Phone",
+    area: "Area",
+    location: "Address",
     startTime: "Start Time",
     endTime: "Complete Time",
     edit: "Edit",
