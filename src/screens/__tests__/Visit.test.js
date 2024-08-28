@@ -73,7 +73,7 @@ describe("<Visit />", () => {
       },
     ]);
     const { queryAllByText } = render(<Visit {...createTestProps()} />);
-    expect(queryAllByText(/Visits:undoneReason/).length).toBe(1);
+    expect(queryAllByText(/Visits:expiredReason/).length).toBe(1);
   });
 
   it("should readonly", () => {
