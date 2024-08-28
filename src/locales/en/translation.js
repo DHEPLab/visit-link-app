@@ -270,6 +270,8 @@ export default {
     visitTime: "Visit Time",
     visitDetail: "Visit Detail",
     remarkTitle: "Comments",
+    expiredReason: "Expired Reason",
+    undoneReason: "Incomplete Reason",
   },
   BabyItem: {
     primaryCaregiver: "Primary Caregiver",

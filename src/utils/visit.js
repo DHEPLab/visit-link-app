@@ -124,8 +124,8 @@ export default {
     statusNotStart(status)
       ? i18next.t("Visits:remarkTitle")
       : statusUndone(status)
-        ? "未完成原因"
-        : "过期原因",
+        ? i18next.t("Visits:undoneReason")
+        : i18next.t("Visits:expiredReason"),
   visitTimeMayConflict(vt1, vt2) {
     const diff = moment(vt1).diff(moment(vt2), "minutes");
     return Math.abs(diff) <= 60;

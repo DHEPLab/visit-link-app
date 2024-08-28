@@ -259,6 +259,8 @@ export default {
     visitTime: "家访时间",
     visitDetail: "家访详情",
     remarkTitle: "备注",
+    expiredReason: "过期原因",
+    undoneReason: "未完成原因",
   },
   BabyItem: {
     primaryCaregiver: "主要看护人",

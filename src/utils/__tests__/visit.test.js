@@ -88,8 +88,8 @@ it("should visit status not started is truthy", () => {
 
 it("should return visit remark title", () => {
   expect(Visit.remarkTitle("NOT_STARTED")).toBe("Visits:remarkTitle");
-  expect(Visit.remarkTitle("EXPIRED")).toBe("过期原因");
-  expect(Visit.remarkTitle("UNDONE")).toBe("未完成原因");
+  expect(Visit.remarkTitle("EXPIRED")).toBe("Visits:expiredReason");
+  expect(Visit.remarkTitle("UNDONE")).toBe("Visits:undoneReason");
 });
 
 it("should disable visit button when now is after select day", () => {
