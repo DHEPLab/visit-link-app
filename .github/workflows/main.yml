@@ -23,3 +23,9 @@ jobs:
         run: yarn --frozen-lockfile
       - run: yarn lint
       - run: yarn test:ci
+
+      - name: Sonar scan
+        uses: sonarsource/sonarqube-scan-action@v2.3.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
