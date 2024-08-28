@@ -16,11 +16,8 @@ jest.mock("react-i18next", () => ({
 }));
 
 describe("<CreateBabyStep2 />", () => {
-  const { familyTies, handleNextStep, pullAt, keepMasterCarerUnique, create } =
+  const { familyTies, handleNextStep, keepMasterCarerUnique, create } =
     useMethods();
-  it("should pull at element", () => {
-    expect(pullAt([1, 2], 1)).toStrictEqual([1]);
-  });
 
   it("should keep master carer unique", () => {
     const carer = [

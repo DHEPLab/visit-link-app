@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, ToastAndroid, View } from "react-native";
-import Arrays from "lodash/array";
 import { useTranslation } from "react-i18next";
 
 import { styled } from "@/utils/styled";
@@ -10,6 +9,7 @@ import {
   CreateBabyNavigator,
   LargeButtonContainer,
 } from "../../components";
+import { pullAt } from "@/utils/array";
 
 export function useMethods() {
   const { t } = useTranslation("CreateBabyStep2");
@@ -23,12 +23,6 @@ export function useMethods() {
 
   return {
     keepMasterCarerUnique,
-
-    pullAt: (array, index) => {
-      const clone = [...array];
-      Arrays.pullAt(clone, [index]);
-      return clone;
-    },
 
     replace: (array, index, object) => {
       let clone = [...array];
@@ -70,14 +64,8 @@ export default function CreateBabyStep2({ navigation, route }) {
   const { params } = route;
   const { baby } = params;
   const [carers, setCarers] = useState([]);
-  const {
-    pullAt,
-    keepMasterCarerUnique,
-    replace,
-    handleNextStep,
-    create,
-    familyTies,
-  } = useMethods();
+  const { keepMasterCarerUnique, replace, handleNextStep, create, familyTies } =
+    useMethods();
 
   function handleDelete(index) {
     setCarers(pullAt(carers, index));
