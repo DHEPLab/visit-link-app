@@ -16,6 +16,7 @@ jest.mock("react-i18next", () => ({
     t: (key) => key,
     i18n: {
       changeLanguage: jest.fn(),
+      language: "en",
     },
   }),
   Trans: ({ children }) => children,
