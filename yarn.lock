@@ -8247,7 +8247,7 @@ prompts@^2.0.1, prompts@^2.2.1, prompts@^2.3.2, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@15.8.1, prop-types@^15.5.10, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@15.8.1, prop-types@^15.5.10, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8454,12 +8454,10 @@ react-native-image-zoom-viewer@^3.0.1:
   dependencies:
     react-native-image-pan-zoom "^2.1.12"
 
-react-native-loading-spinner-overlay@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-1.1.0.tgz#169b2cdb939cf49186640dc2f50718c57e4d9a00"
-  integrity sha512-PMTMM4zdQkZlORKWzHhDTlFicMfDHz5vbAfwxUnQbVeGwdFezZKG7J/0KyJMtOUPZYzUjouo+uIOoydYM/Xt+A==
-  dependencies:
-    prop-types "^15.6.2"
+react-native-loading-spinner-overlay@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-loading-spinner-overlay/-/react-native-loading-spinner-overlay-3.0.1.tgz#092481b8cce157d3af5ef942f845ad981f96bd36"
+  integrity sha512-4GdR54HQnKg2HPSSisVizfTLuyhSh4splY9eb8mKiYF1Ihjn/5EmdNo5bN3S7uKPFRC3WLzIZIouX6G6fXfnjw==
 
 react-native-pager-view@6.3.0:
   version "6.3.0"

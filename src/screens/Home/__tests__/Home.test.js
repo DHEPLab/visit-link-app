@@ -1,9 +1,9 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
-import storage from "../../cache/storage";
+import storage from "@/cache/storage";
 import Home from "../Home";
 
-jest.mock("../../cache/storage", () => ({
+jest.mock("@/cache/storage", () => ({
   useNextVisit: jest.fn(),
   useVisitStatus: jest.fn(),
 }));
@@ -19,8 +19,8 @@ jest.mock("react-redux", () => ({
   }),
 }));
 
-jest.mock("../../utils/http", () => ({
-  ...jest.requireActual("../../utils/http"),
+jest.mock("@/utils/http", () => ({
+  ...jest.requireActual("@/utils/http"),
   get: jest.fn(() =>
     Promise.resolve([
       {

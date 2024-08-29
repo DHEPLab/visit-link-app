@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import EditAddress from "../screens/BabyForm/EditAddress";
 import ChangePassword from "../screens/ChangePassword";
 import CreateVisit from "../screens/CreateVisit";
-import Home from "../screens/Home";
+import Home from "../screens/Home/Home";
 import LessonIntro from "../screens/LessonIntro";
 import LessonModules from "../screens/LessonModules";
 import Me from "../screens/Me";

@@ -1,8 +1,21 @@
 import React from "react";
-import { styled } from "../../utils/styled";
+import { styled } from "@/utils/styled";
 import { TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
+/**
+ * A customizable button component that wraps a `TouchableOpacity` and handles button presses.
+ *
+ * @param {Object} props - The properties passed to the button component.
+ * @param {() => void} props.onPress - The function to call when the button is pressed.
+ * @param {string} props.title - The title or label for the button.
+ * @param {boolean} [props.ghost] - If true, the button is styled as a ghost button with a transparent background (optional).
+ * @param {"large" | "small"} [props.size] - The size of the button, can be "large" or "small" (optional).
+ * @param {boolean} [props.disabled] - If true, the button is disabled and cannot be pressed (optional).
+ * @param {Object} [props.rest] - Any additional properties passed to the button component.
+ *
+ * @returns {JSX.Element} A button element that can be pressed unless disabled.
+ */
 export default function Button({ onPress, disabled, ...props }) {
   return (
     <TouchableOpacity onPress={onPress} disabled={disabled} activeOpacity={0.8}>

@@ -1,27 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Spinner from "react-native-loading-spinner-overlay";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  FlatList,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  ToastAndroid,
-  View,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-
-import Http from "../utils/http";
-import http from "../utils/http";
-import Visit from "../utils/visit";
-import Storage from "../cache/storage";
-import Resources from "../cache/resources";
-
 import { lessonsUpdate } from "@/actions";
-import { Colors } from "../constants";
-import { useBoolState } from "@/utils";
-import { styled } from "@/utils/styled";
+import Resources from "@/cache/resources";
+import Storage from "@/cache/storage";
 import {
   BabyCard,
   BottomRightBackground,
@@ -29,13 +8,30 @@ import {
   LessonCard,
   Message,
   StartLesson,
-} from "../components";
-import StaticField from "../components/elements/StaticField";
-import prompt from "../components/modal/prompt";
+} from "@/components";
+import { Colors } from "@/constants";
+
+import { Visit } from "@/models";
+import { RootStackParamList } from "@/navigation/RootStackParamList";
+import { RootState } from "@/store";
+import { useBoolState } from "@/utils";
+
+import Http from "@/utils/http";
+import { styled } from "@/utils/styled";
+import VisitUtils from "@/utils/visit";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
+import { RefreshControl, ScrollView, ToastAndroid } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay";
+import type { NativeStackScreenProps } from "react-native-screens/native-stack";
+import { useDispatch, useSelector } from "react-redux";
+import { OtherBabyCard } from "./OtherBabyCard";
 import { useTranslation } from "react-i18next";
 
-export default function Home({ navigation }) {
-  const [visit, reloadVisit] = Storage.useNextVisit();
+type Props = NativeStackScreenProps<RootStackParamList, "Home">;
+
+const Home: React.FC<Props> = ({ navigation }) => {
+  const [visit, reloadVisit] = Storage.useNextVisit() as [Visit, () => void];
   const { visitTime, baby, lesson, status } = visit;
 
   const [refreshing, startRefresh, endRefresh] = useBoolState();
@@ -49,7 +45,7 @@ export default function Home({ navigation }) {
 
   const dispatch = useDispatch();
   // lesson resources update state
-  const update = useSelector((state) => state.lessonsUpdate);
+  const update = useSelector((state: typeof RootState) => state.lessonsUpdate);
 
   // refresh silent mode when focus navigation
   useEffect(
@@ -62,15 +58,15 @@ export default function Home({ navigation }) {
     !silent && startRefresh();
     try {
       dispatch(lessonsUpdate(await Resources.checkForUpdateAsync()));
-    } catch (e) {}
+    } catch {}
     try {
       await submit();
-    } catch (e) {}
+    } catch {}
     try {
       Storage.setNextVisit(await Http.get("/api/visits/next")).then(() =>
         setReloadOtherVisit({}),
       );
-    } catch (e) {
+    } catch {
       Storage.setNextVisit({});
       // never going to get 404
       // if (e.status === 404) {}
@@ -102,7 +98,7 @@ export default function Home({ navigation }) {
     }
   }
 
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(["Home", "Visits", "App"]);
 
   const isZH = i18n.language === "zh";
 
@@ -111,15 +107,15 @@ export default function Home({ navigation }) {
     try {
       await Resources.fetchUpdateAsync();
       dispatch(lessonsUpdate({ isAvailable: false }));
-      ToastAndroid.show(t("Home:downloadSuccess"), ToastAndroid.SHORT);
+      ToastAndroid.show(t("downloadSuccess"), ToastAndroid.SHORT);
     } catch (e) {
-      ToastAndroid.show(t("Home:downloadSuccess"), ToastAndroid.SHORT);
+      ToastAndroid.show(t("downloadSuccess"), ToastAndroid.SHORT);
     } finally {
       endFetch();
     }
   }
 
-  async function cancelVisit(deleteReason) {
+  async function cancelVisit(deleteReason: string) {
     await Http.delete(`/api/visits/${visit.id}?deleteReason=${deleteReason}`);
     setTimeout(() => {
       refresh(true);
@@ -145,8 +141,8 @@ export default function Home({ navigation }) {
       <Message
         info
         visible={submitErrorMessageVisible}
-        title={t("Home:waitForSync")}
-        content={t("Home:waitForMessage")}
+        title={t("waitForSync")}
+        content={t("waitForMessage")}
         buttonText={t("App:understood")}
         onButtonPress={closeSubmitErrorMessage}
       />
@@ -155,13 +151,13 @@ export default function Home({ navigation }) {
         <BottomRightBackground
           width={140}
           height={134}
-          source={require("../assets/images/curriculum-bg.png")}
+          source={require("../../assets/images/curriculum-bg.png")}
         />
 
         <Title testId="visit-title">
           {visit.id
-            ? `${t("Home:nextVisitDate")} \n${isZH ? Visit.formatDateTimeCN(visitTime) : Visit.formatDateTimeEN(visitTime)}`
-            : t("Home:noVisitMessage")}
+            ? `${t("nextVisitDate")} \n${isZH ? VisitUtils.formatDateTimeCN(visitTime) : VisitUtils.formatDateTimeEN(visitTime)}`
+            : t("noVisitMessage")}
         </Title>
 
         {update.isAvailable && (
@@ -170,7 +166,7 @@ export default function Home({ navigation }) {
               ghost
               size="small"
               onPress={handleFetchUpdate}
-              title={update.firstTime ? t("Home:download") : t("Home:update")}
+              title={update.firstTime ? t("download") : t("update")}
             />
           </SyncButton>
         )}
@@ -194,7 +190,7 @@ export default function Home({ navigation }) {
             size="large"
             onPress={() =>
               navigation.navigate("CreateVisit", {
-                visitTime: Visit.defaultVisitTime(new Date()),
+                visitTime: VisitUtils.defaultVisitTime(new Date()),
               })
             }
           />
@@ -202,15 +198,13 @@ export default function Home({ navigation }) {
       )}
 
       <StartLesson
-        {...{
-          disabled: update.isAvailable,
-          status,
-          visitTime,
-          navigation,
-          visitId: visit.id,
-          lessonId: visit?.lesson?.id,
-          from: "Home",
-        }}
+        disabled={update.isAvailable}
+        status={status}
+        visitTime={visitTime}
+        navigation={navigation}
+        visitId={visit.id}
+        lessonId={visit?.lesson?.id}
+        from="Home"
         cancelVisit={cancelVisit}
       />
       {visit.id ? (
@@ -218,66 +212,7 @@ export default function Home({ navigation }) {
       ) : null}
     </StyledScrollView>
   );
-}
-
-function OtherBabyCard({ excludeVisitId, reload }) {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const [visits, setVisits] = useState([]);
-  const fetchAllVisitOfTodo = () => {
-    http.get("/api/visits/all/todo").then((res) => {
-      setVisits(res);
-    });
-  };
-  useEffect(() => {
-    fetchAllVisitOfTodo();
-  }, [reload]);
-  const onCancelHomeVisit = (id) => {
-    prompt(t("Visits:cancelVisitReason"), {
-      onOk: async (v) => {
-        await Http.delete(`/api/visits/${id}?deleteReason=${v}`).then(() =>
-          setVisits(visits.filter((v) => v.id !== id)),
-        );
-      },
-      dispatch,
-    });
-  };
-  const realVisits = visits.filter((v) => v.id !== excludeVisitId);
-  return realVisits && realVisits.length > 0 ? (
-    <View style={otherStyle.container}>
-      <LinearGradient style={otherStyle.titleBg} {...Colors.linearGradient}>
-        <Text style={otherStyle.title}>即将到来的家访</Text>
-      </LinearGradient>
-      <View style={otherStyle.itemContainer}>
-        <FlatList
-          data={visits}
-          keyExtractor={(visit) => visit.id + ""}
-          renderItem={({ item: visit }) => {
-            const { visitTime, baby } = visit;
-            return (
-              <View style={otherStyle.item}>
-                <View style={otherStyle.itemHead}>
-                  <Text style={otherStyle.babyName}>{baby.name}</Text>
-                  <Text style={otherStyle.visitDate}>
-                    {Visit.formatDateTimeCN(visitTime)}
-                  </Text>
-                  <Button
-                    title={t("Visits:cancelVisit")}
-                    onPress={() => onCancelHomeVisit(visit.id)}
-                  />
-                </View>
-                <StaticField label={t("Visits:area")}>{baby.area}</StaticField>
-                <StaticField label={t("Visits:location")}>
-                  {baby.location}
-                </StaticField>
-              </View>
-            );
-          }}
-        />
-      </View>
-    </View>
-  ) : null;
-}
+};
 
 const SyncButton = styled.View`
   position: absolute;
@@ -309,49 +244,7 @@ const StyledScrollView = styled(ScrollView)`
 `;
 
 const CardContainer = styled.View`
-  margin: 0 28px;
-  margin-top: -34px;
+  margin: -34px 28px 0;
 `;
 
-const otherStyle = StyleSheet.create({
-  container: {
-    marginTop: 20,
-  },
-  titleBg: {
-    paddingTop: 12,
-    paddingBottom: 28,
-    paddingLeft: 28,
-  },
-  title: {
-    fontSize: 20,
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  itemContainer: {
-    paddingHorizontal: 28,
-    marginTop: -18,
-  },
-  item: {
-    marginBottom: 8,
-    borderRadius: 8,
-    paddingVertical: 8,
-    paddingHorizontal: 18,
-    backgroundColor: "#fff",
-  },
-  itemHead: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignContent: "center",
-    alignItems: "center",
-    marginBottom: 4,
-  },
-  babyName: {
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  visitDate: {
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-});
+export default Home;

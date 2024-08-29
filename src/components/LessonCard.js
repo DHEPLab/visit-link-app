@@ -9,6 +9,18 @@ import StaticForm from "./elements/StaticForm";
 import StaticField from "./elements/StaticField";
 import { useTranslation } from "react-i18next";
 
+/**
+ * A card component that represents a lesson, with options for validation, status display, and navigation.
+ *
+ * @param {Object} props - The properties passed to the lesson card component.
+ * @param {() => void} [props.validate] - An optional function to validate the lesson or its content.
+ * @param {boolean} [props.disabled] - If true, the card is disabled and user interactions are blocked (optional).
+ * @param {string} props.status - The status of the lesson, such as "completed", "in-progress", etc.
+ * @param {Object} [props.lesson] - The lesson data to be displayed in the card.
+ * @param {Object} props.navigation - The navigation object used for routing to other screens.
+ *
+ * @returns {JSX.Element} A card component that represents a lesson with various interactive features.
+ */
 export default function LessonCard({
   validate,
   disabled,

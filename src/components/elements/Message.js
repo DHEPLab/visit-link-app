@@ -4,6 +4,20 @@ import { Modal, Image } from "react-native";
 import { styled } from "../../utils/styled";
 import Button from "./Button";
 
+/**
+ * A component that displays a message with optional error and informational content, and a button for user actions.
+ *
+ * @param {Object} props - The properties passed to the Message component.
+ * @param {boolean} [props.error] - If true, the message is displayed as an error (optional).
+ * @param {boolean} [props.info] - If true, the message is displayed as informational (optional).
+ * @param {boolean} [props.visible] - If true, the message is visible. If false, it is hidden (optional).
+ * @param {string} [props.title] - The title of the message (optional).
+ * @param {string} [props.content] - The main content or body of the message (optional).
+ * @param {string} [props.buttonText] - The text to be displayed on the action button (optional).
+ * @param {() => void} [props.onButtonPress] - The function to be called when the action button is pressed (optional).
+ *
+ * @returns {JSX.Element} A component that displays a message with optional styling and an action button.
+ */
 export default function Message({
   error,
   info,

@@ -1,11 +1,13 @@
+import { NativeLinearGradientPoint } from "expo-linear-gradient/src/NativeLinearGradient.types";
+
 const colors = ["#FF9472", "#F2709C"];
 
 export default {
   primary: "#FF794F",
   colors,
   linearGradient: {
-    start: [0, 0],
-    end: [1, 1],
+    start: [0, 0] as NativeLinearGradientPoint,
+    end: [1, 1] as NativeLinearGradientPoint,
     colors,
   },
   theme: {

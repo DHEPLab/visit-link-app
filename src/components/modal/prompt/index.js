@@ -5,6 +5,19 @@ import { Modal } from "../../index";
 import Input from "../../elements/Input";
 import { ToastAndroid } from "react-native";
 
+/**
+ * Displays a prompt modal with the given title and options.
+ *
+ * @param {string} title - The title to be displayed on the prompt modal.
+ * @param {Object} options - The options for configuring the prompt modal.
+ * @param {string} [options.defaultValue] - The default value to be displayed in the prompt input field (optional).
+ * @param {string} [options.okText] - The text to be displayed on the OK button (optional).
+ * @param {string} [options.cancelText] - The text to be displayed on the Cancel button (optional).
+ * @param {(string) => void} [options.onOk] - The callback function to be executed when the OK button is clicked (optional).
+ * @param {(action: any) => void} options.dispatch - The function to dispatch the action that opens the prompt modal.
+ *
+ * @returns {void} This function does not return anything.
+ */
 const prompt = (
   title,
   { defaultValue, okText, cancelText, onOk, dispatch },
