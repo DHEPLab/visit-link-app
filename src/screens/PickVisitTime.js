@@ -17,6 +17,7 @@ import {
   Button,
   Modal,
 } from "../components";
+import { useTranslation } from "react-i18next";
 
 export default function PickVisitTime({ navigation, route }) {
   const { params } = route;
@@ -69,12 +70,16 @@ export default function PickVisitTime({ navigation, route }) {
     }
   }
 
+  const { t, i18n } = useTranslation();
+
+  const isZH = i18n.language === "zh";
+
   return (
     <Container>
       <CardField>
         <StaticForm>
-          <StaticField label="选择家访日期" labelWidth={60}>
-            {Visit.formatDateCN(date)}
+          <StaticField label={t("Visits:selectVisitDate")} labelWidth={60}>
+            {isZH ? Visit.formatDateCN(date) : Visit.formatDateEN(date)}
           </StaticField>
         </StaticForm>
       </CardField>
@@ -85,7 +90,7 @@ export default function PickVisitTime({ navigation, route }) {
           pagingEnabled={true}
           hideArrows={false}
           calendarWidth={px2dp(344)}
-          monthFormat={"yyyy年 M月"}
+          monthFormat={isZH ? "yyyy年 M月" : "MMMM  yyyy"}
           current={Visit.formatDate(now)}
           minDate={range[0]}
           maxDate={range[1]}
@@ -105,8 +110,8 @@ export default function PickVisitTime({ navigation, route }) {
       <TouchableOpacity onPress={onPressTime} activeOpacity={0.8}>
         <CardField>
           <StaticForm>
-            <StaticField label="选择家访时间" labelWidth={60}>
-              {Visit.formatTimeCN(time)}
+            <StaticField label={t("Visits:selectVisitDate")} labelWidth={60}>
+              {isZH ? Visit.formatDateCN(date) : Visit.formatDateEN(date)}
             </StaticField>
           </StaticForm>
         </CardField>
@@ -123,17 +128,21 @@ export default function PickVisitTime({ navigation, route }) {
       )}
 
       <Modal
-        title="家访时间冲突"
+        title={t("Visits:visitTimeConflict")}
         visible={conflictVisible}
-        contentText="您所选的时间段有邻近的家访安排，可能会时间冲突，确定选择该时间吗？"
-        okText="确定"
-        cancelText="取消"
+        contentText={t("Visits:VisitTimeConflictMessage")}
+        okText={t("Common:confirm")}
+        cancelText={t("Common:cancel")}
         onCancel={closeConflict}
         onOk={submit}
       />
 
       <LargeButtonContainer>
-        <Button size="large" title="提交" onPress={handleSubmit} />
+        <Button
+          size="large"
+          title={t("Common:submit")}
+          onPress={handleSubmit}
+        />
       </LargeButtonContainer>
     </Container>
   );

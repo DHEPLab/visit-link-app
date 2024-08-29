@@ -82,6 +82,7 @@ export default {
     submit: "提交",
     ok: "知道了",
     start: "开始",
+    confirm: "确定",
   },
   enum: {
     BabyStage: {
@@ -253,6 +254,12 @@ export default {
     pleaseInput: "请输入",
   },
   Visits: {
+    selectVisitDate: "选择家访日期",
+    selectVisitTime: "选择家访时间",
+    visitTimeConflict: "家访时间冲突",
+    VisitTimeConflictMessage:
+      "您所选的时间段有邻近的家访安排，可能会时间冲突，确定选择该时间吗？",
+
     notStartMessage: "时间未到，无法开始课堂",
     continueLesson: "继续课堂",
     startLesson: "开始课堂",

@@ -58,6 +58,10 @@ function formatDateCN(date) {
   return moment(date).format("YYYY年MM月DD日");
 }
 
+function formatDateEN(date) {
+  return moment(date).format("YYYY/MM/DD");
+}
+
 function formatTimeCN(time) {
   return meridiem(moment(time)) + moment(time).format("h:mm");
 }
@@ -113,6 +117,7 @@ export default {
   formatDateTimeEN,
   formatDateTimeCN,
   formatDateCN,
+  formatDateEN,
   mergeDateAndTime,
   defaultDatetime,
   statusDone: (status) => status === "DONE",

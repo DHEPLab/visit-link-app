@@ -83,6 +83,7 @@ export default {
     submit: "Submit",
     ok: "Ok",
     start: "Start",
+    confirm: "Confirm",
   },
   enum: {
     BabyStage: {
@@ -263,6 +264,12 @@ export default {
     pleaseInput: "Please enter content",
   },
   Visits: {
+    selectVisitDate: "Select Visit Date",
+    selectVisitTime: "Select Visit Time",
+    visitTimeConflict: "Visit Time Conflict",
+    VisitTimeConflictMessage:
+      "The time you selected overlaps with a nearby home visit schedule. This may lead to a scheduling conflict. Are you sure you want to proceed with this time selection?",
+
     notStartMessage: "Class cannot be started because the time has not arrived",
     continueLesson: "Continue Lesson",
     startLesson: "Start Lesson",

@@ -1,4 +1,5 @@
 import { LocaleConfig } from "react-native-calendars";
+import i18next from "i18next";
 
 console.reportErrorsAsExceptions = false;
 
@@ -43,4 +44,47 @@ LocaleConfig.locales["zh"] = {
   dayNamesShort: ["日", "一", "二", "三", "四", "五", "六"],
   today: "今天",
 };
-LocaleConfig.defaultLocale = "zh";
+
+LocaleConfig.locales["en"] = {
+  monthNames: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  monthNamesShort: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ],
+  dayNames: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+  dayNamesShort: ["S", "M", "T", "W", "T", "F", "S"],
+  today: "Today",
+};
+
+LocaleConfig.defaultLocale = i18next.language === "zh" ? "zh" : "en";
