@@ -1,4 +1,11 @@
 export default {
+  Navigator: {
+    home: "首页",
+    visit: "家访安排",
+    account: "个人中心",
+    resetPassword: "修改账户密码",
+    babyList: "宝宝列表",
+  },
   Me: {
     account: "个人中心",
     myAccount: "我的账户",
@@ -69,11 +76,6 @@ export default {
   ApproveStatus: {
     approved: "已审核",
     pending: "待审核",
-  },
-  Navigator: {
-    account: "个人中心",
-    resetPassword: "修改账户密码",
-    babyList: "宝宝列表",
   },
   Common: {
     back: "返回",
@@ -258,6 +260,14 @@ export default {
     pleaseInput: "请输入",
   },
   Visits: {
+    visitArrangement: "家访日程安排",
+    foldCalender: "收起日历",
+    unfoldCalender: "展开日历",
+    noVisitSchedule: "该日期暂时没有家访安排",
+    selectBabyMessage:
+      "根据系统规则，部分宝宝在该时间无法安排家访，因此不可选。",
+    emptyBaby: "暂无可用宝宝",
+
     selectVisitDate: "选择家访日期",
     selectVisitTime: "选择家访时间",
     visitTimeConflict: "家访时间冲突",
@@ -308,5 +318,15 @@ export default {
     primaryCaregiver: "主要看护人",
     contactInfo: "联系方式",
     none: "无",
+  },
+  Home: {
+    downloadSuccess: "下载最新课程资源成功！",
+    downloadError: "下载最新课程资源失败！",
+    waitForSync: "等待同步",
+    waitForMessage: "您有尚未同步的上课记录，恢复网络连接后将自动同步",
+    nextVisitDate: "您的下一次家访: ",
+    noVisitMessage: "您没有家访安排，\n请创建新的家访：",
+    download: "一键下载",
+    update: "一键更新",
   },
 };

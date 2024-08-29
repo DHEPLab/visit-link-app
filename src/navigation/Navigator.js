@@ -190,7 +190,7 @@ function HomeTabs() {
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>首页</TabBarLabel>
+            <TabBarLabel focused={focused}>{t("Navigator:home")}</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="home" />
@@ -216,7 +216,7 @@ function HomeTabs() {
         options={{
           headerShown: false,
           tabBarLabel: ({ focused }) => (
-            <TabBarLabel focused={focused}>家访安排</TabBarLabel>
+            <TabBarLabel focused={focused}>{t("Navigator:visit")}</TabBarLabel>
           ),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="visit" />

@@ -13,6 +13,7 @@ import { Colors } from "../constants";
 import { styled, px2dp } from "../utils/styled";
 import { Button, VisitItem, NoData } from "../components";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 export default function Visits({ navigation }) {
   const [now] = useState(moment());
@@ -24,6 +25,9 @@ export default function Visits({ navigation }) {
     "/api/visits/marked-dates",
   );
   const { isConnected } = useSelector((state) => state.net);
+  const { t, i18n } = useTranslation();
+
+  const isZH = i18n.language === "zh";
 
   useEffect(
     () => navigation.addListener("focus", () => refreshMarkedDates()),
@@ -39,7 +43,7 @@ export default function Visits({ navigation }) {
 
   function handlePressVisit(item) {
     if (!item.babyApproved && item.status === "NOT_STARTED") {
-      ToastAndroid.show("请等待宝宝完成审核", ToastAndroid.SHORT);
+      ToastAndroid.show(t("Baby:waitForApproval"), ToastAndroid.SHORT);
       return;
     }
     navigation.navigate("Visit", { id: item.id });
@@ -48,8 +52,10 @@ export default function Visits({ navigation }) {
   return (
     <>
       <Header {...Colors.linearGradient}>
-        <Title>家访日程安排</Title>
-        <VisitDate>{Visit.formatDateCN(selected)}</VisitDate>
+        <Title>{t("Visits:visitArrangement")}</Title>
+        <VisitDate>
+          {isZH ? Visit.formatDateCN(selected) : Visit.formatDateEN(selected)}
+        </VisitDate>
       </Header>
 
       {showCalendar && (
@@ -59,7 +65,7 @@ export default function Visits({ navigation }) {
             pagingEnabled={true}
             hideArrows={false}
             calendarWidth={px2dp(400)}
-            monthFormat={"yyyy年 M月"}
+            monthFormat={isZH ? "yyyy年 M月" : "MMMM yyyy"}
             current={Visit.formatDate(now)}
             theme={Colors.calendar}
             markedDates={{
@@ -87,7 +93,9 @@ export default function Visits({ navigation }) {
               color="#ff794f"
             />
             <ExtendLabelText>
-              {showCalendar ? "收起日历" : "展开日历"}
+              {showCalendar
+                ? t("Visits:foldCalender")
+                : t("Visits:unfoldCalender")}
             </ExtendLabelText>
           </ExtendLabel>
           <MaterialIcons
@@ -100,7 +108,7 @@ export default function Visits({ navigation }) {
 
       <ButtonContainer>
         <Button
-          title="新建家访"
+          title={t("Visits:scheduleVisit")}
           disabled={!isConnected || Visit.disabledVisitButton(now, selected)}
           onPress={() =>
             navigation.navigate("CreateVisit", {
@@ -111,7 +119,7 @@ export default function Visits({ navigation }) {
       </ButtonContainer>
 
       <StyledFlatList
-        ListEmptyComponent={<NoData title="该日期暂时没有家访安排" />}
+        ListEmptyComponent={<NoData title={t("Visits:noVisitSchedule")} />}
         data={visits}
         keyExtractor={(item) => item.id + ""}
         renderItem={({ item }) => (

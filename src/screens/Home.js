@@ -32,6 +32,7 @@ import {
 } from "../components";
 import StaticField from "../components/elements/StaticField";
 import prompt from "../components/modal/prompt";
+import { useTranslation } from "react-i18next";
 
 export default function Home({ navigation }) {
   const [visit, reloadVisit] = Storage.useNextVisit();
@@ -101,14 +102,18 @@ export default function Home({ navigation }) {
     }
   }
 
+  const { t, i18n } = useTranslation();
+
+  const isZH = i18n.language === "zh";
+
   async function handleFetchUpdate() {
     startFetch();
     try {
       await Resources.fetchUpdateAsync();
       dispatch(lessonsUpdate({ isAvailable: false }));
-      ToastAndroid.show("下载最新课程资源完成！", ToastAndroid.SHORT);
+      ToastAndroid.show(t("Home:downloadSuccess"), ToastAndroid.SHORT);
     } catch (e) {
-      ToastAndroid.show("下载最新课程资源失败！", ToastAndroid.SHORT);
+      ToastAndroid.show(t("Home:downloadSuccess"), ToastAndroid.SHORT);
     } finally {
       endFetch();
     }
@@ -140,9 +145,9 @@ export default function Home({ navigation }) {
       <Message
         info
         visible={submitErrorMessageVisible}
-        title="等待同步"
-        content="您有尚未同步的上课记录，恢复网络连接后将自动同步"
-        buttonText="知道了"
+        title={t("Home:waitForSync")}
+        content={t("Home:waitForMessage")}
+        buttonText={t("App:understood")}
         onButtonPress={closeSubmitErrorMessage}
       />
 
@@ -155,8 +160,8 @@ export default function Home({ navigation }) {
 
         <Title testId="visit-title">
           {visit.id
-            ? `您的下一次家访：\n${Visit.formatDateTimeCN(visitTime)}`
-            : `您没有家访安排，\n请创建新的家访：`}
+            ? `${t("Home:nextVisitDate")} \n${isZH ? Visit.formatDateTimeCN(visitTime) : Visit.formatDateTimeEN(visitTime)}`
+            : t("Home:noVisitMessage")}
         </Title>
 
         {update.isAvailable && (
@@ -165,7 +170,7 @@ export default function Home({ navigation }) {
               ghost
               size="small"
               onPress={handleFetchUpdate}
-              title={update.firstTime ? "一键下载" : "一键更新"}
+              title={update.firstTime ? t("Home:download") : t("Home:update")}
             />
           </SyncButton>
         )}
@@ -184,7 +189,7 @@ export default function Home({ navigation }) {
       ) : (
         <NoDataContainer>
           <Button
-            title="新建家访"
+            title={t("Visits:scheduleVisit")}
             disabled={update.isAvailable}
             size="large"
             onPress={() =>
@@ -216,6 +221,7 @@ export default function Home({ navigation }) {
 }
 
 function OtherBabyCard({ excludeVisitId, reload }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [visits, setVisits] = useState([]);
   const fetchAllVisitOfTodo = () => {
@@ -227,7 +233,7 @@ function OtherBabyCard({ excludeVisitId, reload }) {
     fetchAllVisitOfTodo();
   }, [reload]);
   const onCancelHomeVisit = (id) => {
-    prompt("取消家访原因", {
+    prompt(t("Visits:cancelVisitReason"), {
       onOk: async (v) => {
         await Http.delete(`/api/visits/${id}?deleteReason=${v}`).then(() =>
           setVisits(visits.filter((v) => v.id !== id)),
@@ -256,12 +262,14 @@ function OtherBabyCard({ excludeVisitId, reload }) {
                     {Visit.formatDateTimeCN(visitTime)}
                   </Text>
                   <Button
-                    title="取消家访"
+                    title={t("Visits:cancelVisit")}
                     onPress={() => onCancelHomeVisit(visit.id)}
                   />
                 </View>
-                <StaticField label="所在地区">{baby.area}</StaticField>
-                <StaticField label="详细地址">{baby.location}</StaticField>
+                <StaticField label={t("Visits:area")}>{baby.area}</StaticField>
+                <StaticField label={t("Visits:location")}>
+                  {baby.location}
+                </StaticField>
               </View>
             );
           }}

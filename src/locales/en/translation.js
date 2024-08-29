@@ -1,4 +1,11 @@
 export default {
+  Navigator: {
+    home: "Home",
+    babyList: "Babies",
+    visit: "Visit",
+    account: "Account",
+    resetPassword: "Reset Password",
+  },
   Me: {
     account: "Account",
     myAccount: "My Account",
@@ -70,11 +77,6 @@ export default {
   ApproveStatus: {
     approved: "Approved",
     pending: "Pending",
-  },
-  Navigator: {
-    account: "Account",
-    resetPassword: "Reset Password",
-    babyList: "Baby List",
   },
   Common: {
     back: "Back",
@@ -268,6 +270,14 @@ export default {
     pleaseInput: "Please enter content",
   },
   Visits: {
+    visitArrangement: "Visit Arrangement",
+    foldCalender: "Collapse Calendar",
+    unfoldCalender: "Show Calendar",
+    noVisitSchedule: "No visit for this date",
+    selectBabyMessage:
+      "According to system rules, some babies cannot have visits scheduled at this time, so they are unavailable for selection.",
+    emptyBaby: "No available baby",
+
     selectVisitDate: "Select Visit Date",
     selectVisitTime: "Select Visit Time",
     visitTimeConflict: "Visit Time Conflict",
@@ -321,5 +331,16 @@ export default {
     primaryCaregiver: "Primary Caregiver",
     contactInfo: "Phone",
     none: "None",
+  },
+  Home: {
+    downloadSuccess: "Download the latest course successfully!",
+    downloadError: "Failed to download the latest course resources!",
+    waitForSync: "Wait for sync",
+    waitForMessage:
+      "You have class records that haven't been synced yet, and will be automatically synced when the internet connection is restored",
+    nextVisitDate: "Your next visit: ",
+    noVisitMessage: "You have no visit scheduled. Please schedule a new visit:",
+    download: "Download now",
+    update: "Update now",
   },
 };

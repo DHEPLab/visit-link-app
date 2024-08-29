@@ -5,6 +5,7 @@ import { Colors } from "../constants";
 import { styled } from "../utils/styled";
 import { BabyItem, NoData } from "../components";
 import { useFetch } from "../utils";
+import { useTranslation } from "react-i18next";
 
 export default function PickBaby({ navigation, route }) {
   const [babies, refresh, refreshing] = useFetch(
@@ -19,11 +20,12 @@ export default function PickBaby({ navigation, route }) {
     navigation.navigate("CreateVisit", { baby });
   }
 
+  const { t } = useTranslation();
   return (
     <Container>
-      <Hint>根据系统规则，部分宝宝在该时间无法安排家访，因此不可选。</Hint>
+      <Hint>{t("Visits:selectBabyMessage")}</Hint>
       <FlatList
-        ListEmptyComponent={<NoData title="暂无可用宝宝" />}
+        ListEmptyComponent={<NoData title={t("Visits:emptyBaby")} />}
         refreshControl={
           <RefreshControl
             colors={Colors.colors}
