@@ -45,25 +45,25 @@ export const OtherBabyCard: React.FC<OtherBabyCardProps> = ({
   };
   const realVisits = visits.filter((v) => v.id !== excludeVisitId);
   return realVisits && realVisits.length > 0 ? (
-    <View style={otherStyle.container}>
-      <LinearGradient style={otherStyle.titleBg} {...Colors.linearGradient}>
-        <Text style={otherStyle.title}>即将到来的家访</Text>
+    <View style={styles.container}>
+      <LinearGradient style={styles.titleBg} {...Colors.linearGradient}>
+        <Text style={styles.title}>即将到来的家访</Text>
       </LinearGradient>
-      <View style={otherStyle.itemContainer}>
+      <View style={styles.itemContainer}>
         <FlatList
           data={visits}
           keyExtractor={(visit) => visit.id + ""}
           renderItem={({ item: visit }) => {
             const { visitTime, baby } = visit as Visit;
             return (
-              <View style={otherStyle.item}>
-                <View style={otherStyle.itemHead}>
-                  <Text style={otherStyle.babyName}>{baby.name}</Text>
-                  <Text style={otherStyle.visitDate}>
+              <View style={styles.item}>
+                <View style={styles.itemHead}>
+                  <Text style={styles.babyName}>{baby.name}</Text>
+                  <Text style={styles.visitDate}>
                     {VisitUtils.formatDateTimeCN(visitTime)}
                   </Text>
                   <Button
-                    title="取消家访"
+                    title={t("cancelVisit")}
                     onPress={() => onCancelHomeVisit(visit.id)}
                   />
                 </View>
@@ -78,7 +78,7 @@ export const OtherBabyCard: React.FC<OtherBabyCardProps> = ({
   ) : null;
 };
 
-const otherStyle = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     marginTop: 20,
   },
