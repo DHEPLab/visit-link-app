@@ -151,7 +151,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
         <BottomRightBackground
           width={140}
           height={134}
-          source={require("../../assets/images/curriculum-bg.png")}
+          source={require("@/assets/images/curriculum-bg.png")}
         />
 
         <Title testId="visit-title">
