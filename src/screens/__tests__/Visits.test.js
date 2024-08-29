@@ -32,7 +32,7 @@ describe("<Visits />", () => {
   });
 
   it("should create visit use current selected date", () => {
-    fireEvent.press(wrapper.getByText(/新建家访/));
+    fireEvent.press(wrapper.getByText(/Visits:scheduleVisit/));
 
     expect(props.navigation.navigate).toBeCalled();
   });

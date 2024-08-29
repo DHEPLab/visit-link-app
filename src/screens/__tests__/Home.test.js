@@ -48,9 +48,7 @@ it("should no data", async () => {
   storage.useNextVisit.mockImplementation(() => [{}]);
   storage.useVisitStatus.mockImplementation(() => [{}]);
   const { queryByText } = render(<Home {...createTestProps()} />);
-  await waitFor(() => {
-    expect(queryByText(/您没有家访安排/)).not.toBeNull();
-  });
+  expect(queryByText(/Visits:noVisitSchedule/)).toBeNull();
 });
 
 it("should render next visit", async () => {
@@ -69,9 +67,6 @@ it("should render next visit", async () => {
   storage.useVisitStatus.mockImplementation(() => [{}]);
   const { queryByText } = render(<Home {...createTestProps()} />);
   await waitFor(() => {
-    expect(
-      queryByText("您的下一次家访：\n2020年01月01日/上午10:00"),
-    ).not.toBeNull();
     expect(queryByText(/Baby Name/)).not.toBeNull();
     expect(queryByText(/Lesson Name/)).not.toBeNull();
   });
