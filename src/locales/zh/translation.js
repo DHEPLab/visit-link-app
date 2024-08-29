@@ -193,6 +193,10 @@ export default {
       "稍后可在列表中查看结果，新建宝宝需要督导员审核，如需尽快审核，请直接联系您的督导员。",
   },
   Baby: {
+    editCarer: "编辑看护人",
+    editAddress: "修改地址信息",
+    editBabyTitle: "修改宝宝信息",
+    selectBaby: "选择宝宝",
     babyDetails: "宝宝详情",
     id: "ID",
     notAvailable: "暂无",

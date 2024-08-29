@@ -201,6 +201,10 @@ export default {
       "You can view the results in the list later. New baby creation requires supervisor approval. For expedited approval, please contact your supervisor directly.",
   },
   Baby: {
+    editCarer: "Edit Carer",
+    editAddress: "Edit Address",
+    editBabyTitle: "Edit Baby Information",
+    selectBaby: "Select Baby",
     babyDetails: "Baby Details",
     id: "ID",
     notAvailable: "None",

@@ -1,12 +1,12 @@
-import React from "react";
-import { useSelector } from "react-redux";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
-  createStackNavigator,
   CardStyleInterpolators,
+  createStackNavigator,
 } from "@react-navigation/stack";
+import React from "react";
+import { useSelector } from "react-redux";
 
-import { TabBarIcon, NavigatorHeader } from "../components";
+import { NavigatorHeader, TabBarIcon } from "../components";
 import { px2dp, styled } from "../utils/styled";
 
 import Babies from "../screens/Babies";
@@ -14,24 +14,24 @@ import Baby from "../screens/Baby";
 import CreateBabyStep1 from "../screens/BabyForm/CreateBabyStep1";
 import CreateBabyStep2 from "../screens/BabyForm/CreateBabyStep2";
 import CreateBabyStep3 from "../screens/BabyForm/CreateBabyStep3";
-import EditCarer from "../screens/BabyForm/EditCarer";
 import EditBaby from "../screens/BabyForm/EditBaby";
+import EditCarer from "../screens/BabyForm/EditCarer";
 
+import { useTranslation } from "react-i18next";
+import EditAddress from "../screens/BabyForm/EditAddress";
 import ChangePassword from "../screens/ChangePassword";
+import CreateVisit from "../screens/CreateVisit";
 import Home from "../screens/Home";
+import LessonIntro from "../screens/LessonIntro";
+import LessonModules from "../screens/LessonModules";
 import Me from "../screens/Me";
+import Module from "../screens/Module";
+import PickBaby from "../screens/PickBaby";
+import PickVisitTime from "../screens/PickVisitTime";
+import Question from "../screens/Question";
 import SignIn from "../screens/SignIn";
 import Visit from "../screens/Visit";
 import Visits from "../screens/Visits";
-import CreateVisit from "../screens/CreateVisit";
-import PickBaby from "../screens/PickBaby";
-import PickVisitTime from "../screens/PickVisitTime";
-import LessonIntro from "../screens/LessonIntro";
-import LessonModules from "../screens/LessonModules";
-import Module from "../screens/Module";
-import Question from "../screens/Question";
-import EditAddress from "../screens/BabyForm/EditAddress";
-import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -43,12 +43,12 @@ export default function StackNavigator() {
   const screens = [
     {
       name: "PickBaby",
-      title: "选择宝宝",
+      title: t("Baby:selectBaby"),
       component: PickBaby,
     },
     {
       name: "PickVisitTime",
-      title: "选择家访日期",
+      title: t("Visits:selectVisitDate"),
       component: PickVisitTime,
     },
     {
@@ -58,7 +58,7 @@ export default function StackNavigator() {
     },
     {
       name: "CreateVisit",
-      title: "新建家访",
+      title: t("Visits:scheduleVisit"),
       component: CreateVisit,
     },
     {
@@ -98,22 +98,22 @@ export default function StackNavigator() {
     },
     {
       name: "EditCarer",
-      title: "编辑看护人",
+      title: t("Baby:editCarer"),
       component: EditCarer,
     },
     {
       name: "EditBaby",
-      title: "修改宝宝信息",
+      title: t("Baby:editBabyTitle"),
       component: EditBaby,
     },
     {
       name: "EditAddress",
-      title: "修改地址信息",
+      title: t("Baby:editAddress"),
       component: EditAddress,
     },
     {
       name: "CreateCarer",
-      title: "添加看护人",
+      title: t("CreateBabyStep2:addCarer"),
       component: EditCarer,
     },
     {
