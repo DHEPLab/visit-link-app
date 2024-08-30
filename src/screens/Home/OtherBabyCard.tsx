@@ -3,7 +3,6 @@ import StaticField from "@/components/elements/StaticField";
 import prompt from "@/components/modal/prompt";
 import { Colors } from "@/constants";
 import { Visit } from "@/models";
-import Http from "@/utils/http";
 import http from "@/utils/http";
 import VisitUtils from "@/utils/visit";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,13 +21,14 @@ export const OtherBabyCard: React.FC<OtherBabyCardProps> = ({
   reload,
 }) => {
   const dispatch = useDispatch();
-  const [visits, setVisits] = useState<Visit[]>([]);
+  const [todoVisits, setTodoVisits] = useState<Visit[]>([]);
   const { t } = useTranslation("Visits");
   const fetchAllVisitOfTodo = () => {
     http.get("/api/visits/all/todo").then((res) => {
-      setVisits(res);
+      setTodoVisits(res);
     });
   };
+
   useEffect(() => {
     fetchAllVisitOfTodo();
   }, [reload]);
@@ -36,25 +36,28 @@ export const OtherBabyCard: React.FC<OtherBabyCardProps> = ({
   const onCancelHomeVisit = (id: string) => {
     prompt(t("cancelVisitReason"), {
       onOk: async (value: string) => {
-        await Http.delete(`/api/visits/${id}?deleteReason=${value}`).then(() =>
-          setVisits(visits.filter((v) => v.id !== id)),
-        );
+        await http
+          .delete(`/api/visits/${id}?deleteReason=${value}`)
+          .then(() => setTodoVisits(todoVisits.filter((v) => v.id !== id)));
       },
       dispatch,
     });
   };
-  const realVisits = visits.filter((v) => v.id !== excludeVisitId);
-  return realVisits && realVisits.length > 0 ? (
+
+  const showTodoVisits =
+    todoVisits.filter((v) => v.id !== excludeVisitId).length > 0;
+
+  return showTodoVisits ? (
     <View style={styles.container}>
       <LinearGradient style={styles.titleBg} {...Colors.linearGradient}>
-        <Text style={styles.title}>即将到来的家访</Text>
+        <Text style={styles.title}>{t("upComingVisit")}</Text>
       </LinearGradient>
       <View style={styles.itemContainer}>
         <FlatList
-          data={visits}
+          data={todoVisits}
           keyExtractor={(visit) => visit.id + ""}
-          renderItem={({ item: visit }) => {
-            const { visitTime, baby } = visit as Visit;
+          renderItem={({ item: visit }: { item: Visit }) => {
+            const { visitTime, baby } = visit;
             return (
               <View style={styles.item}>
                 <View style={styles.itemHead}>

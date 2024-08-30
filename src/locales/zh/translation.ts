@@ -313,6 +313,7 @@ export default {
     remarkTitle: "备注",
     expiredReason: "过期原因",
     undoneReason: "未完成原因",
+    upComingVisit: "即将到来的家访",
   },
   BabyItem: {
     primaryCaregiver: "主要看护人",

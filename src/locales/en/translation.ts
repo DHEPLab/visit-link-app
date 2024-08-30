@@ -326,6 +326,7 @@ export default {
     remarkTitle: "Comments",
     expiredReason: "Expired Reason",
     undoneReason: "Incomplete Reason",
+    upComingVisit: "Upcoming Visit",
   },
   BabyItem: {
     primaryCaregiver: "Primary Caregiver",
