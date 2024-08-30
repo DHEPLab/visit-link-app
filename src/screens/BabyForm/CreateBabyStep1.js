@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 
 import { useBoolState } from "../../utils";
 import { styled } from "../../utils/styled";
-import { CreateBabyNavigator, BabyForm, Modal } from "../../components";
+import BabyForm from "./BabyForm";
+import { CreateBabyNavigator, Modal } from "../../components";
 
 export default function CreateBabyStep1({ navigation }) {
   const { t } = useTranslation("CreateBabyStep1");

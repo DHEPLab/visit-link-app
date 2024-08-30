@@ -1,6 +1,5 @@
 import React from "react";
 import { ToastAndroid } from "react-native";
-import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { styled } from "../../utils/styled";
@@ -19,22 +18,14 @@ import { FamilyTies } from "../../constants/enums";
 import http from "../../utils/http";
 import confirm from "../../components/modal/confirm";
 import { useDispatch } from "react-redux";
+import { carerSchema } from "./schema/carerSchema";
 
 export default function CreateCarer({ navigation, route }) {
   const { t } = useTranslation("CreateCarer");
   const { params } = route;
   const dispatch = useDispatch();
 
-  const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .matches(/^[\u4e00-\u9fa5]{2,10}$/, t("nameValidation"))
-      .required(t("required")),
-    familyTies: Yup.string().required(t("required")),
-    phone: Yup.string()
-      .matches(/^1[0-9]{10}$/, t("phoneValidation"))
-      .required(t("required")),
-    wechat: Yup.string().nullable(true).max(20, t("wechatValidation")),
-  });
+  const validationSchema = carerSchema(t);
 
   // The same baby cannot choose caregivers who have the same family ties
   function filteredFamilyTies(familyTies) {
