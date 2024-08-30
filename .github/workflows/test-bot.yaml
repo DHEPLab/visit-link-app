@@ -22,7 +22,7 @@ jobs:
           APPLICATION_ARCHIVE_URL: ${{ steps.build-app.outputs.APPLICATION_ARCHIVE_URL }}
         run: |
           sudo apt-get install -y qrencode
-          qrencode -o qrcode.png "${APPLICATION_ARCHIVE_URL}"
+          qrencode -o qrcode.png "$APPLICATION_ARCHIVE_URL"
           BASE64_QR=$(base64 -w 0 qrcode.png)
           MD5_QR=$(md5sum qrcode.png | awk '{ print $1 }')
           
