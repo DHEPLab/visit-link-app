@@ -1,5 +1,4 @@
 import React from "react";
-import * as Yup from "yup";
 import moment from "moment";
 import { Formik } from "formik";
 import {
@@ -7,17 +6,18 @@ import {
   BabyStage,
   FeedingPattern,
   AssistedFood,
-} from "../constants/enums";
+} from "@/constants/enums";
 
-import Card from "./elements/Card";
-import Form from "./elements/Form";
-import FormItem from "./elements/FormItem";
-import Input from "./elements/Input";
-import SolidRadios from "./elements/SolidRadios";
-import DatePicker from "./elements/DatePicker";
-import Button from "./elements/Button";
-import LargeButtonContainer from "./LargeButtonContainer";
+import Card from "@/components/elements/Card";
+import Form from "@/components/elements/Form";
+import FormItem from "@/components/elements/FormItem";
+import Input from "@/components/elements/Input";
+import SolidRadios from "@/components/elements/SolidRadios";
+import DatePicker from "@/components/elements/DatePicker";
+import Button from "@/components/elements/Button";
+import LargeButtonContainer from "@/components/LargeButtonContainer";
 import { useTranslation } from "react-i18next";
+import { babySchema } from "./schema/babySchema";
 
 export default function BabyForm({
   onSubmit,
@@ -25,13 +25,7 @@ export default function BabyForm({
   initialValues = {},
 }) {
   const { t } = useTranslation("BabyForm");
-  const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .matches(/^[\u4e00-\u9fa5]{2,10}$/, t("nameValidation"))
-      .required(t("required")),
-    gender: Yup.string().required(t("required")),
-    stage: Yup.string().required(t("required")),
-  });
+  const validationSchema = babySchema(t);
 
   function validate(values) {
     const errors = {};
@@ -55,6 +49,7 @@ export default function BabyForm({
     }
     return BabyStage;
   }
+
   return (
     <Formik
       initialValues={initialValues}

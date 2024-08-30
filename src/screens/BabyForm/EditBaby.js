@@ -1,8 +1,8 @@
 import React from "react";
 
 import http from "../../utils/http";
-import { BabyForm } from "../../components";
-import { styled } from "../../utils/styled";
+import BabyForm from "./BabyForm";
+import { styled } from "@/utils/styled";
 import storage from "../../cache/storage";
 import confirm from "../../components/modal/confirm";
 import { useDispatch } from "react-redux";
