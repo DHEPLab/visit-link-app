@@ -36,4 +36,30 @@ jobs:
         run: yarn install
 
       - name: 🚀Build app
-        run: eas build --profile development --platform android --non-interactive
+        id: build-app
+        run: |
+          eas build --profile development --platform android --non-interactive --json > eas-build.json
+          
+          APPLICATION_ARCHIVE_URL=$(jq -r '.[0].artifacts.applicationArchiveUrl' eas-build.json)
+          echo "Application Archive URL: $APPLICATION_ARCHIVE_URL"
+          echo "APPLICATION_ARCHIVE_URL=$APPLICATION_ARCHIVE_URL" >> "$GITHUB_OUTPUT"
+
+      - name: 🎆Generate QR Code
+        id: generate-qrcode
+        run: |
+          sudo apt-get install -y qrencode
+          qrencode -o qrcode.png "${{steps.build-app.outputs.APPLICATION_ARCHIVE_URL}}"
+          BASE64_QR=$(base64 -w 0 qrcode.png)
+          MD5_QR=$(md5sum qrcode.png | awk '{ print $1 }')
+
+          echo "BASE64_QR=$BASE64_QR" >> "$GITHUB_OUTPUT"
+          echo "MD5_QR=$MD5_QR" >> "$GITHUB_OUTPUT"
+
+      - name: 🤖IM Notification
+        run: |
+          curl -n "${{secrets.WECOM_WEBHOOK}}" \
+            --header 'Content-Type: application/json' \
+            --data '{"msgtype":"text","text": {"content":"Visit Link App Build Success : ${{steps.build-app.outputs.APPLICATION_ARCHIVE_URL}}"}}'
+          curl -n "${{secrets.WECOM_WEBHOOK}}" \
+            --header 'Content-Type: application/json' \
+            --data '{"msgtype":"image","image":{"base64":"${{steps.generate-qrcode.outputs.BASE64_QR}}","md5":"${{steps.generate-qrcode.outputs.MD5_QR}}"}}'
