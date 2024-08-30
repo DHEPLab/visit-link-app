@@ -18,3 +18,4 @@ dist.*/
 *.tar.gz
 /coverage/
 .idea
+eas-build.json
