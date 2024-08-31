@@ -36,7 +36,7 @@ export default function QrCodeScanner({ navigation }) {
       {permission && permission.granted && scanVisible ? (
         <Modal visible={true} onRequestClose={scanVisible ? closeScan : null}>
           <CameraView
-            onBarCodeScanned={scanVisible ? onBarCodeScanned : undefined}
+            onBarcodeScanned={scanVisible ? onBarCodeScanned : undefined}
             barcodeScannerSettings={{
               barcodeTypes: ["qr"],
             }}
