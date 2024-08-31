@@ -29,7 +29,7 @@ export default {
     oldPasswordIncorrect: "Old password is incorrect",
     passwordChangeWarning:
       "Please remember the changed account password, which will not be displayed after submission.",
-    passwordChangeSuccess: "Password Reset successfully. Please log in again.",
+    passwordChangeSuccess: "Password Reset Successfully. Please log in again.",
     oldPassword: "Old Password",
     newPassword: "New Password",
     confirmPassword: "Confirm New Password",
