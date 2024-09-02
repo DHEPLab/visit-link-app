@@ -18,10 +18,11 @@ import Button from "@/components/elements/Button";
 import LargeButtonContainer from "@/components/LargeButtonContainer";
 import { useTranslation } from "react-i18next";
 import { babySchema } from "./schema/babySchema";
+import i18next from "i18next";
 
 export default function BabyForm({
   onSubmit,
-  submitBtnText = "提交",
+  submitBtnText = i18next.t("Common:submit"),
   initialValues = {},
 }) {
   const { t } = useTranslation("BabyForm");

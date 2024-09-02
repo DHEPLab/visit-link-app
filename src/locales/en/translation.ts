@@ -285,10 +285,10 @@ export default {
       "The time you selected overlaps with a nearby home visit schedule. This may lead to a scheduling conflict. Are you sure you want to proceed with this time selection?",
 
     notStartMessage: "Class cannot be started because the time has not arrived",
-    continueLesson: "Continue Lesson",
-    startLesson: "Start Lesson",
+    continueLesson: "Continue Session",
+    startLesson: "Start Session",
     cancelVisit: "Cancel Visit",
-    canNotStartLessonMessage: "Can't start Lesson",
+    canNotStartLessonMessage: "Can't start Session",
     confirmStartLessonMessage:
       "Are you sure you want to start this home visit now?",
     visitSchedule: "The schedule for this visit is",

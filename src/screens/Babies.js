@@ -54,6 +54,7 @@ export default function Babies({ navigation }) {
       http
         .get("/api/babies", search)
         .then((data) => {
+          console.log(data);
           setTotalPages(data.totalPages);
           setContents((contents) => {
             const newValue = [...contents];
@@ -84,7 +85,7 @@ export default function Babies({ navigation }) {
 
   useEffect(() => {
     load();
-  }, [search.page, search.force, isConnected]);
+  }, [search.page, search.force, search.sort, isConnected]);
 
   function backupBabyAndCaregivers() {
     http
