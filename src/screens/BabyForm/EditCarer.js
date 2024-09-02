@@ -48,12 +48,19 @@ export default function CreateCarer({ navigation, route }) {
     const carerIndex = params?.carerIndex == null ? -1 : params?.carerIndex;
 
     if (!params.babyId) {
-      navigation.navigate(params.from, { carer, carerIndex });
+      navigation.navigate(params.from, {
+        ...(params.prevParams || {}),
+        carer,
+        carerIndex,
+      });
       return;
     }
     if (carerIndex === -1) {
       await http.post(`/api/babies/${params.babyId}/carers`, carer);
-      navigation.navigate(params.from, { success: Math.random() });
+      navigation.navigate(params.from, {
+        ...(params.prevParams || {}),
+        success: Math.random(),
+      });
     } else {
       confirm(t("confirmEdit"), {
         onOk: () => {

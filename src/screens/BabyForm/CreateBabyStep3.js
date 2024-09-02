@@ -12,6 +12,7 @@ export default function CreateBabyStep3({ navigation, route }) {
   const { t } = useTranslation("CreateBabyStep3");
   const { params } = route;
   const { baby, carers } = params;
+  console.log(params);
   const [visible, openMessage, closeMessage] = useBoolState();
   const [submitting, startSubmit, endSubmit] = useBoolState();
   const { isConnected } = useSelector((state) => state.net);

@@ -75,6 +75,8 @@ export default function CreateBabyStep2({ navigation, route }) {
     setCarers(keepMasterCarerUnique(carers, index));
   }
 
+  console.log("baby", baby);
+
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1
@@ -101,6 +103,8 @@ export default function CreateBabyStep2({ navigation, route }) {
                 navigation.navigate("CreateCarer", {
                   from: "CreateBabyStep2",
                   filterFamilyTies: familyTies(carers),
+                  // fix upgrade: state lost.
+                  prevParams: params,
                 })
               }
             />

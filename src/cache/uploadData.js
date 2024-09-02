@@ -10,6 +10,7 @@ export async function uploadOfflineBabies() {
 }
 
 async function createBaby(babyInfo) {
+  console.log(babyInfo);
   await http.post("/api/babies", { ...babyInfo });
 }
 

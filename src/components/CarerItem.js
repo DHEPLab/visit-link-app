@@ -49,7 +49,7 @@ export default function CarerItem({
       <StaticForm>
         <StaticField label={t("caregiverName")}>{value.name}</StaticField>
         <StaticField label={t("relationship")}>
-          {t(`FamilyTies.${value.familyTies}`)}
+          {FamilyTies[value.familyTies]}
         </StaticField>
         <StaticField label={t("phoneNumber")}>{value.phone}</StaticField>
         <StaticField label={t("wechatAccount")}>{value.wechat}</StaticField>
@@ -65,7 +65,7 @@ const Container = styled.View`
   ${({ noBorder }) =>
     noBorder &&
     `
-    border-bottom-width: 0; 
+    border-bottom-width: 0;
   `}
 `;
 
