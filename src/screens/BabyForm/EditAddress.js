@@ -4,6 +4,7 @@ import http from "../../utils/http";
 import { AddressForm } from "../../components";
 import confirm from "../../components/modal/confirm";
 import { useDispatch } from "react-redux";
+import i18next from "i18next";
 
 export default function EditAddress({ navigation, route }) {
   const { params } = route;
@@ -11,7 +12,7 @@ export default function EditAddress({ navigation, route }) {
 
   async function onSubmit(values) {
     if (!params.id) return;
-    confirm("确认修改宝宝信息吗？", {
+    confirm(i18next.t("CreateCarer:confirmEdit"), {
       onOk: async () => {
         await http.put(`/api/babies/${params.id}/address`, values);
         navigation.navigate(params.from, {

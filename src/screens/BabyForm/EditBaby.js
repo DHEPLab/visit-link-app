@@ -6,19 +6,20 @@ import { styled } from "@/utils/styled";
 import storage from "../../cache/storage";
 import confirm from "../../components/modal/confirm";
 import { useDispatch } from "react-redux";
+import i18next from "i18next";
 
 export default function EditBaby({ navigation, route }) {
   const { params } = route;
   const dispatch = useDispatch();
-
   function onSubmit(values) {
     if (!params.id) return;
-    confirm("确认修改宝宝信息吗？", {
+    confirm(i18next.t("CreateCarer:confirmEdit"), {
       onOk: async () => {
         await http.put(`/api/babies/${params.id}`, values);
         clearNotSubmitVisit();
         navigation.navigate(params.from, {
           success: Math.random(),
+          ...params,
         });
       },
       dispatch,
