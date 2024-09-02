@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, Modal } from "react-native";
-import { Video } from "expo-av";
+import { Video, ResizeMode, VideoFullscreenUpdate } from "expo-av";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ImageViewer from "react-native-image-zoom-viewer";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -40,19 +40,17 @@ function VideoMedia({ uri }) {
       volume={1.0}
       isMuted={false}
       useNativeControls
-      resizeMode={
-        inFullscreen ? Video.RESIZE_MODE_CONTAIN : Video.RESIZE_MODE_COVER
-      }
+      resizeMode={inFullscreen ? ResizeMode.CONTAIN : ResizeMode.COVER}
       style={{ width, height }}
       onFullscreenUpdate={async ({ fullscreenUpdate }) => {
         switch (fullscreenUpdate) {
-          case Video.FULLSCREEN_UPDATE_PLAYER_DID_PRESENT:
+          case VideoFullscreenUpdate.PLAYER_DID_PRESENT:
             switchToLandscape();
             await ScreenOrientation.lockAsync(
               ScreenOrientation.OrientationLock.LANDSCAPE_LEFT,
             );
             break;
-          case Video.FULLSCREEN_UPDATE_PLAYER_DID_DISMISS:
+          case VideoFullscreenUpdate.PLAYER_DID_DISMISS:
             switchToPortrait();
             await ScreenOrientation.lockAsync(
               ScreenOrientation.OrientationLock.PORTRAIT_UP,
