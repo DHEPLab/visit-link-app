@@ -269,7 +269,7 @@ export default function Babies({ navigation }) {
           )
         }
         ListFooterComponent={
-          <View style={{ height: 80, backgroundColor: "red", width: "100%" }}>
+          <View style={{ height: 350, width: "100%" }}>
             {!refreshing && contents.length > 0 && (
               <ListFooter loading={loading} />
             )}
