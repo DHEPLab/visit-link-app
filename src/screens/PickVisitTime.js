@@ -54,7 +54,7 @@ export default function PickVisitTime({ navigation, route }) {
   function submit() {
     closeConflict();
     const visitTime = Visit.mergeDateAndTime(date, time);
-    navigation.navigate(from, { visitTime });
+    navigation.navigate(from, { visitTime, ...(params.prevParams || {}) });
   }
 
   function onPressTime() {
@@ -110,7 +110,7 @@ export default function PickVisitTime({ navigation, route }) {
       <TouchableOpacity onPress={onPressTime} activeOpacity={0.8}>
         <CardField>
           <StaticForm>
-            <StaticField label={t("Visits:selectVisitDate")} labelWidth={60}>
+            <StaticField label={t("Visits:selectVisitTime")} labelWidth={60}>
               {isZH ? Visit.formatDateCN(date) : Visit.formatDateEN(date)}
             </StaticField>
           </StaticForm>

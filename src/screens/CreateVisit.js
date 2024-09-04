@@ -92,6 +92,7 @@ export default function CreateVisit({ navigation, route }) {
     navigation.navigate("PickVisitTime", {
       visitTime: Visit.formatDateTime(visitTime),
       range,
+      prevParams: params,
     });
   }
 
@@ -142,6 +143,7 @@ export default function CreateVisit({ navigation, route }) {
                 onPress={() =>
                   navigation.navigate("PickBaby", {
                     visitDate: visitTime && Visit.formatDate(visitTime),
+                    prevParams: params,
                   })
                 }
               />

@@ -17,7 +17,10 @@ export default function PickBaby({ navigation, route }) {
   );
 
   function pick(baby) {
-    navigation.navigate("CreateVisit", { baby });
+    navigation.navigate("CreateVisit", {
+      baby,
+      ...(route.params.prevParams || {}),
+    });
   }
 
   const { t } = useTranslation();

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, TextInput } from "react-native";
+import { FlatList, RefreshControl, TextInput, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import storage from "../cache/storage";
@@ -269,7 +269,11 @@ export default function Babies({ navigation }) {
           )
         }
         ListFooterComponent={
-          !refreshing && contents.length > 0 && <ListFooter loading={loading} />
+          <View style={{ height: 80, backgroundColor: "red", width: "100%" }}>
+            {!refreshing && contents.length > 0 && (
+              <ListFooter loading={loading} />
+            )}
+          </View>
         }
         refreshControl={
           <RefreshControl

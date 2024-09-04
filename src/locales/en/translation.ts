@@ -87,7 +87,7 @@ export default {
   },
   ApproveStatus: {
     approved: "Approved",
-    pending: "Pending",
+    pending: "Unreviewed",
   },
   Common: {
     back: "Back",
@@ -232,7 +232,7 @@ export default {
     id: "ID",
     notAvailable: "None",
     babyDueDateArrived: "The baby's due date has arrived",
-    babyAge: "{{stage}} {{days}} days",
+    babyAge: "{{stage}} {{days}} day(s)",
     feedingStatus: "Feeding Method",
     editInfo: "Edit",
     visitRecords: "Visit Records",
@@ -279,7 +279,7 @@ export default {
     cancel: "Cancel",
   },
   CreateBabyNavigator: {
-    addBaby: "Add Baby",
+    addBaby: "New Baby",
     babyInfo: "Baby Info",
     caregiverInfo: "Caregiver Info",
     addressInfo: "Address Info",
@@ -340,7 +340,7 @@ export default {
     edit: "Edit",
     unavailableMessage:
       "Please update the course resources on the homepage first",
-    inputRemark: "Visit Incomplete Reason",
+    inputRemark: "Visit Expired Reason",
     babyName: "Baby Name",
     lessonName: " Session Name",
     visitTime: "Visit Time",
