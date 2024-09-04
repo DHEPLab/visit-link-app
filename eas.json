@@ -5,7 +5,7 @@
   "build": {
     "production": {
       "env": {
-        "EXPO_PUBLIC_APP_NAME": "Dev Healthy Future",
+        "EXPO_PUBLIC_APP_NAME": "Healthy Future",
         "EXPO_PUBLIC_APP_VERSION": "4.0.0",
         "EXPO_PUBLIC_API_URL": "http://visit-link-alb-dev-1291519249.us-east-1.elb.amazonaws.com",
         "EXPO_PUBLIC_ANDROID_PACKAGE": "edu.stanford.fsi.reap.app"
@@ -17,7 +17,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_APP_NAME": "Dev Healthy Future(Preview)",
+        "EXPO_PUBLIC_APP_NAME": "Healthy Future(Preview)",
         "EXPO_PUBLIC_APP_VERSION": "4.0.0-preview",
         "EXPO_PUBLIC_API_URL": "http://visit-link-alb-dev-1291519249.us-east-1.elb.amazonaws.com",
         "EXPO_PUBLIC_ANDROID_PACKAGE": "edu.stanford.fsi.reap.apppreview"
@@ -29,7 +29,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_APP_NAME": "Dev Healthy Future(Dev)",
+        "EXPO_PUBLIC_APP_NAME": "Healthy Future(Dev)",
         "EXPO_PUBLIC_APP_VERSION": "4.0.0-dev",
         "EXPO_PUBLIC_API_URL": "http://visit-link-alb-dev-1291519249.us-east-1.elb.amazonaws.com",
         "EXPO_PUBLIC_ANDROID_PACKAGE": "edu.stanford.fsi.reap.appdev"

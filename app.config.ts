@@ -45,6 +45,9 @@ export default (context: ConfigContext): ExpoConfig => {
         {
           android: {
             usesCleartextTraffic: true,
+            enableProguardInReleaseBuilds: true,
+            enableShrinkResourcesInReleaseBuilds: true,
+            useLegacyPackaging: true,
           },
         },
       ],
