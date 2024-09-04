@@ -75,8 +75,6 @@ export default function CreateBabyStep2({ navigation, route }) {
     setCarers(keepMasterCarerUnique(carers, index));
   }
 
-  console.log("baby", baby);
-
   useEffect(() => {
     if (!route.params.carer) return;
     route.params.carerIndex === -1

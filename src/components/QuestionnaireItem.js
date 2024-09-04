@@ -3,12 +3,18 @@ import { TouchableOpacity } from "react-native";
 
 import Status from "./Status";
 import { styled } from "../utils/styled";
+import { useTranslation } from "react-i18next";
 
 export default function QuestionnaireItem({ name, onPress, disabled }) {
+  const { t } = useTranslation();
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={onPress} disabled={disabled}>
       <Container opacity={disabled ? 0.4 : 1}>
-        <Status title="问卷" borderColor="#FFEDE2" color="#FF794F" />
+        <Status
+          title={t("Component:question")}
+          borderColor="#FFEDE2"
+          color="#FF794F"
+        />
         <Name>{name}</Name>
       </Container>
     </TouchableOpacity>

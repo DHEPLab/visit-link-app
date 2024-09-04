@@ -42,8 +42,6 @@ export default function Baby({ navigation, route }) {
   const { params } = route;
   const [index, setIndex] = useState(params?.tab === "family" ? 1 : 0);
 
-  // console.log(params, "params");
-
   const [started, setStarted] = useState(false);
   const [baby, refreshBaby] = useFetch(`/api/babies/${params.id}`, {}, params);
   const [carers, refreshCarers] = useFetch(

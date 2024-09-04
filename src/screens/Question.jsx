@@ -12,6 +12,8 @@ import { Button, Input } from "../components";
 import RadioGroup from "../components/elements/RadioGroup";
 import CheckBoxGroup from "../components/elements/CheckBoxGroup";
 import storage from "../cache/storage";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function QuestionScreen({ navigation, route }) {
   const { params } = route;
@@ -20,9 +22,9 @@ export default function QuestionScreen({ navigation, route }) {
     useBoolState();
 
   function onSubmit(values) {
-    const resultList = Object.values(values).map((answer: any, i) => {
+    const resultList = Object.values(values).map((answer, i) => {
       const type = data.questions[i].type;
-      const result: any = {
+      const result = {
         titleNo: i + 1,
         name: data.questions[i].value?.title.trim(),
       };
@@ -43,16 +45,22 @@ export default function QuestionScreen({ navigation, route }) {
   }
 
   const QuestionTypeEnum = {
-    Text: "填空",
-    Checkbox: "多选",
-    Radio: "单选",
+    Text: i18next.t("Enum:QuestionType.Text"),
+    Checkbox: i18next.t("Enum:QuestionType.Checkbox"),
+    Radio: i18next.t("Enum:QuestionType.Radio"),
   };
+
+  const { t } = useTranslation();
 
   return (
     <>
       <Header {...Colors.linearGradient}>
         <Escape>
-          <Button type="text" title="退出问卷" onPress={navigation.goBack} />
+          <Button
+            type="text"
+            title={t("Question:exit")}
+            onPress={navigation.goBack}
+          />
         </Escape>
         <Name>{data.name}</Name>
       </Header>
@@ -61,7 +69,7 @@ export default function QuestionScreen({ navigation, route }) {
           <StyledScrollView>
             <ModuleCard>
               {data.questions &&
-                data.questions.map((question: any, index: number) => (
+                data.questions.map((question, index) => (
                   <View key={index}>
                     <QuestionTitle>
                       <QuestionType>
@@ -74,11 +82,9 @@ export default function QuestionScreen({ navigation, route }) {
                         <InputFormItem
                           name={`${index + 1}`}
                           noBorder
-                          validate={(value: string) =>
-                            value ? "" : "Required！"
-                          }
+                          validate={(value) => (value ? "" : "Required！")}
                         >
-                          <Input placeholder="请输入内容" />
+                          <Input placeholder={t("Form:pleaseInput")} />
                         </InputFormItem>
                       </QuestionInputCard>
                     ) : (
@@ -86,9 +92,7 @@ export default function QuestionScreen({ navigation, route }) {
                         <FormItem
                           name={`${index + 1}`}
                           noBorder
-                          validate={(value: string) =>
-                            value ? "" : "Required！"
-                          }
+                          validate={(value) => (value ? "" : "Required！")}
                         >
                           {question.type === "Radio" ? (
                             <RadioGroup options={question?.value?.options} />
@@ -104,7 +108,7 @@ export default function QuestionScreen({ navigation, route }) {
             <ButtonContainer>
               <Button
                 size="large"
-                title="完成"
+                title={t("Question:complete")}
                 onPress={() => {
                   validateForm(values)
                     .then((res) => {
@@ -127,10 +131,10 @@ export default function QuestionScreen({ navigation, route }) {
       <Message
         error
         visible={errorMessageVisble}
-        buttonText="知道了"
+        buttonText={t("App:understood")}
         onButtonPress={closeErrorMessage}
-        title="无法保存问卷"
-        content="有未完成题目，请全部作答"
+        title={t("Question:unsaved")}
+        content={t("Session:quizTips")}
       />
     </>
   );

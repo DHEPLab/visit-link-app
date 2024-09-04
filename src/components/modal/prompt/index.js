@@ -4,6 +4,7 @@ import { closePromptModal, setPromptModalValue } from "@/actions";
 import { Modal } from "../../index";
 import Input from "../../elements/Input";
 import { ToastAndroid } from "react-native";
+import i18next from "i18next";
 
 /**
  * Displays a prompt modal with the given title and options.
@@ -38,9 +39,9 @@ export const PromptModal = () => {
   const confirmModal = useSelector((state) => state.modal.prompt);
   const dispatch = useDispatch();
   const {
-    title = "提示信息",
-    okText = "确认",
-    cancelText = "取消",
+    title = i18next.t("ConfirmModal:defaultTitle"),
+    okText = i18next.t("ConfirmModal:confirm"),
+    cancelText = i18next.t("ConfirmModal:cancel"),
     onOk,
     visible,
     defaultValue,
@@ -60,7 +61,7 @@ export const PromptModal = () => {
           value={value}
           onChangeText={setValue}
           border
-          placeholder="请输入"
+          placeholder={i18next.t("Form:pleaseInput")}
         />
       }
       okText={okText}
@@ -68,7 +69,10 @@ export const PromptModal = () => {
       onCancel={closeModal}
       onOk={() => {
         if (required && !value) {
-          ToastAndroid.show("请填写" + title, ToastAndroid.LONG);
+          ToastAndroid.show(
+            i18next.t("Form:pleaseInput") + title,
+            ToastAndroid.LONG,
+          );
           return;
         }
         const result = onOk && onOk(value);

@@ -1,4 +1,11 @@
 export default {
+  Component: {
+    question: "Questions",
+    locationMessage:
+      "Location permission is not turned on, and the class cannot be started",
+    waitingSubmit: "To be submitted",
+    currentSelection: "Currents election :",
+  },
   Navigator: {
     home: "Home",
     babyList: "Babies",
@@ -48,6 +55,10 @@ export default {
     submitFailed: "Submission Failed",
     networkError: "Internet error, please try again later.",
     understood: "OK",
+    offlineMessage: "Currently in offline mode",
+    formValidate: "Form validate failed",
+    locationServiceMessage:
+      "Unable to get location information since phone location services are not enabled.",
   },
   Babies: {
     searchPlaceholder: "Search by baby name",
@@ -88,6 +99,15 @@ export default {
     confirm: "Confirm",
   },
   enum: {
+    QuestionType: {
+      Text: "Fill in the blanks",
+      Checkbox: "Single choice",
+      Radio: "multiple choice",
+    },
+    ModuleStatus: {
+      DONE: "Completed",
+      UNDONE: "Scheduled",
+    },
     BabyStage: {
       EDC: "EDC",
       BIRTH: "Born",
@@ -177,6 +197,7 @@ export default {
     caregiver: "Caregiver",
     primaryCaregiver: "Primary Caregiver",
     realName: "Name",
+    realNamePlaceholder: "Please enter name",
     enterName: "Please enter 2-10 characters",
     relationship: "Relatives",
     phoneNumber: "Phone",
@@ -268,6 +289,7 @@ export default {
   },
   Form: {
     pleaseInput: "Please enter content",
+    pleaseSelect: "Please select",
   },
   Visits: {
     visitArrangement: "Visit Arrangement",
@@ -327,6 +349,28 @@ export default {
     expiredReason: "Expired Reason",
     undoneReason: "Incomplete Reason",
     upComingVisit: "Upcoming Visit",
+  },
+  Session: {
+    next: "Next",
+    locationPermissionMessage:
+      "Unable to start session since phone location services permission is not enabled",
+    locationClosedMessage:
+      "Unable to start session since phone location services are not enabled.",
+    completeTip: "Please finish following \n module(s):",
+    completeVisit: "Complete visit",
+    unableToCompleteVisit: "unable to complete visit",
+    quizTips: "Please make sure all questions are answered.",
+  },
+  Question: {
+    exit: "Exit Survey",
+    complete: "Complete",
+    unsaved: "Unable to submit survey",
+  },
+  Module: {
+    exit: "Exit Module",
+    complete: "Complete",
+    next: "Next",
+    previous: "Previous",
   },
   BabyItem: {
     primaryCaregiver: "Primary Caregiver",

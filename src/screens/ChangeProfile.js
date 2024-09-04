@@ -1,23 +1,25 @@
 import React from "react";
 import { styled } from "../utils/styled";
 import { Form, FormItem, Input, Button } from "../components";
+import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function ChangeProfile() {
+  const { t } = useTranslation();
   return (
     <Container>
       <Form>
-        <FormItem label="真实姓名">
-          <Input placeholder="请输入您的真实姓名" />
+        <FormItem label={t("CreateCarer:realName")}>
+          <Input placeholder={t("CreateCarer:realNamePlaceholder")} />
         </FormItem>
-        <FormItem label="联系电话">
-          <Input placeholder="请输入 11 位手机号码" />
+        <FormItem label={t("CreateCarer:phoneNumber")}>
+          <Input placeholder={t("CreateCarer:enterPhone")} />
         </FormItem>
-        <FormItem label="所在区域" last>
-          <Input placeholder="请选择省份、城市、区域" />
+        <FormItem label={t("AddressForm:area")} last>
+          <Input placeholder={t("AddressForm:selectArea")} />
         </FormItem>
       </Form>
       <ButtonContainer>
-        <Button size="large" title="提交" />
+        <Button size="large" title={t("AddressForm:submit")} />
       </ButtonContainer>
     </Container>
   );

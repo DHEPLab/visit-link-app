@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, ToastAndroid } from "react-native";
+import { ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSelector } from "react-redux";
 import * as WebBrowser from "expo-web-browser";
@@ -19,9 +19,10 @@ import {
 } from "../components";
 import QuestionnaireItem from "../components/QuestionnaireItem";
 import { uploadVisitLocation } from "../utils/visit";
-import * as Location from "expo-location";
+import { useTranslation } from "react-i18next";
 
 export default function LessonModules({ navigation, route }) {
+  const { t } = useTranslation();
   const { params } = route;
   const [lesson] = Storage.useLesson(params?.id);
   const [babyId, setBabyId] = useState();
@@ -32,10 +33,6 @@ export default function LessonModules({ navigation, route }) {
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] =
     useBoolState();
   useEffect(() => {
-    /*
-          使用原始 originModuleId, 因为 moduleId 会在跳转到其他模块时发生改变；
-          正确监听 originModuleId 的改变以完成当前模块
-        */
     if (!params.preview && params.originModuleId && params.finished) {
       Storage.setNextModule(nextModule + 1);
       reloadNextModule();
@@ -122,7 +119,7 @@ export default function LessonModules({ navigation, route }) {
           source={require("../assets/images/curriculum-bg.png")}
         />
         <GhostNavigatorHeader navigation={navigation} />
-        <Hint>你需要在本次家访中完成{"\n"}如下全部模块：</Hint>
+        <Hint>{t("Session:completeTip")}</Hint>
       </Header>
       <StyledScrollView>
         {lesson.modules?.map((module, index) => (
@@ -150,7 +147,7 @@ export default function LessonModules({ navigation, route }) {
         <ButtonContainer>
           <Button
             size="large"
-            title="完成家访"
+            title={t("Session:completeVisit")}
             disabled={!canFinish}
             onPress={finish}
           />
@@ -159,10 +156,10 @@ export default function LessonModules({ navigation, route }) {
       <Message
         error
         visible={errorMessageVisble}
-        buttonText="知道了"
+        buttonText={t("App:understood")}
         onButtonPress={closeErrorMessage}
-        title="无法完成家访"
-        content="问卷未答，请作答"
+        title={t("Session:unableToCompleteVisit")}
+        content={t("Session:quizTips")}
       />
     </>
   );

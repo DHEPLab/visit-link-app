@@ -7,7 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { setStatusBarStyle } from "expo-status-bar";
 import { Asset } from "expo-asset";
 import fundebug from "fundebug-reactnative";
-import { useTranslation } from "react-i18next";
+
 import "./i18n";
 
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -28,9 +28,13 @@ import "./config";
 import { Message } from "./components";
 import { ConfirmModal } from "./components/modal/confirm";
 import { PromptModal } from "./components/modal/prompt";
+
+import { useTranslation } from "react-i18next";
+
 export default function App(props) {
   const [isLoadingComplete, loadingComplete] = useBoolState();
 
+  const { t } = useTranslation();
   fundebug.init({
     apikey: "my-secret-token-to-change-in-production",
   });
@@ -49,7 +53,7 @@ export default function App(props) {
         store.dispatch(restoreToken(token));
 
         if (!net.isInternetReachable) {
-          return ToastAndroid.show("当前处于离线模式", ToastAndroid.LONG);
+          return ToastAndroid.show(t("App:offlineMessage"), ToastAndroid.LONG);
         }
         uploadOfflineBabies();
 

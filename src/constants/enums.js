@@ -1,11 +1,5 @@
 import i18next from "i18next";
 
-export const Role = {
-  ROLE_CHW: "工作人员",
-  ROLE_SUPERVISOR: "督导",
-  ROLE_ADMIN: "管理员",
-};
-
 export const Gender = {
   FEMALE: i18next.t("Gender.FEMALE", { ns: "enum" }),
   MALE: i18next.t("Gender.MALE", { ns: "enum" }),
@@ -54,8 +48,8 @@ export const FamilyTies = {
 };
 
 export const ModuleStatus = {
-  DONE: "已完成",
-  UNDONE: "待开始",
+  DONE: i18next.t("enum:ModuleStatus.DONE"),
+  UNDONE: i18next.t("enum:ModuleStatus.UNDONE"),
 };
 
 export const QrType = {

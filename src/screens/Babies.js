@@ -54,7 +54,6 @@ export default function Babies({ navigation }) {
       http
         .get("/api/babies", search)
         .then((data) => {
-          console.log(data);
           setTotalPages(data.totalPages);
           setContents((contents) => {
             const newValue = [...contents];

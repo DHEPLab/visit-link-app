@@ -1,9 +1,13 @@
 import React from "react";
 
 import { styled } from "../utils/styled";
+import { useTranslation } from "react-i18next";
 
 export default function WaitingSubmit({ approved, gray }) {
-  return <Status gray={!approved && gray}>待提交</Status>;
+  const { t } = useTranslation();
+  return (
+    <Status gray={!approved && gray}>{t("Component:waitingSubmit")}</Status>
+  );
 }
 
 const Status = styled.Text`

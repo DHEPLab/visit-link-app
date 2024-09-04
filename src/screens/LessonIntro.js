@@ -12,10 +12,12 @@ import {
 } from "../components";
 import * as Location from "expo-location";
 import { ToastAndroid } from "react-native";
+import { useTranslation } from "react-i18next";
 
 export default function LessonIntro({ navigation, route }) {
   const [lesson] = storage.useLesson(route.params?.id);
 
+  const { t } = useTranslation();
   useEffect(() => {
     if (!route.params.preview) {
       storage.setUncommittedVisitStatus(
@@ -44,13 +46,13 @@ export default function LessonIntro({ navigation, route }) {
       <ButtonContainer>
         <Button
           type="info"
-          title="下一步"
+          title={t("Session:next")}
           onPress={() => {
             Location.requestForegroundPermissionsAsync().then(
               async ({ status }) => {
                 if (status !== "granted") {
                   ToastAndroid.show(
-                    "未授予获取用户位置的权限，无法进行家访任务！",
+                    t("Session:locationPermissionMessage"),
                     ToastAndroid.LONG,
                   );
                   navigation.goBack();
@@ -60,7 +62,7 @@ export default function LessonIntro({ navigation, route }) {
                   await Location.hasServicesEnabledAsync();
                 if (!hasEnableLocation) {
                   ToastAndroid.show(
-                    "未打开手机定位服务，无法进行家访任务！",
+                    t("Session:locationClosedMessage"),
                     ToastAndroid.LONG,
                   );
                   return;

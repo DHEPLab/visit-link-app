@@ -1,4 +1,10 @@
 export default {
+  Component: {
+    question: "问卷",
+    locationMessage: "定位权限未打开，无法开始课堂",
+    waitingSubmit: "待提交",
+    currentSelection: "当前选择：",
+  },
   Navigator: {
     home: "首页",
     visit: "家访安排",
@@ -47,6 +53,9 @@ export default {
     submitFailed: "提交失败",
     networkError: "网络发生错误，请稍后重试",
     understood: "知道了",
+    offlineMessage: "当前处于离线模式",
+    formValidate: "表单校验失败",
+    locationServiceMessage: "未打开手机定位服务，无法获取位置信息！",
   },
   Babies: {
     searchPlaceholder: "请您输入要搜索的宝宝姓名",
@@ -87,6 +96,15 @@ export default {
     confirm: "确定",
   },
   enum: {
+    QuestionType: {
+      Text: "填空",
+      Checkbox: "多选",
+      Radio: "单选",
+    },
+    ModuleStatus: {
+      DONE: "已完成",
+      UNDONE: "待开始",
+    },
     BabyStage: {
       EDC: "待产期",
       BIRTH: "已出生",
@@ -170,6 +188,7 @@ export default {
     caregiver: "看护人",
     primaryCaregiver: "主看护人",
     realName: "真实姓名",
+    realNamePlaceholder: "请输入真实姓名",
     enterName: "请输入2-10个汉字",
     relationship: "亲属关系",
     phoneNumber: "联系电话",
@@ -258,6 +277,7 @@ export default {
   },
   Form: {
     pleaseInput: "请输入",
+    pleaseSelect: "请选择",
   },
   Visits: {
     visitArrangement: "家访日程安排",
@@ -315,10 +335,30 @@ export default {
     undoneReason: "未完成原因",
     upComingVisit: "即将到来的家访",
   },
+  Session: {
+    next: "下一步",
+    locationPermissionMessage: "未授予获取用户位置的权限，无法进行家访任务！",
+    locationClosedMessage: "未打开手机定位服务，无法进行家访任务！",
+    completeTip: "你需要在本次家访中完成\n如下全部模块",
+    completeVisit: "完成家访",
+    unableToCompleteVisit: "无法完成家访",
+    quizTips: "有未完成题目，请全部作答",
+  },
+  Question: {
+    exit: "退出问卷",
+    complete: "完成",
+    unsaved: "无法保存问卷",
+  },
   BabyItem: {
     primaryCaregiver: "主要看护人",
     contactInfo: "联系方式",
     none: "无",
+  },
+  Module: {
+    exit: "退出模块",
+    complete: "完成",
+    next: "下一步",
+    previous: "上一步",
   },
   Home: {
     downloadSuccess: "下载最新课程资源成功！",

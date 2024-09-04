@@ -10,6 +10,7 @@ import { styled } from "../utils/styled";
 import { Colors } from "../constants";
 import { Button } from "../components";
 import Media from "../components/curriculum/Media";
+import { useTranslation } from "react-i18next";
 
 export function useMethods(preview) {
   function handleCase(
@@ -268,6 +269,7 @@ export default function ModuleScreen({ navigation, route }) {
       setModule,
     );
   }, [route.params]);
+  const { t } = useTranslation();
   return (
     <>
       <Header {...Colors.linearGradient}>
@@ -275,7 +277,7 @@ export default function ModuleScreen({ navigation, route }) {
           <Button
             disabled={false}
             type="text"
-            title="退出模块"
+            title={t("Module:exit")}
             onPress={navigation.goBack}
           />
         </Escape>
@@ -311,7 +313,7 @@ export default function ModuleScreen({ navigation, route }) {
           ) : (
             <Button
               size="large"
-              title={theLastPage ? "完成" : "下一步"}
+              title={theLastPage ? t("Module:complete") : t("Module:next")}
               onPress={() =>
                 nextStep(navigation.navigate, params, module, path, setPath)
               }
@@ -321,7 +323,7 @@ export default function ModuleScreen({ navigation, route }) {
           {canPreviousStep && (
             <Button
               type="info"
-              title="上一步"
+              title={t("Module:previous")}
               onPress={() => previousStep(path, setPath)}
               disabled={false}
             />

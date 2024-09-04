@@ -142,7 +142,7 @@ export function uploadVisitLocation(babyId, visitId) {
     const hasEnableLocation = await Location.hasServicesEnabledAsync();
     if (!hasEnableLocation) {
       ToastAndroid.show(
-        "未打开手机定位服务，无法获取位置信息！",
+        i18next.t("App:locationServiceMessage"),
         ToastAndroid.LONG,
       );
       return;

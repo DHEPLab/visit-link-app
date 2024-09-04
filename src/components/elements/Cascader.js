@@ -4,11 +4,14 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import { useBoolState } from "../../utils";
 import { px2dp, styled } from "../../utils/styled";
+import { useTranslation } from "react-i18next";
 
 export default function Cascader({ value, onChange, options, placeholder }) {
   const [visible, open, close] = useBoolState();
   const [data, setData] = useState(options);
   const [values, setValues] = useState([]);
+
+  const { t } = useTranslation();
 
   function handlePressItem(item) {
     if (item.children && item.children.length > 0) {
@@ -53,7 +56,7 @@ export default function Cascader({ value, onChange, options, placeholder }) {
         <Shadow>
           <CardContainer>
             <Header>
-              <Title>请选择</Title>
+              <Title>{t("Form:pleaseSelect")}</Title>
               <CloseButton>
                 <TouchableOpacity onPress={close} activeOpacity={0.8}>
                   <MaterialIcons name="close" size={px2dp(16)} color="white" />
@@ -65,7 +68,7 @@ export default function Cascader({ value, onChange, options, placeholder }) {
                 activeOpacity={0.8}
                 onPress={() => backTo(null, -1)}
               >
-                <Picked>当前选择：</Picked>
+                <Picked>{t("Component:currentSelection")}</Picked>
               </TouchableOpacity>
               {values.map((v, index) => (
                 <TouchableOpacity

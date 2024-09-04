@@ -4,6 +4,7 @@ import { ToastAndroid } from "react-native";
 import Config from "../constants/Config";
 import store from "../store";
 import { openGlobalSubmitErrorMessage, restoreToken } from "@/actions";
+import i18next from "i18next";
 
 // fetch timeout 15s
 const timeout = 15000;
@@ -28,10 +29,10 @@ async function cleanToken() {
 }
 
 async function onResponseError(url, status, data) {
-  let msg = "服务异常，请稍后重试";
+  let msg = i18next.t("App:networkError");
   switch (status) {
     case 502:
-      msg = "网络异常，请稍后重试";
+      msg = i18next.t("App:networkError");
     case 500:
       break;
     case 404:
@@ -41,7 +42,7 @@ async function onResponseError(url, status, data) {
       return;
     default:
       if (data.violations) {
-        msg = "表单校验失败";
+        msg = i18next.t("App:formValidate");
       } else if (data.detail) {
         msg = data.detail;
       }
@@ -67,7 +68,10 @@ function request(fetchPromise, method, { silence, url }) {
       .catch((error) => {
         if (!silence) {
           if (method === "GET") {
-            ToastAndroid.show(url + "网络异常，请稍后重试", ToastAndroid.SHORT);
+            ToastAndroid.show(
+              url + i18next.t("App:networkError"),
+              ToastAndroid.SHORT,
+            );
           } else {
             store.dispatch(openGlobalSubmitErrorMessage());
           }

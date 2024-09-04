@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "../../utils/styled";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { TextInput } from "react-native";
+import { useTranslation } from "react-i18next";
 
 export default function RadioGroup({ value, onChange, options = [] }) {
   function checkChange(label, input, from) {
@@ -11,6 +12,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
       onChange({ target: { value: { check: label, input: "" } } });
     }
   }
+  const { t } = useTranslation();
 
   return (
     <Container>
@@ -29,7 +31,7 @@ export default function RadioGroup({ value, onChange, options = [] }) {
             </Line>
             {option.needEnter && (
               <StyledTextInput
-                placeholder="请输入内容"
+                placeholder={t("Form:pleaseInput")}
                 value={option.label === value?.check ? option?.input : ""}
                 border={true}
                 onChangeText={(text) =>

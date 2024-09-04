@@ -103,7 +103,7 @@ export default function StartLesson({
                 }
                 /*Location.requestBackgroundPermissionsAsync().then(res=> {
                   if (res.status !== 'granted') {
-                    setErrorMessageContent("定位权限未打开，无法开始课堂")
+                    setErrorMessageContent(t("Component:locationMessage"))
                     openErrorMessage();
                     return;
                   }
