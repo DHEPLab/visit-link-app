@@ -4,6 +4,16 @@ on:
   schedule:
     - cron: '0 0 * * 1-5'
   workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Deployment profile'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - preview
+          - production
 
 jobs:
   build-android:
@@ -38,7 +48,7 @@ jobs:
       - name: 🚀Build app
         id: build-app
         run: |
-          eas build --profile development --platform android --non-interactive --json > eas-build.json
+          eas build --profile ${{ github.event.inputs.profile }} --platform android --non-interactive --json > eas-build.json
           
           APPLICATION_ARCHIVE_URL=$(jq -r '.[0].artifacts.applicationArchiveUrl' eas-build.json)
           echo "Application Archive URL: $APPLICATION_ARCHIVE_URL"
