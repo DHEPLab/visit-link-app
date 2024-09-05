@@ -120,6 +120,7 @@ export default function Baby({ navigation, route }) {
               carerName: carers[0]?.name,
               carerPhone: carers[0]?.phone,
             },
+            prevParams: params,
           }),
         )
         .catch((error) => {
@@ -143,6 +144,7 @@ export default function Baby({ navigation, route }) {
                 carerName: carers[0]?.name,
                 carerPhone: carers[0]?.phone,
               },
+              prevParams: params,
             });
           } else {
             setErrorMessage(t("noMatchingClass"));
@@ -237,6 +239,7 @@ export default function Baby({ navigation, route }) {
                     from: "Baby",
                     baby,
                     id: params.id,
+                    prevParams: params,
                   })
                 }
               />
@@ -296,6 +299,7 @@ export default function Baby({ navigation, route }) {
               connect={isConnected}
               navigation={navigation}
               onRefresh={onRefresh}
+              params={params}
             />
           ),
         })}
@@ -366,7 +370,7 @@ function Visits({
       ToastAndroid.show(t("waitForApproval"), ToastAndroid.SHORT);
       return;
     }
-    navigation.navigate("Visit", { id: item.id });
+    navigation.navigate("Visit", { id: item.i });
   }
 
   function redDot(item) {
@@ -464,7 +468,7 @@ const NumberOfNoRemark = styled.Text`
   `}
 `;
 
-function Family({ baby, carers, connect, navigation, onRefresh }) {
+function Family({ baby, carers, connect, navigation, onRefresh, params }) {
   const { t } = useTranslation("Baby");
   const [remark, setRemark] = useState(baby.remark);
   const [closeAccountReason, setCloseAccountReason] = useState();
@@ -540,6 +544,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
                 id: baby.id,
                 from: "Baby",
                 address: { area: baby.area, location: baby.location },
+                prevParams: params,
               })
             }
           />
@@ -561,6 +566,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
                 from: "Baby",
                 babyId: baby.id,
                 filterFamilyTies: familyTies(carers),
+                prevParams: params,
               })
             }
           />
@@ -593,6 +599,7 @@ function Family({ baby, carers, connect, navigation, onRefresh }) {
                   carerIndex: index,
                   from: "Baby",
                   filterFamilyTies: familyTies(carers, carer.familyTies),
+                  prevParams: params,
                 })
               }
             />

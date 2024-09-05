@@ -20,6 +20,7 @@ export default function EditBaby({ navigation, route }) {
         navigation.navigate(params.from, {
           success: Math.random(),
           ...params,
+          ...(params.prevParams || {}),
         });
       },
       dispatch,

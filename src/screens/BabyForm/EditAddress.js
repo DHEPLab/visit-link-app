@@ -16,6 +16,7 @@ export default function EditAddress({ navigation, route }) {
       onOk: async () => {
         await http.put(`/api/babies/${params.id}/address`, values);
         navigation.navigate(params.from, {
+          ...(params.prevParams || {}),
           success: Math.random(),
         });
       },

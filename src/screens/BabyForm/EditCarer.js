@@ -63,11 +63,15 @@ export default function CreateCarer({ navigation, route }) {
       });
     } else {
       confirm(t("confirmEdit"), {
-        onOk: () => {
-          return http.put(
+        onOk: async () => {
+          await http.put(
             `/api/babies/${params.babyId}/carers/${carer.id}`,
             carer,
           );
+          navigation.navigate(params.from, {
+            ...(params.prevParams || {}),
+            success: Math.random(),
+          });
         },
         dispatch,
       });

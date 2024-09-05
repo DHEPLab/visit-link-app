@@ -71,7 +71,7 @@ export default {
     name: "Name",
     creationTime: "Creation Time",
     attention: "Attention",
-    addBaby: "Add Baby",
+    addBaby: "New Baby",
     attentionTooltip:
       'The baby\'s due date has passed. Please contact to confirm if the baby has been born. If the baby has been born, update the status to "born" and enter the correct birth date. If the baby has not been born, update and extend the due date. Note: Once the baby\'s growth stage is changed from "due" to "born," it cannot be changed back to "due."',
     noBabyInfo: "No baby information added yet",
