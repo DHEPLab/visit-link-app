@@ -46,13 +46,13 @@ export default function QuestionScreen({ navigation, route }) {
     });
   }
 
-  const QuestionTypeEnum = {
-    Text: i18next.t("Enum:QuestionType.Text"),
-    Checkbox: i18next.t("Enum:QuestionType.Checkbox"),
-    Radio: i18next.t("Enum:QuestionType.Radio"),
-  };
-
   const { t } = useTranslation();
+
+  const QuestionTypeEnum = {
+    Text: t("enum:QuestionType.Text"),
+    Checkbox: t("enum:QuestionType.Checkbox"),
+    Radio: t("enum:QuestionType.Radio"),
+  };
 
   return (
     <>
