@@ -54,6 +54,7 @@ jobs:
           else
             echo "Scheduled run, using default profile: development"
             echo "EAS_PROFILE=development" >> $GITHUB_ENV
+          fi
 
       - name: 🚀 Build app
         id: build-app
