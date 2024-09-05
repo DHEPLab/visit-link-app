@@ -20,41 +20,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🏗Check for EXPO_TOKEN
+      - name: 🏗 Check for EXPO_TOKEN
         run: |
           if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
             echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
             exit 1
           fi
 
-      - name: 🏗Checkout the repository
+      - name: 🏗 Checkout the repository
         uses: actions/checkout@v4
 
-      - name: 🏗Set up Node.js
+      - name: 🏗 Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           cache: 'yarn'
 
-      - name: 🏗Setup EAS
+      - name: 🏗 Setup EAS
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: 📦Install dependencies
+      - name: 📦 Install dependencies
         run: yarn install
 
-      - name: 🚀Build app
+      - name: 🔍 Determine profile
+        id: determine-profile
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Profile selected from input: ${{ github.event.inputs.profile }}"
+            echo "EAS_PROFILE=${{ github.event.inputs.profile }}" >> $GITHUB_ENV
+          else
+            echo "Scheduled run, using default profile: development"
+            echo "EAS_PROFILE=development" >> $GITHUB_ENV
+
+      - name: 🚀 Build app
         id: build-app
         run: |
-          eas build --profile ${{ github.event.inputs.profile || 'development'}} --platform android --non-interactive --json > eas-build.json
+          eas build --profile ${{ env.EAS_PROFILE }} --platform android --non-interactive --json > eas-build.json
           
           APPLICATION_ARCHIVE_URL=$(jq -r '.[0].artifacts.applicationArchiveUrl' eas-build.json)
           echo "Application Archive URL: $APPLICATION_ARCHIVE_URL"
           echo "APPLICATION_ARCHIVE_URL=$APPLICATION_ARCHIVE_URL" >> "$GITHUB_OUTPUT"
 
-      - name: 🎆Generate QR Code
+      - name: 🎆 Generate QR Code
         id: generate-qrcode
         run: |
           sudo apt-get install -y qrencode
@@ -65,7 +75,7 @@ jobs:
           echo "BASE64_QR=$BASE64_QR" >> "$GITHUB_OUTPUT"
           echo "MD5_QR=$MD5_QR" >> "$GITHUB_OUTPUT"
 
-      - name: 🤖IM Notification
+      - name: 🤖 IM Notification
         run: |
           curl -n "${{secrets.WECOM_WEBHOOK}}" \
             --header 'Content-Type: application/json' \
