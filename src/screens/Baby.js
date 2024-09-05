@@ -370,7 +370,7 @@ function Visits({
       ToastAndroid.show(t("waitForApproval"), ToastAndroid.SHORT);
       return;
     }
-    navigation.navigate("Visit", { id: item.i });
+    navigation.navigate("Visit", { id: item.id });
   }
 
   function redDot(item) {

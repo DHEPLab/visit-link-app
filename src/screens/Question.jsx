@@ -41,7 +41,9 @@ export default function QuestionScreen({ navigation, route }) {
       return result;
     });
     storage.setAnswers(visitId, { lessonId: lessonId, answers: resultList });
-    navigation.navigate("LessonModules", {});
+    navigation.navigate("LessonModules", {
+      ...(params.prevParams || {}),
+    });
   }
 
   const QuestionTypeEnum = {

@@ -93,7 +93,10 @@ export default function LessonModules({ navigation, route }) {
     if (isConnected && lesson.questionnaireAddress) {
       await WebBrowser.openBrowserAsync(lesson.questionnaireAddress);
     }
-    navigation.navigate(params.from, { id: params.visitId });
+    navigation.navigate(params.from, {
+      id: params.visitId,
+      prevParams: params,
+    });
   }
 
   async function queryQuestionnaire() {
@@ -107,6 +110,7 @@ export default function LessonModules({ navigation, route }) {
       data: questionnaire,
       lessonId: lesson.id,
       visitId: params?.visitId,
+      prevParams: params,
     });
   }
 
@@ -133,6 +137,7 @@ export default function LessonModules({ navigation, route }) {
                 originId: module.id,
                 lessonId: params.id,
                 backParams: params,
+                prevParams: params,
               });
             }}
           />

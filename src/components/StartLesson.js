@@ -43,7 +43,7 @@ export default function StartLesson({
   validate,
   cancelVisit,
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [startVisitVisible, openStartVisit, closeStartVisit] = useBoolState();
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] =
     useBoolState();
@@ -53,6 +53,8 @@ export default function StartLesson({
   const [errorMessageContent, setErrorMessageContent] = useState(
     t("Visits:notStartMessage"),
   );
+
+  const isZH = i18n.language === "zh";
 
   function handleStart() {
     closeStartVisit();
@@ -143,7 +145,7 @@ export default function StartLesson({
       <Modal
         title={t("Visits:confirmStartLessonMessage")}
         visible={startVisitVisible}
-        contentText={`${t("Visits:visitSchedule")}：${Visit.formatDateTimeCN(visitTime)}`}
+        contentText={`${t("Visits:visitSchedule")}：${isZH ? Visit.formatDateTimeCN(visitTime) : Visit.formatDateTimeEN(visitTime)}`}
         okText={t("Common:start")}
         cancelText={t("Common:cancel")}
         onCancel={closeStartVisit}

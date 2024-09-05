@@ -22,12 +22,13 @@ export const OtherBabyCard: React.FC<OtherBabyCardProps> = ({
 }) => {
   const dispatch = useDispatch();
   const [todoVisits, setTodoVisits] = useState<Visit[]>([]);
-  const { t } = useTranslation("Visits");
+  const { t, i18n } = useTranslation("Visits");
   const fetchAllVisitOfTodo = () => {
     http.get("/api/visits/all/todo").then((res) => {
       setTodoVisits(res);
     });
   };
+  const isZH = i18n.language === "zh";
 
   useEffect(() => {
     fetchAllVisitOfTodo();
@@ -63,7 +64,9 @@ export const OtherBabyCard: React.FC<OtherBabyCardProps> = ({
                 <View style={styles.itemHead}>
                   <Text style={styles.babyName}>{baby.name}</Text>
                   <Text style={styles.visitDate}>
-                    {VisitUtils.formatDateTimeCN(visitTime)}
+                    {isZH
+                      ? VisitUtils.formatDateTimeCN(visitTime)
+                      : VisitUtils.formatDateTimeEN(visitTime)}
                   </Text>
                   <Button
                     title={t("cancelVisit")}
