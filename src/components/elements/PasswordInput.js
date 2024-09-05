@@ -40,22 +40,26 @@ const Container = styled.View`
 
 const OpenEyesContainer = styled.View`
   position: absolute;
-  top: ${({ height }) => height / 2 - 3}px;
-  right: 16px;
+  top: ${({ height }) => height / 2 - 16}px;
+  right: 0;
+  width: 40px;
 `;
 
 const CloseEyesContainer = styled.View`
   position: absolute;
-  top: ${({ height }) => height / 2 - 1}px;
-  right: 16px;
+  top: ${({ height }) => height / 2 - 14}px;
+  right: 0;
+  width: 40px;
 `;
 
 const CloseEyes = styled(Image)`
   width: 8px;
   height: 5px;
+  margin: 10px 16px;
 `;
 
 const OpenEyes = styled(Image)`
   width: 8px;
   height: 7px;
+  margin: 10px 16px;
 `;
