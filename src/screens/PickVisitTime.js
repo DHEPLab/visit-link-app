@@ -65,6 +65,7 @@ export default function PickVisitTime({ navigation, route }) {
 
   function onChangeTime({ nativeEvent }) {
     hideTimePicker();
+    console.log(nativeEvent.timestamp);
     if (nativeEvent.timestamp) {
       setTime(new Date(nativeEvent.timestamp));
     }
@@ -111,7 +112,9 @@ export default function PickVisitTime({ navigation, route }) {
         <CardField>
           <StaticForm>
             <StaticField label={t("Visits:selectVisitTime")} labelWidth={60}>
-              {isZH ? Visit.formatDateCN(date) : Visit.formatDateEN(date)}
+              {isZH
+                ? Visit.formatDateTimeCN(time)
+                : Visit.formatDateTimeEN(time)}
             </StaticField>
           </StaticForm>
         </CardField>
