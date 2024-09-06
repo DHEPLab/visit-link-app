@@ -137,11 +137,11 @@ export default {
     },
   },
   BabyForm: {
-    nameValidation: "请输入1-50个字符",
+    nameValidation: "只允许1-50个字符，不包含特殊字符",
     required: "此项为必填",
     babyInfo: "宝宝信息",
     babyName: "宝宝姓名",
-    enterBabyName: "请输入2-10个汉字",
+    enterBabyName: "请输入1-50个字符",
     babyGender: "宝宝性别",
     growthStage: "成长阶段",
     dueDate: "预产日期",
@@ -179,7 +179,7 @@ export default {
     wechatAccount: "微信号码",
   },
   CreateCarer: {
-    nameValidation: "请输入1-50个字符",
+    nameValidation: "只允许1-50个字符，不包含特殊字符",
     required: "此项为必填",
     phoneValidation: "请输入正确的手机号",
     wechatValidation: "最多20个字符",

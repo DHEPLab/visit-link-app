@@ -1,3 +1,5 @@
+import i18n from "@/i18n";
+import { ValidationError } from "yup";
 import { carerSchema } from "../carerSchema";
 
 describe("carerSchema", () => {
@@ -19,8 +21,18 @@ describe("carerSchema", () => {
         phone: "12345678999",
         wechat: "wechat",
       };
-      const schema = carerSchema(jest.fn().mockImplementation((v) => v) as any);
+      const schema = carerSchema(i18n.getFixedT(null, "CreateCarer"));
       expect(schema.isValidSync({ ...baby, name })).toBe(result);
+
+      if (!result) {
+        try {
+          schema.validateSync({ ...baby, name });
+        } catch (error) {
+          expect((error as ValidationError).message).toEqual(
+            "Only allow 1-50 characters without special characters",
+          );
+        }
+      }
     },
   );
 });

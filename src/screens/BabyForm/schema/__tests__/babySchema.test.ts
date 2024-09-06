@@ -1,4 +1,6 @@
+import { ValidationError } from "yup";
 import { babySchema } from "../babySchema";
+import i18n from "@/i18n";
 
 describe("babySchema", () => {
   it.each([
@@ -18,8 +20,18 @@ describe("babySchema", () => {
         gender: "male",
         stage: "stage",
       };
-      const schema = babySchema(jest.fn().mockImplementation((v) => v) as any);
+      const schema = babySchema(i18n.getFixedT(null, "BabyForm"));
       expect(schema.isValidSync({ ...baby, name })).toBe(result);
+
+      if (!result) {
+        try {
+          schema.validateSync({ ...baby, name });
+        } catch (error) {
+          expect((error as ValidationError).message).toEqual(
+            "Only allow 1-50 characters without special characters",
+          );
+        }
+      }
     },
   );
 });
