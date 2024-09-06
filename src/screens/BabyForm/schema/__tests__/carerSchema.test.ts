@@ -42,13 +42,13 @@ describe("carerSchema", () => {
     "19999999999",
     "1".repeat(20),
     "12345",
-    "+" + "1".repeat(20),
+    "+" + "1".repeat(19),
   ])("should return true for valid phone number: %s", (phone) => {
     const schema = carerSchema(i18n.getFixedT(null, "CreateCarer"));
     expect(schema.isValidSync({ ...baby, phone })).toBeTruthy();
   });
 
-  it.each(["1".repeat(21), "abcdefghijk", "1111"])(
+  it.each(["1".repeat(21), "abcdefghijk", "1111", "+" + "1".repeat(20)])(
     "should return false for invalid phone number: %s",
     (phone) => {
       const schema = carerSchema(i18n.getFixedT(null, "CreateCarer"));
