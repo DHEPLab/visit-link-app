@@ -189,7 +189,7 @@ export default {
     primaryCaregiver: "主看护人",
     realName: "真实姓名",
     realNamePlaceholder: "请输入真实姓名",
-    enterName: "请输入2-10个汉字",
+    enterName: "请输入1-50个字符",
     relationship: "亲属关系",
     phoneNumber: "联系电话",
     enterPhone: "请输入11位手机号码",

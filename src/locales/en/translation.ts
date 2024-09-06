@@ -198,7 +198,7 @@ export default {
     primaryCaregiver: "Primary Caregiver",
     realName: "Name",
     realNamePlaceholder: "Please enter name",
-    enterName: "Please enter 2-10 characters",
+    enterName: "Please enter 1-50 characters",
     relationship: "Relatives",
     phoneNumber: "Phone",
     enterPhone: "Please enter phone number",
