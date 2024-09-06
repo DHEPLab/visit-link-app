@@ -6,7 +6,7 @@ export const babySchema = (
 ) => {
   return object().shape({
     name: string()
-      .matches(/^[\p{L}\p{M}'\- ]{2,10}$/u, t("nameValidation"))
+      .matches(/^[\p{L}\p{M}\p{Zs}’'·-]{1,50}$/u, t("nameValidation"))
       .required(t("required")),
     gender: string().required(t("required")),
     stage: string().required(t("required")),

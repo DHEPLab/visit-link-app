@@ -145,7 +145,7 @@ export default {
     },
   },
   BabyForm: {
-    nameValidation: "Please enter 2-10 characters",
+    nameValidation: "Please enter 1-50 characters",
     required: "This field is required",
     babyInfo: "Baby Info",
     babyName: "Baby Name",
@@ -188,7 +188,7 @@ export default {
     wechatAccount: "IM Account",
   },
   CreateCarer: {
-    nameValidation: "Please enter characters",
+    nameValidation: "Please enter 1-50 characters",
     required: "This field is required",
     phoneValidation: "Please enter phone number",
     wechatValidation: "No more than 20 characters.",
