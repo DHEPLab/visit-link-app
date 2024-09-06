@@ -112,9 +112,7 @@ export default function PickVisitTime({ navigation, route }) {
         <CardField>
           <StaticForm>
             <StaticField label={t("Visits:selectVisitTime")} labelWidth={60}>
-              {isZH
-                ? Visit.formatDateTimeCN(time)
-                : Visit.formatDateTimeEN(time)}
+              {isZH ? Visit.formatTimeCN(time) : Visit.formatTimeEN(time)}
             </StaticField>
           </StaticForm>
         </CardField>

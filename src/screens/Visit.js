@@ -95,7 +95,7 @@ export default function VisitScreen({ navigation, route }) {
           </Card>
         )}
         <Modal
-          title={t("Visits:inputRemark")}
+          title={Visit.remarkModalTitle(status)}
           visible={remarkVisible}
           content={
             <Input

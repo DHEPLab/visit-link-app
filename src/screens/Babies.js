@@ -250,26 +250,23 @@ export default function Babies({ navigation }) {
         contentText={t("attentionTooltip")}
       />
       <FlatList
-        ListEmptyComponent={
-          !refreshing &&
-          !loading && (
-            <NoDataContainer>
-              {name ? (
-                <NoData title={t("noMatchingBaby")} />
-              ) : (
-                <>
-                  <NoData title={t("noBabyInfo")} />
-                  <Button
-                    title={t("addBaby")}
-                    onPress={() => navigate("CreateBabyStep1")}
-                  />
-                </>
-              )}
-            </NoDataContainer>
-          )
-        }
         ListFooterComponent={
           <View style={{ height: 350, width: "100%" }}>
+            {!refreshing && !loading && contents && contents.length === 0 && (
+              <NoDataContainer>
+                {name ? (
+                  <NoData title={t("noMatchingBaby")} />
+                ) : (
+                  <>
+                    <NoData title={t("noBabyInfo")} />
+                    <Button
+                      title={t("addBaby")}
+                      onPress={() => navigate("CreateBabyStep1")}
+                    />
+                  </>
+                )}
+              </NoDataContainer>
+            )}
             {!refreshing && contents.length > 0 && (
               <ListFooter loading={loading} />
             )}

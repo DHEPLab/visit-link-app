@@ -65,7 +65,9 @@ function formatDateEN(date) {
 function formatTimeCN(time) {
   return meridiem(moment(time)) + moment(time).format("h:mm");
 }
-
+function formatTimeEN(time) {
+  return moment(time).format("h:mm a");
+}
 function formatDateTime(datetime) {
   return moment(datetime).format("YYYY-MM-DDTHH:mm:ss");
 }
@@ -114,6 +116,7 @@ export default {
   formatDate,
   formatDateTime,
   formatTimeCN,
+  formatTimeEN,
   formatDateTimeEN,
   formatDateTimeCN,
   formatDateCN,
@@ -131,6 +134,10 @@ export default {
       : statusUndone(status)
         ? i18next.t("Visits:undoneReason")
         : i18next.t("Visits:expiredReason"),
+  remarkModalTitle: (status) =>
+    statusUndone(status)
+      ? i18next.t("Visits:inputRemark")
+      : i18next.t("Visits:inputIncompleteRemark"),
   visitTimeMayConflict(vt1, vt2) {
     const diff = moment(vt1).diff(moment(vt2), "minutes");
     return Math.abs(diff) <= 60;

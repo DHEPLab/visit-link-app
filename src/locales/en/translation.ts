@@ -81,7 +81,7 @@ export default {
     noMoreData: "No more data",
   },
   MiniBaby: {
-    babyDueDateArrived: "Baby's due date has arrived",
+    babyDueDateArrived: "The Baby's due date has arrived",
     idNotFilled: "None",
     days: "day(s)",
   },
@@ -224,7 +224,7 @@ export default {
       "You can view the results in the list later. New baby creation requires supervisor approval. For expedited approval, please contact your supervisor directly.",
   },
   Baby: {
-    editCarer: "Edit Carer",
+    editCarer: "Edit Caregiver",
     editAddress: "Edit Address",
     editBabyTitle: "Edit Baby Information",
     selectBaby: "Select Baby",
@@ -341,6 +341,7 @@ export default {
     unavailableMessage:
       "Please update the course resources on the homepage first",
     inputRemark: "Visit Expired Reason",
+    inputIncompleteRemark: "Visit Incomplete Reason",
     babyName: "Baby Name",
     lessonName: " Session Name",
     visitTime: "Visit Time",

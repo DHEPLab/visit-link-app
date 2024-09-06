@@ -326,6 +326,7 @@ export default {
     edit: "修改",
     unavailableMessage: "请先到首页更新课程资源",
     inputRemark: "请填写备注",
+    inputIncompleteRemark: "请填写备注",
     babyName: "宝宝名称",
     lessonName: "课堂名称",
     visitTime: "家访时间",
