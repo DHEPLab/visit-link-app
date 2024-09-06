@@ -48,7 +48,7 @@ it("should navigate to from screen", async () => {
       }}
     />,
   );
-  fireEvent.press(getByText(/Common:submit/));
+  fireEvent.press(getByText(/Submit/));
   await waitFor(() => {
     expect(navigation.navigate).toBeCalledWith("Visit", {
       visitTime: "2020-07-20T10:00",

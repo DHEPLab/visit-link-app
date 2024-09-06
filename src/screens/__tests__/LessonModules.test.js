@@ -52,8 +52,8 @@ it("should render modules", async () => {
   ]);
   storage.useNextModule.mockImplementation(() => [1]);
   const { queryAllByText } = render(<LessonModules {...createTestProps()} />);
-  expect(queryAllByText(/enum:ModuleStatus.DONE/).length).toBe(1);
-  expect(queryAllByText(/enum:ModuleStatus.UNDONE/).length).toBe(2);
+  expect(queryAllByText(/Completed/).length).toBe(1);
+  expect(queryAllByText(/Scheduled/).length).toBe(2);
 });
 
 it("should finish current module", async () => {

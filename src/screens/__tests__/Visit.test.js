@@ -62,8 +62,8 @@ describe("<Visit />", () => {
     const { queryByText, queryAllByText } = render(
       <Visit {...createTestProps()} />,
     );
-    expect(queryAllByText(/Visits:undoneReason/).length).toBe(1);
-    expect(queryByText(/Visits:continueLesson/)).not.toBeNull();
+    expect(queryAllByText(/Incomplete Reason/).length).toBe(1);
+    expect(queryByText(/Continue Session/)).not.toBeNull();
   });
 
   it("should display expire remark", () => {
@@ -73,7 +73,7 @@ describe("<Visit />", () => {
       },
     ]);
     const { queryAllByText } = render(<Visit {...createTestProps()} />);
-    expect(queryAllByText(/Visits:expiredReason/).length).toBe(1);
+    expect(queryAllByText(/Expired Reason/).length).toBe(1);
   });
 
   it("should readonly", () => {
