@@ -181,7 +181,7 @@ export default {
   CreateCarer: {
     nameValidation: "只允许1-50个字符，不包含特殊字符",
     required: "此项为必填",
-    phoneValidation: "请输入正确的手机号",
+    phoneValidation: "只允许5-20个数字",
     wechatValidation: "最多20个字符",
     setPrimaryCaregiver: "请至少设置一个主看护人",
     confirmEdit: "确认修改宝宝信息吗？",
@@ -192,7 +192,7 @@ export default {
     enterName: "请输入1-50个字符",
     relationship: "亲属关系",
     phoneNumber: "联系电话",
-    enterPhone: "请输入11位手机号码",
+    enterPhone: "请输入5-20位手机号码",
     wechatAccount: "微信号码",
     enterWechat: "请输入微信号",
     submit: "提交",

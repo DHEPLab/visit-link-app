@@ -190,7 +190,7 @@ export default {
   CreateCarer: {
     nameValidation: "Only allow 1-50 characters without special characters",
     required: "This field is required",
-    phoneValidation: "Please enter phone number",
+    phoneValidation: "Only allow 5-20 numbers",
     wechatValidation: "No more than 20 characters.",
     setPrimaryCaregiver: "Please set a primary caregiver",
     confirmEdit: "Are you sure you want to edit the baby's information?",
@@ -201,7 +201,7 @@ export default {
     enterName: "Please enter 1-50 characters",
     relationship: "Relatives",
     phoneNumber: "Phone",
-    enterPhone: "Please enter phone number",
+    enterPhone: "Please enter 5-20 numbers",
     wechatAccount: "IM Account",
     enterWechat: "Please enter instant messaging account.",
     submit: "Submit",

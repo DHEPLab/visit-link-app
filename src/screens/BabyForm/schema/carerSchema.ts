@@ -10,7 +10,7 @@ export const carerSchema = (
       .required(t("required")),
     familyTies: string().required(t("required")),
     phone: string()
-      .matches(/^1[0-9]{10}$/, t("phoneValidation"))
+      .matches(/^\d{1,20}$/, t("phoneValidation"))
       .required(t("required")),
     wechat: string().nullable().max(20, t("wechatValidation")),
   });
