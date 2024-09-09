@@ -2,13 +2,13 @@ export default {
   Component: {
     question: "Questions",
     locationMessage:
-      "Location permission is not turned on, and the class cannot be started",
+      "Location permission is not turned on, and the session cannot be started",
     waitingSubmit: "To be submitted",
-    currentSelection: "Currents election :",
+    currentSelection: "Currents selection :",
   },
   Navigator: {
     home: "Home",
-    babyList: "Babies",
+    babyList: "Baby",
     visit: "Visit",
     account: "Account",
     resetPassword: "Reset Password",
@@ -21,10 +21,10 @@ export default {
     resetMyPassword: "Reset Password",
     mySupervisor: "My Supervisor",
     supervisorName: "Supervisor Name",
-    supervisorPhoneNumber: "Supervisor Phone Number",
+    supervisorPhoneNumber: "Supervisor Phone",
     logOut: "Log Out",
-    logOutSuccessfully: "Log Out Successfully",
-    logOutConfirmation: "Are you sure you want to log out?",
+    logOutSuccessfully: "Log out Successfully",
+    logOutConfirmation: "Are you sure to log out?",
     cancel: "Cancel",
     id: "ID",
     version: "Version",
@@ -40,11 +40,11 @@ export default {
     oldPassword: "Old Password",
     newPassword: "New Password",
     confirmPassword: "Confirm New Password",
-    passwordMismatch: "Two new passwords are not the same",
+    passwordMismatch: "Two two new passwords are not the same",
     submit: "Submit",
   },
   SignIn: {
-    loginSuccess: "Log In Successfully",
+    loginSuccess: "Log in Successfully",
     enterUsername: "Please enter username",
     enterPassword: "Please enter password",
     forgotPassword: "Forgot password",
@@ -56,14 +56,14 @@ export default {
     networkError: "Internet error, please try again later.",
     understood: "OK",
     offlineMessage: "Currently in offline mode",
-    formValidate: "Form validate failed",
+    formValidate: "Form validation failed",
     locationServiceMessage:
       "Unable to get location information since phone location services are not enabled.",
   },
   Babies: {
     searchPlaceholder: "Search by baby name",
     backupPrompt: "Please backup baby data locally for offline use. ",
-    backupLink: "Click here for one-click backup",
+    backupLink: "Click to back up",
     backupSuccess: "Backup Successful",
     offlineMode: "The system is currently in offline mode",
     babyList: "Baby List",
@@ -100,7 +100,7 @@ export default {
   },
   enum: {
     QuestionType: {
-      Text: "Fill in the blanks",
+      Text: "Text",
       Checkbox: "Single choice",
       Radio: "multiple choice",
     },
@@ -153,13 +153,13 @@ export default {
     babyGender: "Baby Gender",
     growthStage: "Growth Stage",
     dueDate: "Due Date",
-    birthDate: "Birth Date",
+    birthDate: "Birth Day",
     supplementFood: "Supplement Food",
     feedingMethods: "Feeding Methods",
     submit: "Submit",
   },
   DatePicker: {
-    selectDate: "Please select year/month/day",
+    selectDate: "Please select date",
   },
   CreateBabyStep1: {
     nextStep: "Next Step",
@@ -235,7 +235,7 @@ export default {
     babyAge: "{{stage}} {{days}} day(s)",
     feedingStatus: "Feeding Method",
     editInfo: "Edit",
-    visitRecords: "Visit Records",
+    visitRecords: "Visit History",
     familyInfo: "Family Info",
     understood: "OK",
     submitSuccess: "Submission Successful",
@@ -243,14 +243,14 @@ export default {
       "Editing baby requires supervisor approval. For expedited approval, please contact your supervisor directly.",
     cannotCreateVisit: "Unable to schedule a visit",
     offlineVisitExists:
-      "An offline visit has been created, cannot create duplicate",
+      "An offline visit has been scheduled, cannot schedule again",
     noMatchingClass: "No matching session. Please contact the administrator.",
     waitForApproval: "Please wait for baby approval",
     offlineMode: "The system is currently in offline mode",
     plannedVisits: "Planned Visits",
     completedIncompleteExpiredVisits: "Completed/Incomplete/Expired Visits",
     noResults: "No Data",
-    newVisit: "New Visit",
+    newVisit: "Schedule Visit",
     remarks: "Comments",
     edit: "Edit",
     add: "Add",
@@ -304,15 +304,15 @@ export default {
     selectVisitTime: "Select Visit Time",
     visitTimeConflict: "Visit Time Conflict",
     VisitTimeConflictMessage:
-      "The time you selected overlaps with a nearby home visit schedule. This may lead to a scheduling conflict. Are you sure you want to proceed with this time selection?",
+      "The time you selected is close to a home visit schedule. This may lead to a scheduling conflict. Are you sure you want to proceed with this time selection?",
 
-    notStartMessage: "Class cannot be started because the time has not arrived",
+    notStartMessage:
+      "Session cannot be started because the time has not arrived",
     continueLesson: "Continue Session",
     startLesson: "Start Session",
     cancelVisit: "Cancel Visit",
     canNotStartLessonMessage: "Can't start Session",
-    confirmStartLessonMessage:
-      "Are you sure you want to start this home visit now?",
+    confirmStartLessonMessage: "Are you sure to start this home visit now?",
     visitSchedule: "The schedule for this visit is",
     cancelVisitReason: "Cancel Visit Reason",
     later: "Later",
@@ -325,8 +325,8 @@ export default {
     lessonScheduleTip2:
       "If the baby progresses to the next stage after {{date}}, he/she will miss the session(s) in the current stage.",
     noLessonTip:
-      "The course schedule will be displayed automatically after selecting a baby to visit",
-    offlineBooking: "Offline Booking",
+      "The session will be displayed after selecting a baby to visit",
+    offlineBooking: "Offline Schedule",
     sessionIncluded: "Session(s) Included",
     module: "Module",
     preview: "Preview",
@@ -343,7 +343,7 @@ export default {
     inputRemark: "Visit Expired Reason",
     inputIncompleteRemark: "Visit Incomplete Reason",
     babyName: "Baby Name",
-    lessonName: " Session Name",
+    lessonName: "Session Name",
     visitTime: "Visit Time",
     visitDetail: "Visit Detail",
     remarkTitle: "Comments",
@@ -354,13 +354,13 @@ export default {
   Session: {
     next: "Next",
     locationPermissionMessage:
-      "Unable to start session since phone location services permission is not enabled",
+      "Unable to start session since permission is not granted to access user location",
     locationClosedMessage:
-      "Unable to start session since phone location services are not enabled.",
+      "Unable to start session since phone location service is not enabled.",
     completeTip: "Please finish following \n module(s):",
     completeVisit: "Complete visit",
     unableToCompleteVisit: "unable to complete visit",
-    quizTips: "Please make sure all questions are answered.",
+    quizTips: "Please answer all question(s).",
   },
   Question: {
     exit: "Exit Survey",
@@ -383,10 +383,10 @@ export default {
     downloadError: "Failed to download the latest course resources!",
     waitForSync: "Wait for sync",
     waitForMessage:
-      "You have class records that haven't been synced yet, and will be automatically synced when the internet connection is restored",
+      "You have session records that haven't been synced yet, and will be automatically synced when the internet connection is restored",
     nextVisitDate: "Your next visit: ",
     noVisitMessage: "You have no visit scheduled. Please schedule a new visit:",
-    download: "Download now",
-    update: "Update now",
+    download: "Download Resource",
+    update: "Update Resource",
   },
 };

@@ -54,7 +54,7 @@ export default function PickVisitTime({ navigation, route }) {
   function submit() {
     closeConflict();
     const visitTime = Visit.mergeDateAndTime(date, time);
-    navigation.navigate(from, { visitTime, ...(params.prevParams || {}) });
+    navigation.navigate(from, { ...(params.prevParams || {}), visitTime });
   }
 
   function onPressTime() {

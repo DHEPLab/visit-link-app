@@ -67,7 +67,7 @@ export default function VisitScreen({ navigation, route }) {
   async function cancelVisit(deleteReason) {
     await http.delete(`/api/visits/${visit.id}?deleteReason=${deleteReason}`);
     setTimeout(() => {
-      navigation.navigate("Baby");
+      navigation.navigate("Baby", { ...baby });
     }, 1);
   }
 
