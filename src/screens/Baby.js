@@ -187,8 +187,7 @@ export default function Baby({ navigation, route }) {
           source={require("../assets/images/baby-header-bg.png")}
         />
         <BabyContainer>
-          <NameContainer>
-            <Name>{baby.name || params.name}</Name>
+          <View>
             <IdentityContainer>
               <ApproveStatus
                 approved={
@@ -200,7 +199,8 @@ export default function Baby({ navigation, route }) {
                 {baby.identity || params.identity || t("notAvailable")}
               </Identity>
             </IdentityContainer>
-          </NameContainer>
+            <Name>{baby.name || params.name}</Name>
+          </View>
           <InfoContainer>
             <View>
               <Stage>
@@ -320,6 +320,8 @@ const TabBarLabel = styled.Text`
 `;
 
 const IdentityContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
   align-items: flex-end;
   opacity: 0.6;
 `;
@@ -676,12 +678,6 @@ const FixedButtonContainer = styled.View`
   background: rgba(255, 255, 255, 0.49);
 `;
 
-const NameContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
-
 const BackgroundImage = styled(Image)`
   position: absolute;
   height: 134px;
@@ -721,8 +717,9 @@ const Age = styled(WhiteText)`
 `;
 
 const Header = styled(LinearGradient)`
-  height: 160px;
+  min-height: 160px;
   width: 100%;
+  padding-bottom: 20px;
 `;
 
 const VisitsContainer = styled.View`
