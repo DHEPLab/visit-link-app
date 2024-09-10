@@ -65,7 +65,6 @@ export default function PickVisitTime({ navigation, route }) {
 
   function onChangeTime({ nativeEvent }) {
     hideTimePicker();
-    console.log(nativeEvent.timestamp);
     if (nativeEvent.timestamp) {
       setTime(new Date(nativeEvent.timestamp));
     }

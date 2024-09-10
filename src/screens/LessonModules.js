@@ -138,6 +138,7 @@ export default function LessonModules({ navigation, route }) {
                 lessonId: params.id,
                 backParams: params,
                 prevParams: params,
+                preview: params.preview,
               });
             }}
           />
@@ -149,14 +150,16 @@ export default function LessonModules({ navigation, route }) {
             onPress={() => toQuestion()}
           />
         )}
-        <ButtonContainer>
-          <Button
-            size="large"
-            title={t("Session:completeVisit")}
-            disabled={!canFinish}
-            onPress={finish}
-          />
-        </ButtonContainer>
+        {!params.preview && (
+          <ButtonContainer>
+            <Button
+              size="large"
+              title={t("Session:completeVisit")}
+              disabled={!canFinish}
+              onPress={finish}
+            />
+          </ButtonContainer>
+        )}
       </StyledScrollView>
       <Message
         error

@@ -134,10 +134,6 @@ export default {
       : statusUndone(status)
         ? i18next.t("Visits:undoneReason")
         : i18next.t("Visits:expiredReason"),
-  remarkModalTitle: (status) =>
-    statusUndone(status)
-      ? i18next.t("Visits:inputRemark")
-      : i18next.t("Visits:inputIncompleteRemark"),
   visitTimeMayConflict(vt1, vt2) {
     const diff = moment(vt1).diff(moment(vt2), "minutes");
     return Math.abs(diff) <= 60;

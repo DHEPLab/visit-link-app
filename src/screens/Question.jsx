@@ -21,6 +21,8 @@ export default function QuestionScreen({ navigation, route }) {
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] =
     useBoolState();
 
+  const isPreview = params?.prevParams?.preview;
+
   function onSubmit(values) {
     const resultList = Object.values(values).map((answer, i) => {
       const type = data.questions[i].type;
@@ -107,26 +109,28 @@ export default function QuestionScreen({ navigation, route }) {
                   </View>
                 ))}
             </ModuleCard>
-            <ButtonContainer>
-              <Button
-                size="large"
-                title={t("Question:complete")}
-                onPress={() => {
-                  validateForm(values)
-                    .then((res) => {
-                      if (Object.keys(res).length === 0) {
-                        handleSubmit();
-                      } else {
+            {!isPreview && (
+              <ButtonContainer>
+                <Button
+                  size="large"
+                  title={t("Question:complete")}
+                  onPress={() => {
+                    validateForm(values)
+                      .then((res) => {
+                        if (Object.keys(res).length === 0) {
+                          handleSubmit();
+                        } else {
+                          openErrorMessage();
+                        }
+                      })
+                      .catch((e) => {
+                        console.error(e);
                         openErrorMessage();
-                      }
-                    })
-                    .catch((e) => {
-                      console.error(e);
-                      openErrorMessage();
-                    });
-                }}
-              />
-            </ButtonContainer>
+                      });
+                  }}
+                />
+              </ButtonContainer>
+            )}
           </StyledScrollView>
         )}
       </Formik>

@@ -45,7 +45,12 @@ export default function VisitScreen({ navigation, route }) {
 
   function handleChangeVisitTime() {
     http.get(`/api/visits/${params.id}/date-range`).then((range) => {
-      navigation.navigate("PickVisitTime", { visitTime, from: "Visit", range });
+      navigation.navigate("PickVisitTime", {
+        visitTime,
+        from: "Visit",
+        range,
+        prevParams: params,
+      });
     });
   }
 
@@ -95,7 +100,7 @@ export default function VisitScreen({ navigation, route }) {
           </Card>
         )}
         <Modal
-          title={Visit.remarkModalTitle(status)}
+          title={Visit.remarkTitle(status)}
           visible={remarkVisible}
           content={
             <Input
