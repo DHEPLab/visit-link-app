@@ -26,38 +26,53 @@ export default function MiniBaby({
 
   return (
     <Baby>
-      {!hideStatus && (
-        <StatusContainer>
-          {id ? (
-            <ApproveStatus gray approved={approved} />
-          ) : (
-            <WaitingSubmit gray approved={approved} />
-          )}
-        </StatusContainer>
-      )}
-      <Name>{name}</Name>
-      <Gender>
-        <MaterialCommunityIcons
-          name={GenderIcon[gender]}
-          size={px2dp(12)}
-          color={genderColor(gender)}
-        />
-      </Gender>
-      <Age>
-        {days !== -1 &&
-          (pastEdc ? (
-            <Alert>{t("babyDueDateArrived")}</Alert>
-          ) : (
-            days && `${BabyStage[stage]} ${days} ${t("days")}`
-          ))}
-      </Age>
-      <Identity>ID:{identity || t("idNotFilled")}</Identity>
+      <IdentityInfo>
+        <Gender>
+          <MaterialCommunityIcons
+            name={GenderIcon[gender]}
+            size={px2dp(12)}
+            color={genderColor(gender)}
+          />
+        </Gender>
+        <Age>
+          {days !== -1 &&
+            (pastEdc ? (
+              <Alert>{t("babyDueDateArrived")}</Alert>
+            ) : (
+              days && `${BabyStage[stage]} ${days} ${t("days")}`
+            ))}
+        </Age>
+        <Identity>ID:{identity || t("idNotFilled")}</Identity>
+      </IdentityInfo>
+      <BasicInfo>
+        {!hideStatus && (
+          <StatusContainer>
+            {id ? (
+              <ApproveStatus gray approved={approved} />
+            ) : (
+              <WaitingSubmit gray approved={approved} />
+            )}
+          </StatusContainer>
+        )}
+        <Name>{name}</Name>
+      </BasicInfo>
     </Baby>
   );
 }
 
+const IdentityInfo = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 const StatusContainer = styled.View`
   margin-right: 8px;
+`;
+
+const BasicInfo = styled.View`
+  padding-top: 8px;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Age = styled.Text`
@@ -70,10 +85,7 @@ const Alert = styled.Text`
   color: #ff2e2e;
 `;
 
-const Baby = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
+const Baby = styled.View``;
 
 const Name = styled.Text`
   color: #525252;
