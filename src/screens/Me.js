@@ -155,8 +155,8 @@ const CardsContainer = styled.View`
 
 const Header = styled(LinearGradient)`
   width: 100%;
-  height: 160px;
-  padding: 0 28px;
+  min-height: 160px;
+  padding: 0 28px 20px 28px;
   position: relative;
 `;
 
@@ -191,11 +191,13 @@ const NameContainer = styled.View`
 const Name = styled(WhiteText)`
   font-size: 20px;
   font-weight: bold;
+  flex: 10;
 `;
 
 const Identity = styled(WhiteText)`
   font-size: 10px;
   font-weight: bold;
+  flex: 2;
 `;
 
 const InfoContainer = styled.View`
