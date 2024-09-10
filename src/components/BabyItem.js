@@ -31,7 +31,7 @@ export default function BabyItem({
       <Card>
         <MiniBaby baby={{ ...props, id }} />
         <Carer>
-          <StaticForm>
+          <StaticForm style={{ flexGrow: 1 }}>
             <StaticField label={t("primaryCaregiver")}>
               {carerName || t("none")}
             </StaticField>
@@ -39,7 +39,7 @@ export default function BabyItem({
               {carerPhone || t("none")}
             </StaticField>
           </StaticForm>
-          <ArrowRight
+          <MaterialIcons
             name="keyboard-arrow-right"
             size={px2dp(18)}
             color="#FF794F"
@@ -49,12 +49,6 @@ export default function BabyItem({
     </TouchableOpacity>
   );
 }
-
-const ArrowRight = styled(MaterialIcons)`
-  position: absolute;
-  top: 9px;
-  right: -5px;
-`;
 
 const Card = styled.View`
   padding: 16px 24px;
@@ -66,5 +60,6 @@ const Card = styled.View`
 `;
 
 const Carer = styled.View`
+  flex-direction: row;
   margin-top: 14px;
 `;
