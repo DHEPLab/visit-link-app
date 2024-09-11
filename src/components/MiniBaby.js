@@ -66,13 +66,13 @@ const IdentityInfo = styled.View`
 `;
 
 const StatusContainer = styled.View`
-  margin-right: 8px;
+  margin: 4px 8px 0 0;
 `;
 
 const BasicInfo = styled.View`
   padding-top: 8px;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const Age = styled.Text`
