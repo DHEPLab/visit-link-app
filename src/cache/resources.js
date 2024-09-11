@@ -2,6 +2,7 @@ import * as fs from "./fs";
 import storage from "./storage";
 import http from "../utils/http";
 import Modules from "../utils/module";
+import moment from "moment";
 
 async function fetchUpdateAsync() {
   const lessons = await http.get("/api/resources/lessons");
@@ -26,12 +27,16 @@ function checkForUpdateAsync() {
   return new Promise(async (resolve, reject) => {
     try {
       const lastUpdateAt = await storage.getLastUpdateAt();
+
       if (!lastUpdateAt) {
         resolve({ isAvailable: true, firstTime: true });
         return;
       }
+
       const { updated } = await http.get("/api/resources/check-for-updates", {
-        lastUpdateAt: lastUpdateAt || "",
+        lastUpdateAt: moment(lastUpdateAt)
+          .utc()
+          .format("YYYY-MM-DDTHH:mm:ss[Z]"),
       });
       resolve({ isAvailable: updated });
     } catch (e) {
