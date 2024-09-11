@@ -37,6 +37,9 @@ export function useMethods(preview) {
         moduleStack,
         pathStack,
         originId: params.originId,
+        lessonId: params?.prevParams?.lessonId,
+        preview: params.preview,
+        prevParams: params?.prevParams,
       });
       return;
     }
@@ -55,7 +58,13 @@ export function useMethods(preview) {
   function jumpToAnotherModule(navigate, params, path, finishAction) {
     const [action, target] = finishAction;
     if (action === "Redirect_End") {
-      navigate("Module", { id: target });
+      navigate("Module", {
+        id: target,
+        originId: params.originId,
+        lessonId: params?.prevParams?.lessonId,
+        preview: params.preview,
+        prevParams: params?.prevParams,
+      });
       return;
     }
 
@@ -73,6 +82,9 @@ export function useMethods(preview) {
         moduleStack,
         pathStack,
         originId: params.originId,
+        lessonId: params?.prevParams?.lessonId,
+        preview: params.preview,
+        prevParams: params?.prevParams,
       });
     }
   }
@@ -306,7 +318,7 @@ export default function ModuleScreen({ navigation, route }) {
               onPress={() =>
                 nextStep(navigation.navigate, params, module, path, setPath)
               }
-              disabled={false}
+              disabled={theLastPage && params.preview}
             />
           )}
           {canPreviousStep && (

@@ -32,6 +32,7 @@ export default function LessonModules({ navigation, route }) {
   const { isConnected } = useSelector((state) => state.net);
   const [errorMessageVisble, openErrorMessage, closeErrorMessage] =
     useBoolState();
+
   useEffect(() => {
     if (!params.preview && params.originModuleId && params.finished) {
       Storage.setNextModule(nextModule + 1);
@@ -105,12 +106,19 @@ export default function LessonModules({ navigation, route }) {
   }
 
   function toQuestion() {
+    const originalParams = {
+      from: params.from,
+      id: params.id,
+      nextModuleIndex: params.nextModuleIndex,
+      preview: params.preview,
+      visitId: params.visitId,
+    };
     navigation.navigate("Question", {
       id: questionnaire.id,
       data: questionnaire,
       lessonId: lesson.id,
       visitId: params?.visitId,
-      prevParams: params,
+      prevParams: originalParams,
     });
   }
 
@@ -132,13 +140,19 @@ export default function LessonModules({ navigation, route }) {
             value={{ ...module, status: status(index) }}
             disabled={!params.preview && index !== nextModule}
             onPress={() => {
+              const originalParams = {
+                from: params.from,
+                id: params.id,
+                nextModuleIndex: params.nextModuleIndex,
+                preview: params.preview,
+                visitId: params.visitId,
+              };
               navigation.navigate("Module", {
                 id: module.id,
                 originId: module.id,
                 lessonId: params.id,
-                backParams: params,
-                prevParams: params,
                 preview: params.preview,
+                prevParams: originalParams,
               });
             }}
           />
