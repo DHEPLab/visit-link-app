@@ -40,11 +40,26 @@ export default function AddressForm({
           <>
             <Card title={t("addressInfo")} noPadding>
               <Form>
-                <FormItem name="area" label={t("area")}>
+                <FormItem
+                  name="area"
+                  label={t("area")}
+                  labelWidth={44}
+                  labelAlign={"right"}
+                >
                   <Cascader options={Pcas} placeholder={t("selectArea")} />
                 </FormItem>
-                <FormItem name="location" label={t("detailedAddress")} noBorder>
-                  <Input placeholder={t("enterDetailedAddress")} />
+                <FormItem
+                  name="location"
+                  label={t("detailedAddress")}
+                  labelWidth={44}
+                  labelAlign={"right"}
+                  labelVerticalAlign={"start"}
+                  noBorder
+                >
+                  <Input
+                    placeholder={t("enterDetailedAddress")}
+                    multiline={true}
+                  />
                 </FormItem>
               </Form>
             </Card>

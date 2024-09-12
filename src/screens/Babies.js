@@ -251,7 +251,7 @@ export default function Babies({ navigation }) {
       />
       <FlatList
         ListFooterComponent={
-          <View style={{ height: 350, width: "100%" }}>
+          <View style={{ height: 550, width: "100%" }}>
             {!refreshing && !loading && contents && contents.length === 0 && (
               <NoDataContainer>
                 {name ? (

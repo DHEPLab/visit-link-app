@@ -4,7 +4,14 @@ import { TextInput } from "react-native";
 import { styled } from "../../utils/styled";
 import { Colors } from "../../constants";
 
-export default function Input({ value, border, onChange, onBlur, ...props }) {
+export default function Input({
+  value,
+  border,
+  onChange,
+  onBlur,
+  multiline = false,
+  ...props
+}) {
   return (
     <StyledTextInput
       value={value}
@@ -12,6 +19,7 @@ export default function Input({ value, border, onChange, onBlur, ...props }) {
       onChangeText={onChange}
       onBlur={onBlur}
       border={border}
+      multiline={multiline}
       {...props}
     />
   );
@@ -20,6 +28,7 @@ export default function Input({ value, border, onChange, onBlur, ...props }) {
 const StyledTextInput = styled(TextInput)`
   width: 100%;
   font-size: 10px;
+  ${({ multiline }) => multiline && `height: 30px; vertical-align: top`}
   ${({ border }) =>
     border &&
     `

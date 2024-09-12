@@ -103,7 +103,11 @@ export default function CreateCarer({ navigation, route }) {
                 <FormItem name="name" label={t("realName")}>
                   <Input placeholder={t("enterName")} />
                 </FormItem>
-                <FormItem name="familyTies" label={t("relationship")}>
+                <FormItem
+                  name="familyTies"
+                  label={t("relationship")}
+                  labelVerticalAlign={"top"}
+                >
                   <SolidRadios
                     enums={filteredFamilyTies(params.filterFamilyTies)}
                   />

@@ -9,6 +9,7 @@ export default function ({
   noBorder,
   labelWidth,
   labelAlign,
+  labelVerticalAlign = "middle",
   ...props
 }) {
   const form = useFormikContext();
@@ -19,7 +20,11 @@ export default function ({
     <FormItem noBorder={noBorder}>
       <Field {...props}>
         {label && (
-          <Label labelWidth={labelWidth} labelAlign={labelAlign}>
+          <Label
+            labelWidth={labelWidth}
+            labelVerticalAlign={labelVerticalAlign}
+            labelAlign={labelAlign}
+          >
             {label}:
           </Label>
         )}
@@ -77,8 +82,9 @@ const FormItem = styled.View`
 const Label = styled.Text`
   ${({ labelWidth }) => labelWidth && `width: ${labelWidth}px`}
   ${({ labelAlign }) => labelAlign && `text-align: ${labelAlign}`}
+  ${({ labelVerticalAlign }) =>
+    labelVerticalAlign && `vertical-align: ${labelVerticalAlign};`}
   margin-right: 12px;
   color: #8e8e93;
   font-size: 10px;
-  line-height: 16px;
 `;
