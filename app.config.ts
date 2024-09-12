@@ -44,7 +44,6 @@ export default (context: ConfigContext): ExpoConfig => {
         "expo-build-properties",
         {
           android: {
-            usesCleartextTraffic: true, // TODO: must remove when production release
             enableProguardInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
             useLegacyPackaging: true,
