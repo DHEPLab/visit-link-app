@@ -95,6 +95,7 @@ export default function BabyForm({
                   <FormItem
                     name="feedingPattern"
                     label={t("feedingMethods")}
+                    labelVerticalAlign={"top"}
                     noBorder
                   >
                     <SolidRadios enums={FeedingPattern} />
