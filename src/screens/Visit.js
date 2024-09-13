@@ -93,7 +93,7 @@ export default function VisitScreen({ navigation, route }) {
             hideBody={!visit.remark}
           >
             <StaticForm>
-              <StaticField label={Visit.remarkTitle(status)}>
+              <StaticField labelWidth={56} label={"Incompletee Reason"}>
                 {visit.remark}
               </StaticField>
             </StaticForm>
@@ -129,21 +129,21 @@ export default function VisitScreen({ navigation, route }) {
           <StaticForm>
             {(Visit.statusNotStart(status) || Visit.statusExpired(status)) &&
               visitTime && (
-                <StaticField label={t("Visits:visitTime")}>
+                <StaticField labelWidth={56} label={t("Visits:visitTime")}>
                   {formatDateTime(visitTime)}
                 </StaticField>
               )}
             {Visit.statusUndone(status) && visitTime && (
-              <StaticField label={t("Visits:startTime")}>
+              <StaticField labelWidth={56} label={t("Visits:startTime")}>
                 {formatDateTime(visit.startTime)}
               </StaticField>
             )}
             {Visit.statusDone(status) && visitTime && (
               <>
-                <StaticField label={t("Visits:startTime")}>
+                <StaticField labelWidth={56} label={t("Visits:startTime")}>
                   {formatDateTime(visit.startTime)}
                 </StaticField>
-                <StaticField label={t("Visits:endTime")}>
+                <StaticField labelWidth={56} label={t("Visits:endTime")}>
                   {formatDateTime(visit.completeTime)}
                 </StaticField>
               </>
