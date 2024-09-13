@@ -46,7 +46,7 @@ export default function MiniBaby({
       </IdentityInfo>
       <BasicInfo>
         {!hideStatus && (
-          <StatusContainer>
+          <StatusContainer width={px2dp(50)}>
             {id ? (
               <ApproveStatus gray approved={approved} />
             ) : (
@@ -66,7 +66,9 @@ const IdentityInfo = styled.View`
 `;
 
 const StatusContainer = styled.View`
-  margin: 4px 8px 0 0;
+  margin: 4px 12px 0 0;
+  flex-direction: row;
+  justify-content: flex-end;
 `;
 
 const BasicInfo = styled.View`
