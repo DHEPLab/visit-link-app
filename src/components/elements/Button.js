@@ -47,7 +47,7 @@ function RenderButton({ title, type, size, ghost, disabled }) {
         </InfoButton>
       );
     case "text":
-      return <Text>{title}</Text>;
+      return <Text size={size}>{title}</Text>;
     case "delete":
       return <DeleteText>{title}</DeleteText>;
     case "link":
@@ -147,6 +147,11 @@ const Text = styled.Text`
     type === "error" &&
     `
     color: #FF2E2E;
+  `}
+  ${({ size }) =>
+    size === "large" &&
+    `
+    padding: 6px 10px;
   `}
 `;
 

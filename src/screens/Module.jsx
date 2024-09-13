@@ -280,6 +280,7 @@ export default function ModuleScreen({ navigation, route }) {
           <Button
             disabled={false}
             type="text"
+            size="large"
             title={t("Module:exit")}
             onPress={navigation.goBack}
           />
@@ -382,7 +383,7 @@ const Description = styled.Text`
 
 const Name = styled(Description)`
   font-weight: bold;
-  margin-top: 12px;
+  margin-top: 18px;
   width: 280px;
 `;
 
