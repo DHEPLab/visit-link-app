@@ -1,10 +1,9 @@
 import "react-native-gesture-handler";
 import React, { useEffect } from "react";
 import NetInfo from "@react-native-community/netinfo";
-import { ToastAndroid } from "react-native";
+import { StatusBar, ToastAndroid } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
-import { setStatusBarTranslucent } from "expo-status-bar";
 import { Asset } from "expo-asset";
 import fundebug from "fundebug-reactnative";
 
@@ -41,7 +40,6 @@ export default function App(props) {
 
   // Load any resources or data that we need prior to rendering the app
   useEffect(() => {
-    setStatusBarTranslucent(true);
     async function loadResourcesAndDataAsync() {
       try {
         SplashScreen.preventAutoHideAsync();
@@ -88,6 +86,7 @@ export default function App(props) {
 
   return (
     <Provider store={store}>
+      <StatusBar backgroundColor="transparent" translucent={true} />
       <NavigationContainer theme={Colors.theme}>
         <Navigator />
         <GlobalErrorMessage />

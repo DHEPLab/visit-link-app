@@ -93,7 +93,7 @@ export default function VisitScreen({ navigation, route }) {
             hideBody={!visit.remark}
           >
             <StaticForm>
-              <StaticField labelWidth={56} label={"Incompletee Reason"}>
+              <StaticField labelWidth={56} label={Visit.remarkTitle(status)}>
                 {visit.remark}
               </StaticField>
             </StaticForm>
