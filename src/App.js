@@ -86,8 +86,8 @@ export default function App(props) {
 
   return (
     <Provider store={store}>
-      <StatusBar backgroundColor="transparent" translucent={true} />
       <NavigationContainer theme={Colors.theme}>
+        <StatusBar backgroundColor="transparent" translucent={true} />
         <Navigator />
         <GlobalErrorMessage />
         <ConfirmModal />
