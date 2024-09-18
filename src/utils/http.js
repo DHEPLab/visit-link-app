@@ -69,7 +69,7 @@ function request(fetchPromise, method, { silence, url }) {
         if (!silence) {
           if (method === "GET") {
             ToastAndroid.show(
-              url + i18next.t("App:networkError"),
+              url + " " + i18next.t("App:networkError"),
               ToastAndroid.SHORT,
             );
           } else {

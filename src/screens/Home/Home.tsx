@@ -109,7 +109,7 @@ const Home: React.FC<Props> = ({ navigation }) => {
       dispatch(lessonsUpdate({ isAvailable: false }));
       ToastAndroid.show(t("downloadSuccess"), ToastAndroid.SHORT);
     } catch (e) {
-      ToastAndroid.show(t("downloadSuccess"), ToastAndroid.SHORT);
+      ToastAndroid.show(t("downloadError"), ToastAndroid.SHORT);
     } finally {
       endFetch();
     }
