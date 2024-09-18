@@ -71,7 +71,7 @@ test.skip("should change the default visit time starting range to tomorrow", () 
 it("should default datetime is range0", () => {
   expect(
     Visit.defaultDatetime(["2020-07-28", "2020-08-13"], "2020-07-26"),
-  ).toBe("2020-07-28T08:00");
+  ).toBe("2020-07-28");
 });
 
 it("should visit status done is truthy", () => {

@@ -25,7 +25,7 @@ function defaultDatetime(range, visitTime) {
   }
 
   // return range start with default time 08:00 AM
-  return range[0] + "T08:00";
+  return range[0];
 }
 
 function defaultStartingRange() {
@@ -70,6 +70,10 @@ function formatTimeEN(time) {
 }
 function formatDateTime(datetime) {
   return moment(datetime).format("YYYY-MM-DDTHH:mm:ss");
+}
+
+function formatDateTimeUTC(datetime) {
+  return moment(datetime).utc().format("YYYY-MM-DDTHH:mm:ssZ");
 }
 
 function formatDateTimeCN(datetime) {
@@ -123,6 +127,7 @@ export default {
   formatDateEN,
   mergeDateAndTime,
   defaultDatetime,
+  formatDateTimeUTC,
   statusDone: (status) => status === "DONE",
   statusUndone,
   statusNotStart,

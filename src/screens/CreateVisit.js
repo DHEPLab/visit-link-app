@@ -50,7 +50,7 @@ export default function CreateVisit({ navigation, route }) {
   function handleSubmit() {
     http
       .post("/api/visits", {
-        visitTime: Visit.formatDateTime(visitTime),
+        visitTime: Visit.formatDateTimeUTC(visitTime),
         babyId: baby.id,
         lessonId: lesson.id,
       })

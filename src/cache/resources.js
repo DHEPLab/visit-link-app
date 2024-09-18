@@ -29,16 +29,19 @@ function checkForUpdateAsync() {
       const lastUpdateAt = await storage.getLastUpdateAt();
 
       if (!lastUpdateAt) {
-        resolve({ isAvailable: true, firstTime: true });
+        resolve({
+          isAvailable: true,
+          firstTime: true,
+        });
         return;
       }
 
       const { updated } = await http.get("/api/resources/check-for-updates", {
-        lastUpdateAt: moment(lastUpdateAt)
-          .utc()
-          .format("YYYY-MM-DDTHH:mm:ss[Z]"),
+        lastUpdateAt: moment(lastUpdateAt).format("YYYY-MM-DDTHH:mm:ssZ"),
       });
-      resolve({ isAvailable: updated });
+      resolve({
+        isAvailable: updated,
+      });
     } catch (e) {
       reject(e);
     }
