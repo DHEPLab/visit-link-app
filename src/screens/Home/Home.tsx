@@ -27,6 +27,7 @@ import type { NativeStackScreenProps } from "react-native-screens/native-stack";
 import { useDispatch, useSelector } from "react-redux";
 import { OtherBabyCard } from "./OtherBabyCard";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -84,7 +85,9 @@ const Home: React.FC<Props> = ({ navigation }) => {
       const answersData = await Storage.getAnswers(id);
       return Http.silencePut(`/api/visits/${id}/status`, {
         visitStatus: uncommitted[id].status,
-        startTime: uncommitted[id].startTime,
+        startTime: moment(uncommitted[id].startTime).format(
+          "YYYY-MM-DDTHH:mm:ssZ",
+        ),
         nextModuleIndex,
         questionnaireRecords: answersData?.answers,
       })
