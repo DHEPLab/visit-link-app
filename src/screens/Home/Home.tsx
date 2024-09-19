@@ -91,13 +91,13 @@ const Home: React.FC<Props> = ({ navigation }) => {
         nextModuleIndex,
         questionnaireRecords: answersData?.answers,
       })
-        .then((_) => {
+        .then(() => {
           Storage.setNextVisit({});
           Storage.committedVisitStatus();
           Storage.setAnswers(id, {});
           Storage.setNextModule(0);
         })
-        .catch((_) => openSubmitErrorMessage());
+        .catch(() => openSubmitErrorMessage());
     }
   }
 
@@ -111,7 +111,8 @@ const Home: React.FC<Props> = ({ navigation }) => {
       await Resources.fetchUpdateAsync();
       dispatch(lessonsUpdate({ isAvailable: false }));
       ToastAndroid.show(t("downloadSuccess"), ToastAndroid.SHORT);
-    } catch (_) {
+    } catch (e) {
+      console.log(e);
       ToastAndroid.show(t("downloadError"), ToastAndroid.SHORT);
     } finally {
       endFetch();

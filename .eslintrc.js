@@ -3,8 +3,9 @@ module.exports = {
   extends: ["expo", "prettier"],
   plugins: ["prettier"],
   rules: {
-    "prettier/prettier": "error",
+    "prettier/prettier": 1,
     "react-hooks/exhaustive-deps": "off",
+    "comma-dangle": ["off"],
   },
 
   env: {
