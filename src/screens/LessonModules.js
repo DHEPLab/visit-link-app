@@ -20,6 +20,7 @@ import {
 import QuestionnaireItem from "../components/QuestionnaireItem";
 import { uploadVisitLocation } from "../utils/visit";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
 export default function LessonModules({ navigation, route }) {
   const { t } = useTranslation();
@@ -77,7 +78,9 @@ export default function LessonModules({ navigation, route }) {
         // from Visit screen, online mode, direct submit
         await Http.put(`/api/visits/${params?.visitId}/status`, {
           visitStatus: "DONE",
-          startTime: uncommitted[params?.visitId].startTime,
+          startTime: moment(uncommitted[params?.visitId].startTime).format(
+            "YYYY-MM-DDTHH:mm:ssZ",
+          ),
           nextModuleIndex: nextModule,
           questionnaireRecords: answers,
         });
