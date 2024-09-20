@@ -212,7 +212,7 @@ export default {
     locationMaxLength: "No more than 200 characters。",
     addressInfo: "Address",
     area: "Area",
-    selectArea: "Please select area",
+    selectArea: "Please enter state,city, district,street,building",
     detailedAddress: "Detailed Address",
     enterDetailedAddress:
       "Please enter a detailed address, including the house number",

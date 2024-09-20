@@ -203,7 +203,7 @@ export default {
     locationMaxLength: "最多200个字符",
     addressInfo: "地址信息",
     area: "所在区域",
-    selectArea: "请选择省/市/县（区）/乡（镇）",
+    selectArea: "请输入州、市、区、街道",
     detailedAddress: "详细地址",
     enterDetailedAddress: "请输入详细地址，精确到门牌号",
     submit: "提交",

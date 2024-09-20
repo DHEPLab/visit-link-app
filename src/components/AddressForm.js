@@ -8,10 +8,8 @@ import Card from "./elements/Card";
 import FormItem from "./elements/FormItem";
 import Input from "./elements/Input";
 import Button from "./elements/Button";
-import Cascader from "./elements/Cascader";
 import LargeButtonContainer from "./LargeButtonContainer";
 
-import Pcas from "../constants/pcas-code.json";
 import { styled } from "../utils/styled";
 
 export default function AddressForm({
@@ -22,7 +20,7 @@ export default function AddressForm({
   const { t } = useTranslation("AddressForm");
 
   const validationSchema = Yup.object().shape({
-    area: Yup.string().required(t("required")),
+    area: Yup.string().max(200, t("locationMaxLength")).required(t("required")),
     location: Yup.string()
       .max(200, t("locationMaxLength"))
       .required(t("required")),
@@ -46,7 +44,7 @@ export default function AddressForm({
                   labelWidth={44}
                   labelAlign={"right"}
                 >
-                  <Cascader options={Pcas} placeholder={t("selectArea")} />
+                  <Input placeholder={t("selectArea")} />
                 </FormItem>
                 <FormItem
                   name="location"

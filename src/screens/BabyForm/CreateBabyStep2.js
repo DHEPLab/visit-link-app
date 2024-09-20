@@ -148,6 +148,7 @@ const CarerListContainer = styled.View`
   padding: 0 24px;
   background: #fff;
   margin-top: 20px;
+  margin-bottom: 20px;
 `;
 
 const Container = styled.View`
