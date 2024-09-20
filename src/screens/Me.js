@@ -69,11 +69,13 @@ export default function Me({ navigation }) {
             </Identity>
           </NameContainer>
           <InfoContainer>
-            <View>
+            <ContactInfoContainer>
               <PhoneNumber>{user.phone}</PhoneNumber>
-              <Location>{user.chw?.tags?.join(", ")}</Location>
-            </View>
-            <QrCodeScanner navigation={navigation} />
+              <Location>{user.chw?.tags?.join("\n")}</Location>
+            </ContactInfoContainer>
+            <QrCodeScannerContainer>
+              <QrCodeScanner navigation={navigation} />
+            </QrCodeScannerContainer>
           </InfoContainer>
         </Header>
 
@@ -204,6 +206,14 @@ const InfoContainer = styled.View`
   flex-direction: row;
   align-items: flex-end;
   justify-content: space-between;
+`;
+
+const ContactInfoContainer = styled.View`
+  flex: 11;
+`;
+
+const QrCodeScannerContainer = styled.View`
+  flex: 1;
 `;
 
 const PhoneNumber = styled(WhiteText)`
