@@ -13,7 +13,7 @@ import LargeButtonContainer from "./LargeButtonContainer";
 import { styled } from "../utils/styled";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { ScrollView } from "react-native";
-
+//TODO: wrap each overflow option
 const autocompleteStyles = {
   listView: {
     width: 400,
@@ -87,6 +87,7 @@ export default function AddressForm({
                         if (!details) {
                           return;
                         }
+                        //TODO: check exact times this component calls for autocomplete and geocoding
                         setFieldValue("area", details.formatted_address, true);
                         setFieldValue(
                           "latitude",
@@ -98,7 +99,7 @@ export default function AddressForm({
                         );
                       }}
                       query={{
-                        key: "API_KEY",
+                        key: "API_KEY", //TODO: replace with real key
                         language: "en",
                       }}
                     />
