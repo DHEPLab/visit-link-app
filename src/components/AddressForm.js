@@ -46,7 +46,6 @@ export default function AddressForm({
   const autoCompleteRef = useRef();
 
   useEffect(() => {
-    console.log(initialValues);
     autoCompleteRef.current?.setAddressText(initialValues.area);
   }, []);
 
