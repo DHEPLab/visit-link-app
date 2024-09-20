@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
@@ -11,6 +11,31 @@ import Button from "./elements/Button";
 import LargeButtonContainer from "./LargeButtonContainer";
 
 import { styled } from "../utils/styled";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { ScrollView } from "react-native";
+
+const autocompleteStyles = {
+  listView: {
+    width: 400,
+    marginTop: -10,
+    marginLeft: -12,
+  },
+  row: {
+    width: 400,
+  },
+  textInput: {
+    paddingVertical: 0,
+    height: 40,
+    fontSize: 15,
+  },
+  textInputContainer: {
+    marginTop: -10,
+    marginLeft: -10,
+  },
+  poweredContainer: {
+    display: "none",
+  },
+};
 
 export default function AddressForm({
   onSubmit,
@@ -18,6 +43,12 @@ export default function AddressForm({
   submitting,
 }) {
   const { t } = useTranslation("AddressForm");
+  const autoCompleteRef = useRef();
+
+  useEffect(() => {
+    console.log(initialValues);
+    autoCompleteRef.current?.setAddressText(initialValues.area);
+  }, []);
 
   const validationSchema = Yup.object().shape({
     area: Yup.string().max(200, t("locationMaxLength")).required(t("required")),
@@ -34,7 +65,7 @@ export default function AddressForm({
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit, values, setFieldValue }) => (
           <>
             <Card title={t("addressInfo")} noPadding>
               <Form>
@@ -43,8 +74,36 @@ export default function AddressForm({
                   label={t("area")}
                   labelWidth={44}
                   labelAlign={"right"}
+                  labelVerticalAlign={"top"}
                 >
-                  <Input placeholder={t("selectArea")} />
+                  <ScrollView keyboardShouldPersistTaps={"always"}>
+                    <GooglePlacesAutocomplete
+                      ref={autoCompleteRef}
+                      debounce={200}
+                      styles={autocompleteStyles}
+                      placeholder="England, London, Argyle Street 10, ABC Building"
+                      fetchDetails={true}
+                      listViewDisplayed={false}
+                      onPress={(_, details) => {
+                        if (!details) {
+                          return;
+                        }
+                        setFieldValue("area", details.formatted_address, true);
+                        setFieldValue(
+                          "latitude",
+                          details.geometry.location.lat,
+                        );
+                        setFieldValue(
+                          "longitude",
+                          details.geometry.location.lng,
+                        );
+                      }}
+                      query={{
+                        key: "API_KEY",
+                        language: "en",
+                      }}
+                    />
+                  </ScrollView>
                 </FormItem>
                 <FormItem
                   name="location"

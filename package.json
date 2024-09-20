@@ -45,6 +45,7 @@
     "react-native": "0.74.5",
     "react-native-calendars": "^1.300.0",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-google-places-autocomplete": "^2.5.6",
     "react-native-htmlview": "^0.17.0",
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-loading-spinner-overlay": "^3.0.1",
