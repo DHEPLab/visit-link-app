@@ -31,10 +31,16 @@ export const AssistedFood = {
 };
 
 export const FeedingPattern = {
-  BREAST_MILK: i18next.t("FeedingPattern.BREAST_MILK", { ns: "enum" }),
-  MILK_POWDER: i18next.t("FeedingPattern.MILK_POWDER", { ns: "enum" }),
-  MIXED: i18next.t("FeedingPattern.MIXED", { ns: "enum" }),
-  TERMINATED: i18next.t("FeedingPattern.TERMINATED", { ns: "enum" }),
+  EXCLUSIVE_BREASTFEEDING: i18next.t("FeedingPattern.BREAST_MILK", {
+    ns: "enum",
+  }),
+  FORMULA_FEEDING: i18next.t("FeedingPattern.MILK_POWDER", { ns: "enum" }),
+  MIXED_BREAST_FORMULA_FEEDING: i18next.t("FeedingPattern.MIXED", {
+    ns: "enum",
+  }),
+  NO_BREAST_FORMULA_FEEDING: i18next.t("FeedingPattern.TERMINATED", {
+    ns: "enum",
+  }),
 };
 
 export const FamilyTies = {
