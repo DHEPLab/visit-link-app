@@ -87,7 +87,7 @@ export default {
   },
   ApproveStatus: {
     approved: "Approved",
-    pending: "Unreviewed",
+    pending: "Awaiting Review",
   },
   Common: {
     back: "Back",
@@ -109,7 +109,7 @@ export default {
       UNDONE: "Scheduled",
     },
     BabyStage: {
-      EDC: "EDC",
+      EDC: "Unborn",
       BIRTH: "Born",
     },
     Gender: {
@@ -118,22 +118,22 @@ export default {
       UNKNOWN: "Unknown",
     },
     AssistedFood: {
-      TRUE: "Add",
-      FALSE: "No Add",
+      TRUE: "Yes",
+      FALSE: "No",
     },
     FeedingPattern: {
-      BREAST_MILK: "Breast Milk",
-      MILK_POWDER: "Milk Powder",
-      MIXED: "Mixed",
-      TERMINATED: "Terminated",
+      BREAST_MILK: "Exclusive Breastfeeding",
+      MILK_POWDER: "Formula Feeding",
+      MIXED: "Mixed Breast/Formula Feeding",
+      TERMINATED: "No Breast/Formula Feeding",
     },
     RELATIVES: {
       MOTHER: "Mother",
       FATHER: "Father",
-      GRANDMOTHER: "Grandmother",
-      GRANDMA: "Grandma",
-      GRANDFATHER: "Grandfather",
-      GRANDPA: "Grandpa",
+      GRANDMOTHER: "Paternal Grandmother",
+      GRANDMA: "Maternal Grandmother",
+      GRANDFATHER: "Paternal Grandfather",
+      GRANDPA: "Maternal Grandfather",
       OTHER: "Other",
     },
     VisitStatus: {
@@ -183,9 +183,9 @@ export default {
     delete: "Delete",
     edit: "Edit",
     caregiverName: "Caregiver Name",
-    relationship: "Relatives",
+    relationship: "Relation",
     phoneNumber: "Phone",
-    wechatAccount: "IM Account",
+    wechatAccount: "Other Contact",
   },
   CreateCarer: {
     nameValidation: "Only allow 1-50 characters without special characters",

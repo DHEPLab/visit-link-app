@@ -21,8 +21,8 @@ export const VisitStatus = {
 };
 
 export const BabyStage = {
-  EDC: i18next.t("BabyStage.EDC", { ns: "enum" }),
-  BIRTH: i18next.t("BabyStage.BIRTH", { ns: "enum" }),
+  UNBORN: i18next.t("BabyStage.EDC", { ns: "enum" }),
+  BORN: i18next.t("BabyStage.BIRTH", { ns: "enum" }),
 };
 
 export const AssistedFood = {

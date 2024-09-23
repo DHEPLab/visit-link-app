@@ -31,10 +31,10 @@ export default function BabyForm({
   function validate(values) {
     const errors = {};
     switch (values.stage) {
-      case "EDC":
+      case "UNBORN":
         if (!values.edc) errors.edc = t("required");
         break;
-      case "BIRTH":
+      case "BORN":
         if (!values.birthday) errors.birthday = t("required");
         if (values.assistedFood == null) errors.assistedFood = t("required");
         if (!values.feedingPattern) errors.feedingPattern = t("required");
@@ -45,8 +45,8 @@ export default function BabyForm({
 
   // the baby stage cannot be changed from birth to edc
   function FilteredBabyStage(stage) {
-    if (stage === "BIRTH") {
-      return { BIRTH: BabyStage["BIRTH"] };
+    if (stage === "BORN") {
+      return { BIRTH: BabyStage["BORN"] };
     }
     return BabyStage;
   }
@@ -76,7 +76,7 @@ export default function BabyForm({
               >
                 <SolidRadios enums={FilteredBabyStage(initialValues.stage)} />
               </FormItem>
-              {values.stage === "EDC" && (
+              {values.stage === "UNBORN" && (
                 <FormItem name="edc" label={t("dueDate")} noBorder>
                   <DatePicker
                     minimumDate={new Date()}
@@ -84,7 +84,7 @@ export default function BabyForm({
                   />
                 </FormItem>
               )}
-              {values.stage === "BIRTH" && (
+              {values.stage === "BORN" && (
                 <>
                   <FormItem name="birthday" label={t("birthDate")}>
                     <DatePicker maximumDate={new Date()} />
