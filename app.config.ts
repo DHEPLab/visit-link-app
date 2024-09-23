@@ -54,7 +54,7 @@ export default (context: ConfigContext): ExpoConfig => {
     extra: {
       eas: {
         // TODO: This is testing projectId, should switch to production projectId
-        projectId: "d9bce14f-38e0-4646-b387-d15223ab442f",
+        projectId: "40dde9de-996a-4c4e-bbfd-8be23dcc8132",
       },
     },
   };
