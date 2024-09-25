@@ -64,23 +64,15 @@ const ReferenceContainer = styled.View`
 `;
 
 function WebViewContainer({ html, customStyle }) {
-  const styles = {
-    p: {
-      margin: 0,
-      padding: 0,
-    },
-    ul: {
-      listStyleType: "disc",
-      marginLeft: 20,
-    },
-    ol: {
-      listStyleType: "decimal",
-      marginLeft: 20,
-    },
-    li: {
-      marginBottom: 5,
-    },
-  };
+  const customCSS = `
+    ol {
+      list-style-type: decimal; 
+    }
+    ol[data-list="bullet"] li {
+      list-style-type: disc; 
+      list-style-position: inside;
+    }
+  `;
 
   return (
     <HtmlView
@@ -90,3 +82,13 @@ function WebViewContainer({ html, customStyle }) {
     />
   );
 }
+
+const styles = {
+  p: {
+    margin: 0,
+    padding: 0,
+  },
+  li: {
+    marginBottom: 5,
+  },
+};
