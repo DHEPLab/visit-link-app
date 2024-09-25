@@ -1,5 +1,4 @@
 import React from "react";
-
 import { styled } from "../../utils/styled";
 import HtmlView from "react-native-htmlview";
 
@@ -65,11 +64,29 @@ const ReferenceContainer = styled.View`
 `;
 
 function WebViewContainer({ html, customStyle }) {
+  const styles = {
+    p: {
+      margin: 0,
+      padding: 0,
+    },
+    ul: {
+      listStyleType: "disc",
+      marginLeft: 20,
+    },
+    ol: {
+      listStyleType: "decimal",
+      marginLeft: 20,
+    },
+    li: {
+      marginBottom: 5,
+    },
+  };
+
   return (
     <HtmlView
-      style={{ width: "auto" }}
-      customStyle={customStyle}
       value={html}
+      stylesheet={styles}
+      style={{ width: "auto", ...customStyle }}
     />
   );
 }
