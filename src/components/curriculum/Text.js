@@ -65,18 +65,24 @@ const ReferenceContainer = styled.View`
 
 function WebViewContainer({ html, customStyle }) {
   const customCSS = `
-    ol {
-      list-style-type: decimal; 
+    ol[data-list="ordered"] {
+      list-style-type: decimal;
+      padding-left: 20px;
     }
-    ol[data-list="bullet"] li {
-      list-style-type: disc; 
-      list-style-position: inside;
+    ol[data-list="bullet"] {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    ol[data-list="ordered"] li, ol[data-list="bullet"] li {
+      display: list-item;
     }
   `;
 
+  const modifiedHtml = `<style>${customCSS}</style>${html}`;
+
   return (
     <HtmlView
-      value={html}
+      value={modifiedHtml}
       stylesheet={styles}
       style={{ width: "auto", ...customStyle }}
     />
