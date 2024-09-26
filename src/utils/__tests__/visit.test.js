@@ -1,3 +1,4 @@
+import moment from "moment";
 import Visit from "../visit";
 
 test.skip(`should i can start the home visit from 8 o 'clock to 20 o 'clock on the day of the home visit`, () => {
@@ -43,12 +44,12 @@ it("should format visit date time", () => {
 });
 
 it("should merge date and time", () => {
-  expect(
-    Visit.mergeDateAndTime(
-      new Date("2020-07-12 11:11"),
-      new Date("2020-07-12 18:00"),
-    ),
-  ).toBe("2020-07-12T18:00");
+  const merged = Visit.mergeDateAndTime(
+    new Date("2020-07-12 11:11"),
+    new Date("2020-07-12 18:00"),
+  );
+
+  expect(moment(merged).valueOf()).toBe(moment("2020-07-12T18:00").valueOf());
 });
 
 it("should default datetime is visit time", () => {

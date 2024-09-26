@@ -87,7 +87,7 @@ function formatDateTimeEN(datetime) {
 }
 
 function mergeDateAndTime(date, time) {
-  return `${formatDate(date)}T${moment(time).format("HH:mm")}`;
+  return `${formatDate(date)}T${moment(time).format("HH:mm:ssZ")}`;
 }
 
 function statusNotStart(status) {

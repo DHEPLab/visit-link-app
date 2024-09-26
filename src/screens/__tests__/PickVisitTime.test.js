@@ -1,3 +1,4 @@
+import moment from "moment-timezone";
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import PickVisitTime from "../PickVisitTime";
@@ -23,6 +24,14 @@ jest.mock("../../utils/http", () => ({
   ...jest.requireActual("../../utils/http"),
   get: jest.fn(),
 }));
+
+beforeEach(() => {
+  moment.tz.setDefault("America/New_York");
+});
+
+afterEach(() => {
+  moment.tz.setDefault();
+});
 
 it("should set default visit time", () => {
   const { queryByText } = render(
@@ -50,8 +59,8 @@ it("should navigate to from screen", async () => {
   );
   fireEvent.press(getByText(/Submit/));
   await waitFor(() => {
-    expect(navigation.navigate).toBeCalledWith("Visit", {
-      visitTime: "2020-07-20T10:00",
+    expect(navigation.navigate).toHaveBeenCalledWith("Visit", {
+      visitTime: "2020-07-20T10:00:00-04:00",
     });
   });
 });
