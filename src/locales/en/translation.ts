@@ -211,11 +211,10 @@ export default {
     required: "This field is required",
     locationMaxLength: "No more than 200 characters。",
     addressInfo: "Address",
-    area: "Area",
-    selectArea: "Please enter state,city, district,street,building",
+    area: "Building Address",
+    selectArea: "Please enter state, city, district and street/building",
     detailedAddress: "Detailed Address",
-    enterDetailedAddress:
-      "Please enter a detailed address, including the house number",
+    enterDetailedAddress: "Please enter floor, house number, unit number",
     submit: "Submit",
   },
   CreateBabyStep3: {
@@ -255,7 +254,7 @@ export default {
     edit: "Edit",
     add: "Add",
     addressInfo: "Address",
-    area: "Area",
+    area: "Building Address",
     detailedAddress: "Detailed Address",
     caregiverInfo: "Caregiver Info",
     setPrimaryCarerFirst:
