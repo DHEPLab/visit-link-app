@@ -20,7 +20,7 @@ export default function AddressForm({
   const { t } = useTranslation("AddressForm");
 
   const validationSchema = Yup.object().shape({
-    area: Yup.string().max(200, t("locationMaxLength")).required(t("required")),
+    area: Yup.string().max(100, t("areaMaxLength")).required(t("required")),
     location: Yup.string()
       .max(200, t("locationMaxLength"))
       .required(t("required")),

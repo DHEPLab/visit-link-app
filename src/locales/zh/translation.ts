@@ -200,6 +200,7 @@ export default {
   },
   AddressForm: {
     required: "此项为必填",
+    areaMaxLength: "最多100个字符",
     locationMaxLength: "最多200个字符",
     addressInfo: "地址信息",
     area: "所在区域",

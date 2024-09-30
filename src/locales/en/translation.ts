@@ -209,7 +209,8 @@ export default {
   },
   AddressForm: {
     required: "This field is required",
-    locationMaxLength: "No more than 200 characters。",
+    areaMaxLength: "No more than 100 characters",
+    locationMaxLength: "No more than 200 characters",
     addressInfo: "Address",
     area: "Building Address",
     selectArea: "Please enter state, city, district and street/building",

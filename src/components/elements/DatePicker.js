@@ -22,9 +22,7 @@ export default function DatePicker({ value, onChange, ...props }) {
     hide();
     if (nativeEvent.timestamp) {
       const date = moment(nativeEvent.timestamp);
-      onChange(
-        date.format(i18n.language === "zh" ? "YYYY年MM月DD日" : "YYYY-MM-DD"),
-      );
+      onChange(date.format("YYYY-MM-DD"));
     }
   }
 
