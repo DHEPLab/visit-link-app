@@ -101,8 +101,8 @@ export default {
   enum: {
     QuestionType: {
       Text: "Text",
-      Checkbox: "Single choice",
-      Radio: "multiple choice",
+      Checkbox: "Multiple choice",
+      Radio: "Single choice",
     },
     ModuleStatus: {
       DONE: "Completed",
