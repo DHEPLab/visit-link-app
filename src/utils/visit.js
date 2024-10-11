@@ -158,8 +158,7 @@ export function uploadVisitLocation(babyId, visitId) {
     try {
       console.log("start getLocation");
       Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Highest,
-        timeInterval: 5000,
+        accuracy: Location.Accuracy.Low,
       }).then((location) => {
         const { latitude, longitude } = location.coords;
         Http.post("/api/visits/upload/location", {
