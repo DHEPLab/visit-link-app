@@ -30,14 +30,6 @@ Recommended tool: [React Native Debugger](https://github.com/jhen0409/react-nati
 
 healthy-future-backend，API endpoint located in `constants/Config.js`
 
-## Deployment Scripts
-
-```
-$ ansible/build.sh
-$ ansible/package.sh
-$ DEPLOY_GROUP=prod ansible/deploy.sh
-```
-
 ## Building Android APK
 
 ```shell

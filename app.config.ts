@@ -3,6 +3,7 @@ import pkg from "./package.json";
 
 export default (context: ConfigContext): ExpoConfig => {
   return {
+    owner: "dheplab",
     name: process.env.EXPO_PUBLIC_APP_NAME || "Healthy Future",
     description: "RURAL EDUCATION ACTION PROGRAM",
     slug: "healthy-future-app",
@@ -53,8 +54,7 @@ export default (context: ConfigContext): ExpoConfig => {
     ],
     extra: {
       eas: {
-        // TODO: This is testing projectId, should switch to production projectId
-        projectId: "40dde9de-996a-4c4e-bbfd-8be23dcc8132",
+        projectId: "b4aba8d3-502f-4a0a-9f48-2b58b4bf3274",
       },
     },
   };
