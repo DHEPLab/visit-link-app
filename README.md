@@ -51,6 +51,9 @@ You can also use EAS CLI to build APK remotely.
 eas build --profile development --platform android
 ```
 
+## Publish Guide
+[publish guide](docs/publish.md)
+
 ## Docs
 
 The documentation we use the mkdocs format, you can use command to preview the docs locally, also you can import the docs into the internal dev portal, e.g. [Backstage](https://backstage.io/)
