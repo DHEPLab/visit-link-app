@@ -3,7 +3,8 @@
   "main": "src/index.ts",
   "version": "0.0.1",
   "resolutions": {
-    "fast-xml-parser": "^5.3.4"
+    "fast-xml-parser": "^5.3.4",
+    "image-size": "1.2.1"
   },
   "scripts": {
     "start": "expo start",
@@ -13,7 +14,8 @@
     "lint": "eslint ./src",
     "test": "jest --watchAll",
     "test:ci": "jest --silent --coverage",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "patch-package --error-on-fail"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
@@ -42,6 +44,8 @@
     "fundebug-reactnative": "^0.1.1",
     "i18next": "^23.14.0",
     "moment": "^2.27.0",
+    "patch-package": "8.0.1",
+    "postinstall-postinstall": "2.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "15.0.1",
